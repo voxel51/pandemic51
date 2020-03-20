@@ -1,0 +1,18 @@
+
+**/*.DS_store
+**/*.md5
+**/*.log
+
+__pycache__
+*.py[cod]
+
+*.egg-info
+.project
+.pydevproject
+
+*~
+
+**/*.ipynb_checkpoints
+
+# Pycharm
+.idea
