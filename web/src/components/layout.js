@@ -45,12 +45,12 @@ const Layout = ({ children }) => {
   return (
     <>
     <div className={classes.root}>
-      <Grid container spacing={0}>
+      <Grid container spacing={2}>
         <Grid item xs={12} sm={3}>
-          <Paper className={classes.paper}>City</Paper>
+          <Paper className={classes.paper} variant="outlined" square>City</Paper>
         </Grid>
         <Grid item xs={12} sm={9}>
-          <Paper className={classes.paper}>{children}</Paper>
+          <Paper className={classes.paper} variant="outlined" square>{children}</Paper>
         </Grid>
       </Grid>
     </div>
