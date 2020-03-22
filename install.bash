@@ -7,8 +7,10 @@ python setup.py build
 python setup.py install
 cd -
 
+# install submodules
+pip install -r eta/requirements.txt
+pip install -e eta
+
 # install pandemic51
 pip install -e .
-
-# initialize database
-p51mysql < database/init.sql
+pip install -r requirements.txt

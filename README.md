@@ -1,6 +1,11 @@
 # pandemic51
 Voxel51's website for monitoring the impact of the coronavirus pandemic
 
+# Install:
+```bash
+git submodule update --init
+bash install.bash
+```
 
 # Local MySQL Configuration:
 
