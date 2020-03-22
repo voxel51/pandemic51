@@ -8,13 +8,13 @@ import time
 import ffmpy
 import m3u8
 
-from pandemic51.core.utils import ensure_dir
+import eta.core.utils as etau
 
 
 def save_video(uri, base_path, output_path):
     out_name = os.path.splitext(uri)[0]+".mp4"
     output_video_path = os.path.join(output_path, out_name)
-    ensure_dir(output_video_path)
+    etau.ensure_basedir(output_video_path)
     input_video = os.path.join(base_path, uri)
 
     cmd = ffmpy.FFmpeg(inputs={input_video: None}, outputs={output_video_path: None})
