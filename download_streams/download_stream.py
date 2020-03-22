@@ -14,11 +14,12 @@ cd m3u8
 python setup.py build
 python setup.py install
 '''
+import os
+import time
 
 import ffmpy
 import m3u8
-import time
-import os
+
 
 def ensure_dir(file_path):
     directory = os.path.dirname(file_path)
@@ -52,17 +53,17 @@ def download_stream(base_path, output_path, chunk_name, stream_name):
                 processed_uris.append(uri)
 
 
+if __name__ == '__main__':
+    output_path = "out"
 
-output_path = "out"
-
-time_square_base_path = "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv"
-ts_chunk = "chunklist.m3u8"
-
-
-chicago_base_path = "https://videos-3.earthcam.com/fecnetwork/13220.flv"
-chicago_chunk = "chunklist_w1227547844.m3u8"
+    time_square_base_path = "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv"
+    ts_chunk = "chunklist.m3u8"
 
 
-download_stream(time_square_base_path, output_path, ts_chunk, "time_square")
-#download_stream(chicago_base_path, output_path, chicago_chunk, "chicago")
+    chicago_base_path = "https://videos-3.earthcam.com/fecnetwork/13220.flv"
+    chicago_chunk = "chunklist_w1227547844.m3u8"
+
+
+    download_stream(time_square_base_path, output_path, ts_chunk, "time_square")
+    #download_stream(chicago_base_path, output_path, chicago_chunk, "chicago")
 
