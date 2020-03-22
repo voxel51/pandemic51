@@ -6,14 +6,14 @@ import os
 
 import ffmpy
 
-from pandemic51.core.utils import ensure_dir
+import eta.core.utils as etau
 
 
 def vid2img(inpath, outpath, width=300, height=300):
     if os.path.exists(outpath):
         return False
 
-    ensure_dir(outpath)
+    etau.ensure_basedir(outpath)
 
     outcmd = "-ss 00:00:00 -t 00:00:01 -s %dx%d -r 1 -f image2" \
              % (width, height)

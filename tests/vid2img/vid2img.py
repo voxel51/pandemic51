@@ -7,6 +7,7 @@ import os
 
 from pandemic51.core.vid2img import vid2img
 
+
 input_pattern = "../out/video/time_square/*.mp4"
 out_dir = "../out/img/time_square"
 
