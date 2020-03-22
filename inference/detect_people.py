@@ -7,22 +7,10 @@ as a flattened buffer of 270,000 byte values (300x300x3). Since the model is
 quantized, each value should be a single byte representing a value between 0 and
 255.
 '''
+from PIL import Image
 import numpy as np
 import tensorflow as tf
 
-
-##############
-# PARAMETERS #
-##############
-
-
-model_path = "model/detect.tflite"
-labelmap_path = "model/labelmap.txt"
-
-
-########
-# CODE #
-########
 
 class Detector(object):
     def __init__(self, model_path, labelmap_path):
@@ -49,8 +37,16 @@ class Detector(object):
     def _preprocess(self, img):
         input_shape = self.input_details[0]['shape']
 
-        # TODO Test model on random input data.
-        return np.array(np.random.random_sample(input_shape), dtype=np.uint8)
+        processed_img = np.asarray(img, dtype=np.uint8)
+
+        if len(processed_img.shape) < 4:
+            processed_img = np.expand_dims(processed_img, axis=0)
+
+        assert all(processed_img.shape == input_shape), \
+            "Invalid input shape. Expected: {} Actual: {}".format(
+                input_shape, processed_img.shape)
+
+        return processed_img
 
     def _get_outputs(self):
         bboxes = self.interpreter.get_tensor(
@@ -68,18 +64,35 @@ class Detector(object):
             "confidences": confidences
         }
 
-detector = Detector(model_path, labelmap_path)
 
-result = detector.predict(None)
+if __name__ == '__main__':
+    # parameters
+    model_path = "model/detect.tflite"
+    labelmap_path = "model/labelmap.txt"
+    img_path = "data/test.png"
 
-classes = result["classes"]
-bboxes = result["bboxes"]
-confidences = result["confidences"]
+    # instantiate detector
+    detector = Detector(model_path, labelmap_path)
 
-print("class | confidence | bbox")
-for idx in range(len(classes)):
-    print("{} | {} | {}".format(
-        classes[idx],
-        confidences[idx],
-        bboxes[idx]
-    ))
+    # Test model on random input data.
+    # img = np.array(np.random.random_sample((1, 300, 300, 3)), dtype=np.uint8)
+
+    # load the image
+    img = Image.open(img_path)
+
+    # make prediction
+    result = detector.predict(img)
+
+    # parse result
+    classes = result["classes"]
+    bboxes = result["bboxes"]
+    confidences = result["confidences"]
+
+    # print result
+    print("class | confidence | bbox")
+    for idx in range(len(classes)):
+        print("{} | {} | {}".format(
+            classes[idx],
+            confidences[idx],
+            bboxes[idx]
+        ))
