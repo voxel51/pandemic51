@@ -1,4 +1,0 @@
-[submodule "eta"]
-	path = eta
-	url = git@github.com:voxel51/eta.git
-	branch = develop
