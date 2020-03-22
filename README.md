@@ -36,8 +36,13 @@ export P51_SQL_PASSWORD="<PASSWORD>"
 export P51_SQL_DATABASE_NAME="<DATABASE>"
 
 # login shortcut command
-p51mysql() { mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME; }
+alias p51mysql="mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME"
 ```
 
 and run `source ~/.bash_profile`. You can now call `p51mysql` from the command
 line to be logged into mysql as the newly created user.
+
+## Initialize the Database:
+```bash
+p51mysql < database/init.sql
+```

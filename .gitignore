@@ -16,3 +16,6 @@ __pycache__
 
 # Pycharm
 .idea
+
+m3u8/
+tests/out/
