@@ -9,9 +9,10 @@ sudo apt install redis-server
 redis-server --daemonize yes
 
 ########### Python and PIP
+pip install --upgrade pip
 pip install virtualenv
 
-sudo mkdir $ENV_DIR
+sudo mkdir -p $ENV_DIR
 
 if [ -z "$ENV_DIR" ]; then
     ENV_DIR=${HOME}/venv
