@@ -12,7 +12,7 @@ redis-server --daemonize yes
 pip install --upgrade pip
 pip install virtualenv
 
-sudo mkdir -p $ENV_DIR
+mkdir -p $ENV_DIR
 
 if [ -z "$ENV_DIR" ]; then
     ENV_DIR=${HOME}/venv

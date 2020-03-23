@@ -10,7 +10,7 @@ Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc`
 
 ```bash
 # Resource Directory
-export P51_BASEDIR="/pandemic51"
+export P51_BASEDIR="home/<USER>/p51_base"
 export ENV_DIR=${P51_BASEDIR}"/venv"
 export DATA_DIR=${P51_BASEDIR}"/data"
 export IMAGE_DIR=${DATA_DIR}"/images"
