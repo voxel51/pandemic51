@@ -39,5 +39,6 @@
 
 body {
   background: var(--bg-dark-primary);
-  background-image: url(../images/design.svg)
+  background-image: url(../images/design.svg);
+  margin: 32px !important;
 }
