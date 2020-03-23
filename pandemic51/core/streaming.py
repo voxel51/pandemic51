@@ -99,6 +99,7 @@ def vid2img(inpath, outpath, width=300, height=300):
 
 
 def download_and_store(stream_name, out_basedir, width=300, height=300):
+    '''Download an image from the latest stream, and add it to the database'''
     with etau.TempDir(basedir=out_basedir) as tmpdir:
         # download video
         video_path, timestamp = download_chunk(stream_name, tmpdir)
