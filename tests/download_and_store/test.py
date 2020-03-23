@@ -15,8 +15,8 @@ still TODO:
 from pandemic51.core.streaming import download_and_store
 
 
-# stream_name = "time_square"
-stream_name = "chicago"
+stream_name = "time_square"
+# stream_name = "chicago"
 
 out_basedir = "out"
 
