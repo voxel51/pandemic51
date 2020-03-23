@@ -23,5 +23,4 @@ cd ${ENV_DIR}
 virtualenv -p /usr/bin/python3 covid19
 cd -
 
-# activate the `covid19` virtual environment
-source ${ENV_DIR}/covid19/bin/activate
+mkdir -p $CELERY_DIR

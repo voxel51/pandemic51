@@ -9,9 +9,10 @@ Voxel51's website for monitoring the impact of the coronavirus pandemic
 Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc`
 
 ```bash
-# Resource Directory
-export P51_BASEDIR="home/<USER>/p51_base"
+# Resource Directories
+export P51_BASEDIR="/home/<USER>/p51_base"
 export ENV_DIR=${P51_BASEDIR}"/venv"
+export CELERY_DIR=${P51_BASEDIR}"/celery"
 export DATA_DIR=${P51_BASEDIR}"/data"
 export IMAGE_DIR=${DATA_DIR}"/images"
 export LABELS_DIR=${DATA_DIR}"/labels"
@@ -36,6 +37,9 @@ for linux systems.
 
 ### 3) Install
 ```bash
+# activate the `covid19` virtual environment
+source ${ENV_DIR}/covid19/bin/activate
+
 bash install.bash
 ```
 
@@ -47,9 +51,23 @@ bash init_db.bash
 
 This can be run at anytime to wipe the database.
 
-### 4) Initialize Celery
+### 5) Initialize Celery
 
 #### TODO(Tyler)
+
+1) copy the templates in `setup/` and replace any `{{ENV_VAR}}` with the
+respective environment variable value.
+2) Place `celery.service` in `/lib/systemd/system`
+3) 
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart celery.service
+
+
+
+sudo systemctl restart celery.service celerybeat.service
+```
 
 
 ## Starting Point
