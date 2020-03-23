@@ -3,50 +3,50 @@ Voxel51's website for monitoring the impact of the coronavirus pandemic
 
 ## Installation:
 
-Before running the installation script, following the instructions in
-`mac_preinstall.md` for Mac local development or run `linux_preinstall.bash`
-for linux systems.
+
+### 1) Set Environment Variables
+
+Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc`
 
 ```bash
-bash install.bash
-```
+# Install Directory
+export PANDEMIC51_BASEDIR="/pandemic51"
+export ENV_DIR=${PANDEMIC51_BASEDIR}"/venv"
+export DATA_DIR=${PANDEMIC51_BASEDIR}"/data"
+export IMAGE_DIR=${DATA_DIR}"/images"
+export LABELS_DIR=${DATA_DIR}"/labels"
 
-## Local MySQL Configuration:
-
-### 1) Create the database
-
-Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc` where
-`<USERNAME>`, `<PASSWORD>`, etc. are placeholders.
-
-```
+# MySQL
 export P51_SQL_USERNAME="<USERNAME>"
 export P51_SQL_PASSWORD="<PASSWORD>"
-export P51_SQL_DATABASE_NAME="pandemic51"
+export P51_SQL_DATABASE_NAME="p51db"
 
 # login shortcut command
 alias p51mysql="mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME"
 ```
 
-Now create the database using the same username, password, etc.
+### 2) Pre-installation
+Before running the installation script, following the instructions in
+`mac_preinstall.md` for Mac local development or run `linux_preinstall.bash`
+for linux systems.
+
+
+### 3) Install
+```bash
+bash install.bash
+```
+
+### 4) Initialize the database
 
 ```bash
-mysql -u root -p
+bash init_db.bash
 ```
 
-```
-create database pandemic51;
-create user '<USERNAME>'@'localhost' identified by '<PASSWORD>';
-grant all privileges on pandemic51.* to '<USERNAME>'@'localhost';
-exit
-```
+This can be run at anytime to wipe the database.
 
-### 2) Initialize the Database:
-```bash
-p51mysql < database/init.sql
-```
+### 4) Initialize Celery
 
-If you want to refresh the database, the commands to drop tables are commented
-out in `database/init.sql`.
+#### TODO(Tyler)
 
 
 ## Starting Point

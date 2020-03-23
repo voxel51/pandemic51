@@ -1,6 +1,6 @@
 # Mac Pre-Install Instructions (for local dev)
 
-## 1) Install `mysql` (MacOS)
+## 1) Install `mysql`
 
 Install `mysql` using [homebrew](https://brew.sh/).
 
