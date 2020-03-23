@@ -19,5 +19,6 @@ CREATE TABLE stream_history (
 )
 AUTO_INCREMENT=1;
 
---TODO
---INSERT INTO streams(uuid) VALUES(UUID());
+
+INSERT INTO streams(uuid, name) VALUES(UUID(), "time_square");
+INSERT INTO streams(uuid, name) VALUES(UUID(), "chicago");

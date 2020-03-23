@@ -5,76 +5,56 @@ import os
 
 import pymysql
 
-
-class DatabaseConnection(object):
-
-    def __init__(self):
-        self._db_user = os.environ.get('P51_SQL_USERNAME')
-        self._db_password = os.environ.get('P51_SQL_PASSWORD')
-        self._db_name = os.environ.get('P51_SQL_DATABASE_NAME')
-
-        # If running locally, use the TCP connections
-        # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
-        # so that your application can use 127.0.0.1:3306 to connect to your
-        # Cloud SQL instance
-        self._host = '127.0.0.1'
-
-    def __enter__(self):
-        self.cnx = pymysql.connect(
-            user=self._db_user,
-            password=self._db_password,
-            host=self._host,
-            db=self._db_name
-        )
-
-        return self
-
-    def __exit__(self, *args):
-        self.cnx.close()
-
-    @property
-    def cursor(self):
-        return self.cnx.cursor
+import pandemic51.core.constants as p51c
 
 
-def get_time_from_db():
-    # with get_sql_connection() as cnx:
-
-    with DatabaseConnection() as dbconn:
-        with dbconn.cursor() as cursor:
-            cursor.execute('SELECT NOW() as now;')
-            result = cursor.fetchall()
-            current_time = result[0][0]
-
-    return current_time
-
-def add_snapshot(timestamp, img_path):
-    pass
+def connect_database():
+    return pymysql.connect(
+        user=os.environ.get(p51c.SQL_USERNAME_ENVVAR),
+        password=os.environ.get(p51c.SQL_PASSWORD_ENVVAR),
+        host=p51c.SQL_HOST,
+        db=os.environ.get(p51c.SQL_DATABASE_NAME_ENVVAR)
+    )
 
 
-if __name__ == '__main__':
-    t = get_time_from_db()
+def get_stream_uuid(stream_name, cnx=None):
+    close = False
+    if not cnx:
+        cnx = connect_database()
+        close = True
 
-    print(t)
+    with cnx.cursor() as cursor:
+        sql = "select uuid from streams where name='{}';".format(stream_name)
+        cursor.execute(sql)
+        result = cursor.fetchall()
 
-    '''
-    PARAMS
-    - list streams
-    - specify sampling interval
-    - specify initial time
-    '''
+    # if close:
+    #     cnx.close()
 
-    '''
-    CODE
-    - get all "desired" timestamps
-    - get images for all of these (that are missing)
-    '''
-
-    '''
-    CELERY TASKS
-    1) download streams and convert to images and save
-    2) process images and store preds (and SDI) to database
-    '''
+    return result[0][0] if result else None
 
 
+def add_stream_history(stream_name, image_path, timestamp, cnx=None):
+    close = False
+    if not cnx:
+        cnx = connect_database()
+        close = True
 
+    stream_uuid = get_stream_uuid(stream_name, cnx=cnx)
+
+    with cnx.cursor() as cursor:
+        image_path = os.path.abspath(image_path)
+
+        formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+
+        sql = '''
+        INSERT INTO stream_history(stream_uuid, datetime, data_path)
+        VALUES('{}', '{}', '{}');
+        '''.format(stream_uuid, formatted_timestamp, image_path)
+
+        cursor.execute(sql)
+
+    cnx.commit()
+
+    if close:
+        cnx.close()
