@@ -9,12 +9,15 @@ Voxel51's website for monitoring the impact of the coronavirus pandemic
 Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc`
 
 ```bash
-# Install Directory
-export PANDEMIC51_BASEDIR="/pandemic51"
-export ENV_DIR=${PANDEMIC51_BASEDIR}"/venv"
-export DATA_DIR=${PANDEMIC51_BASEDIR}"/data"
+# Resource Directory
+export P51_BASEDIR="/pandemic51"
+export ENV_DIR=${P51_BASEDIR}"/venv"
+export DATA_DIR=${P51_BASEDIR}"/data"
 export IMAGE_DIR=${DATA_DIR}"/images"
 export LABELS_DIR=${DATA_DIR}"/labels"
+
+# Repository Directory
+export P51_REPO_DIR="<PANDEMIC51/PARENT/DIR>"
 
 # MySQL
 export P51_SQL_USERNAME="<USERNAME>"
