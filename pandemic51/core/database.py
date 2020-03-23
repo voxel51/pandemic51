@@ -5,7 +5,7 @@ import os
 
 import pymysql
 
-import pandemic51.core.constants as p51c
+import pandemic51.core.config as p51c
 
 
 def connect_database():

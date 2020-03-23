@@ -4,3 +4,5 @@ Flask==1.1.1
 Pillow==7.0.0
 ffmpy==0.2.2
 PyMySQL==0.9.3
+redis==3.4.1
+celery==4.4.2

@@ -12,7 +12,7 @@ import m3u8
 
 import eta.core.utils as etau
 
-from pandemic51.core.constants import STREAMS
+from pandemic51.core.config import STREAMS
 from pandemic51.core.database import add_stream_history
 
 
