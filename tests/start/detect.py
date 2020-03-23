@@ -1,6 +1,9 @@
 '''
 
 '''
+import glob
+import os
+
 from PIL import Image
 
 from pandemic51.core.detector import Detector
@@ -9,7 +12,8 @@ from pandemic51.core.detector import Detector
 # parameters
 model_path = "model/detect.tflite"
 labelmap_path = "model/labelmap.txt"
-img_path = "data/test.png"
+input_pattern = "out/img/time_square/*.png"
+
 
 # instantiate detector
 detector = Detector(model_path, labelmap_path)
@@ -18,6 +22,7 @@ detector = Detector(model_path, labelmap_path)
 # img = np.array(np.random.random_sample((1, 300, 300, 3)), dtype=np.uint8)
 
 # load the image
+img_path = glob.glob(input_pattern)[0]
 img = Image.open(img_path)
 
 # make prediction

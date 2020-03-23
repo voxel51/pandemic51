@@ -48,8 +48,15 @@ def download_chunk(stream_name, output_dir):
     return save_video(uri, base_path, output_path), datetime.now()
 
 
-def download_stream(stream_name, output_dir):
-    ''''''
+def download_stream(stream_name, output_dir, timeout=None):
+    '''
+
+    Args:
+        stream_name:
+        output_dir:
+        timeout: duration (in seconds) to continue streaming. If None,
+            continue forever
+    '''
     base_path = STREAMS[stream_name]["base_path"]
     chunk_name = STREAMS[stream_name]["chunk"]
 
@@ -58,7 +65,9 @@ def download_stream(stream_name, output_dir):
 
     processed_uris = []
 
-    while True:
+    start = time.time()
+
+    while (timeout is None or time.time()-start < timeout):
         time.sleep(1)
         uris = m3u8.load(chunk_path).segments.uri
         for uri in uris:
