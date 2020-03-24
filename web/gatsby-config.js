@@ -42,6 +42,17 @@ module.exports = {
       options: {
         pathToConfigModule: "src/utils/typography.js"
       }
+    },
+    {
+      resolve: `gatsby-plugin-prefetch-google-fonts`,
+      options: {
+        fonts: [
+          {
+            family: `Palanquin`,
+            variants: [`400`, `600`, `700`, `800`]
+          }
+        ],
+      },
     }
   ]
 }
