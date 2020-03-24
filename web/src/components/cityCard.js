@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Clock from 'react-live-clock';
 import CardActionArea from '@material-ui/core/CardActionArea';
-
+import { Link } from "gatsby";
 const useStyles = makeStyles({
   root: {
     margin: '1rem 0'
@@ -31,6 +31,7 @@ export default function CityCard(props) {
   return (
     <Card className={classes.root} square>
       <CardActionArea>
+        <Link to={"/" + props.name}>
         <CardContent>
           <Typography variant="h5" component="h2">
             {props.name}
@@ -42,6 +43,7 @@ export default function CityCard(props) {
             Some metric
           </Typography>
         </CardContent>
+      </Link>
       </CardActionArea>
       </Card>
     );

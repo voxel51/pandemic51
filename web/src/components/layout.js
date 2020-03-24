@@ -78,9 +78,16 @@ const Layout = ({ children }) => {
             <Grid item xs={12}>
               <Chart title="Social Distancing Index (SDI)"/>
             </Grid>
-            <Hidden mdDown>
+            <Hidden smDown>
               <Grid item md={12}>
-                <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+                <Grid container spacing={8}>
+                  <Grid item md={6}>
+                    <Chart title="Social Distancing Index (SDI)"/>
+                  </Grid>
+                  <Grid item md={6}>
+                    <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+                  </Grid>
+                </Grid>
               </Grid>
             </Hidden>
           </Grid>
