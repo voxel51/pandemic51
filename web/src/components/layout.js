@@ -17,6 +17,7 @@ import "./layout.css"
 import "./../utils/typography";
 import ClapprPlayer from './clappr';
 import Chart from './chart';
+import Hidden from '@material-ui/core/Hidden';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -60,24 +61,28 @@ const Layout = ({ children }) => {
   return (
     <div className={classes.root}>
       <Grid container spacing={8}>
-        <Grid item xs={12} sm={3}>
+        <Grid item xs={12} md={3}>
           <Paper className={classes.paper} square>
-            <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
+            <a href="https://voxel51.com">
+              <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
+            </a>
           </Paper>
-          <CityCard name="New York"/>
+          <CityCard name="New York" highlighted={true}/>
           <CityCard name="Miami"/>
           <CityCard name="Chicago"/>
           <CityCard name="San Francisco"/>
           <CityCard name="Seattle"/>
         </Grid>
-        <Grid item xs={12} sm={9}>
+        <Grid item xs={12} md={9}>
           <Grid container spacing={8}>
             <Grid item xs={12}>
-              <Chart/>
+              <Chart title="Social Distancing Index (SDI)"/>
             </Grid>
-            <Grid item xs={12}>
-              <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
-            </Grid>
+            <Hidden mdDown>
+              <Grid item md={12}>
+                <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+              </Grid>
+            </Hidden>
           </Grid>
         </Grid>
       </Grid>

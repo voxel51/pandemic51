@@ -4,7 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
-
+import Typography from '@material-ui/core/Typography';
 import {
   ResponsiveContainer,
   AreaChart,
@@ -68,10 +68,13 @@ class Chart extends Component {
 
   render() {
     const { list } = this.state;
-    const { classes } = this.props;
+    const { classes, title } = this.props;
     return (
       <Card className={classes.root} square>
         <CardContent>
+          <Typography variant="h5" component="h2">
+            {title}
+          </Typography>
           <ResponsiveContainer width="100%" height={400}>
 <AreaChart width={730} height={250} data={list}
   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>

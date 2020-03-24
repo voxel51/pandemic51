@@ -6,10 +6,10 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Clock from 'react-live-clock';
+import CardActionArea from '@material-ui/core/CardActionArea';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: 275,
     margin: '1rem 0'
   },
   bullet: {
@@ -27,8 +27,10 @@ const useStyles = makeStyles({
 
 export default function CityCard(props) {
   const classes = useStyles();
+  const highlighted = Boolean(props.highlighted);
   return (
-      <Card className={classes.root} square>
+    <Card className={classes.root} square>
+      <CardActionArea>
         <CardContent>
           <Typography variant="h5" component="h2">
             {props.name}
@@ -40,6 +42,7 @@ export default function CityCard(props) {
             Some metric
           </Typography>
         </CardContent>
+      </CardActionArea>
       </Card>
     );
 }
