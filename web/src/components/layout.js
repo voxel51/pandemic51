@@ -22,13 +22,14 @@ import Chart from './chart';
 import Hidden from '@material-ui/core/Hidden';
 import SEO from './seo';
 import Header from './header';
-
+import Footer from './footer';
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       flexGrow: 1,
       overflow: "hidden",
-      padding: "2rem 10rem"
+      margin: "2rem auto",
+      maxWidth: "1040px",
     },
     paper: {
       padding: theme.spacing(2),
@@ -72,7 +73,7 @@ const Layout = ({ children, city }) => {
     <>
       <Header/>
     <div className={classes.root}>
-      <Grid container spacing={8}>
+      <Grid container spacing={4}>
         <Grid item xs={12} md={3}>
           <CityCard cityId="newyork" name="New York" active={city}/>
           <CityCard cityId="miami" name="Miami" active={city}/>
@@ -81,7 +82,7 @@ const Layout = ({ children, city }) => {
           <CityCard cityId="seattle" name="Seattle" active={city}/>
         </Grid>
         <Grid item xs={12} md={9}>
-          <Grid container spacing={8}>
+          <Grid container spacing={4}>
             <Grid item xs={12}>
               <Card square>
                 Explanatory Text
@@ -89,7 +90,7 @@ const Layout = ({ children, city }) => {
             </Grid>
             <Hidden smDown>
               <Grid item md={12}>
-                <Grid container spacing={8}>
+                <Grid container spacing={4}>
                   <Grid item md={6}>
                     <Chart title="Social Distancing Index (SDI)"/>
                   </Grid>
@@ -103,6 +104,7 @@ const Layout = ({ children, city }) => {
         </Grid>
       </Grid>
     </div>
+    <Footer/>
   </>
   )
 }
