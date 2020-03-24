@@ -5,6 +5,7 @@ Celery Tasks
 import celery
 
 import pandemic51.core.config as p51c
+from pandemic51.core.streaming import download_and_store
 
 
 app = celery.Celery("pandemic51.tasks")
@@ -31,7 +32,8 @@ def test(arg):
 
 @app.task
 def poll_stream(stream_name):
-    from pandemic51.core.streaming import download_and_store
+    # import pandemic51.core.config as p51c
+    # from pandemic51.core.streaming import download_and_store
 
     print("~" * 40)
     print(stream_name)
