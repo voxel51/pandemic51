@@ -58,14 +58,14 @@ respective environment variable value.
 2) Place `celery.service` in `/lib/systemd/system`
 3) 
 
+Any time a file is added or modified in `/lib/systemd/system`
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl start celery.service celerybeat.service
+```
 
-
-sudo systemctl restart celery.service
-
-sudo systemctl restart celery.service celerybeat.service
+To manage the celery/beat services:
+```bash
+systemctl {start|stop|restart|status} celery.service celerybeat.service
 ```
 
 

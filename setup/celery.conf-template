@@ -19,9 +19,19 @@ CELERYD_MULTI="multi"
 # Extra command-line arguments to the worker
 CELERYD_OPTS="--concurrency=8 -Ofair"
 
+# Extra command-line arguments to the worker
+CELERYBEAT_OPTS="--schedule={{CELERY_DIR}}/celerybeat-schedule"
+
 # - %n will be replaced with the first part of the nodename.
 # - %I will be replaced with the current child process index
 #   and is important when using the prefork pool to avoid race conditions.
 CELERYD_PID_FILE="{{CELERY_DIR}}/%n.pid"
 CELERYD_LOG_FILE="{{CELERY_DIR}}/%n%I.log"
 CELERYD_LOG_LEVEL="DEBUG"
+
+# - %n will be replaced with the first part of the nodename.
+# - %I will be replaced with the current child process index
+#   and is important when using the prefork pool to avoid race conditions.
+CELERYBEAT_PID_FILE="{{CELERY_DIR}}/beat.pid"
+CELERYBEAT_LOG_FILE="{{CELERY_DIR}}/beat.log"
+CELERYBEAT_LOG_LEVEL="DEBUG"
