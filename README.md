@@ -72,7 +72,7 @@ of these need to exactly match the environment variable with the same name.
 ### 5) Initialize the database
 
 ```bash
-bash init_db.bash
+bash database/init_db.bash
 ```
 
 This can be run at anytime to wipe the database.
