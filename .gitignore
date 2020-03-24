@@ -17,5 +17,7 @@ __pycache__
 # Pycharm
 .idea
 
+m3u8/
+
 setup/celery.conf
 pandemic51/core/config.py

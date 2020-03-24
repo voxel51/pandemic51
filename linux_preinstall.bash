@@ -9,8 +9,23 @@ sudo apt install redis-server
 redis-server --daemonize yes
 
 ########### Python and PIP
-pip install --upgrade pip
-pip install virtualenv
+#
+# Install Python 3.6, pip, and virtualenv
+#
+# Makes `python` and `pip` point to Python 3, which is required by pandemic51
+#
+# These instructions assume you are using Ubuntu 16.04, which does not come
+# with Python 3.6 by default. More recent versions of Ubuntu may have
+# Python 3.6 installed by default
+echo "--- INSTALLING PYTHON 3.6 ---"
+sudo apt-get -y --no-install-recommends install software-properties-common
+sudo add-apt-repository -y ppa:deadsnakes/ppa
+sudo apt-get update
+sudo apt-get -y --no-install-recommends install python3.6 python3.6-dev
+sudo ln -s /usr/bin/python3.6 /usr/local/bin/python
+curl https://bootstrap.pypa.io/get-pip.py | sudo python
+sudo pip install --upgrade pip setuptools
+sudo pip install virtualenv
 
 mkdir -p $ENV_DIR
 
