@@ -16,17 +16,19 @@ from builtins import *
 # pragma pylint: enable=unused-wildcard-import
 # pragma pylint: enable=wildcard-import
 
-import os
 import logging
+import os
+import pathlib
 
 import numpy as np
 
 import eta.core.data as etad
 import eta.core.image as etai
 import eta.core.learning as etal
-import eta.core.utils as etau
 
 import pandemic51.constants as panc
+import pandemic51.core.config as panco
+import pandemic51.core.database as pand
 
 
 logger = logging.getLogger(__name__)
@@ -63,23 +65,47 @@ def compute_person_density_for_images(inpaths, outpaths):
 
     with detector:
         for inpath, outpath in zip(inpaths, outpaths):
-            logger.info("Processing image '%s'", inpath)
-            img = etai.read(inpath)
+            _process_image(detector, inpath, outpath)
 
-            objects = detector.detect(img)
 
-            # @todo apply confidence threshold, if necessary
+def compute_density_for_unprocessed_images():
+    '''
+    1) get col_id, image names
+    2) process images
+    3) update database
+    '''
+    detector = load_efficientdet_model(MODEL_NAME)
 
-            objects = objects.get_matches([lambda obj: obj.label == "person"])
+    with detector:
+        for id, image_path in pand.query_unprocessed_images():
+            ipath = pathlib.Path(image_path)
+            labels_path = str(os.path.join(
+                panco.LABELS_DIR, ipath.parent.stem, ipath.stem + ".json"))
 
-            count = len(objects)
-            density = compute_object_density(objects)
-            logger.info("Found %d people (density = %.3f)", count, density)
+            _process_image(detector, image_path, labels_path)
 
-            image_labels = etai.ImageLabels()
-            image_labels.add_objects(objects)
-            image_labels.add_attribute(etad.NumericAttribute("count", count))
-            image_labels.add_attribute(etad.NumericAttribute("density", density))
+            pand.add_stream_labels(id, labels_path)
 
-            logger.info("Writing labels to '%s'", outpath)
-            image_labels.write_json(outpath)
+
+def _process_image(detector, inpath, outpath):
+    logger.info("Processing image '%s'", inpath)
+    img = etai.read(inpath)
+
+    objects = detector.detect(img)
+
+    # @todo apply confidence threshold, if necessary
+
+    objects = objects.get_matches([lambda obj: obj.label == "person"])
+
+    count = len(objects)
+    density = compute_object_density(objects)
+    logger.info("Found %d people (density = %.3f)", count, density)
+
+    image_labels = etai.ImageLabels()
+    image_labels.add_objects(objects)
+    image_labels.add_attribute(etad.NumericAttribute("count", count))
+    image_labels.add_attribute(
+        etad.NumericAttribute("density", density))
+
+    logger.info("Writing labels to '%s'", outpath)
+    image_labels.write_json(outpath)

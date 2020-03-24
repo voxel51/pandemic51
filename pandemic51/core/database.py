@@ -74,6 +74,11 @@ def add_stream_history(stream_name, image_path, timestamp, *args, cnx):
 
 @with_connection
 def query_unprocessed_images(*args, cnx):
+    '''Get all columns of `stream_history` where `labels_path` is unpopulated.
+
+    Returns:
+        a tuple of (id, data_path) tuples
+    '''
     with cnx.cursor() as cursor:
         sql = '''
         select id, data_path from stream_history where labels_path is NULL;
@@ -82,3 +87,14 @@ def query_unprocessed_images(*args, cnx):
         result = cursor.fetchall()
 
     return result
+
+
+@with_connection
+def add_stream_labels(id, labels_path, *args, cnx):
+    with cnx.cursor() as cursor:
+        sql = '''
+        UPDATE stream_history SET stream_uuid='{}' where id={};
+        '''.format(id, labels_path)
+        cursor.execute(sql)
+
+    cnx.commit()
