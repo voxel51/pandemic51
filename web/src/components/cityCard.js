@@ -5,6 +5,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import Clock from 'react-live-clock';
 
 const useStyles = makeStyles({
   root: {
@@ -33,7 +34,7 @@ export default function CityCard(props) {
             {props.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            time
+            <Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Pacific'} />
           </Typography>
           <Typography variant="body2" component="p">
             Some metric
