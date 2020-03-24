@@ -100,18 +100,16 @@ def vid2img(inpath, outpath, width=300, height=300):
 
 def download_and_store(stream_name, out_dir, width=300, height=300):
     '''Download an image from the latest stream, and add it to the database'''
-    # with etau.TempDir() as tmpdir:
-    #     # download video
-    #     video_path, timestamp = download_chunk(stream_name, tmpdir)
-    # download video
-    video_path, timestamp = download_chunk(stream_name, out_dir)
+    with etau.TempDir() as tmpdir:
+        # download video
+        video_path, timestamp = download_chunk(stream_name, tmpdir)
 
-    # create path for image
-    vpath = pathlib.Path(video_path)
-    image_path = os.path.join(
-        out_dir, vpath.parent.stem, vpath.stem + ".png")
+        # create path for image
+        vpath = pathlib.Path(video_path)
+        image_path = os.path.join(
+            out_dir, vpath.parent.stem, vpath.stem + ".png")
 
-    is_new_img = vid2img(video_path, image_path, width=width, height=height)
+        is_new_img = vid2img(video_path, image_path, width=width, height=height)
 
     if is_new_img:
         add_stream_history(stream_name, image_path, timestamp)
