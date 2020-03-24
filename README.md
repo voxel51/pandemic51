@@ -1,15 +1,22 @@
 # pandemic51
-Voxel51's website for monitoring the impact of the coronavirus pandemic
 
-## Installation:
+Voxel51's website for monitoring the impact of the coronavirus pandemic.
+
+
+## Installation
+
+### Basic setup
+
 ```bash
-git submodule update --init
 bash install.bash
 ```
 
-## Local MySQL Configuration:
+Download the model(s) that you need via the `download_models.py` script.
 
-### 1) Install `mysql` (MacOS)
+
+### Local MySQL configuration
+
+#### 1) Install `mysql` (MacOS)
 
 Install `mysql` using [homebrew](https://brew.sh/).
 
@@ -20,7 +27,7 @@ brew services start mysql
 brew services stop mysql
 ```
 
-### 2) Create the database
+#### 2) Create the database
 
 Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc` where
 `<USERNAME>`, `<PASSWORD>`, etc. are placeholders.
@@ -47,7 +54,7 @@ grant all privileges on <DATABASE>.* to '<USERNAME>'@'localhost';
 exit
 ```
 
-### 3) Initialize the Database:
+#### 3) Initialize the Database:
 ```bash
 p51mysql < database/init.sql
 ```
@@ -56,12 +63,13 @@ If you want to refresh the database, the commands to drop tables are commented
 out in `database/init.sql`.
 
 
-## Starting Point
+## Quickstart
 
-Check `tests/start/` for some simple tests of the initial functionality.
+Check out the following resources:
 
-`tests/download_and_store/` combines this functionality and communicates with
-the database.
+- `tests/start/`: simple tests of the initial functionality
+- `tests/download_and_store/`: combines `test/start/` with DB communication
+- `tests/density`: example of backend person detection on images
 
 
 ## Copyright
