@@ -27,11 +27,11 @@ const useStyles = makeStyles({
 
 export default function CityCard(props) {
   const classes = useStyles();
-  const highlighted = Boolean(props.highlighted);
+  const active = props.cityId === props.active && props.cityId !== undefined;
   return (
-    <Card className={classes.root} square>
+    <Card className={classes.root + (active ? " active-card" : "")} square>
       <CardActionArea>
-        <Link to={"/" + props.name}>
+        <Link to={"/" + props.cityId}>
         <CardContent>
           <Typography variant="h5" component="h2">
             {props.name}

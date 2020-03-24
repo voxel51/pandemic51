@@ -6,8 +6,8 @@ import Image from "../components/image"
 import SEO from "../components/seo"
 
 const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
+  <Layout city="newyork">
+    <SEO title="" />
   </Layout>
 )
 

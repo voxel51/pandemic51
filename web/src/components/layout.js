@@ -18,6 +18,7 @@ import "./../utils/typography";
 import ClapprPlayer from './clappr';
 import Chart from './chart';
 import Hidden from '@material-ui/core/Hidden';
+import SEO from './seo';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -32,7 +33,7 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-const Layout = ({ children }) => {
+const Layout = ({ children, city }) => {
   const data = useStaticQuery(graphql`
     query SiteTitleQuery {
       site {
@@ -60,6 +61,7 @@ const Layout = ({ children }) => {
 
   return (
     <div className={classes.root}>
+      <SEO title=""/>
       <Grid container spacing={8}>
         <Grid item xs={12} md={3}>
           <Paper className={classes.paper} square>
@@ -67,7 +69,7 @@ const Layout = ({ children }) => {
               <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
             </a>
           </Paper>
-          <CityCard name="New York" highlighted={true}/>
+          <CityCard cityId="newyork" name="New York" active={city}/>
           <CityCard name="Miami"/>
           <CityCard name="Chicago"/>
           <CityCard name="San Francisco"/>

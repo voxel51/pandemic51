@@ -53,11 +53,11 @@ const NotFoundPage = () => {
             <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
             <Divider className={classes.divide}/>
             <Typography variant="h5" component="h2">
-              404: Not found
+              404: Not Found
           </Typography>
           </Paper>
 
-      <SEO title="404: Not found" />
+      <SEO title="" />
     </Grid>
   </Grid>
   )
