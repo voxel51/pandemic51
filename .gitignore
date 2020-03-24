@@ -16,3 +16,6 @@ __pycache__
 
 # Pycharm
 .idea
+
+setup/celery.conf
+setup/celerybeat.conf
