@@ -30,7 +30,6 @@ def with_connection(func):
         close = False
         if not cnx:
             cnx = connect_database()
-            print("MAKING CONNECTION")
             close = True
 
         result = func(*args, cnx=cnx, **kwargs)
