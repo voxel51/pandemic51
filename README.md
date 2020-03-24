@@ -51,12 +51,16 @@ bash init_db.bash
 
 This can be run at anytime to wipe the database.
 
+Celery is currently only configured for linux as a `systemd` daemon.
+
+TODO(Tyler) make a configuration for Mac OS with `launchd`
+
 ### 5) Initialize Celery
 
 1) copy the templates in `setup/` and replace any `{{ENV_VAR}}` with the
 respective environment variable value.
-2) Place `celery.service` in `/lib/systemd/system`
-3) 
+2) Place `celery.service` & `celerybeat.service` in `/lib/systemd/system`
+3) start the services:
 
 Any time a file is added or modified in `/lib/systemd/system`
 ```bash

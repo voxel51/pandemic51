@@ -23,3 +23,7 @@ SQL_DATABASE_NAME_ENVVAR = 'P51_SQL_DATABASE_NAME'
 # so that your application can use 127.0.0.1:3306 to connect to your
 # Cloud SQL instance
 SQL_HOST = '127.0.0.1'
+
+# CELERY PERIODIC TASKS
+STREAM_DOWNLOAD_INTERVAL = 15
+PLATFORM_JOB_POLL_RATE = 60
