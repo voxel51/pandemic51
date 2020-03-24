@@ -12,7 +12,7 @@ import m3u8
 
 import eta.core.utils as etau
 
-from pandemic51.core.constants import STREAMS
+import pandemic51.core.config as p51c
 from pandemic51.core.database import add_stream_history
 
 
@@ -32,8 +32,8 @@ def save_video(uri, base_path, output_dir):
 
 def download_chunk(stream_name, output_dir):
     ''''''
-    base_path = STREAMS[stream_name]["base_path"]
-    chunk_name = STREAMS[stream_name]["chunk"]
+    base_path = p51c.STREAMS[stream_name]["base_path"]
+    chunk_name = p51c.STREAMS[stream_name]["chunk"]
 
     chunk_path = os.path.join(base_path, chunk_name)
     output_path = os.path.join(output_dir, stream_name)
@@ -57,8 +57,8 @@ def download_stream(stream_name, output_dir, timeout=None):
         timeout: duration (in seconds) to continue streaming. If None,
             continue forever
     '''
-    base_path = STREAMS[stream_name]["base_path"]
-    chunk_name = STREAMS[stream_name]["chunk"]
+    base_path = p51c.STREAMS[stream_name]["base_path"]
+    chunk_name = p51c.STREAMS[stream_name]["chunk"]
 
     chunk_path = os.path.join(base_path, chunk_name)
     output_path = os.path.join(output_dir, stream_name)
@@ -98,21 +98,21 @@ def vid2img(inpath, outpath, width=300, height=300):
     return True
 
 
-def download_and_store(stream_name, out_basedir, width=300, height=300):
+def download_and_store(
+        stream_name, out_dir, tmpdirbase=None, width=300, height=300):
     '''Download an image from the latest stream, and add it to the database'''
-    with etau.TempDir(basedir=out_basedir) as tmpdir:
+    with etau.TempDir(basedir=tmpdirbase) as tmpdir:
         # download video
         video_path, timestamp = download_chunk(stream_name, tmpdir)
 
         # create path for image
         vpath = pathlib.Path(video_path)
         image_path = os.path.join(
-            out_basedir, "image", vpath.parent.stem, vpath.stem + ".png")
+            out_dir, vpath.parent.stem, vpath.stem + ".png")
 
         is_new_img = vid2img(video_path, image_path, width=width, height=height)
 
     if is_new_img:
-        print(video_path)
-        print(image_path)
-        print(timestamp)
         add_stream_history(stream_name, image_path, timestamp)
+
+    return image_path, timestamp

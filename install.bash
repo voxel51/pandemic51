@@ -5,9 +5,11 @@
 # voxel51.com
 #
 
+
 # Initialize submodules
 git submodule init
 git submodule update
+
 
 # Install m3u8
 echo "***** INSTALLING M3U8 *****"
@@ -19,6 +21,7 @@ python setup.py build
 python setup.py install
 cd -
 
+
 # Install ETA
 echo "***** INSTALLING ETA *****"
 cd eta
@@ -28,10 +31,12 @@ if [[ ! -f config.json ]]; then
 fi
 cd ..
 
+
 # Install pandemic51
 echo "***** INSTALLING PANDEMIC51 *****"
 pip install -e .
 pip install -r requirements.txt
+
 
 # Install COCO API (required by `automl/efficientdet`)
 echo "***** INSTALLING COCO API *****"

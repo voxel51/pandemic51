@@ -5,15 +5,15 @@ import os
 
 import pymysql
 
-import pandemic51.core.constants as p51c
+import pandemic51.core.config as p51c
 
 
 def connect_database():
     return pymysql.connect(
-        user=os.environ.get(p51c.SQL_USERNAME_ENVVAR),
-        password=os.environ.get(p51c.SQL_PASSWORD_ENVVAR),
+        user=p51c.P51_SQL_USERNAME,
+        password=p51c.P51_SQL_PASSWORD,
         host=p51c.SQL_HOST,
-        db=os.environ.get(p51c.SQL_DATABASE_NAME_ENVVAR)
+        db=p51c.P51_SQL_DATABASE_NAME
     )
 
 
@@ -28,8 +28,8 @@ def get_stream_uuid(stream_name, cnx=None):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    # if close:
-    #     cnx.close()
+    if close:
+        cnx.close()
 
     return result[0][0] if result else None
 
