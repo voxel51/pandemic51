@@ -1,18 +1,13 @@
 '''
 
 '''
+import os
 
+import eta.core.serial as etas
 
-STREAMS = {
-    "time_square": {
-        "base_path": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv",
-        "chunk": "chunklist.m3u8"
-    },
-    "chicago": {
-        "base_path": "https://videos-3.earthcam.com/fecnetwork/13220.flv",
-        "chunk": "chunklist_w1227547844.m3u8"
-    }
-}
+streams_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), "STREAMS.json")
+STREAMS = etas.load_json(streams_path)
+
 
 SQL_USERNAME_ENVVAR = 'P51_SQL_USERNAME'
 SQL_PASSWORD_ENVVAR = 'P51_SQL_PASSWORD'

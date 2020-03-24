@@ -15,9 +15,10 @@ still TODO:
 from pandemic51.core.streaming import download_and_store
 
 
-stream_name = "time_square"
-# stream_name = "chicago"
+stream_names = ["time_square", "chicago", "chicago_wrigleyville", "new_orleans", "new_jersey", "abbey_road", "dublin", "prague"]
+#stream_names = ["time_square"]
 
 out_basedir = "out"
 
-download_and_store(stream_name, out_basedir)
+for stream_name in stream_names:
+    download_and_store(stream_name, out_basedir)
