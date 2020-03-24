@@ -11,6 +11,8 @@ import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardContent from '@material-ui/core/CardContent';
 import Img from 'gatsby-image';
 import CityCard from './cityCard';
 import "./layout.css"
@@ -19,16 +21,23 @@ import ClapprPlayer from './clappr';
 import Chart from './chart';
 import Hidden from '@material-ui/core/Hidden';
 import SEO from './seo';
+import Header from './header';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     root: {
       flexGrow: 1,
+      overflow: "hidden",
+      padding: "2rem 10rem"
     },
     paper: {
       padding: theme.spacing(2),
       textAlign: 'center',
       color: theme.palette.text.secondary,
+      background: "transparent",
+      boxShadow: "none",
+      border: "none",
+      margin: 32
     },
   }),
 );
@@ -44,7 +53,7 @@ const Layout = ({ children, city }) => {
       file(relativePath: { eq: "full-logo.png" }) {
         childImageSharp {
           fluid {
-            ...GatsbyImageSharpFluid
+            ...GatsbyImageSharpFluid_noBase64
           }
         }
       }
@@ -60,15 +69,11 @@ const Layout = ({ children, city }) => {
     };
 
   return (
+    <>
+      <Header/>
     <div className={classes.root}>
-      <SEO title=""/>
       <Grid container spacing={8}>
         <Grid item xs={12} md={3}>
-          <Paper className={classes.paper} square>
-            <a href="https://voxel51.com">
-              <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
-            </a>
-          </Paper>
           <CityCard cityId="newyork" name="New York" active={city}/>
           <CityCard cityId="miami" name="Miami" active={city}/>
           <CityCard cityId="chicago" name="Chicago" active={city}/>
@@ -78,7 +83,9 @@ const Layout = ({ children, city }) => {
         <Grid item xs={12} md={9}>
           <Grid container spacing={8}>
             <Grid item xs={12}>
-              <Chart title="Social Distancing Index (SDI)"/>
+              <Card square>
+                Explanatory Text
+              </Card>
             </Grid>
             <Hidden smDown>
               <Grid item md={12}>
@@ -96,6 +103,7 @@ const Layout = ({ children, city }) => {
         </Grid>
       </Grid>
     </div>
+  </>
   )
 }
 
