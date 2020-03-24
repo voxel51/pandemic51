@@ -1,6 +1,3 @@
 [submodule "eta"]
 	path = eta
 	url = https://github.com/voxel51/eta/
-[submodule "m3u8"]
-	path = m3u8
-	url = https://github.com/globocom/m3u8
