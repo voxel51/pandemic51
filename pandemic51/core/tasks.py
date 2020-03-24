@@ -2,6 +2,8 @@
 Celery Tasks
 
 '''
+import os
+
 import celery
 
 import pandemic51.core.config as p51c
@@ -22,4 +24,6 @@ def setup_periodic_tasks(sender, **kwargs):
 @app.task
 def das_task(stream_name):
     '''"Download And Store (DAS) task'''
-    download_and_store(stream_name, out_dir=p51c.IMAGE_DIR)
+    tmpdirbase = os.path.join(p51c.DATA_DIR, "tmp")
+    download_and_store(
+        stream_name, out_dir=p51c.IMAGE_DIR, tmpdirbase=tmpdirbase)
