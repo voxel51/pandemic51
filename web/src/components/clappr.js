@@ -2,6 +2,9 @@ import React, { useRef, useLayoutEffect, useState } from "react";
 import Clappr from 'clappr';
 import PropTypes from 'prop-types'
 import createReactClass from 'create-react-class';
+
+
+
 export default createReactClass({
   propTypes: {
     source: PropTypes.string
@@ -29,6 +32,12 @@ export default createReactClass({
     var padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
     const h = (node.clientWidth - padding) * 9/16;
     this.setState({ height: h});
+    window.addEventListener("resize", e => {
+      var styles = window.getComputedStyle(node);
+      var padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+      const h = (node.clientWidth - padding) * 9/16;
+      this.setState({ height: h});
+    });
   },
 
   componentWillUnmount: function() {

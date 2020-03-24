@@ -73,10 +73,10 @@ const Layout = ({ children }) => {
         <Grid item xs={12} sm={9}>
           <Grid container spacing={8}>
             <Grid item xs={12}>
-              <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+              <Chart/>
             </Grid>
             <Grid item xs={12}>
-              <Chart/>
+              <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
             </Grid>
           </Grid>
         </Grid>
