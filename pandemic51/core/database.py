@@ -93,8 +93,8 @@ def query_unprocessed_images(*args, cnx):
 def add_stream_labels(id, labels_path, *args, cnx):
     with cnx.cursor() as cursor:
         sql = '''
-        UPDATE stream_history SET stream_uuid='{}' where id={};
-        '''.format(id, labels_path)
+        UPDATE stream_history SET labels_path='{}' where id={};
+        '''.format(labels_path, id)
         cursor.execute(sql)
 
     cnx.commit()
