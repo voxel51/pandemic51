@@ -48,7 +48,7 @@ def compute_object_density(objects):
 def load_efficientdet_model(model_name):
     config = etal.ModelConfig.from_dict(
         {
-            "type": "pandemic51.core.efficientdet.EfficientDet",
+            "type": "pandemic51.detectors.EfficientDet",
             "config": {
                 "model_path": os.path.join(panc.MODELS_DIR, model_name),
                 "architecture_name": model_name,
