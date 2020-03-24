@@ -1,8 +1,6 @@
 '''
 
 '''
-import pandemic51.core.database as pand
+import pandemic51.core.density as pand
 
-result = pand.query_unprocessed_images()
-
-print(result)
+pand.compute_density_for_unprocessed_images()
