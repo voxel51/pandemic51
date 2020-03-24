@@ -19,3 +19,5 @@ __pycache__
 
 m3u8/
 models/
+data/
+out/
