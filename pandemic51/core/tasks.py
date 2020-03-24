@@ -31,12 +31,6 @@ app = celery.Celery(
 #     # sender.add_periodic_task(mcfg.PLATFORM_JOB_POLL_RATE, refresh_all_jobs.s(),
 #     #                          name='refresh all jobs')
 #     pass
-#
-#
-# @app.task
-# def add(x, y):
-#     return x + y
-
 
 # @app.on_after_configure.connect
 # def setup_periodic_tasks(sender, **kwargs):
@@ -55,7 +49,13 @@ app = celery.Celery(
 #
 #     # sender.add_periodic_task(pcfg.PLATFORM_JOB_POLL_RATE, refresh_all_jobs.s(),
 #     #                          name='refresh all jobs')
-#
-# @app.task
-# def test(arg):
-#     print(arg)
+
+
+@app.task
+def add(x, y):
+    return x + y
+
+
+@app.task
+def test(arg):
+    print(arg)
