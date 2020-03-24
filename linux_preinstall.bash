@@ -3,8 +3,9 @@
 sudo apt update
 sudo apt upgrade
 
+sudo snap install ffmpeg
+
 sudo apt install git python-setuptools python-dev python-virtualenv curl rabbitmq-server
-sudo apt install ffmpeg
 sudo apt install mysql-server mysql-client libmysqlclient-dev
 sudo apt install redis-server
 redis-server --daemonize yes
