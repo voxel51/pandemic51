@@ -17,29 +17,44 @@ def connect_database():
     )
 
 
-def get_stream_uuid(stream_name, cnx=None):
-    close = False
-    if not cnx:
-        cnx = connect_database()
-        close = True
+def with_connection(func):
+    '''Decorator that creates a database connection and closes it upon call
+    completion if a connection is not provided by the function.
 
+    Expects the function to take `*args` and `cnx` like this:
+        @with_connection
+        def your_function(..., *args, cnx):
+            ...
+    '''
+    def wrapper(*args, cnx=None, **kwargs):
+        close = False
+        if not cnx:
+            cnx = connect_database()
+            print("MAKING CONNECTION")
+            close = True
+
+        result = func(*args, cnx=cnx, **kwargs)
+
+        if close:
+            cnx.close()
+
+        return result
+
+    return wrapper
+
+
+@with_connection
+def get_stream_uuid(stream_name, *args, cnx):
     with cnx.cursor() as cursor:
         sql = "select uuid from streams where name='{}';".format(stream_name)
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    if close:
-        cnx.close()
-
     return result[0][0] if result else None
 
 
-def add_stream_history(stream_name, image_path, timestamp, cnx=None):
-    close = False
-    if not cnx:
-        cnx = connect_database()
-        close = True
-
+@with_connection
+def add_stream_history(stream_name, image_path, timestamp, *args, cnx):
     stream_uuid = get_stream_uuid(stream_name, cnx=cnx)
 
     with cnx.cursor() as cursor:
@@ -56,8 +71,8 @@ def add_stream_history(stream_name, image_path, timestamp, cnx=None):
 
     cnx.commit()
 
-    if close:
-        cnx.close()
 
-def query_unprocessed_images():
+@with_connection
+def query_unprocessed_images(*args, cnx):
+    print(cnx)
     print("YAY")
