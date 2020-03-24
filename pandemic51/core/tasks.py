@@ -7,14 +7,14 @@ import celery
 #
 # import pandemic51.core.config as pcfg
 
-# app = celery.Celery("pandemic51.tasks")
-# app.config_from_object("pandemic51.celery_config")
+app = celery.Celery("pandemic51.tasks")
+app.config_from_object("pandemic51.celery_config")
 
-app = celery.Celery(
-    'pandemic51.tasks',
-    broker='redis://localhost//',
-    backend='redis://localhost'
-)
+# app = celery.Celery(
+#     'pandemic51.tasks',
+#     broker='redis://localhost//',
+#     backend='redis://localhost'
+# )
 
 
 # @celery.signals.celeryd_init.connect()
@@ -51,11 +51,11 @@ app = celery.Celery(
 #     #                          name='refresh all jobs')
 
 
-@app.task
-def add(x, y):
-    return x + y
-
-
-@app.task
-def test(arg):
-    print(arg)
+# @app.task
+# def add(x, y):
+#     return x + y
+#
+#
+# @app.task
+# def test(arg):
+#     print(arg)
