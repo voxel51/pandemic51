@@ -60,7 +60,7 @@ respective environment variable value.
 
 ```bash
 sudo systemctl daemon-reload
-sudo systemctl start celery.service
+sudo systemctl start celery.service celerybeat.service
 
 
 sudo systemctl restart celery.service
