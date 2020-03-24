@@ -4,8 +4,14 @@ Celery Tasks
 '''
 import celery
 
-app = celery.Celery("pandemic51.tasks")
-app.config_from_object("pandemic51.celery_config")
+# app = celery.Celery("pandemic51.tasks")
+# app.config_from_object("pandemic51.celery_config")
+
+app = celery.Celery(
+    'pandemic51.tasks',
+    broker='redis://localhost//',
+    backend='redis://localhost'
+)
 
 @app.task
 def add(x, y):

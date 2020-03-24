@@ -23,4 +23,7 @@ cd ${ENV_DIR}
 virtualenv -p /usr/bin/python3 covid19
 cd -
 
+########### Celery
 mkdir -p $CELERY_DIR
+
+sudo chown -R www-data $CELERY_DIR
