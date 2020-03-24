@@ -1,8 +1,3 @@
-/*
-DROP TABLE IF EXISTS streams;
-DROP TABLE IF EXISTS stream_history;
-*/
-
 CREATE TABLE streams (
     id int(11) NOT NULL AUTO_INCREMENT,
     uuid char(128),

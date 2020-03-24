@@ -6,3 +6,5 @@ ffmpy==0.2.2
 PyMySQL==0.9.3
 selenium==3.141.0
 bs4==0.0.0
+redis==3.4.1
+celery==4.4.2
