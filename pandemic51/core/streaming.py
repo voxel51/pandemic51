@@ -57,8 +57,8 @@ def download_stream(stream_name, output_dir, timeout=None):
         timeout: duration (in seconds) to continue streaming. If None,
             continue forever
     '''
-    base_path = STREAMS[stream_name]["base_path"]
-    chunk_name = STREAMS[stream_name]["chunk"]
+    base_path = p51c.STREAMS[stream_name]["base_path"]
+    chunk_name = p51c.STREAMS[stream_name]["chunk"]
 
     chunk_path = os.path.join(base_path, chunk_name)
     output_path = os.path.join(output_dir, stream_name)
