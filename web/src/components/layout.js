@@ -12,6 +12,7 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Img from 'gatsby-image';
+import CityCard from './cityCard';
 import "./layout.css"
 import "./../utils/typography";
 
@@ -61,11 +62,11 @@ const Layout = ({ children }) => {
           <Paper className={classes.paper} square>
             <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
           </Paper>
-          <Paper className={classes.paper} square>Times Square</Paper>
-          <Paper className={classes.paper} square>Jackson Hole</Paper>
-          <Paper className={classes.paper} square>Hollywood</Paper>
-          <Paper className={classes.paper} square>Sears Tower</Paper>
-          <Paper className={classes.paper} square>Miami Beach</Paper>
+          <CityCard name="New York"/>
+          <CityCard name="Miami"/>
+          <CityCard name="Chicago"/>
+          <CityCard name="San Francisco"/>
+          <CityCard name="Seattle"/>
         </Grid>
         <Grid item xs={12} sm={9}>
           <Paper className={classes.paper} variant="outlined" square>{children}</Paper>
