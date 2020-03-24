@@ -31,6 +31,7 @@
     "react-live-clock": "^4.0.3",
     "react-typography": "^0.16.19",
     "react-youtube": "^7.9.0",
+    "recharts": "^1.8.5",
     "seedrandom": "~2.4.3",
     "typography": "^0.16.19"
   },

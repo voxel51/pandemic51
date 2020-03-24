@@ -15,7 +15,8 @@ import Img from 'gatsby-image';
 import CityCard from './cityCard';
 import "./layout.css"
 import "./../utils/typography";
-import ClapprPlayer from './clappr.js';
+import ClapprPlayer from './clappr';
+import Chart from './chart';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -55,6 +56,7 @@ const Layout = ({ children }) => {
         autoplay: 1
       }
     };
+
   return (
     <div className={classes.root}>
       <Grid container spacing={8}>
@@ -69,7 +71,14 @@ const Layout = ({ children }) => {
           <CityCard name="Seattle"/>
         </Grid>
         <Grid item xs={12} sm={9}>
-          <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+          <Grid container spacing={8}>
+            <Grid item xs={12}>
+              <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+            </Grid>
+            <Grid item xs={12}>
+              <Chart/>
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </div>
