@@ -35,7 +35,7 @@ if [ -z "$ENV_DIR" ]; then
     echo "setting virtual environment directory to ${ENV_DIR}"
 fi
 cd ${ENV_DIR}
-virtualenv -p /usr/bin/python3 covid19
+virtualenv -p /usr/bin/python3.6 covid19
 cd -
 
 ########### Celery
