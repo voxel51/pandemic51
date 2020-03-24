@@ -1,3 +1,6 @@
 [submodule "eta"]
 	path = eta
 	url = https://github.com/voxel51/eta/
+[submodule "automl"]
+	path = automl
+	url = https://github.com/google/automl

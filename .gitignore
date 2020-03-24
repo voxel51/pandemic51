@@ -18,6 +18,9 @@ __pycache__
 .idea
 
 m3u8/
+models/
+data/
+out/
 
 setup/celery.conf
 pandemic51/core/config.py
