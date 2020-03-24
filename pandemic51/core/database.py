@@ -10,10 +10,10 @@ import pandemic51.core.config as p51c
 
 def connect_database():
     return pymysql.connect(
-        user=p51c.SQL_USERNAME_ENVVAR,
-        password=os.environ.get(p51c.SQL_PASSWORD_ENVVAR),
+        user=p51c.P51_SQL_USERNAME,
+        password=p51c.P51_SQL_PASSWORD,
         host=p51c.SQL_HOST,
-        db=os.environ.get(p51c.SQL_DATABASE_NAME_ENVVAR)
+        db=p51c.P51_SQL_DATABASE_NAME
     )
 
 
