@@ -58,3 +58,6 @@ def add_stream_history(stream_name, image_path, timestamp, cnx=None):
 
     if close:
         cnx.close()
+
+def query_unprocessed_images():
+    print("YAY")
