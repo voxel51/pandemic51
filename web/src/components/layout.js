@@ -70,10 +70,10 @@ const Layout = ({ children, city }) => {
             </a>
           </Paper>
           <CityCard cityId="newyork" name="New York" active={city}/>
-          <CityCard name="Miami"/>
-          <CityCard name="Chicago"/>
-          <CityCard name="San Francisco"/>
-          <CityCard name="Seattle"/>
+          <CityCard cityId="miami" name="Miami" active={city}/>
+          <CityCard cityId="chicago" name="Chicago" active={city}/>
+          <CityCard cityId="sanfrancisco" name="San Francisco" active={city}/>
+          <CityCard cityId="seattle" name="Seattle" active={city}/>
         </Grid>
         <Grid item xs={12} md={9}>
           <Grid container spacing={8}>

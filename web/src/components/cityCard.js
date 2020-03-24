@@ -25,6 +25,14 @@ const useStyles = makeStyles({
   },
 });
 
+const timezones = {
+  "miami": "America/New_York",
+  "newyork": "America/New_York",
+  "chicago": "America/Chicago",
+  "seattle": "America/Los_Angeles",
+  "sanfrancisco": "America/Los_Angeles"
+}
+
 export default function CityCard(props) {
   const classes = useStyles();
   const active = props.cityId === props.active && props.cityId !== undefined;
@@ -37,7 +45,7 @@ export default function CityCard(props) {
             {props.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            <Clock format={'HH:mm:ss'} ticking={true} timezone={'US/Pacific'} />
+            <Clock format={'HH:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
           </Typography>
           <Typography variant="body2" component="p">
             Some metric
