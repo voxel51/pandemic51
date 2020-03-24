@@ -43,11 +43,11 @@ cd -
 ########### Celery
 mkdir -p $CELERY_DIR
 
-sudo chown -R www-data $CELERY_DIR
+#sudo chown -R {{YOU}} $CELERY_DIR
 
 
 ########### Data store
 mkdir -p $DATA_DIR
 mkdir -p $IMAGE_DIR
 mkdir -p $LABELS_DIR
-sudo chown -R www-data $DATA_DIR
+#sudo chown -R {{YOU}} $DATA_DIR

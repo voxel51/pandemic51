@@ -7,8 +7,8 @@ Description=Celery Beat Service
 After=network.target
 
 [Service]
-User=www-data
-Group=www-data
+User={{YOUR_USERNAME}}
+Group={{YOUR_USERNAME}}
 EnvironmentFile={{P51_REPO_DIR}}/pandemic51/setup/celery.conf
 WorkingDirectory={{P51_REPO_DIR}}/pandemic51/pandemic51/core
 ExecStart=/bin/sh -c '${CELERY_BIN} beat \
