@@ -3,4 +3,6 @@
 '''
 import pandemic51.core.database as pand
 
-pand.query_unprocessed_images()
+result = pand.query_unprocessed_images()
+
+print(result)

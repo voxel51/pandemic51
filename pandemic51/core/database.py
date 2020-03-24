@@ -74,5 +74,9 @@ def add_stream_history(stream_name, image_path, timestamp, *args, cnx):
 
 @with_connection
 def query_unprocessed_images(*args, cnx):
-    print(cnx)
-    print("YAY")
+    with cnx.cursor() as cursor:
+        sql = "select id, data_path from stream_history where labels_path=NULL;"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return result
