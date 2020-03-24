@@ -18,10 +18,10 @@ def setup_periodic_tasks(sender, **kwargs):
         p51c.STREAM_DOWNLOAD_INTERVAL,
         test.s('hello'))
 
-    # sender.add_periodic_task(
-    #     p51c.STREAM_DOWNLOAD_INTERVAL, poll_stream.s("time_square"))
-    # sender.add_periodic_task(
-    #     p51c.STREAM_DOWNLOAD_INTERVAL, poll_stream.s("chicago"))
+    sender.add_periodic_task(
+        30, poll_stream.s("time_square"))
+    sender.add_periodic_task(
+        30, poll_stream.s("chicago"))
 
 
 @app.task
@@ -37,4 +37,9 @@ def poll_stream(stream_name):
     print(stream_name)
     print("~" * 40)
 
-    download_and_store(stream_name, out_dir=p51c.IMAGE_DIR)
+    image_path, timestamp = download_and_store(
+        stream_name, out_dir=p51c.IMAGE_DIR)
+
+    print("downloaded:")
+    print("\t{}".format(timestamp))
+    print("\t{}".format(image_path))

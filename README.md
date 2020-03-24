@@ -90,6 +90,11 @@ To manage the celery/beat services:
 systemctl {start|stop|restart|status} celery.service celerybeat.service
 ```
 
+To watch logs:
+```bash
+tail -f -n 10 $CELERY_DIR/worker*
+```
+
 
 ## Starting Point
 

@@ -113,3 +113,5 @@ def download_and_store(stream_name, out_dir, width=300, height=300):
 
     if is_new_img:
         add_stream_history(stream_name, image_path, timestamp)
+
+    return image_path, timestamp
