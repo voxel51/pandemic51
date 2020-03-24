@@ -25,6 +25,15 @@ export P51_SQL_USERNAME="<USERNAME>"
 export P51_SQL_PASSWORD="<PASSWORD>"
 export P51_SQL_DATABASE_NAME="p51db"
 
+# virtualenv shortcuts
+covid19() { source "${ENV_DIR}/covid19/bin/activate"; }
+exit() {
+    case `command -v python` in
+        ${ENV_DIR}/*) deactivate;;
+        *) builtin exit;;
+    esac
+}
+
 # login shortcut command
 alias p51mysql="mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME"
 ```

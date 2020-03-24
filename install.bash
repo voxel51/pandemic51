@@ -3,8 +3,10 @@
 git submodule update --init
 
 # install m3u8 for streaming
-python m3u8/setup.py build
-python m3u8/setup.py install
+cd m3u8/
+python setup.py build
+python setup.py install
+cd -
 
 # install submodules
 pip install -r eta/requirements.txt

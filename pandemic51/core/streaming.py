@@ -12,7 +12,7 @@ import m3u8
 
 import eta.core.utils as etau
 
-from pandemic51.core.config import STREAMS
+import pandemic51.core.config as p51c
 from pandemic51.core.database import add_stream_history
 
 
@@ -32,8 +32,8 @@ def save_video(uri, base_path, output_dir):
 
 def download_chunk(stream_name, output_dir):
     ''''''
-    base_path = STREAMS[stream_name]["base_path"]
-    chunk_name = STREAMS[stream_name]["chunk"]
+    base_path = p51c.STREAMS[stream_name]["base_path"]
+    chunk_name = p51c.STREAMS[stream_name]["chunk"]
 
     chunk_path = os.path.join(base_path, chunk_name)
     output_path = os.path.join(output_dir, stream_name)
