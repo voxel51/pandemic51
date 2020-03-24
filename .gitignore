@@ -18,4 +18,4 @@ __pycache__
 .idea
 
 setup/celery.conf
-setup/celerybeat.conf
+pandemic51/core/config.py

@@ -43,7 +43,16 @@ source ${ENV_DIR}/covid19/bin/activate
 bash install.bash
 ```
 
-### 4) Initialize the database
+### 4) Create a config
+
+```bash
+cp setup/config.py-template pandemic51/core/config.py
+```
+
+Then modify `config.py`, populating any `{{TODO}}`s with correct values. Many
+of these need to exactly match the environment variable with the same name.
+
+### 5) Initialize the database
 
 ```bash
 bash init_db.bash
@@ -51,11 +60,11 @@ bash init_db.bash
 
 This can be run at anytime to wipe the database.
 
+### 6) Initialize Celery
+
 Celery is currently only configured for linux as a `systemd` daemon.
 
 TODO(Tyler) make a configuration for Mac OS with `launchd`
-
-### 5) Initialize Celery
 
 1) copy the templates in `setup/` and replace any `{{ENV_VAR}}` with the
 respective environment variable value.

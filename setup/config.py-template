@@ -1,0 +1,43 @@
+'''
+
+'''
+import os
+
+
+# If running locally, use the TCP connections
+# Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
+# so that your application can use 127.0.0.1:3306 to connect to your
+# Cloud SQL instance
+SQL_HOST = '127.0.0.1'
+
+# Resource Directories
+P51_BASEDIR = "/home/{{USER}}/p51_base" # TODO REPLACE ME
+ENV_DIR = os.path.join(P51_BASEDIR, "venv")
+CELERY_DIR = os.path.join(P51_BASEDIR, "celery")
+DATA_DIR = os.path.join(P51_BASEDIR, "data")
+IMAGE_DIR = os.path.join(DATA_DIR, "images")
+LABELS_DIR = os.path.join(DATA_DIR, "labels")
+
+# Repository Directory
+P51_REPO_DIR = "{{PANDEMIC51/PARENT/DIR}}" # TODO REPLACE ME
+
+# MySQL
+P51_SQL_USERNAME = "{{USERNAME}}" # TODO REPLACE ME
+P51_SQL_PASSWORD = "{{PASSWORD}}" # TODO REPLACE ME
+P51_SQL_DATABASE_NAME = "p51db"
+
+# Info to download streams
+STREAMS = {
+    "time_square": {
+        "base_path": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv",
+        "chunk": "chunklist.m3u8"
+    },
+    "chicago": {
+        "base_path": "https://videos-3.earthcam.com/fecnetwork/13220.flv",
+        "chunk": "chunklist_w1227547844.m3u8"
+    }
+}
+
+# CELERY PERIODIC TASKS
+STREAM_DOWNLOAD_INTERVAL = 15
+PLATFORM_JOB_POLL_RATE = 60
