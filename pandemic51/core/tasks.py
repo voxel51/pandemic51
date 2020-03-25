@@ -24,6 +24,13 @@ def setup_periodic_tasks(sender, **kwargs):
 
 
 @app.task
+def test(arg):
+    '''"test task'''
+    print(arg)
+    return "success!"
+
+
+@app.task
 def das_task(stream_name):
     '''"Download And Store (DAS) task'''
     tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
