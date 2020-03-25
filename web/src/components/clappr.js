@@ -1,7 +1,6 @@
-import React, { useRef, useLayoutEffect, useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Clappr from 'clappr';
 import PropTypes from 'prop-types'
-import createReactClass from 'create-react-class';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
@@ -15,101 +14,96 @@ const cities = {
   "prague": "http://34.67.136.168/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
 }
 
-export default createReactClass({
-  propTypes: {
-    city: PropTypes.string
-  },
+const DETECTION_INTERVAL_MS = 1000;
 
-  getInitialState() {
-    return {
-      height: 0,
-      width: 0
-    };
-  },
+export default function ClapprPlayer({city}) {
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
+  const playerRef = useRef(null);
+  const canvasRef = useRef(null);
+  // only call load() once per instance (todo: call it once ever?)
+  const [modelPromise] = useState(() => cocoSsd.load());
 
-  shouldComponentUpdate: function(nextProps, nextState) {
-    let changed = (nextProps.source != this.props.source);
-    changed = changed || nextState.height != this.state.height;
-    this.props = nextProps;
-    this.state = nextState;
-    if (changed) {
-      this.change(nextProps);
-    }
-    return changed;
-  },
-
-  componentDidMount: async function() {
-    this.change(this.props);
-    const video = this.refs.player.childNodes[0].childNodes[0].childNodes[2];
-
-    const videoPromise = new Promise((resolve, reject) => {
-      video.onloadedmetadata = () => {
-        resolve();
-      };
+  const createPlayer = () => {
+    let player = new Clappr.Player({
+      parent: playerRef.current,
+      source: cities[city],
+      width: '100%',
+      height: '100%',
+      mute: true,
+      autoPlay: true,
+      allowUserInteraction: false,
+      hideMediaControl: true,
+      hideVolumeBar: true,
+      chromeless: true,
+      hlsjsConfig: {
+        enableWorker: true
+      }
     });
-    const parentRef = this.refs.player.parentNode.parentNode;
-    const update = () => {
-      const styles = window.getComputedStyle(parentRef);
-      const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-      const w = parentRef.clientWidth - padding;
-      const h = w * 9/16;
-      this.setState({
-        height: h,
-        width: w
-      });
-    };
-    update();
-    window.addEventListener("resize", update);
-    return;
-    const model = await cocoSsd.load();
-    videoPromise
-      .then(() => {
-        this.detectFrame(video, model);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-  },
 
-  componentWillUnmount: function() {
-    this.destroyPlayer();
-  },
+    const video = playerRef.current.querySelector('video');
+    const videoPromise = new Promise((resolve, reject) => {
+      video.onloadeddata = () => resolve(video);
+      video.onerror = reject;
+    });
+    // used to clean up when this component unmounts
+    let cancelled = false;
 
-  destroyPlayer() {
-    if (this.player) {
-      this.player.destroy();
-    }
-    this.player = null;
-  },
-
-  detectFrame: function(video, model) {
-      const next = () => {
+    const detectFrame = async () => {
+      if (cancelled) {
+        return;
+      }
+      try {
+        const video = await videoPromise;
+        if (video) {
+          const model = await modelPromise;
+          const predictions = await model.detect(video);
+          renderPredictions(predictions, video);
+        }
+      } finally {
         setTimeout(() => {
-          requestAnimationFrame(() => {
-            this.detectFrame(video, model);
-          });
-        }, 1000);
+          requestAnimationFrame(detectFrame);
+        }, DETECTION_INTERVAL_MS);
       };
-      if (this.player) {
-        model.detect(video).then(predictions => {
-          this.renderPredictions(predictions, video);
-          next();
-        });
-      };
-      next();
-  },
+    };
+    detectFrame();
 
-  renderPredictions: function(predictions, video) {
-    const ctx = this.refs.canvas.getContext("2d");
+    return function cleanup() {
+      cancelled = true;
+      player.destroy();
+    }
+  };
+  useEffect(createPlayer, [city, width, height]);
+
+  const updateSize = () => {
+    const parentRef = playerRef.current.parentNode.parentNode;
+    const styles = window.getComputedStyle(parentRef);
+    const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+    const w = parentRef.clientWidth - padding;
+    const h = w * 9/16;
+    setWidth(w);
+    setHeight(h);
+  };
+  useEffect(() => {
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => {
+      window.removeEventListener("resize", updateSize);
+    };
+  });
+
+  const renderPredictions = (predictions, video) => {
+    const ctx = canvasRef.current.getContext("2d");
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     // Font options.
     const font = "16px sans-serif";
     ctx.font = font;
     ctx.textBaseline = "top";
     const t_template = (from, to) => i => i / from * to;
-    const th = t_template(video.videoHeight, this.state.height);
-    const tw = t_template(video.videoWidth, this.state.width);
+    const th = t_template(video.videoHeight, height);
+    const tw = t_template(video.videoWidth, width);
     predictions.forEach(prediction => {
+      console.log(prediction);
       if (prediction.class !== 'person') return;
       const x = tw(prediction.bbox[0]);
       const y = th(prediction.bbox[1]);
@@ -120,50 +114,23 @@ export default createReactClass({
       ctx.lineWidth = 1;
       ctx.strokeRect(x, y, width, height);
     });
-  },
+  };
 
-  change: function(props) {
-    if (this.player) {
-      this.destroyPlayer();
-    }
-    this.player = new Clappr.Player({
-      parent: this.refs.player,
-      source: cities[props.city],
-      width: '100%',
-      height: '100%',
-      mute: true,
-      autoPlay: true,
-      allowUserInteraction: false,
-      hideMediaControl: true,
-      hideVolumeBar: true,
-      chromeless: true,
-      hlsjsConfig: {
-        enableWorker: true,
-        xhrSetup: (xhr) => {
-          xhr.setRequestHeader("Origin", "https://eartcam.com");
-        }
-      }
-    });
-  },
-
-  render: function() {
-    const style = {}
-    const toPixels = (str) => String(str) + "px";
-    for (let [key, value] of Object.entries(this.state)) {
-      style[key] = toPixels(value);
-    }
-    return (
-      <div className="detector">
-        <div ref="player"
-          style={style}>
+  return (
+    <div className="detector">
+      <div ref={playerRef}
+        style={{width, height}}>
       </div>
       <canvas
+        ref={canvasRef}
         className="boxes"
-          ref="canvas"
-          width={this.state.width}
-          height={this.state.height}
-        />
-      </div>
-    );
-  }
-});
+        width={width}
+        height={height}
+      />
+    </div>
+  );
+}
+
+ClapprPlayer.propTypes = {
+  city: PropTypes.string,
+}
