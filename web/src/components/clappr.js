@@ -11,7 +11,8 @@ export default function ClapprPlayer({source}) {
   const [width, setWidth] = useState(0);
   const playerRef = useRef(null);
   const canvasRef = useRef(null);
-  const [modelPromise] = useState(cocoSsd.load());
+  // only call load() once per instance (todo: call it once ever?)
+  const [modelPromise] = useState(() => cocoSsd.load());
 
   const createPlayer = () => {
     let player = new Clappr.Player({
