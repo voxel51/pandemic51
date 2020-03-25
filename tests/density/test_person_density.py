@@ -29,11 +29,10 @@ IMAGES_DIR = "data/timessquare_imgs"
 LABELS_DIR = "out/labels"
 IMAGES_ANNO_DIR = "out/anno"
 
-MAX_NUM_IMAGES = 10
-
 
 # Input images to process
-inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:MAX_NUM_IMAGES]
+#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:MAX_NUM_IMAGES]
+inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)
 
 # Path to write output labels
 outpaths = [
