@@ -1,0 +1,34 @@
+{
+  "time_square": {
+    "webpage": "https://www.earthcam.com/usa/newyork/timessquare/?cam=tsrobo1",
+    "chunk_path": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8"
+  },
+  "chicago": {
+    "webpage": "https://www.earthcam.com/usa/illinois/chicago/wrigleyfield/?cam=wrigleyfield_hd",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/13661.flv/chunklist_w2061640580.m3u8"
+  },
+  "chicago_wrigleyville": {
+    "webpage": "https://www.earthcam.com/usa/illinois/chicago/wrigleyville/?cam=wrigleyville",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/13220.flv/chunklist_w1748285629.m3u8"
+  },
+  "new_orleans": {
+    "webpage": "https://www.earthcam.com/usa/louisiana/neworleans/bourbonstreet/?cam=bourbonstreet",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/4280.flv/chunklist_w2121039669.m3u8"
+  },
+  "new_jersey": {
+    "webpage": "https://www.earthcam.com/usa/newjersey/seasideheights/?cam=seasideheights",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/5173.flv/chunklist_w246713699.m3u8"
+  },
+  "abbey_road": {
+    "webpage": "https://www.earthcam.com/world/england/london/abbeyroad/?cam=abbeyroad_uk",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8"
+  },
+  "dublin": {
+    "webpage": "https://www.earthcam.com/world/ireland/dublin/?cam=templebar",
+    "chunk_path": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8"
+  },
+  "prague": {
+    "webpage": "https://www.earthcam.com/world/czechrepublic/prague/?cam=grandhotel_str",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
+  }
+}
