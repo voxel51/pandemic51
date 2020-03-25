@@ -96,16 +96,36 @@ def add_stream_labels(id, labels_path, *args, cnx):
 
 
 @with_connection
-def query_sdi(stream_name=None, cnx=None):
+def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     '''
     Args:
-        stream_name:
-        cnx:
+        stream_name: if provided, only query a single stream is queried
+        reformat_as_dict: whether or not to reformat the query result as a
+            dictionary keyed on `stream_name`
+        cnx: a connection to the database, if one is already made
 
     Returns:
-         a dictionary of:
-            key:
-            value:
+        if NOT reformat_as_dict:
+            a tuple of row tuples of the database table `stream_history`:
+                (id, stream_name, datetime, data_path, labels_path, sdi)
+        if reformat_as_dict:
+            a dictionary of format:
+                {
+                    "<STREAM 1 NAME>": {
+                        "id": [list, of, SQL, row, IDs],
+                        "datetime": [list, of, datetime, objects],
+                        "data_path": [...],
+                        "labels_path": [...],
+                        "sdi": [list, of, sdi, floats]
+                    },
+                    "<STREAM 2 NAME>": {
+                        ...,
+                        "datetime": [list, of, datetime, objects],
+                        ...,
+                        "sdi": [list, of, sdi, floats]
+                    },
+                    ...
+                }
     '''
     with cnx.cursor() as cursor:
         stream_search = (
@@ -114,16 +134,32 @@ def query_sdi(stream_name=None, cnx=None):
         )
 
         sql = '''
-        select stream_name, datetime, sdi from stream_history%s
-         ORDER BY datetime;
+        select id, stream_name, datetime, data_path, labels_path, sdi
+        from stream_history%s ORDER BY datetime;
         ''' % stream_search
         cursor.execute(sql)
         result = cursor.fetchall()
 
+    if not reformat_as_dict:
+        return result
+
+    # reformat the result
     result_dict = defaultdict(lambda: defaultdict(list))
-
-    for stream_name, datetime, sdi in result:
+    for id, stream_name, datetime, data_path, labels_path, sdi in result:
+        result_dict[stream_name]["id"].append(id)
         result_dict[stream_name]["datetime"].append(datetime)
+        result_dict[stream_name]["data_path"].append(data_path)
+        result_dict[stream_name]["labels_path"].append(labels_path)
         result_dict[stream_name]["sdi"].append(sdi)
-
     return result_dict
+
+
+@with_connection
+def populate_sdi(id, sdi, *args, cnx):
+    with cnx.cursor() as cursor:
+        sql = '''
+        UPDATE stream_history SET sdi='{}' where id={};
+        '''.format(sdi, id)
+        cursor.execute(sql)
+
+    cnx.commit()

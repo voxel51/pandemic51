@@ -96,6 +96,34 @@ def compute_density_for_unprocessed_images():
             pand.add_stream_labels(id, labels_path)
 
 
+def simple_sdi(labels):
+    '''Simple SDI (social distancing index) metric. Counts the number of person
+    detections.
+
+    Args:
+        labels: an eta.core.ImageLabels object
+
+    Returns:
+         numeric SDI metric
+    '''
+    obj_labels = [x.label for x in labels.objects]
+
+    return len([x for x in obj_labels if x == "person"])
+
+
+def compute_sdi_for_database_entries(null_only=True):
+    '''
+    1) get all entries (that are null)
+    2) compute SDI
+    3) populate
+    '''
+    cnx = pand.connect_database()
+    rows = pand.query_stream_history(cnx=cnx)
+
+    for id, stream_name, datetime, data_path, labels_path, sdi in rows:
+        print(id, stream_name, datetime, labels_path, sdi)
+
+
 def _process_image(detector, inpath, outpath):
     logger.info("Processing image '%s'", inpath)
     img = etai.read(inpath)
