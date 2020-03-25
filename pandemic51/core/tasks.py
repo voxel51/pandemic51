@@ -20,24 +20,18 @@ def setup_periodic_tasks(sender, **kwargs):
     for stream_name in panc.STREAMS:
         sender.add_periodic_task(
             panc.STREAM_DOWNLOAD_INTERVAL, das_task.s(stream_name))
-        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
+        # sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
 
 
-@app.task
-def test(arg):
-    '''"test task'''
-    print(arg)
-    return "success!"
-
-
-@app.task
+@app.task(name="task.das_task")
 def das_task(stream_name):
     '''"Download And Store (DAS) task'''
     tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
     download_and_store(
         stream_name, out_dir=panc.IMAGE_DIR, tmpdirbase=tmpdirbase)
 
-@app.task
+
+@app.task(name="task.cdfui_task")
 def cdfui_task():
     '''"Compute Density For Unprocessed Images (CDFUI) task'''
     # compute_density_for_unprocessed_images()
