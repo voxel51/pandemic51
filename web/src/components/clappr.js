@@ -2,8 +2,8 @@ import React, { useRef, useLayoutEffect, useState } from "react";
 import Clappr from 'clappr';
 import PropTypes from 'prop-types'
 import createReactClass from 'create-react-class';
-
-
+import * as cocoSsd from '@tensorflow-models/coco-ssd';
+import "@tensorflow/tfjs";
 
 export default createReactClass({
   propTypes: {
@@ -11,7 +11,10 @@ export default createReactClass({
   },
 
   getInitialState() {
-    return { height: 0 };
+    return {
+      height: 0,
+      width: 0
+    };
   },
 
   shouldComponentUpdate: function(nextProps, nextState) {
@@ -25,19 +28,36 @@ export default createReactClass({
     return changed;
   },
 
-  componentDidMount: function() {
+  componentDidMount: async function() {
     this.change(this.props);
-    let node = this.refs.player.parentNode;
-    var styles = window.getComputedStyle(node);
-    var padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-    const h = (node.clientWidth - padding) * 9/16;
-    this.setState({ height: h});
-    window.addEventListener("resize", e => {
-      var styles = window.getComputedStyle(node);
-      var padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-      const h = (node.clientWidth - padding) * 9/16;
-      this.setState({ height: h});
+    const video = this.refs.player.childNodes[0].childNodes[0].childNodes[2];
+
+    const videoPromise = new Promise((resolve, reject) => {
+      video.onloadedmetadata = () => {
+        resolve();
+      };
     });
+    const parentRef = this.refs.player.parentNode.parentNode;
+    const update = () => {
+      const styles = window.getComputedStyle(parentRef);
+      const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+      const w = parentRef.clientWidth;
+      const h = (w - padding) * 9/16;
+      this.setState({
+        height: h,
+        width: w
+      });
+    };
+    update();
+    window.addEventListener("resize", update);
+    const model = await cocoSsd.load();
+    videoPromise
+      .then(() => {
+        this.detectFrame(video, model);
+      })
+      .catch(error => {
+        console.error(error);
+      });
   },
 
   componentWillUnmount: function() {
@@ -51,6 +71,37 @@ export default createReactClass({
     this.player = null;
   },
 
+  detectFrame: function(video, model) {
+      model.detect(video).then(predictions => {
+        this.renderPredictions(predictions, video);
+        requestAnimationFrame(() => {
+          this.detectFrame(video, model);
+        });
+      });
+  },
+
+  renderPredictions: function(predictions, video) {
+    const ctx = this.refs.canvas.getContext("2d");
+    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    // Font options.
+    const font = "16px sans-serif";
+    ctx.font = font;
+    ctx.textBaseline = "top";
+    const t_template = (from, to) => i => i / from * to;
+    const th = t_template(video.videoHeight, this.state.height);
+    const tw = t_template(video.videoWidth, this.state.width);
+    predictions.forEach(prediction => {
+      if (prediction.class !== 'person') return;
+      const x = tw(prediction.bbox[0]);
+      const y = th(prediction.bbox[1]);
+      const width = tw(prediction.bbox[2]);
+      const height = th(prediction.bbox[3]);
+      // Draw the bounding box.
+      ctx.strokeStyle = "#00FFFF";
+      ctx.lineWidth = 1;
+      ctx.strokeRect(x, y, width, height);
+    });
+  },
 
   change: function(props) {
     if (this.player) {
@@ -74,8 +125,23 @@ export default createReactClass({
   },
 
   render: function() {
+    const style = {}
+    const toPixels = (str) => String(str) + "px";
+    for (let [key, value] of Object.entries(this.state)) {
+      style[key] = toPixels(value);
+    }
     return (
-      <div ref="player" style={{height: String(this.state.height) + "px"}}></div>
+      <div className="detector">
+        <div ref="player"
+          style={style}>
+      </div>
+      <canvas
+        className="boxes"
+          ref="canvas"
+          width={this.state.width}
+          height={this.state.height}
+        />
+      </div>
     );
   }
 });

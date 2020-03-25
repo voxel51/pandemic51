@@ -10,7 +10,7 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import { Link } from "gatsby";
 const useStyles = makeStyles({
   root: {
-    margin: '1rem 0'
+    marginBottom: '1rem'
   },
   bullet: {
     display: 'inline-block',

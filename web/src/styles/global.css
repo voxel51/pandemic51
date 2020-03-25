@@ -4,6 +4,14 @@ html {
 img {
   margin-bottom: 0 !important;
 }
+.detector {
+  position: relative;
+}
+.boxes {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
 :root {
     --color-primary: rgb(255, 109, 4);
     --color-primary-muted: rgb(208, 87, 0);
