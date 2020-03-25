@@ -20,7 +20,7 @@ def setup_periodic_tasks(sender, **kwargs):
     for stream_name in panc.STREAMS:
         sender.add_periodic_task(
             panc.STREAM_DOWNLOAD_INTERVAL, das_task.s(stream_name))
-        # sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
+        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
 
 
 @app.task()
