@@ -69,7 +69,7 @@ def compute_person_density_for_images(inpaths, outpaths):
 
 
 def compute_density_for_unprocessed_images():
-    '''
+    '''Processes images with database entries
     1) get col_id, image names
     2) process images
     3) update database

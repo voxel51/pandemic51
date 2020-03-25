@@ -33,4 +33,11 @@ def das_task(stream_name):
 @app.task
 def cdfui_task():
     '''"Compute Density For Unprocessed Images (CDFUI) task'''
-    compute_density_for_unprocessed_images()
+    # compute_density_for_unprocessed_images()
+
+    print("~" * 40)
+    print("IMPORTING")
+    import pandemic51.detectors.efficientdet as efficientdet
+    print("~" * 40)
+    print(efficientdet)
+    print("~" * 40)
