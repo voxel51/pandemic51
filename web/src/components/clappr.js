@@ -6,13 +6,13 @@ import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
 const cities = {
-  "chicago": "https://videos-3.earthcam.com/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
+  "chicago": "http://34.67.136.168/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
   "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
-  "london": "https://videos-3.earthcam.com/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
-  "newjersey": "https://videos-3.earthcam.com/fecnetwork/5173.flv/chunklist_w246713699.m3u8",
-  "neworleans": "https://videos-3.earthcam.com/fecnetwork/4280.flv/chunklist_w2121039669.m3u8",
+  "london": "http://34.67.136.168/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
+  "newjersey": "http://34.67.136.168/fecnetwork/5173.flv/chunklist_w246713699.m3u8",
+  "neworleans": "http://34.67.136.168/fecnetwork/4280.flv/chunklist_w2121039669.m3u8",
   "newyork": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8",
-  "prague": "https://videos-3.earthcam.com/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
+  "prague": "http://34.67.136.168/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
 }
 
 export default createReactClass({

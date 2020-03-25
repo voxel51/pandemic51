@@ -82,7 +82,43 @@ const Layout = ({ children, city }) => {
       <Helmet>
         <meta name="referrer" content="no-referrer"/>
       </Helmet>
-    <Header/>
+      <Header/>
+      <div className="cta">
+        <h2 class="body_block__title">
+          Coronavirus
+  </h2>
+  <div class="body_block__text">
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+      <h3 class="force-pad-top6 force-pad-bot1"><span class="text-tertiary-on-dark">Stop the spread. Flatten the curve.</span></h3>
+  </div>
+    </div>
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={3}>
@@ -96,23 +132,7 @@ const Layout = ({ children, city }) => {
         </Grid>
         <Grid item xs={12} md={9}>
           <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
-              <Card square>
-                        <CardContent>
-                          <Typography variant="h5" component="h3">
-                            Header
-                          </Typography>
-                          <Typography className={classes.pos} color="textSecondary">
-                            Subheader
-          </Typography>
-          <Typography variant="body2" component="p">
-            Content
-          </Typography>
-        </CardContent>
-
-              </Card>
-            </Grid>
-            <Grid item md={6}>
+            <Grid item md={12}>
                 <ClapprPlayer city={city} />
             </Grid>
           </Grid>
