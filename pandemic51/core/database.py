@@ -119,7 +119,7 @@ def query_sdi(stream_name=None, cnx=None):
         ''' % stream_search
         result = cursor.execute(sql)
 
-    result_dict = defaultdict(defaultdict(list))
+    result_dict = defaultdict(lambda: defaultdict(list))
 
     for stream_name, datetime, sdi in result:
         result_dict[stream_name]["datetime"].append(datetime)
