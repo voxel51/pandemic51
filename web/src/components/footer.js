@@ -1,7 +1,8 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import React from "react"
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFacebook, faGithub, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons"
 const Footer = (props) => (
 <footer class="body_part footer">
 
@@ -48,22 +49,22 @@ const Footer = (props) => (
             <ul class="list-inline">
               <li>
                 <a href="https://www.linkedin.com/company/voxel51/">
-                  <i class="fa fa-linkedin"></i>
+                  <FontAwesomeIcon icon={faLinkedin}/>
                 </a>
               </li>
               <li>
                 <a href="https://github.com/voxel51/">
-                  <i class="fa fa-github"></i>
+                  <FontAwesomeIcon icon={faGithub}/>
                 </a>
               </li>
               <li>
                 <a href="https://twitter.com/voxel51">
-                  <i class="fa fa-twitter"></i>
+                  <FontAwesomeIcon icon={faTwitter}/>
                 </a>
               </li>
               <li>
                 <a href="https://www.facebook.com/voxel51/">
-                  <i class="fa fa-facebook"></i>
+                  <FontAwesomeIcon icon={faFacebook}/>
                 </a>
               </li>
             </ul>

@@ -41,8 +41,8 @@ export default createReactClass({
     const update = () => {
       const styles = window.getComputedStyle(parentRef);
       const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-      const w = parentRef.clientWidth;
-      const h = (w - padding) * 9/16;
+      const w = parentRef.clientWidth - padding;
+      const h = w * 9/16;
       this.setState({
         height: h,
         width: w
@@ -74,9 +74,11 @@ export default createReactClass({
   detectFrame: function(video, model) {
       model.detect(video).then(predictions => {
         this.renderPredictions(predictions, video);
-        requestAnimationFrame(() => {
-          this.detectFrame(video, model);
-        });
+        setTimeout(() => {
+          requestAnimationFrame(() => {
+            this.detectFrame(video, model);
+          });
+        }, 1000);
       });
   },
 

@@ -23,13 +23,20 @@ import Hidden from '@material-ui/core/Hidden';
 import SEO from './seo';
 import Header from './header';
 import Footer from './footer';
+import Typography from '@material-ui/core/Typography';
+
 const useStyles = makeStyles((theme) =>
   createStyles({
+    wrapper: {
+      display: "flex",
+      minHeight: "100vh",
+      flexDirection: "column"
+    },
     root: {
       flexGrow: 1,
-      overflow: "hidden",
-      margin: "2rem auto",
+      margin: "4rem auto",
       maxWidth: "1040px",
+      width: "100%"
     },
     paper: {
       padding: theme.spacing(2),
@@ -70,8 +77,8 @@ const Layout = ({ children, city }) => {
     };
 
   return (
-    <>
-      <Header/>
+    <div className={classes.wrapper}>
+    <Header/>
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={3}>
@@ -83,29 +90,38 @@ const Layout = ({ children, city }) => {
         </Grid>
         <Grid item xs={12} md={9}>
           <Grid container spacing={4}>
-            <Grid item xs={12}>
+            <Grid item xs={12} md={6}>
               <Card square>
-                Explanatory Text
+                        <CardContent>
+                          <Typography variant="h5" component="h3">
+                            Header
+                          </Typography>
+                          <Typography className={classes.pos} color="textSecondary">
+                            Subheader
+          </Typography>
+          <Typography variant="body2" component="p">
+            Content
+          </Typography>
+        </CardContent>
+
               </Card>
             </Grid>
-            <Hidden smDown>
-              <Grid item md={12}>
-                <Grid container spacing={4}>
-                  <Grid item md={6}>
-                    <Chart title="Social Distancing Index (SDI)"/>
-                  </Grid>
-                  <Grid item md={6}>
-                    <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Hidden>
+            <Grid item md={6}>
+                <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+            </Grid>
           </Grid>
+          <Hidden smDown>
+            <Grid container spacing={4}>
+              <Grid item xs={12}>
+              <Chart title="Social Distancing Index (SDI)"/>
+              </Grid>
+            </Grid>
+          </Hidden>
         </Grid>
       </Grid>
     </div>
     <Footer/>
-  </>
+  </div>
   )
 }
 

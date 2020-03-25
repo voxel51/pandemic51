@@ -71,9 +71,9 @@ class Chart extends Component {
     return (
       <Card className={classes.root} square>
         <CardContent>
-          <Typography variant="h5" component="h2">
-            {title}
-          </Typography>
+        <Typography variant="h5" component="h3">
+          Header
+        </Typography>
           <ResponsiveContainer width="100%" height={400}>
 <AreaChart width={730} height={250} data={list}
   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>

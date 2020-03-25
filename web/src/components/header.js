@@ -1,28 +1,71 @@
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 
-const Header = (props) => (
-<nav id="nav__main" class="nav__main stay_at_top">
+
+class Header extends React.Component {
+
+  constructor() {
+    super();
+    this.onClick = this.handleClick.bind(this);
+    this.state = {
+      nav: false,
+      mobile: null,
+      rendered: false
+    }
+  }
+
+  handleClick(event) {
+    this.setState({nav: !this.state.nav});
+  }
+
+  componentDidMount() {
+    const computed = window.getComputedStyle(this.refs.mobile).getPropertyValue("display");
+    if (computed === "block" && this.state.mobile === null) {
+      this.setState({ mobile: true, rendered: true });
+    } else {
+      this.setState({ rendered: true});
+    }
+  }
+
+  componentShouldUpdate() {
+    return true;
+  }
+
+  render() {
+    let menu = this.state.mobile === null ? "flex" : "none";
+    menu = (this.state.mobile && this.state.nav) ? "block" : menu;
+    const off = this.state.mobile && this.state.nav ? "block" : "none";
+    const on = (this.state.mobile && !this.state.nav) ? "block" : "none";
+    let obj = {};
+    let objM = {};
+    if (this.state.rendered) {
+      obj.display = on;
+      objM.display = menu;
+    }
+    return (
+    <nav id="nav__main" class="nav__main stay_at_top">
       <div class="nav__main__logo">
         <a href="https://voxel51.com">
           <img src="https://voxel51.com/images/logo/voxel51-logo-horz-color-600dpi.png"/>
         </a>
       </div>
 
-      <div id="nav__main__mobilebutton--on">
-        <a href="javascript:void(0);" onclick="navMobileButton()">
-          <i class="fa fa-bars"></i>
+      <div id="nav__main__mobilebutton--on" style={obj} ref="mobile">
+        <a href="javascript:void(0);" onClick={this.onClick}>
+          <FontAwesomeIcon icon={faBars} />
         </a>
       </div>
 
-      <div id="nav__main__mobilebutton--off">
-        <a href="javascript:void(0);" onclick="navMobileButton()">
-          <i class="fa fa-times"></i>
+      <div id="nav__main__mobilebutton--off" style={{display: off}}>
+        <a href="javascript:void(0);" onClick={this.onClick}>
+          <FontAwesomeIcon icon={faTimes} />
         </a>
       </div>
 
-      <div id="nav__main__items">
+      <div id="nav__main__items" style={objM}>
         <div class="nav__item">
           <a href="https://voxel51.com/platform">Platform</a>
         </div>
@@ -69,7 +112,8 @@ const Header = (props) => (
 
       </div>
     </nav>
-)
-
+    )
+  }
+}
 
 export default Header
