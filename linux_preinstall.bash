@@ -5,6 +5,7 @@ sudo apt upgrade
 
 sudo snap install ffmpeg
 
+sudo apt install unzip
 sudo apt install git python-setuptools python-dev python-virtualenv curl rabbitmq-server
 sudo apt install mysql-server mysql-client libmysqlclient-dev
 sudo apt install redis-server

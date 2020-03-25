@@ -1,7 +1,10 @@
 # pandemic51
-Voxel51's website for monitoring the impact of the coronavirus pandemic
 
-## Installation:
+
+Voxel51's website for monitoring the impact of the coronavirus pandemic.
+
+
+## Installation
 
 
 ### 1) Set Environment Variables
@@ -38,19 +41,23 @@ exit() {
 alias p51mysql="mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME"
 ```
 
+
 ### 2) Pre-installation
+
 Before running the installation script, following the instructions in
 `mac_preinstall.md` for Mac local development or run `linux_preinstall.bash`
 for linux systems.
 
 
 ### 3) Install
+
 ```bash
 # activate the `covid19` virtual environment
 source ${ENV_DIR}/covid19/bin/activate
 
 bash install.bash
 ```
+
 
 ### 4) Create a config
 
@@ -61,13 +68,15 @@ cp setup/config.py-template pandemic51/core/config.py
 Then modify `config.py`, populating any `{{TODO}}`s with correct values. Many
 of these need to exactly match the environment variable with the same name.
 
+
 ### 5) Initialize the database
 
 ```bash
-bash init_db.bash
+bash database/init_db.bash
 ```
 
 This can be run at anytime to wipe the database.
+
 
 ### 6) Initialize Celery
 
@@ -95,13 +104,18 @@ To watch logs:
 tail -f -n 10 $CELERY_DIR/worker*
 ```
 
+#### 7) Download models
 
-## Starting Point
+Download the model(s) that you need via the `download_models.py` script.
 
-Check `tests/start/` for some simple tests of the initial functionality.
 
-`tests/download_and_store/` combines this functionality and communicates with
-the database.
+## Quickstart
+
+Check out the following resources:
+
+- `tests/start/`: simple tests of the initial functionality
+- `tests/download_and_store/`: combines `test/start/` with DB communication
+- `tests/density`: example of backend person detection on images
 
 
 ## Copyright
