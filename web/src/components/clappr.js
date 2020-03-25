@@ -48,10 +48,14 @@ export default function ClapprPlayer({source}) {
       }
       try {
         const video = await videoPromise;
-        if (video) {
+        if (video && !cancelled) {
           const model = await modelPromise;
-          const predictions = await model.detect(video);
-          renderPredictions(predictions, video);
+          if (!cancelled) {
+            const predictions = await model.detect(video);
+            if (!cancelled) {
+              renderPredictions(predictions, video);
+            }
+          }
         }
       } finally {
         setTimeout(() => {
