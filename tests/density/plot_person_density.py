@@ -63,11 +63,8 @@ for label_path in label_paths:
 
 # Extract timeseries
 cdates = mpl.dates.date2num(list(count_map.keys()))
-counts = np.asarray(list(count_map.values()))
-
-
-# Extract timeseries
 ddates = mpl.dates.date2num(list(density_map.keys()))
+counts = np.asarray(list(count_map.values()))
 densities = np.asarray(list(density_map.values()))
 
 
