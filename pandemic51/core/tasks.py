@@ -11,7 +11,7 @@ from pandemic51.core.density import compute_density_for_unprocessed_images
 from pandemic51.core.streaming import download_and_store
 
 
-app = celery.Celery("pandemic51.tasks")
+app = celery.Celery("pandemic51.core.tasks")
 app.config_from_object("pandemic51.core.celery_config")
 
 
