@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Clappr from 'clappr';
 import PropTypes from 'prop-types'
-import createReactClass from 'create-react-class';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
@@ -10,12 +9,9 @@ const DETECTION_INTERVAL_MS = 1000;
 export default function ClapprPlayer({source}) {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
-  const [player, setPlayer] = useState(null);
   const playerRef = useRef(null);
   const canvasRef = useRef(null);
   const [modelPromise] = useState(cocoSsd.load());
-  // const [videoPromise, setVideoPromise] = useState(null);
-
 
   const createPlayer = () => {
     let player = new Clappr.Player({
@@ -33,7 +29,6 @@ export default function ClapprPlayer({source}) {
         enableWorker: true
       }
     });
-    setPlayer(player);
 
     const video = playerRef.current.querySelector('video');
     const videoPromise = new Promise((resolve, reject) => {
