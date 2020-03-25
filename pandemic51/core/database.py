@@ -43,11 +43,18 @@ def with_connection(func):
 
 
 @with_connection
-def add_stream_history(stream_name, image_path, timestamp, *args, cnx):
+def add_stream_history(stream_name, image_path, dt, *args, cnx):
+    '''
+
+    Args:
+        stream_name: name of the video source stream
+        image_path: path to the image file on disk
+        dt: datetime object of when the image was captured
+    '''
     with cnx.cursor() as cursor:
         image_path = os.path.abspath(image_path)
 
-        formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
+        formatted_timestamp = dt.strftime('%Y-%m-%d %H:%M:%S')
 
         sql = '''
         INSERT INTO stream_history(stream_name, datetime, data_path)
