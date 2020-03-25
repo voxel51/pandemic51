@@ -3,6 +3,7 @@
 '''
 import os
 
+import eta.core.serial as etas
 
 # If running locally, use the TCP connections
 # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
@@ -27,16 +28,8 @@ P51_SQL_PASSWORD = "{{PASSWORD}}" # TODO REPLACE ME
 P51_SQL_DATABASE_NAME = "p51db"
 
 # Info to download streams
-STREAMS = {
-    "time_square": {
-        "base_path": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv",
-        "chunk": "chunklist.m3u8"
-    },
-    "chicago": {
-        "base_path": "https://videos-3.earthcam.com/fecnetwork/13220.flv",
-        "chunk": "chunklist_w1227547844.m3u8"
-    }
-}
+streams_path = os.path.join(P51_REPO_DIR, "../config/streams.json")
+STREAMS = etas.load_json(streams_path)
 
 # CELERY PERIODIC TASKS
 STREAM_DOWNLOAD_INTERVAL = 60 * 15
