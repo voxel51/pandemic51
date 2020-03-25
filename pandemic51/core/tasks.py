@@ -23,7 +23,7 @@ def setup_periodic_tasks(sender, **kwargs):
         # sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
 
 
-@app.task(name="task.das_task")
+@app.task()
 def das_task(stream_name):
     '''"Download And Store (DAS) task'''
     tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
@@ -31,14 +31,12 @@ def das_task(stream_name):
         stream_name, out_dir=panc.IMAGE_DIR, tmpdirbase=tmpdirbase)
 
 
-@app.task(name="task.cdfui_task")
+@app.task()
 def cdfui_task():
     '''"Compute Density For Unprocessed Images (CDFUI) task'''
     # compute_density_for_unprocessed_images()
 
-    print("~" * 40)
-    print("IMPORTING")
+    import sys
+    return sys.path
+
     import pandemic51.detectors.efficientdet as efficientdet
-    print("~" * 40)
-    print(efficientdet)
-    print("~" * 40)
