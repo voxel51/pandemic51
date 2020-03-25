@@ -116,7 +116,7 @@ def query_sdi(stream_name=None, cnx=None):
         sql = '''
         select stream_name, datetime, sdi from stream_history%s
          ORDER BY datetime;
-        '''.format(stream_search)
+        ''' % stream_search
         result = cursor.execute(sql)
 
     result_dict = defaultdict(defaultdict(list))
