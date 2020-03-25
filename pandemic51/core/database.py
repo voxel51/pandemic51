@@ -43,28 +43,16 @@ def with_connection(func):
 
 
 @with_connection
-def get_stream_uuid(stream_name, *args, cnx):
-    with cnx.cursor() as cursor:
-        sql = "select uuid from streams where name='{}';".format(stream_name)
-        cursor.execute(sql)
-        result = cursor.fetchall()
-
-    return result[0][0] if result else None
-
-
-@with_connection
 def add_stream_history(stream_name, image_path, timestamp, *args, cnx):
-    stream_uuid = get_stream_uuid(stream_name, cnx=cnx)
-
     with cnx.cursor() as cursor:
         image_path = os.path.abspath(image_path)
 
         formatted_timestamp = timestamp.strftime('%Y-%m-%d %H:%M:%S')
 
         sql = '''
-        INSERT INTO stream_history(stream_uuid, datetime, data_path)
+        INSERT INTO stream_history(stream_name, datetime, data_path)
         VALUES('{}', '{}', '{}');
-        '''.format(stream_uuid, formatted_timestamp, image_path)
+        '''.format(stream_name, formatted_timestamp, image_path)
 
         cursor.execute(sql)
 
