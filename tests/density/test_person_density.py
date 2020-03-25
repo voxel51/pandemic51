@@ -24,10 +24,10 @@ import eta.core.utils as etau
 
 import pandemic51.core.density as pand
 
-
-IMAGES_DIR = "data/timessquare_imgs"
-LABELS_DIR = "out/labels"
-IMAGES_ANNO_DIR = "out/anno"
+stream = "timessquare"
+IMAGES_DIR = os.path.join("data",stream+"_imgs")
+LABELS_DIR = os.path.join("out",stream,"labels")
+IMAGES_ANNO_DIR = os.path.join("out",stream,"anno")
 
 
 # Input images to process

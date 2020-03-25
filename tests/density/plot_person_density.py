@@ -29,7 +29,8 @@ import eta.core.utils as etau
 import pandemic51.core.density as pand
 
 
-LABELS_DIR = "out/labels"
+stream = "timesquare"
+LABELS_DIR = os.path.join("out", stream, "labels")
 CONFIDENCE_THRESH = 0.15
 
 
