@@ -111,7 +111,7 @@ def simple_sdi(labels):
     return len([x for x in obj_labels if x == "person"])
 
 
-def compute_sdi_for_database_entries(null_only=True):
+def compute_sdi_for_database_entries(null_only=True, sdi_metric=simple_sdi):
     '''
     1) get all entries (that are null)
     2) compute SDI
@@ -121,7 +121,15 @@ def compute_sdi_for_database_entries(null_only=True):
     rows = pand.query_stream_history(cnx=cnx)
 
     for id, stream_name, datetime, data_path, labels_path, sdi in rows:
-        print(id, stream_name, datetime, labels_path, sdi)
+        if not labels_path:
+            continue
+
+        if null_only and sdi is not None:
+            continue
+
+        new_sdi = sdi_metric(etai.ImageLabels.from_json(labels_path))
+
+        pand.populate_sdi(id, new_sdi, cnx=cnx)
 
 
 def _process_image(detector, inpath, outpath):
