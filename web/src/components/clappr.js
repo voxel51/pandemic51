@@ -5,9 +5,19 @@ import createReactClass from 'create-react-class';
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
+const cities = {
+  "chicago": "https://videos-3.earthcam.com/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
+  "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
+  "london": "https://videos-3.earthcam.com/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
+  "newjersey": "https://videos-3.earthcam.com/fecnetwork/5173.flv/chunklist_w246713699.m3u8",
+  "neworleans": "https://videos-3.earthcam.com/fecnetwork/4280.flv/chunklist_w2121039669.m3u8",
+  "newyork": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8",
+  "prague": "https://videos-3.earthcam.com/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
+}
+
 export default createReactClass({
   propTypes: {
-    source: PropTypes.string
+    city: PropTypes.string
   },
 
   getInitialState() {
@@ -50,6 +60,7 @@ export default createReactClass({
     };
     update();
     window.addEventListener("resize", update);
+    return;
     const model = await cocoSsd.load();
     videoPromise
       .then(() => {
@@ -72,14 +83,20 @@ export default createReactClass({
   },
 
   detectFrame: function(video, model) {
-      model.detect(video).then(predictions => {
-        this.renderPredictions(predictions, video);
+      const next = () => {
         setTimeout(() => {
           requestAnimationFrame(() => {
             this.detectFrame(video, model);
           });
         }, 1000);
-      });
+      };
+      if (this.player) {
+        model.detect(video).then(predictions => {
+          this.renderPredictions(predictions, video);
+          next();
+        });
+      };
+      next();
   },
 
   renderPredictions: function(predictions, video) {
@@ -111,7 +128,7 @@ export default createReactClass({
     }
     this.player = new Clappr.Player({
       parent: this.refs.player,
-      source: props.source,
+      source: cities[props.city],
       width: '100%',
       height: '100%',
       mute: true,
@@ -121,7 +138,10 @@ export default createReactClass({
       hideVolumeBar: true,
       chromeless: true,
       hlsjsConfig: {
-        enableWorker: true
+        enableWorker: true,
+        xhrSetup: (xhr) => {
+          xhr.setRequestHeader("Origin", "https://eartcam.com");
+        }
       }
     });
   },

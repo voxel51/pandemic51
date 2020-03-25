@@ -5,10 +5,10 @@ import Layout from "../components/layout"
 import Image from "../components/image"
 import SEO from "../components/seo"
 
-const SeattlePage = () => (
-  <Layout city="seattle">
+const PraguePage = () => (
+  <Layout city="prague">
     <SEO title="" />
   </Layout>
 )
 
-export default SeattlePage
+export default PraguePage

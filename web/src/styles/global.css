@@ -73,7 +73,7 @@ a, a:hover {
 }
 
 .active-card {
-  margin-left: 1rem;
+  border-left: 4px solid var(--color-primary);
 }
 
 

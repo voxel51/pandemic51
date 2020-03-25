@@ -26,11 +26,13 @@ const useStyles = makeStyles({
 });
 
 const timezones = {
-  "miami": "America/New_York",
-  "newyork": "America/New_York",
   "chicago": "America/Chicago",
-  "seattle": "America/Los_Angeles",
-  "sanfrancisco": "America/Los_Angeles"
+  "dublin": "Europe/Dublin",
+  "london": "Europe/London",
+  "neworleans": "America/Chicago",
+  "newjersey": "America/New_York",
+  "newyork": "America/New_York",
+  "prague": "Europe/Prague"
 }
 
 export default function CityCard(props) {
