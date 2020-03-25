@@ -77,15 +77,25 @@ def download_stream(stream_name, output_dir, timeout=None):
                 processed_uris.append(uri)
 
 
-def vid2img(inpath, outpath, width=300, height=300):
-    '''Convert a video to a configurable-resolution image'''
+def vid2img(inpath, outpath, width=None, height=None):
+    '''Convert a video to a configurable-resolution image
+
+    Args:
+        inpath: input video path
+        outpath: output png image path
+        width:
+        height: optional integer resizing options. If both are not specified,
+            the default video dimensions are used
+    '''
     if os.path.exists(outpath):
         return False
 
     etau.ensure_basedir(outpath)
 
-    outcmd = "-ss 00:00:00 -t 00:00:01 -s %dx%d -r 1 -f image2" \
-             % (width, height)
+
+    resize_param = "-s %dx%d" % (width, height) if width and height else ""
+
+    outcmd = "-ss 00:00:00 -t 00:00:01 %s -r 1 -f image2" % resize_param
 
     cmd = ffmpy.FFmpeg(
         inputs={inpath:None },
@@ -99,12 +109,16 @@ def vid2img(inpath, outpath, width=300, height=300):
 
 
 def download_and_store(
-        stream_name, out_dir, tmpdirbase=None, width=300, height=300):
+        stream_name, out_dir, tmpdirbase=None, width=None, height=None):
     '''Download an image from the latest stream, and add it to the database
 
     Returns:
-        image_path - path the the downloaded image on disk
-        dt - datetime object of when the image was downloaded
+        image_path: path the the downloaded image on disk
+        dt: datetime object of when the image was downloaded
+        tmpdirbase: base directory to create a tmpdir in
+        width:
+        height: optional integer resizing options. If both are not specified,
+            the default video dimensions are used
     '''
     with etau.TempDir(basedir=tmpdirbase) as tmpdir:
         # download video
