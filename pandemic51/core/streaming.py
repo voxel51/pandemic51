@@ -45,8 +45,10 @@ def get_chunk_info(webpage):
     while chunk_url == None and attempts < 20:
         try:
             browser_log = driver.get_log('performance') 
-            events = [process_browser_log_entry(entry) for entry in browser_log]
-            events = [event for event in events if 'Network.response' in event['method']]
+            events = [process_browser_log_entry(entry)
+                      for entry in browser_log]
+            events = [event for event in events
+                      if 'Network.response' in event['method']]
             
             for event in events:
                 try:
@@ -65,7 +67,8 @@ def get_chunk_info(webpage):
         return chunk_url
     
     else:
-        raise TimeoutError("Could not find the chunklist in the network traffic in time")
+        raise TimeoutError(
+            "Could not find the chunklist in the network traffic in time")
 
 
 def save_video(uri, base_path, output_dir):

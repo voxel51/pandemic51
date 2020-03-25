@@ -28,7 +28,7 @@ P51_SQL_PASSWORD = "{{PASSWORD}}" # TODO REPLACE ME
 P51_SQL_DATABASE_NAME = "p51db"
 
 # Info to download streams
-streams_path = os.path.join(P51_REPO_DIR, "config/streams.json")
+streams_path = os.path.join(P51_REPO_DIR, "pandemic51/config/streams.json")
 STREAMS = etas.load_json(streams_path)
 
 # CELERY PERIODIC TASKS
