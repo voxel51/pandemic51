@@ -7,8 +7,8 @@ import os
 import celery
 
 import pandemic51.core.config as panc
-from pandemic51.core.density import compute_density_for_unprocessed_images
-from pandemic51.core.streaming import download_and_store
+import pandemic51.core.density as pand
+import pandemic51.core.streaming as pans
 
 
 app = celery.Celery("pandemic51.core.tasks")
@@ -21,17 +21,25 @@ def setup_periodic_tasks(sender, **kwargs):
         sender.add_periodic_task(
             panc.STREAM_DOWNLOAD_INTERVAL, das_task.s(stream_name))
         sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
+        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, csfde_task.s())
 
 
 @app.task()
 def das_task(stream_name):
     '''"Download And Store (DAS) task'''
     tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
-    download_and_store(
+    pans.download_and_store(
         stream_name, out_dir=panc.IMAGE_DIR, tmpdirbase=tmpdirbase)
 
 
 @app.task()
 def cdfui_task():
     '''"Compute Density For Unprocessed Images (CDFUI) task'''
-    compute_density_for_unprocessed_images()
+    pand.compute_density_for_unprocessed_images()
+
+
+@app.task()
+def csfde_task():
+    '''Compute SDI For Database Entries (CSFDE) task'''
+    pand.compute_sdi_for_database_entries(
+        null_only=True, sdi_metric=pand.simple_sdi)
