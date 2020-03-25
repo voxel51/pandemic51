@@ -4,6 +4,16 @@ import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
+const cities = {
+  "chicago": "http://34.67.136.168/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
+  "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
+  "london": "http://34.67.136.168/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
+  "newjersey": "http://34.67.136.168/fecnetwork/5173.flv/chunklist_w246713699.m3u8",
+  "neworleans": "http://34.67.136.168/fecnetwork/4280.flv/chunklist_w2121039669.m3u8",
+  "newyork": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8",
+  "prague": "http://34.67.136.168/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
+}
+
 const DETECTION_INTERVAL_MS = 1000;
 const DETECTIONS_TO_SHOW = [
   'person',
@@ -11,7 +21,7 @@ const DETECTIONS_TO_SHOW = [
 
 const modelPromise = cocoSsd.load();
 
-export default function ClapprPlayer({source}) {
+export default function ClapprPlayer({city}) {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const playerRef = useRef(null);
@@ -20,7 +30,7 @@ export default function ClapprPlayer({source}) {
   const createPlayer = () => {
     let player = new Clappr.Player({
       parent: playerRef.current,
-      source: source,
+      source: cities[city],
       width: '100%',
       height: '100%',
       mute: true,
@@ -70,7 +80,7 @@ export default function ClapprPlayer({source}) {
       player.destroy();
     }
   };
-  useEffect(createPlayer, [source]);
+  useEffect(createPlayer, [city]);
 
   const updateSize = () => {
     const parentRef = playerRef.current.parentNode.parentNode;
@@ -130,5 +140,5 @@ export default function ClapprPlayer({source}) {
 }
 
 ClapprPlayer.propTypes = {
-  source: PropTypes.string,
+  city: PropTypes.string,
 }

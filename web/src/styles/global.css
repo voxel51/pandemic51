@@ -63,6 +63,27 @@ img {
     --padding-y: 10rem;
 }
 
+.cta {
+  text-align: center;
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 1040px;
+  background: var(--bg-dark-primary);
+  background-image: url("../images/design.svg");
+  background-size: cover;
+min-width: 100%;
+    padding: 4rem var(--padding-x);
+      display: grid;
+    grid-template-columns: 1fr 61.7% 1fr;
+    grid-template-areas:
+        ". title ."
+        ". visual ."
+        ". text ."
+        ". hook .";
+    justify-items: center;
+    align-items: start;
+}
+
 body {
     background: var(--bg-light-secondary);
 }
@@ -73,7 +94,7 @@ a, a:hover {
 }
 
 .active-card {
-  margin-left: 1rem;
+  border-left: 4px solid var(--color-primary);
 }
 
 
@@ -1063,6 +1084,9 @@ hr {
   align-self: center;
   justify-self: start;
   padding-bottom: 1rem;
+  text-align: center;
+  width: 100%;
+  color: var(--text-primary-on-dark);
 }
 
 .body_block--center .body_block__title ,
@@ -1091,6 +1115,7 @@ hr {
   grid-area: text;
   width: 100%;
   padding-bottom: 2rem;
+  color: var(--text-secondary-on-dark);
 }
 
 .body_block--center > .body_block__text {

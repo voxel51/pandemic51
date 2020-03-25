@@ -45,7 +45,8 @@ try:
 except KeyError:
     pass
 
-sys.path.insert(1, panc.EFFICIENTDET_DIR)
+insert_idx = 0 if sys.path[0].endswith("eta/tensorflow/models/research") else 1
+sys.path.insert(insert_idx, panc.EFFICIENTDET_DIR)
 import efficientdet_arch
 import hparams_config
 import inference

@@ -6,6 +6,7 @@
  */
 
 import React from "react"
+import Helmet from "react-helmet"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
@@ -78,36 +79,61 @@ const Layout = ({ children, city }) => {
 
   return (
     <div className={classes.wrapper}>
-    <Header/>
+      <Helmet>
+        <meta name="referrer" content="no-referrer"/>
+      </Helmet>
+      <Header/>
+      <div className="cta">
+        <h2 class="body_block__title">
+          Coronavirus
+  </h2>
+  <div class="body_block__text">
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+    Text
+      <h3 class="force-pad-top6 force-pad-bot1"><span class="text-tertiary-on-dark">Stop the spread. Flatten the curve.</span></h3>
+  </div>
+    </div>
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={3}>
-          <CityCard cityId="newyork" name="New York" active={city}/>
-          <CityCard cityId="miami" name="Miami" active={city}/>
           <CityCard cityId="chicago" name="Chicago" active={city}/>
-          <CityCard cityId="sanfrancisco" name="San Francisco" active={city}/>
-          <CityCard cityId="seattle" name="Seattle" active={city}/>
+          <CityCard cityId="dublin" name="Dublin" active={city}/>
+          <CityCard cityId="london" name="London" active={city}/>
+          <CityCard cityId="newjersey" name="New Jersey" active={city}/>
+          <CityCard cityId="neworleans" name="New Orleans" active={city}/>
+          <CityCard cityId="newyork" name="New York" active={city}/>
+          <CityCard cityId="prague" name="Prague" active={city}/>
         </Grid>
         <Grid item xs={12} md={9}>
           <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
-              <Card square>
-                        <CardContent>
-                          <Typography variant="h5" component="h3">
-                            Header
-                          </Typography>
-                          <Typography className={classes.pos} color="textSecondary">
-                            Subheader
-          </Typography>
-          <Typography variant="body2" component="p">
-            Content
-          </Typography>
-        </CardContent>
-
-              </Card>
-            </Grid>
-            <Grid item md={6}>
-                <ClapprPlayer source="https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8" />
+            <Grid item md={12}>
+                <ClapprPlayer city={city} />
             </Grid>
           </Grid>
           <Hidden smDown>
