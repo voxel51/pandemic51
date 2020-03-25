@@ -1,6 +1,7 @@
 '''
 
 '''
+from collections import defaultdict
 import os
 
 import pymysql
@@ -80,7 +81,7 @@ def query_unprocessed_images(*args, cnx):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return result
+    return list(result)
 
 
 @with_connection
@@ -92,3 +93,36 @@ def add_stream_labels(id, labels_path, *args, cnx):
         cursor.execute(sql)
 
     cnx.commit()
+
+
+@with_connection
+def query_sdi(stream_name=None, cnx=None):
+    '''
+    Args:
+        stream_name:
+        cnx:
+
+    Returns:
+         a dictionary of:
+            key:
+            value:
+    '''
+    with cnx.cursor() as cursor:
+        stream_search = (
+                " where stream_name = '%s'" % stream_name
+                if stream_name else ""
+        )
+
+        sql = '''
+        select stream_name, datetime, sdi from stream_history%s
+         ORDER BY datetime;
+        '''.format(stream_search)
+        result = cursor.execute(sql)
+
+    result_dict = defaultdict(defaultdict(list))
+
+    for stream_name, datetime, sdi in result:
+        result_dict[stream_name]["datetime"].append(datetime)
+        result_dict[stream_name]["sdi"].append(sdi)
+
+    return result_dict

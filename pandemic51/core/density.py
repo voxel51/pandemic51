@@ -19,6 +19,7 @@ from builtins import *
 import logging
 import os
 import pathlib
+import random
 
 import numpy as np
 
@@ -77,10 +78,18 @@ def compute_density_for_unprocessed_images():
     detector = load_efficientdet_model(MODEL_NAME)
 
     with detector:
-        for id, image_path in pand.query_unprocessed_images():
+        # get the full list of unprocessed and process in a random order
+        # (in case multiple tasks are running)
+        unprocessed_images = pand.query_unprocessed_images()
+        random.shuffle(unprocessed_images)
+        for id, image_path in unprocessed_images:
             ipath = pathlib.Path(image_path)
             labels_path = str(os.path.join(
                 panco.LABELS_DIR, ipath.parent.stem, ipath.stem + ".json"))
+
+            if os.path.exists(labels_path):
+                # another celery worker processed this image, so skip
+                continue
 
             _process_image(detector, image_path, labels_path)
 
