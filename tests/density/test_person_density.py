@@ -24,16 +24,15 @@ import eta.core.utils as etau
 
 import pandemic51.core.density as pand
 
-
-IMAGES_DIR = "data/timessquare_imgs"
-LABELS_DIR = "out/labels"
-IMAGES_ANNO_DIR = "out/anno"
-
-MAX_NUM_IMAGES = 10
+stream = "timessquare"
+IMAGES_DIR = os.path.join("data",stream+"_imgs")
+LABELS_DIR = os.path.join("out",stream,"labels")
+IMAGES_ANNO_DIR = os.path.join("out",stream,"anno")
 
 
 # Input images to process
-inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:MAX_NUM_IMAGES]
+#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:MAX_NUM_IMAGES]
+inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)
 
 # Path to write output labels
 outpaths = [
