@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
-const cities = {
+const CITIES = {
   "chicago": "http://34.67.136.168/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
   "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
   "london": "http://34.67.136.168/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
@@ -15,19 +15,22 @@ const cities = {
 }
 
 const DETECTION_INTERVAL_MS = 1000;
+const DETECTIONS_TO_SHOW = [
+  'person',
+];
+
+const modelPromise = cocoSsd.load();
 
 export default function ClapprPlayer({city}) {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const playerRef = useRef(null);
   const canvasRef = useRef(null);
-  // only call load() once per instance (todo: call it once ever?)
-  const [modelPromise] = useState(() => cocoSsd.load());
 
   const createPlayer = () => {
     let player = new Clappr.Player({
       parent: playerRef.current,
-      source: cities[city],
+      source: CITIES[city],
       width: '100%',
       height: '100%',
       mute: true,
@@ -55,10 +58,14 @@ export default function ClapprPlayer({city}) {
       }
       try {
         const video = await videoPromise;
-        if (video) {
+        if (video && !cancelled) {
           const model = await modelPromise;
-          const predictions = await model.detect(video);
-          renderPredictions(predictions, video);
+          if (!cancelled) {
+            const predictions = await model.detect(video);
+            if (!cancelled) {
+              renderPredictions(predictions, video);
+            }
+          }
         }
       } finally {
         setTimeout(() => {
@@ -73,7 +80,7 @@ export default function ClapprPlayer({city}) {
       player.destroy();
     }
   };
-  useEffect(createPlayer, [city, width, height]);
+  useEffect(createPlayer, [city]);
 
   const updateSize = () => {
     const parentRef = playerRef.current.parentNode.parentNode;
@@ -103,8 +110,9 @@ export default function ClapprPlayer({city}) {
     const th = t_template(video.videoHeight, height);
     const tw = t_template(video.videoWidth, width);
     predictions.forEach(prediction => {
-      console.log(prediction);
-      if (prediction.class !== 'person') return;
+      if (!DETECTIONS_TO_SHOW.includes(prediction.class)) {
+        return;
+      }
       const x = tw(prediction.bbox[0]);
       const y = th(prediction.bbox[1]);
       const width = tw(prediction.bbox[2]);
