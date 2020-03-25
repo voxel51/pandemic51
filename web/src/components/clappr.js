@@ -4,7 +4,7 @@ import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
-const cities = {
+const CITIES = {
   "chicago": "http://34.67.136.168/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
   "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
   "london": "http://34.67.136.168/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
@@ -30,7 +30,7 @@ export default function ClapprPlayer({city}) {
   const createPlayer = () => {
     let player = new Clappr.Player({
       parent: playerRef.current,
-      source: cities[city],
+      source: CITIES[city],
       width: '100%',
       height: '100%',
       mute: true,
