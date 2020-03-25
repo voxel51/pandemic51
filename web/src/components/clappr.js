@@ -5,6 +5,9 @@ import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 
 const DETECTION_INTERVAL_MS = 1000;
+const DETECTIONS_TO_SHOW = [
+  'person',
+];
 
 export default function ClapprPlayer({source}) {
   const [height, setHeight] = useState(0);
@@ -93,7 +96,9 @@ export default function ClapprPlayer({source}) {
     const th = t_template(video.videoHeight, height);
     const tw = t_template(video.videoWidth, width);
     predictions.forEach(prediction => {
-      if (prediction.class !== 'person') return;
+      if (!DETECTIONS_TO_SHOW.includes(prediction.class)) {
+        return;
+      }
       const x = tw(prediction.bbox[0]);
       const y = th(prediction.bbox[1]);
       const width = tw(prediction.bbox[2]);
