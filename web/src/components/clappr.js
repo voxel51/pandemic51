@@ -63,7 +63,7 @@ export default function ClapprPlayer({source}) {
       player.destroy();
     }
   };
-  useEffect(createPlayer, [source, width, height]);
+  useEffect(createPlayer, [source]);
 
   const updateSize = () => {
     const parentRef = playerRef.current.parentNode.parentNode;
