@@ -92,7 +92,6 @@ def vid2img(inpath, outpath, width=None, height=None):
 
     etau.ensure_basedir(outpath)
 
-
     resize_param = "-s %dx%d" % (width, height) if width and height else ""
 
     outcmd = "-ss 00:00:00 -t 00:00:01 %s -r 1 -f image2" % resize_param
