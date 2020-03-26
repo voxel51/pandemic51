@@ -1,5 +1,5 @@
 '''
-Computes person density in a collection of images.
+Computes object density in a collection of images.
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com
@@ -32,17 +32,14 @@ import pandemic51.constants as panc
 logger = logging.getLogger(__name__)
 
 
+#MODEL_NAME = "efficientdet-d0"
 MODEL_NAME = "efficientdet-d4"
+#MODEL_NAME = "efficientdet-d6"
 
+LABELS_WHITELIST = {"person", "bicycle", "car", "motorcycle"}
 
-def compute_object_density(objects):
-    # @todo could implement a proper scanline algorithm for this
-    mask = np.zeros((512, 512), dtype=bool)
-    for obj in objects:
-        tlx, tly, w, h = obj.bounding_box.coords_in(img=mask)
-        mask[tly:tly + h, tlx:tlx + w] = True
-
-    return mask.sum() / mask.size
+CONFIDENCE_THRESH = 0
+#CONFIDENCE_THRESH = 0.15
 
 
 def load_efficientdet_model(model_name):
@@ -58,7 +55,27 @@ def load_efficientdet_model(model_name):
     return config.build()
 
 
-def compute_person_density_for_images(inpaths, outpaths):
+def compute_object_density(objects):
+    # @todo could implement a proper scanline algorithm for this
+    mask = np.zeros((512, 512), dtype=bool)
+    for obj in objects:
+        tlx, tly, w, h = obj.bounding_box.coords_in(img=mask)
+        mask[tly:tly + h, tlx:tlx + w] = True
+
+    return mask.sum() / mask.size
+
+
+def filter_objects(objects):
+    filters = []
+    if CONFIDENCE_THRESH:
+        filters.append(lambda obj: obj.confidence > CONFIDENCE_THRESH)
+    if LABELS_WHITELIST:
+        filters.append(lambda obj: obj.label in LABELS_WHITELIST)
+
+    return objects.get_matches(filters, match=all)
+
+
+def compute_object_density_for_images(inpaths, outpaths):
     detector = load_efficientdet_model(MODEL_NAME)
 
     with detector:
@@ -67,19 +84,18 @@ def compute_person_density_for_images(inpaths, outpaths):
             img = etai.read(inpath)
 
             objects = detector.detect(img)
-
-            # @todo apply confidence threshold, if necessary
-
-            objects = objects.get_matches([lambda obj: obj.label == "person"])
+            objects = filter_objects(objects)
 
             count = len(objects)
             density = compute_object_density(objects)
-            logger.info("Found %d people (density = %.3f)", count, density)
+            logger.info("Found %d objects (density = %.3f)", count, density)
 
             image_labels = etai.ImageLabels()
             image_labels.add_objects(objects)
-            image_labels.add_attribute(etad.NumericAttribute("count", count))
-            image_labels.add_attribute(etad.NumericAttribute("density", density))
+            image_labels.add_attribute(
+                etad.NumericAttribute("count", count))
+            image_labels.add_attribute(
+                etad.NumericAttribute("density", density))
 
             logger.info("Writing labels to '%s'", outpath)
             image_labels.write_json(outpath)

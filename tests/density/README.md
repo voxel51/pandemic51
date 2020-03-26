@@ -1,27 +1,36 @@
-# Person density test
+# Object density test
 
 ## Download sample data
 
 Download some sample images to `data/` by running the following commands:
 
 ```bash
-mkdir -p data
-eta gdrive download 1JgVbZHKMPjA82Vxohx0VjVo3bdVRenN0 data/timesquare_imgs.zip
-unzip data/timesquare_imgs.zip -d data/
-rm data/timesquare_imgs.zip
+eta gdrive download-dir 1RE-JMlKLYpQbfOkbwMFRhr_xaQ7ULVl_ data/
+
+shopt -s nullglob
+for f in data/*.zip; do
+    unzip $f  -d data/
+    rm $f
+done
 ```
 
 
 ## Run test
 
-Run a person density test by executing the test script:
+Compute object density by executing the test script:
 
 ```py
-python test_person_density.py
+python compute_object_density.py
 ```
 
 The script outputs `ImageLabels` to `out/labels` and annotated images with the
 predictions overlaid to `out/anno`.
+
+Plot the outputs of the above script by running the following script:
+
+```py
+python plot_object_density.py
+```
 
 
 ## Copyright

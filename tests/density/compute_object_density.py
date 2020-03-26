@@ -1,5 +1,5 @@
 '''
-Test script demonstrating person density calculation on a set of images.
+Test script demonstrating object density calculation on a set of images.
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com
@@ -25,13 +25,14 @@ import eta.core.utils as etau
 import pandemic51.core.density as pand
 
 
-IMAGES_DIR = "data/timessquare_imgs"
+IMAGES_DIR = "data/prague_imgs"
+#IMAGES_DIR = "data/timessquare_imgs"
 LABELS_DIR = "out/labels"
 IMAGES_ANNO_DIR = "out/anno"
 
 
 # Input images to process
-#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:MAX_NUM_IMAGES]
+#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:10]
 inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)
 
 # Path to write output labels
@@ -40,14 +41,18 @@ outpaths = [
         LABELS_DIR, os.path.splitext(os.path.basename(inpath))[0] + ".json")
     for inpath in inpaths]
 
-# Compute person density
-pand.compute_person_density_for_images(inpaths, outpaths)
+# Compute object density
+pand.compute_object_density_for_images(inpaths, outpaths)
 
 # Render output annotations
+config = etaa.AnnotationConfig.from_dict({
+    "add_logo": False,
+    "show_all_confidences": True,
+})
 for inpath, outpath in zip(inpaths, outpaths):
     annopath = os.path.join(IMAGES_ANNO_DIR, os.path.basename(inpath))
 
     img = etai.read(inpath)
     image_labels = etai.ImageLabels.from_json(outpath)
-    img_anno = etaa.annotate_image(img, image_labels)
+    img_anno = etaa.annotate_image(img, image_labels, annotation_config=config)
     etai.write(img_anno, annopath)
