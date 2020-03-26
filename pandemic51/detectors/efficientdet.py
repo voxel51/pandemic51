@@ -138,7 +138,10 @@ class EfficientDet(etal.ObjectDetector, etat.UsesTFSession):
         logger.info("Loading model from '%s'", model_dir)
 
         # @todo(Tyler) START
-        config = tf.ConfigProto(device_count={'GPU': 0, 'CPU': 3})
+        config = tf.ConfigProto(
+            intra_op_parallelism_threads=3,
+            inter_op_parallelism_threads=3
+        )
         self._sess = self.make_tf_session(config_proto=config)
         # @todo(Tyler) END
 
