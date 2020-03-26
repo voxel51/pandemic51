@@ -102,11 +102,13 @@ class Layout extends React.Component  {
           <Hidden smDown>
           <Grid container spacing={4}>
             <Grid item md={12}>
-              <Chart title="Social Distancing Index (SDI)" city={city}/>
+              <Chart title="Social Distancing Index (SDI)" city={city}
+                // todo: use correct image url
+                onClick={(_) => this.setState({src: urls[city]})}/>
             </Grid>
           </Grid>
           </Hidden>
-            <Grid container spacing={4} onClick={() => this.setState({src: urls[city]})}>
+            <Grid container spacing={4}>
               <Grid item xs={12} className="detector-container" style={{boxSizing: 'content-box'}}>
                 <ClapprPlayer city={city} />
                 <ImageOverlay src={this.state.src} onClose={(e) => {
