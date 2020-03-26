@@ -134,10 +134,6 @@ def compute_sdi_for_database_entries(null_only=True, sdi_metric=simple_sdi):
 
 def _process_image(detector, inpath, outpath):
     logger.info("Processing image '%s'", inpath)
-
-    # Disable logging
-    logger.propagate = False
-
     img = etai.read(inpath)
 
     objects = detector.detect(img)
@@ -145,9 +141,6 @@ def _process_image(detector, inpath, outpath):
     # @todo apply confidence threshold, if necessary
 
     objects = objects.get_matches([lambda obj: obj.label == "person"])
-
-    # Re-enable logging
-    logger.propagate = True
 
     count = len(objects)
     density = compute_object_density(objects)

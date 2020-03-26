@@ -150,7 +150,7 @@ class EfficientDet(etal.ObjectDetector, etat.UsesTFSession):
     def __exit__(self, *args):
         self.close()
 
-    def detect(self, img, verbose=False):
+    def detect(self, img):
         '''Performs detection on the input image.
 
         Args:
@@ -160,15 +160,7 @@ class EfficientDet(etal.ObjectDetector, etat.UsesTFSession):
             an `eta.core.objects.DetectedObjectContainer` describing the
                 detections
         '''
-        if not verbose:
-            tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
-
-        result = self._detect(img)
-
-        if not verbose:
-            tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.INFO)
-
-        return result
+        return self._detect(img)
 
     def _detect(self, img):
         # Perform inference
