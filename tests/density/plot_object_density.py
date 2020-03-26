@@ -4,18 +4,6 @@ Test script for plotting object density vs time.
 Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
-# pragma pylint: disable=redefined-builtin
-# pragma pylint: disable=unused-wildcard-import
-# pragma pylint: disable=wildcard-import
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from builtins import *
-# pragma pylint: enable=redefined-builtin
-# pragma pylint: enable=unused-wildcard-import
-# pragma pylint: enable=wildcard-import
-
 import os
 
 import matplotlib as mpl
@@ -73,7 +61,7 @@ for label_path in label_paths:
     label_map[timestamp] = image_labels
 
     count_map[timestamp] = len(objects)
-    density_map[timestamp] = pand.compute_object_density(objects)
+    density_map[timestamp] = pand._compute_object_density(objects)
 
 
 if MIN_DATE:
