@@ -107,16 +107,18 @@ export default function ClapprPlayer({city}) {
 
   const renderPredictions = (predictions, video) => {
     const ctx = canvasRef.current.getContext("2d");
-    ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+    const canvasWidth = ctx.canvas.width;
+    const canvasHeight = ctx.canvas.height;
+    ctx.clearRect(0, 0, canvasWidth, canvasHeight);
     // Font options.
     const font = "12px sans-serif";
     ctx.font = font;
     ctx.textBaseline = "top";
     const t_template = (from, to) => i => i / from * to;
-    const th = t_template(video.videoHeight, height);
-    const tw = t_template(video.videoWidth, width);
+    const th = t_template(video.videoHeight, canvasHeight);
+    const tw = t_template(video.videoWidth, canvasWidth);
     ctx.fillStyle = "#499cef";
-    ctx.fillText(`${predictions.length}`, 10, height-18);
+    ctx.fillText(`${predictions.length}`, 10, canvasHeight - 18);
     ctx.strokeStyle = "#499cef";
     ctx.lineWidth = 2;
     predictions.forEach(prediction => {
