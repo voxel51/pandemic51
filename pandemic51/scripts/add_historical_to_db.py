@@ -44,9 +44,6 @@ for cur_images_dir, _, files in os.walk(images_dir):
     assert stream_name in panc.STREAMS, \
         "Unknown stream_name: '{}'".format(stream_name)
 
-    if stream_name == "dublin":
-        continue
-
     for filename in files:
         json_filename = os.path.splitext(filename)[0] + ".json"
 
