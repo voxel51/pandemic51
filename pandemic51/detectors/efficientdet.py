@@ -139,8 +139,9 @@ class EfficientDet(etal.ObjectDetector, etat.UsesTFSession):
 
         # @todo(Tyler) START
         config = tf.ConfigProto(
-            intra_op_parallelism_threads=3,
-            inter_op_parallelism_threads=3
+            device_count={'GPU': 0, 'CPU': 1},
+            intra_op_parallelism_threads=1,
+            inter_op_parallelism_threads=1
         )
         self._sess = self.make_tf_session(config_proto=config)
         # @todo(Tyler) END
