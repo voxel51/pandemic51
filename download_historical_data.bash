@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-## download images
+# download images
 eta gdrive download 1oMgp_SxuYKVbIYani4Zvst-dEZAnCRpW data/historical/images/abbey_road_imgs.zip
 eta gdrive download 1k7R_uMjR46oKeArIoQnTTeYiS2M15XRr data/historical/images/chicago_imgs.zip
 eta gdrive download 1w9hPEXhMlSQSqLsyxTNRuRE3Opjb8-Dr data/historical/images/dublin_imgs.zip
