@@ -22,7 +22,7 @@ const DETECTIONS_TO_SHOW = [
 const modelPromise = cocoSsd.load({base: 'lite_mobilenet_v2'});
 modelPromise.then(
   () => console.log('model loaded'),
-  (error) => console.log(`unable to load model: ${error.message}`)
+  (error) => console.error(`unable to load model: ${error.message}`)
 );
 
 export default function ClapprPlayer({city}) {
@@ -130,7 +130,7 @@ export default function ClapprPlayer({city}) {
       const width = tw(prediction.bbox[2]);
       const height = th(prediction.bbox[3]);
       // Throw away any bad detection covering the whole scene or most of it
-      if (width*height > 100000) {
+      if (width * height > canvasWidth * canvasHeight / 2) {
         return;
       }
       // Draw the bounding box in the Voxel51 blue.
