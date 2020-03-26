@@ -9,7 +9,7 @@ import React from "react"
 import Helmet from "react-helmet"
 import PropTypes from "prop-types"
 import { useStaticQuery, graphql } from "gatsby"
-import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { withStyles, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -26,8 +26,7 @@ import Header from './header';
 import Footer from './footer';
 import Typography from '@material-ui/core/Typography';
 
-const useStyles = makeStyles((theme) =>
-  createStyles({
+const styles = {
     wrapper: {
       display: "flex",
       minHeight: "100vh",
@@ -35,38 +34,32 @@ const useStyles = makeStyles((theme) =>
     },
     root: {
       width: "100%",
-    },
-    paper: {
-      padding: theme.spacing(2),
-      textAlign: 'center',
-      color: theme.palette.text.secondary,
-      background: "transparent",
-      boxShadow: "none",
-      border: "none",
-      margin: 32
-    },
-  }),
-);
-
-const Layout = ({ children, city }) => {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
-      }
-      file(relativePath: { eq: "full-logo.png" }) {
-        childImageSharp {
-          fluid {
-            ...GatsbyImageSharpFluid_noBase64
-          }
-        }
-      }
     }
-  `);
+};
 
-  const classes = useStyles();
+
+
+
+class Layout extends React.Component  {
+  constructor(props) {
+    super(props);
+    this.state = {
+      urls: {}
+    };
+  }
+  componentDidMount() {
+    fetch("http://34.67.136.168/api/snapshots")
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        this.setState({ urls: json["data"] })
+      });
+  }
+
+  render() {
+    const { classes, children, city } = this.props;
+    const { urls } = this.state;
+
     const opts = {
       width: "100%",
       playerVars: { // https://developers.google.com/youtube/player_parameters
@@ -74,7 +67,7 @@ const Layout = ({ children, city }) => {
       }
     };
 
-  return (
+    return (
     <div className={classes.wrapper}>
       <Helmet>
         <meta name="referrer" content="no-referrer"/>
@@ -96,13 +89,13 @@ const Layout = ({ children, city }) => {
   <div className="contentBody">
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
-          <CityCard cityId="chicago" name="Chicago" active={city}/>
-          <CityCard cityId="dublin" name="Dublin" active={city}/>
-          <CityCard cityId="london" name="London" active={city}/>
-          <CityCard cityId="newjersey" name="New Jersey" active={city}/>
-          <CityCard cityId="neworleans" name="New Orleans" active={city}/>
-          <CityCard cityId="newyork" name="New York" active={city}/>
-          <CityCard cityId="prague" name="Prague" active={city}/>
+          <CityCard cityId="chicago" name="Chicago" active={city} url={urls["chicago"]}/>
+          <CityCard cityId="dublin" name="Dublin" active={city} url={urls["dublin"]}/>
+          <CityCard cityId="london" name="London" active={city} url={urls["london"]}/>
+          <CityCard cityId="newjersey" name="New Jersey" active={city} url={urls["newjersey"]}/>
+          <CityCard cityId="neworleans" name="New Orleans" active={city} url={urls["neworleans"]}/>
+          <CityCard cityId="newyork" name="New York" active={city} url={urls["newyork"]}/>
+          <CityCard cityId="prague" name="Prague" active={city} url={urls["prague"]}/>
         </Grid>
         <Grid item xs={12} md={8}>
           <Hidden smDown>
@@ -124,10 +117,12 @@ const Layout = ({ children, city }) => {
     <Footer/>
   </div>
   )
+  }
 }
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,
+  classes: PropTypes.node.isRequired,
 }
 
-export default Layout
+export default withStyles(styles)(Layout)

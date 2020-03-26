@@ -65,8 +65,8 @@ export default function CityCard(props) {
       <CardActionArea>
         <CardMedia
           className={classes.still + (active ? " active-card" : "")}
-          image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
-          title="Contemplative Reptile"
+          image={props.url}
+          title={locations[props.cityId]}
         />
         <Link to={"/" + props.cityId}>
         <CardContent className={classes.content}>

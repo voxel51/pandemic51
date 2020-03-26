@@ -55,7 +55,7 @@ class Chart extends Component {
 
   componentDidMount() {
 
-    fetch(`http://34.67.136.168/api/${this.props.city}/data`)
+    fetch(`http://34.67.136.168/api/data/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
         console.log(json);
