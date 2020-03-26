@@ -47,6 +47,16 @@ const timezones = {
   "prague": "Europe/Prague"
 }
 
+const locations = {
+  "chicago": "Wrigley Field",
+  "dublin": "Temple Bar",
+  "london": "Abbey Road",
+  "neworleans": "Bourbon Street",
+  "newjersey": "Seaside Heights",
+  "newyork": "Times Square",
+  "prague": "Grand Hotel"
+}
+
 export default function CityCard(props) {
   const classes = useStyles();
   const active = props.cityId === props.active && props.cityId !== undefined;
@@ -67,7 +77,7 @@ export default function CityCard(props) {
             <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
           </Typography>
           <Typography variant="body2" component="p">
-            Some metric
+            {locations[props.cityId]}
           </Typography>
         </CardContent>
       </Link>
