@@ -37,7 +37,8 @@ const useStyles = makeStyles((theme) =>
       flexGrow: 1,
       margin: "4rem auto",
       maxWidth: "1040px",
-      width: "100%"
+      width: "100%",
+      padding: "0 var(--padding-x)"
     },
     paper: {
       padding: theme.spacing(2),
@@ -110,7 +111,7 @@ const Layout = ({ children, city }) => {
           <Hidden smDown>
           <Grid container spacing={4}>
             <Grid item md={12}>
-              <Chart title="Social Distancing Index (SDI)"/>
+              <Chart title="Social Distancing Index (SDI)" city={city}/>
             </Grid>
           </Grid>
           </Hidden>

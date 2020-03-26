@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import moment from 'moment'
 import {
   ResponsiveContainer,
   AreaChart,
@@ -18,30 +19,17 @@ import {
   Tooltip,
   Legend
 } from "recharts";
+import Async from "react-async";
 
-const TABLE_LIST = [
-	{
-		name: 'Page A', uv: 4000
-	},
-	{
-		name: 'Page B', uv: 3000
-	},
-	{
-		name: 'Page C', uv: 2000
-	},
-	{
-		name: 'Page D', uv: 2780
-	},
-	{
-		name: 'Page E', uv: 1890
-	},
-	{
-		name: 'Page F', uv: 2390
-	},
-	{
-		name: 'Page G', uv: 3490
-	}
-];
+const timezones = {
+  "chicago": "America/Chicago",
+  "dublin": "Europe/Dublin",
+  "london": "Europe/London",
+  "neworleans": "America/Chicago",
+  "newjersey": "America/New_York",
+  "newyork": "America/New_York",
+  "prague": "Europe/Prague"
+}
 
 const styles = theme => ({
   root: {
@@ -62,12 +50,22 @@ const styles = theme => ({
 
 class Chart extends Component {
   state = {
-    list: [...TABLE_LIST]
+    list: []
   };
+
+  componentDidMount() {
+
+    fetch(`http://34.67.136.168/api/${this.props.city}/data`)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        this.setState({ list: json["data"] })
+      });
+  }
 
   render() {
     const { list } = this.state;
-    const { classes, title } = this.props;
+    const { classes, title, city } = this.props;
     return (
       <Card className={classes.root} square>
         <CardContent>
@@ -75,15 +73,19 @@ class Chart extends Component {
 <AreaChart width={730} height={250} data={list}
   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
   <defs>
-    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="sdi" x1="0" y1="0" x2="0" y2="1">
       <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8}/>
       <stop offset="95%" stopColor="#ff6d04" stopOpacity={0}/>
     </linearGradient>
   </defs>
-  <XAxis dataKey="name" />
-  <YAxis />
+  <XAxis         dataKey = 'time'
+        domain = {['auto', 'auto']}
+        name = 'Time'
+        tickFormatter = {(unixTime) => moment(unixTime).tz(timezones[city]).format('hh:mm A M D')}
+        type = 'number'/>
+  <YAxis dataKey = 'sdi' name = 'SDI' />
   <Tooltip />
-  <Area type="monotone" dataKey="uv" stroke="#ff6d04" fillOpacity={1} fill="url(#colorUv)" />
+  <Area type="monotone" dataKey="sdi" stroke="#ff6d04" fillOpacity={1} fill="url(#colorUv)" />
 </AreaChart>
       </ResponsiveContainer>
       </CardContent>
