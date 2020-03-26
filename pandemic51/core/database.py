@@ -1,5 +1,8 @@
 '''
+Database interaction.
 
+Copyright 2020 Voxel51, Inc.
+voxel51.com
 '''
 from collections import defaultdict
 import os
@@ -97,9 +100,11 @@ def add_stream_labels(id, labels_path, *args, cnx):
 
 @with_connection
 def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
-    '''
+    '''Returns the stream history for the specified stream(s).
+
     Args:
-        stream_name: if provided, only query a single stream is queried
+        stream_name: the stream name to query. By default, all streams are
+            returned
         reformat_as_dict: whether or not to reformat the query result as a
             dictionary keyed on `stream_name`
         cnx: a connection to the database, if one is already made
@@ -151,15 +156,16 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
         result_dict[stream_name]["data_path"].append(data_path)
         result_dict[stream_name]["labels_path"].append(labels_path)
         result_dict[stream_name]["sdi"].append(sdi)
+
     return result_dict
 
 
 @with_connection
-def populate_sdi(id, sdi, *args, cnx):
+def populate_object_count(id, count, *args, cnx):
     with cnx.cursor() as cursor:
         sql = '''
         UPDATE stream_history SET sdi='{}' where id={};
-        '''.format(sdi, id)
+        '''.format(count, id)
         cursor.execute(sql)
 
     cnx.commit()

@@ -1,6 +1,8 @@
 '''
-Celery Tasks
+Celery tasks.
 
+Copyright 2020 Voxel51, Inc.
+voxel51.com
 '''
 import os
 
@@ -20,26 +22,25 @@ def setup_periodic_tasks(sender, **kwargs):
     for stream_name in panc.STREAMS:
         sender.add_periodic_task(
             panc.STREAM_DOWNLOAD_INTERVAL, das_task.s(stream_name))
-        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, cdfui_task.s())
-        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, csfde_task.s())
+        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, dofui_task.s())
+        sender.add_periodic_task(panc.DENSITY_COMPUTE_INTERVAL, ccfde_task.s())
 
 
 @app.task()
 def das_task(stream_name):
-    '''"Download And Store (DAS) task'''
+    '''"Task for downloading and storing images.'''
     tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
     pans.download_and_store(
-        stream_name, out_dir=panc.IMAGE_DIR, tmpdirbase=tmpdirbase)
+        stream_name, out_dir=panc.IMAGES_DIR, tmpdirbase=tmpdirbase)
 
 
 @app.task()
-def cdfui_task():
-    '''"Compute Density For Unprocessed Images (CDFUI) task'''
-    pand.compute_density_for_unprocessed_images()
+def dofui_task():
+    '''"Task for detecting objects for all unprocessed images.'''
+    pand.detect_objects_in_unprocessed_images()
 
 
 @app.task()
-def csfde_task():
-    '''Compute SDI For Database Entries (CSFDE) task'''
-    pand.compute_sdi_for_database_entries(
-        null_only=True, sdi_metric=pand.simple_sdi)
+def ccfde_task():
+    '''Task for computing object counts for all non-null DB entries.'''
+    pand.compute_object_counts_for_db_entries()
