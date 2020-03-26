@@ -58,6 +58,9 @@ for cur_images_dir, _, files in os.walk(images_dir):
         new_labels_path = os.path.join(
             panc.LABELS_DIR, stream_name, json_filename)
 
+        assert os.path.exists(img_path), "Missing image: %s" % img_path
+        assert os.path.exists(labels_path), "Missing labels: %s" % labels_path
+
         logger.info("Moving file:\n\t%s\n\t-> %s" % (img_path, new_img_path))
         shutil.move(img_path, new_img_path)
 
