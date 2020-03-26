@@ -104,18 +104,18 @@ const Layout = ({ children, city }) => {
           <CityCard cityId="prague" name="Prague" active={city}/>
         </Grid>
         <Grid item xs={12} md={8}>
+          <Hidden smDown>
           <Grid container spacing={4}>
             <Grid item md={12}>
-                <ClapprPlayer city={city} />
+              <Chart title="Social Distancing Index (SDI)"/>
             </Grid>
           </Grid>
-          <Hidden smDown>
+          </Hidden>
             <Grid container spacing={4}>
               <Grid item xs={12}>
-              <Chart title="Social Distancing Index (SDI)"/>
+                <ClapprPlayer city={city} />
               </Grid>
             </Grid>
-          </Hidden>
         </Grid>
       </Grid>
     </div>
