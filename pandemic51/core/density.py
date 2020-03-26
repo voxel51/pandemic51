@@ -51,15 +51,18 @@ def detect_objects_in_unprocessed_images():
         - the annotated image to disk
         - the labels path to the DB
     '''
+    # Get the full list of unprocessed images
+    unprocessed_images = pand.query_unprocessed_images()
+
+    if not unprocessed_images:
+        return
+
+    # Process in a random order in case multiple tasks are running :)
+    random.shuffle(unprocessed_images)
+
     detector = _load_efficientdet_model(MODEL_NAME)
 
     with detector:
-        # Get the full list of unprocessed images
-        unprocessed_images = pand.query_unprocessed_images()
-
-        # Process in a random order in case multiple tasks are running :)
-        random.shuffle(unprocessed_images)
-
         for id, image_path in unprocessed_images:
             ipath = pathlib.Path(image_path)
 
