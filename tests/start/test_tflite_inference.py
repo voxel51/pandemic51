@@ -1,17 +1,29 @@
 '''
-
-Input:
-The model takes an image as input. The expected image is 300x300 pixels, with
-three channels (red, blue, and green) per pixel. This should be fed to the model
-as a flattened buffer of 270,000 byte values (300x300x3). Since the model is
-quantized, each value should be a single byte representing a value between 0 and
-255.
+Test script for interface with a TFLite model.
 '''
+import glob
+import os
+
 import numpy as np
 import tensorflow as tf
 
+from PIL import Image
+
+
+# Parameters
+MODEL_PATH = "model/detect.tflite"
+LABELMAP_PATH = "model/labelmap.txt"
+INPUT_PATTERN = "out/img/time_square/*.png"
+
 
 class Detector(object):
+    '''The model takes an image as input. The expected image is 300x300 pixels,
+    with three channels (red, blue, and green) per pixel. This should be fed to
+    the model as a flattened buffer of 270,000 byte values (300x300x3). Since
+    the model is quantized, each value should be a single byte representing a
+    value between 0 and 255.
+    '''
+
     def __init__(self, model_path, labelmap_path):
         # load labelmap
         with open(labelmap_path, "r") as text_file:
@@ -62,3 +74,31 @@ class Detector(object):
             "bboxes": bboxes,
             "confidences": confidences
         }
+
+
+# instantiate detector
+detector = Detector(MODEL_PATH, LABELMAP_PATH)
+
+# Test model on random input data.
+# img = np.array(np.random.random_sample((1, 300, 300, 3)), dtype=np.uint8)
+
+# load the image
+img_path = glob.glob(INPUT_PATTERN)[0]
+img = Image.open(img_path)
+
+# make prediction
+result = detector.predict(img)
+
+# parse result
+classes = result["classes"]
+bboxes = result["bboxes"]
+confidences = result["confidences"]
+
+# print result
+print("class | confidence | bbox")
+for idx in range(len(classes)):
+    print("{} | {} | {}".format(
+        classes[idx],
+        confidences[idx],
+        bboxes[idx]
+    ))
