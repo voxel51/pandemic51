@@ -30,10 +30,6 @@ class Header extends React.Component {
     }
   }
 
-  componentShouldUpdate() {
-    return true;
-  }
-
   render() {
     let menu = this.state.mobile === null ? "flex" : "none";
     menu = (this.state.mobile && this.state.nav) ? "block" : menu;

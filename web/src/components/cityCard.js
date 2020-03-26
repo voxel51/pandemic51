@@ -64,7 +64,7 @@ export default function CityCard(props) {
             {props.name}
           </Typography>
           <Typography className={classes.pos} color="textSecondary">
-            <Clock format={'HH:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
+            <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
           </Typography>
           <Typography variant="body2" component="p">
             Some metric
