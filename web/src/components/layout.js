@@ -21,6 +21,7 @@ import "./../utils/typography";
 import ClapprPlayer from './clappr';
 import Chart from './chart';
 import Hidden from '@material-ui/core/Hidden';
+import ImageOverlay from './imageOverlay';
 import SEO from './seo';
 import Header from './header';
 import Footer from './footer';
@@ -105,9 +106,13 @@ class Layout extends React.Component  {
             </Grid>
           </Grid>
           </Hidden>
-            <Grid container spacing={4}>
-              <Grid item xs={12}>
+            <Grid container spacing={4} onClick={() => this.setState({src: urls[city]})}>
+              <Grid item xs={12} className="detector-container" style={{boxSizing: 'content-box'}}>
                 <ClapprPlayer city={city} />
+                <ImageOverlay src={this.state.src} onClose={(e) => {
+                  e.stopPropagation();
+                  this.setState({src: null});
+                }}/>
               </Grid>
             </Grid>
         </Grid>
