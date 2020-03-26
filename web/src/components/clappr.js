@@ -73,7 +73,7 @@ export default function ClapprPlayer({city}) {
         }
       } catch (error) {
         // pass on the error -> the video data is just not available
-      }finally {
+      } finally {
         setTimeout(() => {
           requestAnimationFrame(detectFrame);
         }, DETECTION_INTERVAL_MS);
