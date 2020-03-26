@@ -164,6 +164,74 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
 
 
 @with_connection
+def plot(stream_name, reformat_as_dict=False, cnx=None):
+    '''
+    Args:
+        stream_name: if provided, only query a single stream is queried
+        reformat_as_dict: whether or not to reformat the query result as a
+            dictionary keyed on `stream_name`
+        cnx: a connection to the database, if one is already made
+
+    Returns:
+        if NOT reformat_as_dict:
+            a tuple of row tuples of the database table `stream_history`:
+                (id, stream_name, datetime, data_path, labels_path, sdi)
+        if reformat_as_dict:
+            a dictionary of format:
+                {
+                    "<STREAM 1 NAME>": {
+                        "id": [list, of, SQL, row, IDs],
+                        "datetime": [list, of, datetime, objects],
+                        "data_path": [...],
+                        "labels_path": [...],
+                        "sdi": [list, of, sdi, floats]
+                    },
+                    "<STREAM 2 NAME>": {
+                        ...,
+                        "datetime": [list, of, datetime, objects],
+                        ...,
+                        "sdi": [list, of, sdi, floats]
+                    },
+                    ...
+                }
+    '''
+    with cnx.cursor() as cursor:
+        stream_search = (
+                " where stream_name = '%s'" % stream_name
+                if stream_name else ""
+        )
+
+        sql = '''
+        select unix_timestamp(datetime) as time, sdi
+        from stream_history%s and sdi is not null ORDER BY datetime;
+        ''' % stream_search
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return [
+	{"time": time, "sdi": sdi} for time, sdi in result
+    ]
+
+
+@with_connection
+def snapshot(cnx=None):
+    with cnx.cursor() as cursor:
+        sql = '''
+        select stream_name, max(data_path)
+        from stream_history where data_path is not null group by stream_name;
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return [
+	{
+         "stream": stream_name,
+	 "url": data_path
+	} for stream_name, data_path in result
+    ]
+
+
+@with_connection
 def populate_sdi(id, sdi, *args, cnx):
     with cnx.cursor() as cursor:
         sql = '''
