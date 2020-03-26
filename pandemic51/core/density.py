@@ -10,6 +10,7 @@ import pathlib
 import random
 
 import numpy as np
+import tensorflow as tf
 
 import eta.core.annotations as etaa
 import eta.core.data as etad
@@ -99,6 +100,7 @@ def compute_object_counts_for_db_entries(null_only=True):
 
 
 def _load_efficientdet_model(model_name):
+    tf.reset_default_graph()
     config = etal.ModelConfig.from_dict(
         {
             "type": "pandemic51.detectors.EfficientDet",
