@@ -49,7 +49,7 @@ def detect_objects_in_unprocessed_images():
     stores the following things for each image:
         - the ImageLabels to disk
         - the annotated image to disk
-        - the object count to the DB
+        - the labels path to the DB
     '''
     detector = _load_efficientdet_model(MODEL_NAME)
 
