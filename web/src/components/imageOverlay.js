@@ -9,7 +9,6 @@ export default function ImageOverlay({src, onClose}) {
   useEffect(() => setLoaded(false), [src]);
 
   const handleLoad = () => {
-    console.log('loaded!')
     setLoaded(true);
   };
 
