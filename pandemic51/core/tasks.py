@@ -36,7 +36,13 @@ def das_task(stream_name):
 @app.task()
 def cdfui_task():
     '''"Compute Density For Unprocessed Images (CDFUI) task'''
+    # Calling this to address the following issue, which I think occurs on the
+    # second call of `cdfui_task` and all later calls:
+    #   ValueError: Variable efficientnet-b4/stem/conv2d/kernel already exists,
+    #       disallowed. Did you mean to set reuse=True or reuse=tf.AUTO_REUSE in
+    #       VarScope?
     tf.reset_default_graph()
+
     pand.compute_density_for_unprocessed_images()
 
 
