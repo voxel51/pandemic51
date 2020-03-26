@@ -1,0 +1,2634 @@
+html {
+  font-size: 10px;
+}
+html {
+  height: 100%;
+}
+body {
+  min-height: 100%;
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+footer {
+  grid-row-start: 2;
+  grid-row-end: 3;
+}
+img {
+  margin-bottom: 0 !important;
+}
+.detector {
+  position: relative;
+}
+.boxes {
+  top: 0;
+  left: 0;
+  position: absolute;
+}
+:root {
+    --color-primary: rgb(255, 109, 4);
+    --color-primary-muted: rgb(208, 87, 0);
+    --color-primary-saturated: rgb(255, 240, 229);
+    --color-secondary: rgb(73, 156, 239);
+    --color-secondary-saturated: rgb(165, 205, 247);
+    --color-tertiary: rgb(109, 4, 255);
+    --color-tertiary-saturated: rgb(182, 129, 255);
+    --gray-dark1: rgb(23, 25, 28);
+    --gray-dark2: rgb(33, 37, 41);
+    --gray-dark3: rgb(108, 117, 125);
+    --gray-neutral: rgb(166, 167, 169);
+    --gray-light3: rgb(232, 233, 233);
+    --gray-light2: rgb(244, 244, 244);
+    --gray-light1: rgb(255, 255, 255);
+    --transparent: rgba(0, 0, 0, 0);
+    --green-check: rgb(83, 182, 129);
+    --purple-check: rgb(265, 100, 51);
+    --text-brand: var(--color-primary);
+    --text-primary: var(--gray-dark1);
+    --text-primary-on-light: var(--gray-dark1);
+    --text-primary-on-dark: var(--gray-light1);
+    --text-secondary-on-light: var(--gray-dark3);
+    --text-secondary-on-dark: var(--gray-neutral);
+    --text-tertiary-on-light: var(--gray-light2);
+    --text-tertiary-on-dark: var(--gray-light3);
+    --fontsize-body: 1.8rem;
+    --fontsize-body-smaller: 1.4rem;
+    --fontsize-body-smallest: 1.25rem;
+    --bg-brand: var(--color-primary);
+    --bg-light-primary: var(--gray-light1);
+    --bg-light-secondary: var(--gray-light2);
+    --bg-dark-primary: var(--gray-dark2);
+    --bg-dark-secondary: var(--gray-dark1);
+    --bg-modal: rgba(33, 37, 41, 0.75);
+    --padding-x: 10rem;
+    --padding-y: 10rem;
+}
+
+.cta {
+  text-align: center;
+  flex-grow: 1;
+  margin: 0 auto;
+  max-width: 1040px;
+  background: var(--bg-dark-primary);
+  background-image: url("../images/design.svg");
+  background-size: cover;
+min-width: 100%;
+    padding: 4rem var(--padding-x);
+      display: grid;
+    grid-template-columns: 1fr 61.7% 1fr;
+    grid-template-areas:
+        ". title ."
+        ". visual ."
+        ". text ."
+        ". hook .";
+    justify-items: center;
+    align-items: start;
+}
+
+body {
+    background: var(--bg-light-secondary);
+}
+
+a, a:hover {
+  color: inherit;
+  text-decoration: none;
+}
+
+.active-card {
+  border-left: 4px solid var(--color-primary);
+}
+
+
+:root {
+  --color-primary: rgb(255, 109, 4);
+  --color-primary-muted: rgb(208, 87, 0);
+  --color-primary-saturated: rgb(255, 240, 229);
+
+  --color-secondary: rgb(73, 156, 239);
+  --color-secondary-saturated: rgb(165, 205, 247);
+
+  --color-tertiary: rgb(109, 4, 255);
+  --color-tertiary-saturated: rgb(182, 129, 255);
+
+  --gray-dark1: rgb(23, 25, 28);
+  --gray-dark2: rgb(33, 37, 41);
+  --gray-dark3: rgb(108, 117, 125);
+  --gray-neutral: rgb(166, 167, 169);
+  --gray-light3: rgb(232, 233, 233);
+  --gray-light2: rgb(244, 244, 244);
+  --gray-light1: rgb(255, 255, 255);
+
+  --transparent: rgba(0, 0, 0, 0);
+
+  --green-check: rgb(83, 182, 129);
+  --purple-check: rgb(265, 100, 51);
+
+  --text-brand: var(--color-primary);
+  --text-primary: var(--gray-dark1);
+  --text-primary-on-light: var(--gray-dark1);
+  --text-primary-on-dark: var(--gray-light1);
+  --text-secondary-on-light: var(--gray-dark3);
+  --text-secondary-on-dark: var(--gray-neutral);
+  --text-tertiary-on-light: var(--gray-light2);
+  --text-tertiary-on-dark: var(--gray-light3);
+
+  --fontsize-body: 1.8rem;
+  --fontsize-body-smaller: 1.4rem;
+  --fontsize-body-smallest: 1.25rem;
+
+  --bg-brand: var(--color-primary);
+  --bg-light-primary: var(--gray-light1);
+  --bg-light-secondary: var(--gray-light2);
+  --bg-dark-primary: var(--gray-dark2);
+  --bg-dark-secondary: var(--gray-dark1);
+  /* gray-dark2 with transparency */
+  --bg-modal: rgba(33, 37, 41, 0.75);
+
+  --padding-x: 10rem;
+  --padding-y: 10rem;
+}
+
+/* sets everything to border-box but allows override */
+html {
+  box-sizing: border-box;
+  font-weight: 400;
+  font-size: 10px;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+body {
+  color: var(--text-secondary-on-light);
+  font-family: 'Palanquin', sans-serif;
+
+  font-size: var(--fontsize-body);
+  line-height: 3.0rem;
+
+  overflow-x: hidden;
+  margin: 0;
+}
+
+a {
+  text-decoration: none;
+  color: var(--text-brand);
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+input {
+  line-height: 3.0rem;
+}
+
+ul, ol {
+  margin-block-end: 0rem;
+  margin-block-start: 0rem;
+  margin-inline-start: 0rem;
+  margin-inline-end: 0rem;
+  padding-inline-start: 0rem;
+}
+
+p {
+  margin-block-end: 0rem;
+  margin-block-start: 0rem;
+  margin-inline-start: 0rem;
+  margin-inline-end: 0rem;
+  line-height: 3rem;
+  font-size: 1.8rem;
+}
+
+h1 {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 5.0rem;
+  line-height: 6.6rem;
+  margin-block-start: 0;
+  margin-block-end: 0rem;
+}
+
+h2 {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 4.0rem;
+  line-height: 5.2rem;
+  margin-block-start: 0;
+  margin-block-end: 0rem;
+}
+
+h3 {
+  color: var(--text-primary);
+  font-weight: 400;
+  font-size: 2.6rem;
+  line-height: 4.0rem;
+  margin-block-start: 0;
+  margin-block-end: 0rem;
+}
+
+h4 {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 2.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05rem;
+  margin-block-start: 0;
+  margin-block-end: 0rem;/* XXX update  should be 3 */
+}
+
+/* handle Mobile typography and spacing */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+body {
+  font-size: 1.4rem;
+}
+
+p {
+  line-height: 2.2rem;
+  font-size: 1.4rem;
+}
+
+h1 {
+  font-size: 3.2rem;
+  line-height: 4.2rem;
+}
+
+h2 {
+  font-size: 2.6rem;
+  line-height: 3.4rem;
+}
+
+h3 {
+  font-size: 2.0rem;
+  line-height: 3.0rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+  line-height: 2.0rem;
+}
+
+}
+
+/*
+::-moz-selection {
+  background: #ff6d04;
+  text-shadow: none;
+}
+
+::selection {
+  background: #ff6d04;
+  text-shadow: none;
+}
+
+img::selection {
+  background: transparent;
+}
+
+img::-moz-selection {
+  background: transparent;
+}
+*/
+
+.text-brand {
+  color: var(--color-primary);
+}
+
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-primary-on-light {
+  color: var(--text-primary);
+}
+
+.text-primary-on-dark {
+  color: var(--text-primary-on-dark);
+}
+
+.text-secondary-on-light {
+  color: var(--text-secondary-on-light);
+}
+
+.text-secondary-on-dark {
+  color: var(--text-secondary-on-dark);
+}
+
+.text-tertiary-on-light {
+  color: var(--text-tertiary-on-light);
+}
+
+.text-tertiary-on-dark {
+  color: var(--text-tertiary-on-dark);
+}
+
+.text-smaller {
+  font-size: var(--fontsize-body-smaller);
+}
+
+.text-smallest {
+  font-size: var(--fontsize-body-smallest);
+}
+
+.text-center {
+  text-align: center;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-left {
+  text-align: left !important;
+}
+
+.green-check {
+  color: var(--green-check);
+}
+
+.purple-check {
+  color: var(--purple-check);
+}
+
+.bg-dark-primary {
+  background: var(--bg-dark-primary);
+}
+
+.bg-dark-primary [class^="body"],
+.bg-dark-secondary [class^="body"] {
+  color: var(--text-secondary-on-dark);
+}
+
+/* :matches should be usable here, but fail */
+.bg-dark-primary h1,
+.bg-dark-primary h2,
+.bg-dark-primary h3,
+.bg-dark-primary h4
+{
+  color: var(--text-primary-on-dark);
+}
+
+.bg-dark-secondary {
+  background: var(--bg-dark-secondary);
+}
+
+.bg-light-primary {
+  background: var(--bg-light-primary);
+}
+
+.bg-light-secondary {
+  background: var(--bg-light-secondary);
+}
+
+.bg-header-dark-fancy {
+  background-image: url("/images/header_dark_fancy.svg");
+  background-size: cover;
+}
+
+.bg-header-dark-fancy2 {
+  background-image: url("/images/header_dark_fancy2.svg");
+  background-size: cover;
+}
+
+.bg-footer-dark {
+  background-image: url("/images/footer_dark.svg");
+  background-size: cover;
+  background-position: 0 -30%;
+}
+
+/* Arrows */
+
+.arrow-down--light-secondary {
+  width: 0;
+  height: 0;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
+  border-top: 1rem solid var(--bg-light-secondary);
+  top: 100%;
+}
+
+.big-arrow-down--light-secondary {
+  width: 0;
+  height: 0;
+  border-left: 2rem solid transparent;
+  border-right: 2rem solid transparent;
+  border-top: 2rem solid var(--bg-light-secondary);
+  top: 100%;
+}
+
+.arrow-up--light-primary {
+  width: 0;
+  height: 0;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
+  border-bottom: 1rem solid var(--bg-light-primary);
+  top: -1rem;
+}
+
+.arrow-up--light-secondary {
+  width: 0;
+  height: 0;
+  border-left: 1rem solid transparent;
+  border-right: 1rem solid transparent;
+  border-bottom: 1rem solid var(--bg-light-secondary);
+  top: -1rem;
+}
+
+.arrow-middle {
+  z-index: 10; /* needed to sit atop of nearby divs */
+  position: absolute;
+  left: calc(50% - 0.5rem);
+}
+
+.arrow-left20 {
+  z-index: 10; /* needed to sit atop of nearby divs */
+  position: absolute;
+  left: calc(20% - 0.5rem);
+}
+
+.big-arrow-middle {
+  z-index: 10; /* needed to sit atop of nearby divs */
+  position: absolute;
+  left: calc(50% - 1rem);
+}
+
+.adornment--bottom {
+  z-index: 10; /* needed to sit atop of nearby divs */
+  position: absolute;
+  top: 100%;
+}
+
+.adornment--middle {
+  z-index: 10; /* needed to sit atop of nearby divs */
+  position: absolute;
+  left: calc(50% - 1rem);
+}
+
+.adornment__vertical-barbell--bottom {
+  z-index: 10;
+  position: absolute;
+
+  background-image: url("/images/adornments/vertical-barbell.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center center;
+  width: 3rem;
+  height: 12rem;
+  left: calc(50% - 1.5rem);
+  top: calc(100% - 5rem);
+}
+
+.has-arrows,
+.has-adornments {
+  position: relative;
+}
+
+hr {
+  margin-block-start: 0;
+  margin-block-end: 0;
+  border-width: 0;
+  border-style: none;
+}
+
+/* for use within body_part divs */
+.hr--secondary-on-light {
+  height: 1px;
+  width: 100%;
+  color: var(--text-secondary-on-light);
+  background-color: var(--text-secondary-on-light);
+}
+
+.hr--secondary-on-dark {
+  height: 1px;
+  width: 100%;
+  color: var(--text-secondary-on-dark);
+  background-color: var(--text-secondary-on-dark);
+}
+
+.hr--tertiary-on-dark {
+  height: 1px;
+  width: 100%;
+  color: var(--text-tertiary-on-dark);
+  background-color: var(--text-tertiary-on-dark);
+}
+
+/* Buttons */
+
+.button-primary {
+  background: var(--color-primary);
+  color: var(--text-primary-on-dark);
+  border-color: var(--color-primary);
+  border-radius: 3px;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+
+  height: 5.0rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+
+  padding: 0.9rem 2.25rem;
+}
+
+.button-primary:hover {
+  background: var(--color-primary-muted);
+  border-color: var(--color-primary-muted);
+  text-decoration: none;
+}
+
+.button-secondary {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary);
+  border-radius: 3px;
+  border-width: 2px; /* XXX ask */
+  border-style: solid;
+  cursor: pointer;
+  padding: 0.9rem 2.25rem;
+
+  height: 5.0rem;
+  font-size: 1.4rem; /* XXX ask */
+  font-weight: 600; /* XXX ask */
+}
+
+.button-secondary:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--text-primary-on-dark) !important;
+  text-decoration: none;
+}
+
+.button-primary-short {
+  background: var(--color-primary);
+  color: var(--text-primary-on-dark);
+  border-color: var(--color-primary);
+  border-radius: 3px;
+  border-width: 2px; /* XXX ask */
+  border-style: solid;
+  cursor: pointer;
+
+  height: 3.2rem;
+  font-size: 1.4rem;  /* XXX ask about style from Design */
+  font-weight: 600; /* XXX ask */
+
+  padding: 0.1rem 2.25rem; /* XXX ask -- deduced these based on font size */
+}
+
+.button-primary-short:hover {
+  background: var(--color-primary-muted);
+  border-color: var(--color-primary-muted);
+  text-decoration: none;
+}
+
+.button-secondary-short {
+  color: var(--color-primary) !important;
+  border-color: var(--color-primary);
+  border-radius: 3px;
+  border-width: 2px; /* XXX ask */
+  border-style: solid;
+  cursor: pointer;
+  padding: 0.1rem 2.25rem; /* XXX ask */
+
+  height: 3.2rem;
+  font-size: 1.4rem; /* XXX ask */
+  font-weight: 600; /* XXX ask */
+}
+
+.button-secondary-short:hover {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--text-primary-on-dark) !important;
+  text-decoration: none !important;
+}
+
+.button--fullwidth {
+  min-width: 100%;
+  width: 100%;
+}
+
+/* force buttons to display as block in mobile */
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+.button-primary,
+.button-secondary,
+.button-primary-short,
+.button-secondary-short
+{
+  display: block;
+  text-align: center;
+}
+
+} /* end of media query for buttons */
+
+/* various modifiers */
+/* Note that this class is stay at top *of parent* */
+.stay_at_top {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+}
+
+.shadow--secondary {
+  /*box-shadow: 0rem 0rem 2rem 0.01rem var(--color-secondary-saturated);*/
+  box-shadow: 0rem 0rem 3rem 0.0rem rgba(4, 150, 255, 0.12);
+  border-radius: 3px;
+  border: 1px solid var(--gray-light2);
+}
+
+.force-pad-top10 {
+  padding-top: 10rem !important;
+}
+
+.force-pad-y6 {
+  padding-top: 6rem !important;
+  padding-bottom: 6rem !important;
+}
+
+.force-pad-top6 {
+  padding-top: 6rem !important;
+}
+
+.force-pad-bottom6 {
+  padding-bottom: 6rem !important;
+}
+
+.force-pad-y3 {
+  padding-top: 3rem !important;
+  padding-bottom: 3rem !important;
+}
+
+.force-pad-top3 {
+  padding-top: 3rem !important;
+}
+
+.force-pad-bottom3 {
+  padding-bottom: 3rem !important;
+}
+
+.force-pad-y1 {
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.force-pad-top1 {
+  padding-top: 1rem !important;
+}
+
+.force-pad-bottom1 {
+  padding-bottom: 1rem !important;
+}
+
+.force-pad-y0 {
+  padding-top: 0rem !important;
+  padding-bottom: 0rem !important;
+}
+
+.force-pad-top0 {
+  padding-top: 0rem !important;
+}
+
+.force-pad-bottom0 {
+  padding-bottom: 0rem !important;
+}
+
+.kill-margin-y {
+  margin-top: 0rem !important;
+  margin-bottom: 0rem !important;
+}
+
+/* card is a common element */
+
+.card--basic {
+  display: grid;
+  grid-template-columns: 100%; /* XXX ask; sizing relative to width, from design */
+  grid-template-rows: 20% 20% 60%;
+  grid-template-areas:
+    "icon"
+    "title"
+    "text";
+  justify-items: center;
+  align-items: start;
+
+  width: 90%;
+  padding: 3rem;
+  border-radius: 3px;
+}
+
+.card__title {
+  grid-area: title;
+  width: 100%;
+  padding-bottom: 1rem;
+  align-self: start
+}
+
+.card__icon {
+  grid-area: icon;
+  align-self: start;
+  justify-self: start;
+}
+
+.card__icon img {
+  width: 5rem !important;
+}
+
+.card__text {
+  grid-area: text;
+  width: 100%;
+  padding: 3rem 0;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-around;
+}
+
+.card__text a {
+  margin-bottom: 2rem;
+  text-align: center
+}
+
+/* body_column is a vertical flexbox */
+.body_column {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-content: center;
+  align-items: center;
+  min-width: 100vw;
+}
+
+/* BodyPart
+ * This is a div in the body section
+ */
+.body_part {
+  min-width: 100%;
+  padding: var(--padding-y) var(--padding-x); /* -x padding has to be here to have the background extend to viewport edges; */
+}
+
+@media screen and (min-width: 1240px) {
+  .body_part {
+    padding: var(--padding-y) calc((100vw - 1040px)/2);
+  }
+}
+
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+  .body_part {
+    padding: 6.0rem 3.0rem;
+  }
+}
+
+/* body_block--left
+ * A standard body element that has one image/video, a title
+ * and text/hook.
+ *
+ * This has the visual on the left.  Use body_block_right for
+ * visual on the right
+ */
+.body_block--left {
+  display: grid;
+  grid-template-columns: 1fr 3rem 46.8%;
+  grid-template-rows: 20% auto 20%;
+  grid-template-areas:
+    "visual . title"
+    "visual . text"
+    "visual . hook";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--right {
+  display: grid;
+  grid-template-columns: 46.8% 3rem 1fr;
+  grid-template-rows: 20% auto 20%;
+  grid-template-areas:
+    "title . visual"
+    "text . visual"
+    "hook . visual";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--leftsmall {
+  display: grid;
+  grid-template-columns: 1fr 3rem 60%;
+  grid-template-rows: 20% 60% 20%;
+  grid-template-areas:
+    "visual . title"
+    "visual . text"
+    "visual . hook";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--rightsmall {
+  display: grid;
+  grid-template-columns: 60% 3rem 1fr;
+  grid-template-rows: 20% 60% 20%;
+  grid-template-areas:
+    "title . visual"
+    "text . visual"
+    "hook . visual";
+  justify-items: center;
+  align-items: center;
+}
+
+/** --center is just a single column half-width in middle */
+.body_block--center {
+  display: grid;
+  grid-template-columns: 1fr 61.7% 1fr;
+  grid-template-areas:
+    ". title ."
+    ". visual ."
+    ". text ."
+    ". hook .";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--centerorder2 {
+  display: grid;
+  grid-template-columns: 1fr 61.7% 1fr;
+  grid-template-areas:
+    ". title ."
+    ". text ."
+    ". hook ."
+    ". visual .";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--centerwide {
+  display: grid;
+  grid-template-columns: 1fr 80% 1fr; /* XXX ask; sizing relative to width, from design */
+  grid-template-areas:
+    ". title ."
+    ". visual ."
+    ". text ."
+    ". hook .";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--centerfull {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--quote {
+  display: grid;
+  grid-template-columns: 1fr 80% 1fr; /* XXX ask; sizing relative to width, from design */
+  grid-template-areas:
+    ". icon ."
+    ". title .";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--twocolumn {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    "left right";
+  grid-column-gap: 4.5rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--twocolumn__left {
+  grid-area: left;
+  object-fit: contain;
+}
+
+.body_block--twocolumn__left img {
+  width: 100%;
+  height: 100%;
+}
+
+.body_block--twocolumn__right {
+  grid-area: right;
+}
+
+.body_block--titledpar {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    "title"
+    "text";
+  justify-items: left;
+  align-items: start;
+}
+
+/* need to tweak layouts for mobile */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+.body_block--left {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--right {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--leftsmall {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block--rightsmall {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto auto;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: center;
+}
+
+/** --center is just a single column half-width in middle */
+.body_block--center {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--centerorder2 {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "title"
+    "text"
+    "hook"
+    "visual";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--centerwide {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "title"
+    "visual"
+    "text"
+    "hook";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--quote {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-areas:
+    "icon"
+    "title";
+  justify-items: center;
+  align-items: start;
+}
+
+.body_block--twocolumn {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+   "left"
+   "right";
+  justify-items: center;
+  align-items: start;
+}
+
+} /* end of media query for mobile */
+
+.body_block__icon {
+  grid-area: icon;
+  padding-bottom: 3rem;
+}
+
+.body_block__visual {
+  grid-area: visual;
+  width: 100%;
+  padding-bottom: 3rem;
+}
+
+.body_block__visual img {
+  width: 100%;
+}
+
+.body_block__visual--voxeldiagram {
+  background-image: url("/images/voxel-diagram.svg");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+
+  width: 100%;
+  height: 100%;
+
+  /* the voxel diagram is itself a grid */
+  display: grid;
+  grid-template-columns: 20% 1fr 20%; /* XXX ask; sizing relative to width, from design */
+  grid-template-rows: 30% 1fr 1fr 25%;
+  grid-template-areas:
+    ". . ."
+    ". title ."
+    ". text ."
+    ". . .";
+  justify-items: start;
+  align-items: start;
+}
+
+.body_block__title {
+  grid-area: title;
+  align-self: center;
+  justify-self: start;
+  padding-bottom: 1rem;
+  text-align: center;
+  width: 100%;
+  color: var(--text-primary-on-dark);
+}
+
+.body_block--center .body_block__title ,
+.body_block--centerorder2 .body_block__title ,
+.body_block--centerwide .body_block__title ,
+.body_block--centerfull .body_block__title {
+  text-align: center !important;
+  justify-self: center !important;
+}
+
+.body_block__visual--voxeldiagram .body_block_title {
+  align-self: end !important;
+}
+
+.bg-dark-primary .body_block__title,
+.bg-dark-secondary .body_block__title {
+  color: var(--text-primary-on-dark);
+}
+
+
+.body_block--centerorder2 .body_block__text {
+  text-align: center;
+}
+
+.body_block__text {
+  grid-area: text;
+  width: 100%;
+  padding-bottom: 2rem;
+  color: var(--text-secondary-on-dark);
+}
+
+.body_block--center > .body_block__text {
+  text-align: center;
+}
+.body_block--centerwide > .body_block__text {
+  text-align: center;
+}
+
+.body_block__visual--voxeldiagram .body_block__text {
+  align-self: start !important;
+  font-size: 1.4rem;
+  line-height: 2.6rem;
+}
+
+.bg-dark-primary .body_block__text {
+  color: var(--text-secondary-on-dark);
+}
+
+/* body_block_features are used in place of body_block__text to support the flowing feature list */
+.body_block__features2 {
+  grid-area: text;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: 6rem;
+  grid-auto-flow: row;
+  grid-row-gap: 1rem;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.body_block__features3 {
+  grid-area: text;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-auto-rows: 6rem;
+  grid-auto-flow: row;
+  grid-row-gap: 1rem;
+  justify-content: space-between;
+  align-content: center;
+}
+
+.body_block__features__entry {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+  grid-template-rows: 100%;
+  grid-template-areas: "icon text";
+  justify-content: center;
+  align-content: center;
+}
+
+.body_block__features__entry__icon {
+  grid-area: icon;
+}
+
+.body_block__features__entry__text {
+  grid-area: text;
+  line-height: 2rem;
+  font-size: var(--fontsize-body-smaller);
+}
+
+.body_block__hook {
+  grid-area: hook;
+  width: 100%;
+  align-self: start;
+}
+
+.body_block--center > .body_block__hook {
+  text-align: center;
+}
+
+.body_block--centerwide > .body_block__hook {
+  text-align: center;
+}
+
+.body_block--padtop {
+  padding-top: 12rem;
+}
+
+.body_block--padtop-small {
+  padding-top: 6rem;
+}
+
+.body_block--padtop-tiny {
+  padding-top: 3rem;
+}
+
+.body_block--padbottom {
+  padding-bottom: 12rem;
+}
+
+.body_block--padbottom-small {
+  padding-bottom: 6rem;
+}
+
+.body_block--padbottom-tiny {
+  padding-bottom: 3rem;
+}
+
+.body_block_pressrelease--date {
+  text-align: left;
+}
+
+.body_block_pressrelease--title {
+ padding-top: 1.5rem;
+ padding-bottom: 1.5rem;
+ font-size: 3.3rem;
+ text-align: left;
+ color: var(--text-brand);
+}
+
+.body_block_pressrelease--content {
+  padding-top: 3rem;
+  text-align: justify;
+}
+
+/* media query for body block elements on mobile */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+.body_block__features2 {
+  padding-top: 3rem;
+  grid-auto-rows: auto;
+  grid-template-columns: 1fr;
+}
+
+/* in mobile, all feature sets are 2 column */
+.body_block__features3 {
+  padding-top: 3rem;
+
+  grid-area: text;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  grid-auto-flow: row;
+  grid-row-gap: 1rem;
+  justify-content: space-between;
+  align-content: start;
+}
+
+.body_block--padtop {
+  padding-top: 3rem;
+}
+
+.body_block--padbottom {
+  padding-bottom: 3rem;
+}
+
+.body_block__hook a {
+  margin-top: 1rem;
+}
+
+} /* end of media query for body block elements on mobile */
+
+/**
+ * body_block_grid is the 3 column info piece with a title
+ * Best case uses are to include the body_block--modifiers here
+ * so that the style is shared across the site.  The
+ * body_block_grid--modifier pieces are for the extra spacing
+ */
+.body_block_grid {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto;
+  grid-template-areas:
+    "title"
+    "content";
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block_grid__title {
+  grid-area: title;
+  text-align: center;
+  padding-bottom: 3rem;
+}
+
+.body_block_grid__content {
+  grid-area: content;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  align-content: stretch;
+  justify-content: space-between;
+}
+
+.body_block_grid__content--nostretch {
+  grid-area: content;
+  width: 100%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: start;
+  align-content: start;
+  justify-content: space-between;
+}
+
+.body_block_grid__content--200auto {
+  grid-area: content;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: repeat( auto-fit, minmax(200px, 1fr) );
+  grid-template-rows: auto;
+  grid-gap: 4.5rem;
+}
+
+#pricing .body_block_grid__content {
+  justify-content: space-around;
+}
+
+.body_block_grid__3entry {
+  width:27%;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 25% 30% 15% auto;
+  grid-template-areas:
+    "icon"
+    "entrytitle"
+    "line"
+    "text";
+  justify-items: start;
+  align-items: center;
+}
+
+.body_block_grid__4entry {
+  width:22%;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 25% 30% 15% auto;
+  grid-template-areas:
+    "icon"
+    "entrytitle"
+    "line"
+    "text";
+  justify-items: start;
+  align-items: center;
+}
+
+.body_block_grid__5entry {
+  width:18.5%;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 25% 30% 15% auto;
+  grid-template-areas:
+    "icon"
+    "entrytitle"
+    "line"
+    "text";
+  justify-items: start;
+  align-items: center;
+}
+
+.body_block_grid__pricingentry {
+  background-color: var(--bg-light-primary);
+
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+
+  border-color: var(--bg-light-primary);
+  border-radius: 3px;
+  border-width: 4px;
+  border-style: solid;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto 4rem auto 3rem auto !important;
+  grid-template-areas:
+    "entrytitle"
+    "icon"
+    "subtitle"
+    "."
+    "text"
+    "."
+    "hook" !important;
+  justify-items: center !important;
+  align-items: center !important;
+}
+
+.body_block_grid__teamentry {
+  max-width: 256px;
+  place-self: center;
+
+  display: grid;
+  grid-template-columns: 60% 40%;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+   "icon icon"
+   "text text"
+   "entrytitle hook";
+  justify-items: start;
+  align-items: center;
+}
+
+.body_block_grid__pressentry {
+  max-width: 1fr;
+  place-self: start;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto auto auto auto;
+  grid-template-areas:
+   "icon"
+   "entrytitle"
+   "subtitle"
+   "line"
+   "text"
+   "hook";
+  justify-items: start;
+  align-items: start;
+}
+
+.body_block_grid__pressentry > .body_block_grid__icon {
+  object-fit: contain;
+  max-width: 225px;
+  min-width: 150px;
+  padding-bottom: 1rem;
+}
+
+.body_block_grid__pressentry > .body_block_grid__icon img{
+  width: 100%;
+}
+
+.body_block_grid__pressentry > .body_block_grid__entrytitle {
+  font-weight: 600;
+  font-size: 2.6rem;
+  padding-bottom: 1rem;
+  line-height: 3.5rem;
+}
+
+.body_block_grid__pressentry > .body_block_grid__subtitle {
+  font-weight: 600;
+  font-size: 1.2rem;
+}
+
+.body_block_grid__pressentry > .body_block_grid__line {
+  font-weight: 600;
+  font-size: 1.2rem;
+  color: var(--text-secondary-on-light);
+  padding-top: 0rem;
+  padding-bottom: 1.5rem;
+}
+
+.body_block_grid__pressentry > .body_block_grid__text {
+  font-size: 1.5rem;
+  color: var(--text-secondary-on-light);
+}
+
+.body_block_grid__pressentry > .body_block_grid__hook {
+  font-size: 1.5rem;
+  font-weight: 400;
+}
+
+.body_block_grid__pricingentry--highlight {
+  border-color: var(--color-primary);
+}
+
+.body_block_grid__icon {
+  grid-area: icon;
+  font-size: 4rem; /* XXX */
+  line-height: 4rem;
+}
+
+.body_block_grid__pricingentry > .body_block_grid__icon {
+  font-size: 2.2rem;
+  line-height: 2.2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+.body_block_grid__teamentry > .body_block_grid__icon {
+  object-fit: contain;
+  max-width: 256px;
+  min-width: 128px;
+  padding-bottom: 1rem;
+}
+
+.body_block_grid__teamentry > .body_block_grid__icon img{
+  width: 100%;
+}
+
+.body_block_grid__entrytitle {
+  grid-area: entrytitle;
+}
+
+.body_block_grid__pricingentry > .body_block_grid__entrytitle {
+  align-self: start;
+  color: var(--text-primary);
+}
+
+.body_block_grid__teamentry > .body_block_grid__entrytitle {
+  align-self: start;
+  text-transform: uppercase;
+}
+
+.body_block_grid__subtitle {
+  grid-area: subtitle;
+  font-size: 1.8rem;
+}
+
+.body_block_grid__pricingentry > .body_block_grid__subtitle {
+  font-size: var(--fontsize-body-smallest);
+  color: var(--text-secondary-on-light);
+}
+
+.body_block_grid__line {
+  grid-area: line;
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.body_block_grid__line hr {
+  width: 100px;
+  height: 4px;
+  background-color: var(--gray-light3);
+  border: 0;
+}
+
+.body_block_grid__text {
+  grid-area: text;
+  align-self: start;
+}
+
+#pricing .body_block_grid__text {
+  color: var(--text-secondary-on-light) !important;
+}
+
+.body_block_grid__pricingentry .body_block_grid__text,
+.body_block_grid__pricingentry p
+{
+  font-size: var(--fontsize-body-smaller);
+  justify-self: start;
+}
+
+.body_block_grid__teamentry > .body_block_grid__text {
+  align-self: start;
+  color: var(--text-brand);
+  text-transform: uppercase;
+}
+
+.body_block_grid__hook {
+  grid-area: hook;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* intended use is directly on the <a> tag */
+.body_block_grid__pricingentry > .body_block_grid__hook {
+  place-self: center stretch;
+  text-align: center;
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+}
+
+.body_block_grid__teamentry > .body_block_grid__hook {
+  justify-self: end;
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+  font-size: 1.5rem;
+}
+
+.body_block_grid__teamentry > .body_block_grid__hook li:not(:last-child) {
+  padding-right: 1rem;
+}
+
+/* media query for body_block_grid* for mobile */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+.body_block_grid__content {
+  grid-area: content;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  align-content: stretch;
+  justify-content: space-between;
+}
+
+.body_block_grid__3entry,
+.body_block_grid__4entry,
+.body_block_grid__pricingentry
+{
+  width: 100%;
+  justify-items: center;
+  padding-bottom: 3rem;
+  margin-bottom: 3rem;
+}
+
+} /* end of media query for body block grid mobile */
+
+
+.body_block_list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.body_block_list__linkentry {
+  display: grid;
+  grid-template-columns: 1fr 50px;
+  grid-template-rows: 100%;
+  grid-template-areas: "text icon";
+  justify-items: start;
+  align-items: center;
+
+  margin-top: 1rem;
+  padding-bottom: 1rem;
+
+  border-bottom: 1px solid var(--gray-neutral);
+}
+
+.body_block_list__linkentry__icon {
+  grid-area: icon;
+}
+
+.body_block_list__linkentry__icon img {
+  height: 26px;
+}
+
+.body_block_list__linkentry__text {
+  grid-area: text;
+  padding-left: 3rem;
+}
+
+.body_block_row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.body_block_list__pressentry {
+  list-style-type: none;
+}
+
+.body_block_list__pressentry__entrytitle {
+  padding-bottom: 1rem;
+  font-weight: 600;
+  font-size: 2.6rem;
+  line-height: 3.5rem;
+}
+
+/* a row entry that is a link and can be underlined */
+.body_block_row__usecaseentry {
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.body_block_row__usecaseentry a {
+  color: var(--text-secondary-on-dark);
+}
+
+.body_block_row__usecaseentry a:hover {
+  cursor: pointer;
+}
+
+.body_block_row__usecaseentry--active {
+  color: var(--text-primary-on-dark) !important;
+  border-bottom: 3px solid var(--color-primary);
+}
+
+.body_block_row__usecaseentry--active a {
+  color: var(--text-primary-on-dark) !important;
+}
+
+/* a row entry that is a link and can be underlined */
+.body_block_row__pricing {
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+  padding-right: 7.2rem;
+  padding-left: 7.2rem;
+  border-bottom: 2px solid var(--gray-light2)
+}
+
+.body_block_row__pricing a {
+  color: var(--text-secondary-on-light);
+}
+
+.body_block_row__pricing a:hover {
+  cursor: pointer;
+}
+
+.body_block_row__pricing--active {
+  color: var(--text-primary-on-light) !important;
+  border-bottom: 3px solid var(--color-primary);
+}
+
+.body_block_row__pricing--active a:active {
+  color: var(--text-primary-on-light) !important;
+}
+
+.tabcontent {
+  display: block
+}
+.tabcontent.hidden {
+  display: none
+}
+
+/* body-block rows in mobile are columns */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+.body_block_row {
+  flex-direction: column;
+}
+
+} /* end of media query for body block row */
+
+
+/* A tabular element that will be constructed by rows of elements */
+.body_block_table {
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto;
+  justify-items: center;
+  align-items: center;
+}
+
+.body_block_table__row {
+  padding-left: 3rem;
+  width: 100%;
+  min-height: 4rem;
+
+  border-top: none;
+  border-left: 1px solid var(--gray-light2);
+  border-right: 1px solid var(--gray-light2);
+  border-bottom: 1px solid var(--gray-light2);
+
+  background-color: var(--bg-light-primary);
+}
+
+.body_block_table__row > div {
+  border-left: 1px solid var(--gray-light2);
+  text-align: center;
+  width: 100%;
+  min-height: 100%;
+  height: 100%;
+  line-height: 4rem;
+}
+
+.body_block_table__emptyrow {
+  border: none;
+  height: 0px;
+}
+
+.body_block_table__titlerow {
+  background-color: var(--bg-light-secondary);
+  color: var(--text-primary-on-light);
+  justify-self: start;
+  align-self: center !important;
+  text-align: start !important;
+  line-height: 4rem;
+}
+
+.body_block_table__stickyheader {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 60px;  /* is sticky to 60px top because of product nav height */
+  width: 100%;
+}
+
+.body_block_table__scoopfeaturerow {
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+
+  font-size:  var(--fontsize-body-smaller);
+}
+
+.body_block_table__scoopfeaturerow__name {
+  border: none !important;
+  justify-self: start !important;
+  text-align: start !important;
+}
+
+.body_block_table__scoopaddonrow {
+  display: grid;
+  grid-template-columns: 25% 1fr ;
+  justify-items: start;
+  align-items: start;
+
+  font-size:  var(--fontsize-body-smaller);
+}
+
+.body_block_table__scoopaddonrow i {
+  padding-right: 2rem;
+}
+
+.body_block_table__scoopaddonrow__text {
+  text-align: start !important;
+  padding-left: 2rem;
+}
+
+.body_block_table__scoopgroupingrow {
+  border: none !important;
+
+  display: grid;
+  grid-template-columns: 25% 2fr 3fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    ". ind team";
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+.body_block_table__scoopgroupingrow__ind {
+  grid-area: ind;
+
+  background-color: var(--bg-light-secondary);
+  color: var(--text-primary-on-light);
+  line-height: 4rem;
+  text-align: center;
+}
+
+.body_block_table__scoopgroupingrow__team {
+  grid-area: team;
+
+  background-color: var(--bg-brand);
+  color: var(--text-primary-on-dark);
+  line-height: 4rem;
+  text-align: center;
+}
+
+.body_block_table__scooppricingrow {
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+
+  border-top: 1px solid var(--gray-light2);
+  border-left: 1px solid var(--gray-light2);
+  border-right: 1px solid var(--gray-light2);
+  border-bottom: 1px solid var(--gray-light2);
+}
+
+.body_block_table__scooppricingrow__name {
+  border: none !important;
+}
+
+.body_block_table__scooppricingrow > div{
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.body_block_table__scooppricingrow__price {
+  line-height: 2.2rem;
+  color: var(--text-brand);
+}
+
+.body_block_table__platformfeaturerow {
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+
+  font-size:  var(--fontsize-body-smaller);
+}
+
+.body_block_table__platformfeaturerow__name {
+  border: none !important;
+  justify-self: start !important;
+  text-align: start !important;
+}
+
+.body_block_table__platformaddonrow {
+  display: grid;
+  grid-template-columns: 25% 1fr ;
+  justify-items: start;
+  align-items: start;
+
+  font-size:  var(--fontsize-body-smaller);
+}
+
+.body_block_table__platformaddonrow i {
+  padding-right: 2rem;
+}
+
+.body_block_table__platformaddonrow__text {
+  text-align: start !important;
+  padding-left: 2rem;
+}
+
+.body_block_table__platformgroupingrow {
+  border: none !important;
+
+  display: grid;
+  grid-template-columns: 25% 2fr 2fr;
+  grid-template-rows: auto;
+  grid-template-areas:
+    ". ind team";
+  justify-items: stretch;
+  align-items: stretch;
+}
+
+.body_block_table__platformgroupingrow__ind {
+  grid-area: ind;
+
+  background-color: var(--bg-light-secondary);
+  color: var(--text-primary-on-light);
+  line-height: 4rem;
+  text-align: center;
+}
+
+.body_block_table__platformgroupingrow__team {
+  grid-area: team;
+
+  background-color: var(--bg-brand);
+  color: var(--text-primary-on-dark);
+  line-height: 4rem;
+  text-align: center;
+}
+
+.body_block_table__platformpricingrow {
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+
+  border-top: 1px solid var(--gray-light2);
+  border-left: 1px solid var(--gray-light2);
+  border-right: 1px solid var(--gray-light2);
+  border-bottom: 1px solid var(--gray-light2);
+}
+
+.body_block_table__platformpricingrow__name {
+  border: none !important;
+}
+
+.body_block_table__platformpricingrow > div{
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+}
+
+.body_block_table__platformpricingrow__price {
+  line-height: 2.2rem;
+  color: var(--text-brand);
+}
+
+.body_block_table__volumepricingrow {
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr 1fr 1fr;
+  justify-items: center;
+  align-items: center;
+
+  font-size:  var(--fontsize-body-smaller);
+}
+
+.body_block_table__volumepricingrow__name {
+  border: none !important;
+  justify-self: start !important;
+  text-align: start !important;
+}
+
+.body_block_table__volumeheadingrow {
+  display: grid;
+  grid-template-columns: 25% 1fr 1fr 1fr 1fr;
+  grid-template-rows: auto;
+  background-color: var(--bg-light-secondary);
+}
+
+.body_block_table__volumeheadingrow_entry {
+  color: var(--text-primary-on-light);
+  font-size: 1.4rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  line-height: 2rem !important;
+  padding-top: 1rem !important;
+  padding-bottom: 1rem !important;
+}
+
+.body_block_table__volumepricingfooter {
+  padding-top: 1rem !important;
+  text-align: right !important;
+  font-size: var(--fontsize-body-smallest);
+}
+
+/* Generic Elements with Voxel51 Look and Feel */
+
+/* lists.  info: https://www.blustemy.io/styling-inline-lists-in-css/ */
+.list-inline {
+  list-style: none;
+  padding: 0;
+}
+
+.list-inline > li {
+  display: inline;
+}
+
+.list-inline > li:not(:last-child) {
+  padding-right: 2rem;
+}
+
+/*  NAV  */
+
+.nav__main {
+  color: var(--text-primary-on-dark);
+  font-size: var(--fontsize-body-smaller);
+  background-color: var(--bg-dark-primary);
+  padding: 1rem var(--padding-x);
+
+  z-index: 100;
+  min-width: 100vw;
+  height: 90px;  /* this is a fixed height */
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (min-width: 1240px) {
+  .nav__main {
+    padding: 1rem calc((100vw - 1040px)/2);
+  }
+}
+
+.nav__main img {
+  width: 180px;
+}
+
+#nav__main__mobilebutton--on,
+#nav__main__mobilebutton--off {
+  display: none;
+}
+
+#nav__main__items {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav__product {
+  background-color: var(--bg-light-primary);
+  color: var(--text-primary);
+  font-size: var(--fontsize-body-smaller);
+
+  padding: 1rem var(--padding-x);
+
+  z-index: 100;
+  min-width: 100vw;
+  height: 60px;  /* this is a fixed height */
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@media screen and (min-width: 1240px) {
+  .nav__product {
+    padding: 1rem calc((100vw - 1040px)/2);
+  }
+}
+
+.nav__product img {
+  max-width: 110px; /* XXX ask */
+}
+
+.nav__product__items {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.nav__divider {
+  color: var(--text-secondary-on-dark);
+  padding-x: 1rem;
+  font-size: 150%;  /* XXX TODO CHECK ON BETTER WAY */
+  font-weight: 100;
+}
+.nav__spacer {
+  min-width: 2rem;
+}
+
+.nav__item {
+  padding: 0 1rem;
+  color: var(--text-primary-on-dark);
+}
+
+.nav__item a {
+  color: var(--text-primary-on-dark);
+  text-decoration: none;
+}
+
+.nav__item a:hover {
+  text-decoration: underline;
+}
+
+.nav__product__items > .nav__item {
+  color: var(--text-primary);
+}
+
+.nav__product__items > .nav__item a {
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.nav__product__items > .nav__item a:hover {
+  text-decoration: underline;
+}
+
+.nav__item--brand {
+  color: var(--color-primary);
+}
+
+.nav__item--brand a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.nav__item--brand a:hover {
+  text-decoration: underline;
+}
+
+.nav__dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.nav__dropdown__trigger {
+  cursor: pointer;
+}
+
+.nav__dropdown__menu {
+  display: none;
+  position: absolute;
+  z-index: 101;
+
+  min-width: 16rem;
+  left: -20%;
+
+  background-color: var(--bg-light-primary);
+  margin-top: 0.5rem;
+  padding: 1rem;
+  border-radius: 3px;
+  box-shadow: 0rem 0rem 1rem 0.005rem var(--bg-dark-primary);
+}
+
+.nav__dropdown__menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav__dropdown__menu a {
+  color: var(--text-brand);
+}
+
+.nav__dropdown:hover .nav__dropdown__trigger {
+  color: var(--text-secondary-on-dark);
+}
+
+.nav__dropdown:hover .nav__dropdown__menu {
+  display: block;
+}
+
+/* mobile responsive nav elements all here */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+
+  /* navs do not stay at top in mobile mode */
+.stay_at_top {
+  position: relative;
+}
+
+.nav__main {
+  font-size: var(--fontsize-body-smaller);
+
+  padding: 1rem 3rem;
+
+  z-index: 100;
+  min-width: 100vw;
+  height: 50px;
+
+  position: relative;
+}
+
+.nav__main__logo {
+  width: 100%;
+  min-width: 100%;
+  height: 50px;
+
+  padding: 0.5rem;
+
+  display: flex;
+  justify-content: center;
+}
+
+.nav__main img,
+.nav__main__logo img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+#nav__main__mobilebutton--on {
+  display: block;
+  position: absolute;
+  right: 1rem;
+}
+
+#nav__main__mobilebutton--off {
+  display: none;
+  position: absolute;
+  right: 1rem;
+}
+
+#nav__main__mobilebutton--on a,
+#nav__main__mobilebutton--off a {
+  color: var(--text-secondary-on-dark);
+}
+
+#nav__main__items {
+  display: none;
+  z-index: 102;
+
+  background-color: var(--bg-dark-primary);
+  width: 100%;
+
+  position: absolute;
+  left: 0;
+  top: 100%;
+
+  padding: 1rem 3rem;
+}
+
+#nav__main__items .nav__item {
+  z-index: 102;
+}
+
+.nav__spacer {
+  display: none;
+}
+
+.nav__divider {
+  display: none;
+}
+
+.nav__dropdown {
+  position: relative;
+  display: block;
+}
+
+.nav__dropdown .arrow-up--light-primary {
+  display: none;
+}
+
+.nav__dropdown__trigger {
+  cursor: inherit;
+}
+
+.nav__dropdown__menu {
+  display: block;
+  position: relative;
+  background-color: inherit;
+
+  left: inherit;
+
+  margin-top: 0rem;
+  padding: 0rem 3rem;
+}
+
+.nav__dropdown__menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav__dropdown__menu a {
+  color: var(--text-secondary-on-dark);
+}
+
+.nav__dropdown:hover .nav__dropdown__trigger {
+  color: var(--text-secondary-on-dark);
+}
+
+.nav__dropdown:hover .nav__dropdown__menu {
+  display: block;
+}
+
+/* functionality now is to make the product nav disappear in phone view and only show logo */
+
+.nav__product {
+  z-index: 99;
+}
+
+.nav__product__items {
+  display: none;
+}
+
+.nav__product__logo {
+  width: 100%;
+  min-width: 100%;
+  height: 40px;
+
+  padding: 0.5rem;
+
+  display: flex;
+  justify-content: center;
+}
+
+.nav__product img,
+.nav__product__logo img {
+  object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+} /* end of media query for mobile responsive nav */
+
+/* FOOTER */
+/* Footer uses grid to keep everything aligned. */
+.footer {
+  display: grid;
+  grid-template-columns: 20% 25% 15% 40%;
+  grid-template-rows: 1fr 1fr auto;
+  grid-template-areas:
+    "logo address . links"
+    ". contact . links"
+    "copyright copyright copyright icons";
+
+  background: var(--bg-dark-secondary);
+  color: var(--text-secondary-on-dark);
+  font-size: 1.5rem;
+  padding-bottom: 1rem;
+}
+
+.footer a {
+  color: var(--text-secondary-on-dark);
+}
+
+.footer__copyright {
+  grid-area: copyright;
+  align-self: end;
+  justify-self: start;
+
+  padding-top: 3rem;
+}
+
+.footer__icons {
+  grid-area: icons;
+  align-self: end;
+  justify-self: end;
+
+  padding-top: 3rem;
+}
+
+.footer__logo {
+  grid-area: logo;
+  align-self: start;
+  justify-self: start;
+}
+
+.footer__logo img {
+  width: 80%;
+}
+
+.footer__address {
+  grid-area: address;
+}
+
+.footer__contact {
+  grid-area: contact;
+}
+
+.footer__links {
+  grid-area: links;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.footer__links a {
+  display: block;
+}
+
+.footer__links--col1 {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.footer__links--col2 {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.footer__links--col3 {
+  grid-column: 3;
+  grid-row: 1;
+}
+
+/* Use Media Query for Mobile to Change Footer Completely */
+@media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
+.footer {
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: auto auto auto;
+  grid-template-areas:
+    "logo"
+    "copyright"
+    "icons";
+
+  background: var(--bg-dark-secondary);
+  color: var(--text-secondary-on-dark);
+  font-size: 1.2rem;
+  padding-top: 3rem;
+  padding-bottom: 1rem;
+
+  justify-items: center;
+  align-items: center;
+}
+
+.footer__copyright {
+  grid-area: copyright;
+
+  align-self: center;
+  justify-self: center;
+
+  padding-top: 1rem;
+}
+
+.footer__icons {
+  grid-area: icons;
+  align-self: center;
+  justify-self: center;
+
+  padding-top: 1rem;
+  font-size: 1.5rem;
+}
+
+.footer__logo {
+  grid-area: logo;
+  align-self: center;
+  justify-self: center;
+  text-align: center;
+}
+
+.footer__logo img {
+  width: 50%;
+}
+
+.footer__address {
+  display: none;
+}
+
+.footer__contact {
+  display: none;
+}
+
+.footer__links {
+  display: none;
+}
+
+}
+
+/*  MASTHEAD  */
+
+/** notes on sizing these things --> height 100% should be to parent, but that doesn't work **/
+
+.masthead {
+  min-height: calc(100vh - 150px);  /* XXX this value needs to be calibrated based on the height of the squares we'll be dropping around */
+
+  position: relative;
+}
+
+.masthead__video {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: calc(100vh - 150px);  /* XXX this value needs to be calibrated based on the height of the squares we'll be dropping around */
+  z-index: -2;
+}
+
+.masthead__video video {
+  object-fit: cover;
+  width: 100%;
+  height: 100%;
+}
+
+.masthead__overlay {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: calc(100vh - 150px);  /* XXX this value needs to be calibrated based on the height of the squares we'll be dropping around */
+  z-index: -1;
+  background: rgba(0,0,0,0.75);
+}
+
+.masthead__content {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: calc(100vh - 150px);  /* XXX this value needs to be calibrated based on the height of the squares we'll be dropping around */
+  z-index: 0;
+  text-align: center;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.masthead__content .body_block__title {
+  justify-self: center !important;
+}
+
+.masthead__content > * > div {
+  padding-top: 0rem;
+  padding-bottom: 6rem;
+}
+
+/* special css classes for embedded things */
+
+.hire_iframe {
+  width: 100%;
+  height: 100vh;
+  border-style: none;
+}
+
+/* modal classes */
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1000; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  background-color: var(--bg-dark-primary);
+  background-color: var(--bg-modal);
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: var(--bg-light-primary);
+  margin: 5% auto;
+  padding: 3rem;
+  border: 2px solid var(--gray-light1);
+  border-radius: 3px;
+  width: auto; /* Could be more or less, depending on screen size */
+  max-width: 80%;
+  height: auto;
+  max-height: 80%;
+}
+
+/* The Close Button */
+.modal-close {
+  color: var(--text-primary-on-light);
+  float: right;
+  font-size: --fontsize-body;
+  font-weight: bold;
+}
+
+.modal-close:hover,
+.modal-close:focus {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* HubSpot Form Class -- Some are copies of other classes, so be careful to keep things in sync */
+
+.hs-button {
+  background: var(--color-primary);
+  color: var(--text-primary-on-dark);
+  border-color: var(--color-primary);
+  border-radius: 3px;
+  border-width: 2px;
+  border-style: solid;
+  cursor: pointer;
+
+  height: 5.0rem;
+  font-size: 1.4rem;
+  font-weight: 600;
+
+  padding: 0.9rem 2.25rem;
+  margin-top: 1rem;
+}
+
+.hs-button:hover {
+  background: var(--color-primary-muted);
+  border-color: var(--color-primary-muted);
+  text-decoration: none;
+}
+
+.hs-form-field {
+  width: 100%;
+  text-align: left;
+}
+
+.hs-form-field input {
+  width: 100%;
+}

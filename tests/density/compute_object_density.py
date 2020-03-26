@@ -27,8 +27,15 @@ import pandemic51.core.density as pand
 
 IMAGES_DIR = "data/prague_imgs"
 #IMAGES_DIR = "data/timessquare_imgs"
+
 LABELS_DIR = "out/labels"
+
 IMAGES_ANNO_DIR = "out/anno"
+
+ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
+    "add_logo": False,
+    "show_all_confidences": True,
+})
 
 
 # Input images to process
@@ -45,14 +52,11 @@ outpaths = [
 pand.compute_object_density_for_images(inpaths, outpaths)
 
 # Render output annotations
-config = etaa.AnnotationConfig.from_dict({
-    "add_logo": False,
-    "show_all_confidences": True,
-})
 for inpath, outpath in zip(inpaths, outpaths):
     annopath = os.path.join(IMAGES_ANNO_DIR, os.path.basename(inpath))
 
     img = etai.read(inpath)
     image_labels = etai.ImageLabels.from_json(outpath)
-    img_anno = etaa.annotate_image(img, image_labels, annotation_config=config)
+    img_anno = etaa.annotate_image(
+        img, image_labels, annotation_config=ANNOTATION_CONFIG)
     etai.write(img_anno, annopath)
