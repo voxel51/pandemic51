@@ -4,18 +4,6 @@ Test script demonstrating object density calculation on a set of images.
 Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
-# pragma pylint: disable=redefined-builtin
-# pragma pylint: disable=unused-wildcard-import
-# pragma pylint: disable=wildcard-import
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
-from __future__ import unicode_literals
-from builtins import *
-# pragma pylint: enable=redefined-builtin
-# pragma pylint: enable=unused-wildcard-import
-# pragma pylint: enable=wildcard-import
-
 import os
 
 import eta.core.annotations as etaa
@@ -48,8 +36,8 @@ outpaths = [
         LABELS_DIR, os.path.splitext(os.path.basename(inpath))[0] + ".json")
     for inpath in inpaths]
 
-# Compute object density
-pand.compute_object_density_for_images(inpaths, outpaths)
+# Detect objects in images
+pand.detect_objects_in_images(inpaths, outpaths)
 
 # Render output annotations
 for inpath, outpath in zip(inpaths, outpaths):

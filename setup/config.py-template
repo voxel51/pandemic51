@@ -1,6 +1,3 @@
-'''
-
-'''
 import os
 
 import eta.core.serial as etas
@@ -16,8 +13,9 @@ P51_BASEDIR = "/home/{{USER}}/p51_base" # TODO REPLACE ME
 ENV_DIR = os.path.join(P51_BASEDIR, "venv")
 CELERY_DIR = os.path.join(P51_BASEDIR, "celery")
 DATA_DIR = os.path.join(P51_BASEDIR, "data")
-IMAGE_DIR = os.path.join(DATA_DIR, "images")
+IMAGES_DIR = os.path.join(DATA_DIR, "images")
 LABELS_DIR = os.path.join(DATA_DIR, "labels")
+ANNO_DIR = os.path.join(DATA_DIR, "anno")
 
 # Repository Directory
 P51_REPO_DIR = "{{PANDEMIC51/PARENT/DIR}}" # TODO REPLACE ME
