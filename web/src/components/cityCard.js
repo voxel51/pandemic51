@@ -6,11 +6,13 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Clock from 'react-live-clock';
+import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { Link } from "gatsby";
 const useStyles = makeStyles({
   root: {
-    marginBottom: '1rem'
+    marginBottom: '1rem',
+    overflow: "visible",
   },
   bullet: {
     display: 'inline-block',
@@ -23,6 +25,16 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
+  content: {
+    paddingLeft: (99.5 * 16/9) + 16
+  },
+  still: {
+    margin: 0,
+    left: 0,
+    width: 99.5 * 16/9,
+    height: 99.5,
+    position: "absolute",
+  }
 });
 
 const timezones = {
@@ -39,10 +51,15 @@ export default function CityCard(props) {
   const classes = useStyles();
   const active = props.cityId === props.active && props.cityId !== undefined;
   return (
-    <Card className={classes.root + (active ? " active-card" : "")} square>
+    <Card className={classes.root} square>
       <CardActionArea>
+        <CardMedia
+          className={classes.still + (active ? " active-card" : "")}
+          image="https://material-ui.com/static/images/cards/contemplative-reptile.jpg"
+          title="Contemplative Reptile"
+        />
         <Link to={"/" + props.cityId}>
-        <CardContent>
+        <CardContent className={classes.content}>
           <Typography variant="h5" component="h2">
             {props.name}
           </Typography>

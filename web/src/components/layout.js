@@ -85,43 +85,16 @@ const Layout = ({ children, city }) => {
       <Header/>
       <div className="cta">
         <h2 class="body_block__title">
-          Coronavirus
+  Social Distancing Index
   </h2>
   <div class="body_block__text">
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
-    Text
+    Using our AI-powered video understanding capabilities, Voxel51 has generated the Social Distancing Index (SDI) to track how the Coronavirus and subsequent policies and calls for social distancing are impacting social behavior.
       <h3 class="force-pad-top6 force-pad-bot1"><span class="text-tertiary-on-dark">Stop the spread. Flatten the curve.</span></h3>
   </div>
     </div>
     <div className={classes.root}>
       <Grid container spacing={4}>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={4}>
           <CityCard cityId="chicago" name="Chicago" active={city}/>
           <CityCard cityId="dublin" name="Dublin" active={city}/>
           <CityCard cityId="london" name="London" active={city}/>
@@ -130,7 +103,7 @@ const Layout = ({ children, city }) => {
           <CityCard cityId="newyork" name="New York" active={city}/>
           <CityCard cityId="prague" name="Prague" active={city}/>
         </Grid>
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={8}>
           <Grid container spacing={4}>
             <Grid item md={12}>
                 <ClapprPlayer city={city} />

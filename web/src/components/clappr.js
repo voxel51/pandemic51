@@ -66,7 +66,7 @@ export default function ClapprPlayer({city}) {
         }, DETECTION_INTERVAL_MS);
       };
     };
-    detectFrame();
+    // detectFrame();
 
     return function cleanup() {
       cancelled = true;
