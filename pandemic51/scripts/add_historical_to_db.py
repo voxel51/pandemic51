@@ -5,6 +5,7 @@ voxel51.com
 
 Tyler Ganter, tyler@voxel51.com
 '''
+from datetime import datetime
 import logging
 import os
 import pathlib
@@ -50,7 +51,9 @@ for cur_images_dir, _, files in os.walk(images_dir):
         img_path = os.path.join(cur_images_dir, filename)
         labels_path = os.path.join(cur_labels_dir, json_filename)
 
-        dt = panu.parse_timestamp_from_path(img_path)
+        # UTC time
+        timestamp = panu.parse_epoch_timestamp_from_path(img_path)
+        utc_dt = datetime.utcfromtimestamp(timestamp)
 
         new_img_path = os.path.join(panc.IMAGE_DIR, stream_name, filename)
         new_labels_path = os.path.join(
@@ -66,9 +69,9 @@ for cur_images_dir, _, files in os.walk(images_dir):
         shutil.move(labels_path, new_labels_path)
 
         logger.info("Adding stream history:\n\t%s | %s | %s | %s"
-                    % (stream_name, dt, new_img_path, new_labels_path))
+                    % (stream_name, utc_dt, new_img_path, new_labels_path))
         pand.add_stream_history(
-            stream_name, dt,
+            stream_name, utc_dt,
             image_path=new_img_path,
             labels_path=new_labels_path
         )
