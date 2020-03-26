@@ -16,7 +16,8 @@ def parse_timestamp_from_path(path):
     s = os.path.splitext(os.path.basename(path))[0]
     return etau.parse_isotime(s[:10] + " " + s[-8:])
 
+
 def parse_epoch_timestamp_from_path(path):
     # Example input: "2020-03-21_1584781705273_48_09:08:25.png"
     s = os.path.splitext(os.path.basename(path))[0]
-    return int(s[11:24])
+    return int(s[11:21])
