@@ -44,23 +44,32 @@ def with_connection(func):
 
 
 @with_connection
-def add_stream_history(stream_name, image_path, dt, *args, cnx):
+def add_stream_history(
+        stream_name, dt, image_path, labels_path=None, *args, cnx):
     '''
 
     Args:
         stream_name: name of the video source stream
-        image_path: path to the image file on disk
         dt: datetime object of when the image was captured
+        image_path: path to the image file on disk
+        labels_path: path to the labels file on disk
     '''
     with cnx.cursor() as cursor:
         image_path = os.path.abspath(image_path)
 
         formatted_timestamp = dt.strftime('%Y-%m-%d %H:%M:%S')
 
-        sql = '''
-        INSERT INTO stream_history(stream_name, datetime, data_path)
-        VALUES('{}', '{}', '{}');
-        '''.format(stream_name, formatted_timestamp, image_path)
+        if labels_path is not None:
+            sql = '''
+                INSERT INTO stream_history(stream_name, datetime, data_path, labels_path)
+                VALUES('{}', '{}', '{}', '{}');
+                '''.format(
+                stream_name, formatted_timestamp, image_path, labels_path)
+        else:
+            sql = '''
+                INSERT INTO stream_history(stream_name, datetime, data_path)
+                VALUES('{}', '{}', '{}');
+                '''.format(stream_name, formatted_timestamp, image_path)
 
         cursor.execute(sql)
 
@@ -152,6 +161,74 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
         result_dict[stream_name]["labels_path"].append(labels_path)
         result_dict[stream_name]["sdi"].append(sdi)
     return result_dict
+
+
+@with_connection
+def plot(stream_name, reformat_as_dict=False, cnx=None):
+    '''
+    Args:
+        stream_name: if provided, only query a single stream is queried
+        reformat_as_dict: whether or not to reformat the query result as a
+            dictionary keyed on `stream_name`
+        cnx: a connection to the database, if one is already made
+
+    Returns:
+        if NOT reformat_as_dict:
+            a tuple of row tuples of the database table `stream_history`:
+                (id, stream_name, datetime, data_path, labels_path, sdi)
+        if reformat_as_dict:
+            a dictionary of format:
+                {
+                    "<STREAM 1 NAME>": {
+                        "id": [list, of, SQL, row, IDs],
+                        "datetime": [list, of, datetime, objects],
+                        "data_path": [...],
+                        "labels_path": [...],
+                        "sdi": [list, of, sdi, floats]
+                    },
+                    "<STREAM 2 NAME>": {
+                        ...,
+                        "datetime": [list, of, datetime, objects],
+                        ...,
+                        "sdi": [list, of, sdi, floats]
+                    },
+                    ...
+                }
+    '''
+    with cnx.cursor() as cursor:
+        stream_search = (
+                " where stream_name = '%s'" % stream_name
+                if stream_name else ""
+        )
+
+        sql = '''
+        select unix_timestamp(datetime) as time, sdi
+        from stream_history%s and sdi is not null ORDER BY datetime;
+        ''' % stream_search
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return [
+	{"time": time, "sdi": sdi} for time, sdi in result
+    ]
+
+
+@with_connection
+def snapshot(cnx=None):
+    with cnx.cursor() as cursor:
+        sql = '''
+        select stream_name, max(data_path)
+        from stream_history where data_path is not null group by stream_name;
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return [
+	{
+         "stream": stream_name,
+	 "url": data_path
+	} for stream_name, data_path in result
+    ]
 
 
 @with_connection

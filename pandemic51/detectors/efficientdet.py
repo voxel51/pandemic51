@@ -137,6 +137,7 @@ class EfficientDet(etal.ObjectDetector, etat.UsesTFSession):
         # Load model
         logger.info("Loading model from '%s'", model_dir)
         self._sess = self.make_tf_session()
+
         self._img_tensor, self._detections = _load_efficientdet_model(
             self._sess, self.config.architecture_name, model_dir)
 

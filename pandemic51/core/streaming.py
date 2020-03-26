@@ -193,6 +193,6 @@ def download_and_store(
         is_new_img = vid2img(video_path, image_path, width=width, height=height)
 
     if is_new_img:
-        add_stream_history(stream_name, image_path, dt)
+        add_stream_history(stream_name, dt, image_path)
 
     return image_path, dt
