@@ -34,11 +34,7 @@ const useStyles = makeStyles((theme) =>
       flexDirection: "column"
     },
     root: {
-      flexGrow: 1,
-      margin: "4rem auto",
-      maxWidth: "1040px",
       width: "100%",
-      padding: "0 var(--padding-x)"
     },
     paper: {
       padding: theme.spacing(2),
@@ -96,7 +92,8 @@ const Layout = ({ children, city }) => {
   </div>
 </div>
 </div>
-    <div className={classes.root}>
+<div className={classes.root}>
+  <div className="contentBody">
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
           <CityCard cityId="chicago" name="Chicago" active={city}/>
@@ -122,6 +119,7 @@ const Layout = ({ children, city }) => {
             </Grid>
         </Grid>
       </Grid>
+    </div>
     </div>
     <Footer/>
   </div>

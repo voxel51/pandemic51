@@ -69,7 +69,12 @@ img {
   background-image: url("../images/design.svg");
   background-size: cover;
 }
-
+.contentBody {
+  flex-grow: 1;
+  margin: 4rem auto;
+  maxWidth: 1040px;
+  padding: 1rem var(--padding-x);
+}
 .cta {
   text-align: center;
   flex-grow: 1;
@@ -2046,7 +2051,7 @@ hr {
 }
 
 @media screen and (min-width: 1240px) {
-  .nav__main {
+  .nav__main, .contentBody {
     padding: 1rem calc((100vw - 1040px)/2);
   }
 }
