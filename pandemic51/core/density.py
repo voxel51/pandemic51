@@ -77,6 +77,7 @@ def detect_objects_in_unprocessed_images():
                 detector, image_path, labels_path, anno_path=anno_path)
 
             pand.add_stream_labels(id, labels_path)
+            pand.add_stream_anno_img(anno_path)
 
 
 def compute_object_counts_for_db_entries(null_only=True):
