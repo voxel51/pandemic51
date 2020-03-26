@@ -14,12 +14,16 @@ const CITIES = {
   "prague": "http://34.67.136.168/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
 }
 
-const DETECTION_INTERVAL_MS = 1000;
+const DETECTION_INTERVAL_MS = 100;
 const DETECTIONS_TO_SHOW = [
   'person',
 ];
 
-const modelPromise = cocoSsd.load();
+const modelPromise = cocoSsd.load({base: 'lite_mobilenet_v2'});
+modelPromise.then(
+  () => console.log('model loaded'),
+  (error) => console.log(`unable to load model: ${error.message}`)
+);
 
 export default function ClapprPlayer({city}) {
   const [height, setHeight] = useState(0);
@@ -67,7 +71,9 @@ export default function ClapprPlayer({city}) {
             }
           }
         }
-      } finally {
+      } catch (error) {
+        // pass on the error -> the video data is just not available
+      }finally {
         setTimeout(() => {
           requestAnimationFrame(detectFrame);
         }, DETECTION_INTERVAL_MS);
@@ -103,12 +109,16 @@ export default function ClapprPlayer({city}) {
     const ctx = canvasRef.current.getContext("2d");
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
     // Font options.
-    const font = "16px sans-serif";
+    const font = "12px sans-serif";
     ctx.font = font;
     ctx.textBaseline = "top";
     const t_template = (from, to) => i => i / from * to;
     const th = t_template(video.videoHeight, height);
     const tw = t_template(video.videoWidth, width);
+    ctx.fillStyle = "#499cef";
+    ctx.fillText(`${predictions.length}`, 10, height-18);
+    ctx.strokeStyle = "#499cef";
+    ctx.lineWidth = 2;
     predictions.forEach(prediction => {
       if (!DETECTIONS_TO_SHOW.includes(prediction.class)) {
         return;
@@ -117,9 +127,11 @@ export default function ClapprPlayer({city}) {
       const y = th(prediction.bbox[1]);
       const width = tw(prediction.bbox[2]);
       const height = th(prediction.bbox[3]);
-      // Draw the bounding box.
-      ctx.strokeStyle = "#00FFFF";
-      ctx.lineWidth = 1;
+      // Throw away any bad detection covering the whole scene or most of it
+      if (width*height > 100000) {
+        return;
+      }
+      // Draw the bounding box in the Voxel51 blue.
       ctx.strokeRect(x, y, width, height);
     });
   };
