@@ -17,7 +17,7 @@ CELERY_APP="tasks"
 CELERYD_MULTI="multi"
 
 # Extra command-line arguments to the worker
-CELERYD_OPTS="--concurrency=8 -Ofair"
+CELERYD_OPTS="--concurrency=1 -Ofair"
 
 # Extra command-line arguments to the worker
 CELERYBEAT_OPTS="--schedule={{CELERY_DIR}}/celerybeat-schedule"

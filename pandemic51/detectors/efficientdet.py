@@ -118,8 +118,6 @@ class EfficientDet(etal.ObjectDetector, etat.UsesTFSession):
         Args:
             config: a EfficientDetConfig instance
         '''
-        tf.reset_default_graph()
-
         self.config = config
         etat.UsesTFSession.__init__(self)
 

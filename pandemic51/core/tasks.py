@@ -5,6 +5,7 @@ Celery Tasks
 import os
 
 import celery
+import tensorflow as tf
 
 import pandemic51.core.config as panc
 import pandemic51.core.density as pand
@@ -35,6 +36,7 @@ def das_task(stream_name):
 @app.task()
 def cdfui_task():
     '''"Compute Density For Unprocessed Images (CDFUI) task'''
+    tf.reset_default_graph()
     pand.compute_density_for_unprocessed_images()
 
 
