@@ -19,6 +19,7 @@ from builtins import *
 import logging
 import os
 import pathlib
+import random
 
 import numpy as np
 
@@ -77,14 +78,58 @@ def compute_density_for_unprocessed_images():
     detector = load_efficientdet_model(MODEL_NAME)
 
     with detector:
-        for id, image_path in pand.query_unprocessed_images():
+        # get the full list of unprocessed and process in a random order
+        # (in case multiple tasks are running)
+        unprocessed_images = pand.query_unprocessed_images()
+        random.shuffle(unprocessed_images)
+        for id, image_path in unprocessed_images:
             ipath = pathlib.Path(image_path)
             labels_path = str(os.path.join(
                 panco.LABELS_DIR, ipath.parent.stem, ipath.stem + ".json"))
 
+            if os.path.exists(labels_path):
+                # another celery worker processed this image, so skip
+                continue
+
             _process_image(detector, image_path, labels_path)
 
             pand.add_stream_labels(id, labels_path)
+
+
+def simple_sdi(labels):
+    '''Simple SDI (social distancing index) metric. Counts the number of person
+    detections.
+
+    Args:
+        labels: an eta.core.ImageLabels object
+
+    Returns:
+         numeric SDI metric
+    '''
+    obj_labels = [x.label for x in labels.objects]
+
+    return len([x for x in obj_labels if x == "person"])
+
+
+def compute_sdi_for_database_entries(null_only=True, sdi_metric=simple_sdi):
+    '''
+    1) get all entries (that are null)
+    2) compute SDI
+    3) populate
+    '''
+    cnx = pand.connect_database()
+    rows = pand.query_stream_history(cnx=cnx)
+
+    for id, stream_name, datetime, data_path, labels_path, sdi in rows:
+        if not labels_path:
+            continue
+
+        if null_only and sdi is not None:
+            continue
+
+        new_sdi = sdi_metric(etai.ImageLabels.from_json(labels_path))
+
+        pand.populate_sdi(id, new_sdi, cnx=cnx)
 
 
 def _process_image(detector, inpath, outpath):
