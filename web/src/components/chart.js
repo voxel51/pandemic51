@@ -63,6 +63,13 @@ class Chart extends Component {
       });
   }
 
+  handleClick(data) {
+    if (data) {
+      console.log('chart clicked at', data.activeLabel);
+      this.props.onClick('some-image-url');
+    }
+  }
+
   render() {
     const { list } = this.state;
     const { classes, title, city } = this.props;
@@ -71,7 +78,9 @@ class Chart extends Component {
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
 <AreaChart width={730} height={250} data={list}
-  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+  cursor="pointer"
+  onClick={this.handleClick.bind(this)}>
   <defs>
     <linearGradient id="sdi" x1="0" y1="0" x2="0" y2="1">
       <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8}/>
@@ -96,6 +105,7 @@ class Chart extends Component {
 
 Chart.propTypes = {
   classes: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Chart);
