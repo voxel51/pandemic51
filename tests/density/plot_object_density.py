@@ -27,6 +27,7 @@ import eta.core.image as etai
 import eta.core.utils as etau
 
 import pandemic51.core.density as pand
+import pandemic51.core.utils as panu
 
 
 LABELS_DIR = "out/labels"
@@ -41,12 +42,6 @@ MIN_DATE = etau.parse_isotime("2020-02-01")
 
 # Input images to process
 label_paths = etau.list_files(LABELS_DIR, abs_paths=True)
-
-
-def parse_timestamp_from_path(path):
-    # Example input: "2020-03-21_1584781705273_48_09:08:25"
-    s = os.path.splitext(os.path.basename(path))[0]
-    return etau.parse_isotime(s[:10] + " " + s[-8:])
 
 
 def filter_objects(objects):
@@ -64,7 +59,7 @@ label_map = {}
 count_map = {}
 density_map = {}
 for label_path in label_paths:
-    timestamp = parse_timestamp_from_path(label_path)
+    timestamp = panu.parse_timestamp_from_path(label_path)
     image_labels = etai.ImageLabels.from_json(label_path)
     objects = image_labels.objects
 
