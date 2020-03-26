@@ -54,7 +54,9 @@ for cur_images_dir, _, files in os.walk(images_dir):
         dt = panu.parse_timestamp_from_path(img_path)
 
         new_img_path = os.path.join(panc.IMAGE_DIR, stream_name, filename)
-        new_labels_path = os.path.join(panc.LABELS_DIR, stream_name, filename)
+        json_filename = os.path.splitext(filename)[0] + ".json"
+        new_labels_path = os.path.join(
+            panc.LABELS_DIR, stream_name, json_filename)
 
         logger.info("Moving file:\n\t%s\n\t-> %s" % (img_path, new_img_path))
         shutil.move(img_path, new_img_path)
