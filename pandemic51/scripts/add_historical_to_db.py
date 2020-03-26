@@ -48,13 +48,14 @@ for cur_images_dir, _, files in os.walk(images_dir):
         continue
 
     for filename in files:
+        json_filename = os.path.splitext(filename)[0] + ".json"
+
         img_path = os.path.join(cur_images_dir, filename)
-        labels_path = os.path.join(cur_labels_dir, filename)
+        labels_path = os.path.join(cur_labels_dir, json_filename)
 
         dt = panu.parse_timestamp_from_path(img_path)
 
         new_img_path = os.path.join(panc.IMAGE_DIR, stream_name, filename)
-        json_filename = os.path.splitext(filename)[0] + ".json"
         new_labels_path = os.path.join(
             panc.LABELS_DIR, stream_name, json_filename)
 
