@@ -23,6 +23,7 @@ def run_on_startup(sender=None, conf=None, **kwargs):
     infrequent tasks that should run after system comes online
     '''
     dofui_task.delay()
+    ccfde_task.delay()
 
 
 @app.on_after_configure.connect
