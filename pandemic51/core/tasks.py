@@ -17,6 +17,14 @@ app = celery.Celery("pandemic51.core.tasks")
 app.config_from_object("pandemic51.core.celery_config")
 
 
+@celery.signals.celeryd_init.connect()
+def run_on_startup(sender=None, conf=None, **kwargs):
+    ''' Execute these other tasks on startup, either as one time or very
+    infrequent tasks that should run after system comes online
+    '''
+    dofui_task.delay()
+
+
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     for stream_name in panc.STREAMS:
