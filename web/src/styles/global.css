@@ -63,15 +63,18 @@ img {
     --padding-y: 10rem;
 }
 
+.cta-wrapper {
+  width: 100%;
+  background: var(--bg-dark-primary);
+  background-image: url("../images/design.svg");
+  background-size: cover;
+}
+
 .cta {
   text-align: center;
   flex-grow: 1;
   margin: 0 auto;
   max-width: 1040px;
-  background: var(--bg-dark-primary);
-  background-image: url("../images/design.svg");
-  background-size: cover;
-min-width: 100%;
     padding: 4rem var(--padding-x);
       display: grid;
     grid-template-columns: 1fr 61.7% 1fr;

@@ -83,6 +83,8 @@ const Layout = ({ children, city }) => {
         <meta name="referrer" content="no-referrer"/>
       </Helmet>
       <Header/>
+      <div className="cta-wrapper">
+
       <div className="cta">
         <h2 class="body_block__title">
   Social Distancing Index
@@ -91,7 +93,8 @@ const Layout = ({ children, city }) => {
     Using our AI-powered video understanding capabilities, Voxel51 has generated the Social Distancing Index (SDI) to track how the Coronavirus and subsequent policies and calls for social distancing are impacting social behavior.
       <h3 class="force-pad-top6 force-pad-bot1"><span class="text-tertiary-on-dark">Stop the spread. Flatten the curve.</span></h3>
   </div>
-    </div>
+</div>
+</div>
     <div className={classes.root}>
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
