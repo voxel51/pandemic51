@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import moment from 'moment'
 import {
   ResponsiveContainer,
+  ReferenceLine,
   AreaChart,
   Area,
   stop,
@@ -50,7 +51,8 @@ const styles = theme => ({
 
 class Chart extends Component {
   state = {
-    list: []
+    list: [],
+    events: []
   };
 
   componentDidMount() {
@@ -59,12 +61,15 @@ class Chart extends Component {
       .then(response => response.json())
       .then(json => {
         console.log(json);
-        this.setState({ list: json["data"] })
+        this.setState({
+          list: json["data"],
+          events: json["events"]
+        })
       });
   }
 
   render() {
-    const { list } = this.state;
+    const { list, events } = this.state;
     const { classes, title, city } = this.props;
     return (
       <Card className={classes.root} square>
@@ -73,7 +78,7 @@ class Chart extends Component {
 <AreaChart width={730} height={250} data={list}
   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
   <defs>
-    <linearGradient id="sdi" x1="0" y1="0" x2="0" y2="1">
+    <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
       <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8}/>
       <stop offset="95%" stopColor="#ff6d04" stopOpacity={0}/>
     </linearGradient>
@@ -81,11 +86,21 @@ class Chart extends Component {
   <XAxis         dataKey = 'time'
         domain = {['auto', 'auto']}
         name = 'Time'
-        tickFormatter = {(unixTime) => moment(unixTime).tz(timezones[city]).format('hh:mm A M D')}
+        tickCount={8}
+        tickFormatter = {(unixTime) => moment.unix(unixTime).tz(timezones[city]).format('M/D')}
         type = 'number'/>
-  <YAxis dataKey = 'sdi' name = 'SDI' />
-  <Tooltip />
-  <Area type="monotone" dataKey="sdi" stroke="#ff6d04" fillOpacity={1} fill="url(#colorUv)" />
+      <YAxis dataKey = 'sdi' name = 'SDI' />
+      <Tooltip
+        formatter={ (v, n, p) => {
+          return [v, "Detections"]
+      }}
+      labelFormatter={ val => {
+        return moment.unix(val).tz(timezones[city]).format("dddd,  MMM Do, hh:mm A");
+      }}/>
+  {events.map((value, idx) => {
+          return <ReferenceLine x={value.time} stroke="green" label={value.event} alwaysShow={true}/>
+        })}
+  <Area type="monotone" dataKey="sdi" stroke="#ff6d04" fillOpacity={1} fill="url(#colorSdi)" />
 </AreaChart>
       </ResponsiveContainer>
       </CardContent>

@@ -26,11 +26,11 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   content: {
-    paddingLeft: (99.5 * 16/9) + 16
+    paddingRight: (99.5 * 16/9) + 16
   },
   still: {
     margin: 0,
-    left: 0,
+    right: 0,
     width: 99.5 * 16/9,
     height: 99.5,
     position: "absolute",
@@ -61,14 +61,14 @@ export default function CityCard(props) {
   const classes = useStyles();
   const active = props.cityId === props.active && props.cityId !== undefined;
   return (
-    <Card className={classes.root} square>
+    <Card className={classes.root + (active ? " active-card" : "")} square>
       <CardActionArea>
+        <Link to={"/" + props.cityId}>
         <CardMedia
-          className={classes.still + (active ? " active-card" : "")}
+          className={classes.still}
           image={props.url}
           title={locations[props.cityId]}
         />
-        <Link to={"/" + props.cityId}>
         <CardContent className={classes.content}>
           <Typography variant="h5" component="h2">
             {props.name}
