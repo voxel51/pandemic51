@@ -32,7 +32,8 @@ sudo apt install yarn
 Alternatively, if you're using nvm, you can run `npm install -g yarn` to install yarn
 in your current node environment (without root access).
 
-In `./web` run `yarn install`.
+In `./web` run `yarn install`. This will install dependencies, including the Gatsby CLI, 
+which you can run with `yarn` (below) or directly using [`npx`](https://www.npmjs.com/package/npx).
 
 
 ## Developing and Running
