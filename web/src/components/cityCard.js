@@ -32,13 +32,13 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   content: {
-    paddingRight: (99.5 * 16/9) + 16
+    paddingRight: (106.52 * 16/9) + 16
   },
   still: {
     margin: 0,
     right: 0,
-    width: 99.5 * 16/9,
-    height: 99.5,
+    width: 106.52 * 16/9,
+    height: 106.52,
     position: "absolute",
   }
 });
@@ -79,10 +79,10 @@ export default function CityCard(props) {
             <Typography variant="h5" component="h2">
               {props.name}
             </Typography>
-            <Typography className={classes.pos} color="textSecondary">
+            <Typography variant="h6" component="h3" className={classes.pos} color="textSecondary">
               <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
             </Typography>
-            <Typography variant="body2" component="p">
+            <Typography variant="body1" component="p">
               {locations[props.cityId]}
             </Typography>
           </CardContent>

@@ -12,9 +12,10 @@ import Image from "../components/image"
 import SEO from "../components/seo"
 
 const ChicagoPage = () => (
-  <Layout city="chicago">
-    <SEO title="" />
-  </Layout>
+  <>
+    <SEO/>
+    <Layout city="chicago"/>
+  </>
 )
 
 export default ChicagoPage
