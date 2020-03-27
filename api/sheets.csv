@@ -1,0 +1,49 @@
+date,city,event,reference
+1/21/2020,U.S.,First U.S. case of coronavirus confirmed,https://www.nytimes.com/2020/01/21/health/cdc-coronavirus.html
+2/25/2020,neworleans,Mardi Gras,
+2/29/2020,U.S.,First U.S. coronavirus death confirmed,https://www.cnn.com/2020/02/29/health/us-coronavirus-saturday/index.html
+3/1/2020,prague,First Czech Republic case of coronavirus confirmed,https://www.reuters.com/article/us-china-health-czech/czech-republic-reports-first-cases-of-coronavirus-idUSKBN20O1XK
+3/5/2020,london,First confirmed coronavirus death in UK,https://www.theguardian.com/world/2020/mar/05/more-than-a-hundred-people-in-uk-infected-with-coronavirus
+3/9/2020,dublin,Ireland cancels St. Patrick's Day festivities,https://www.nbcnews.com/news/world/ireland-cancels-st-patrick-s-day-festivities-over-coronavirus-concerns-n1153591
+3/11/2020,chicago,Chicago Mayor cancels St. Patrick's Day festivities,https://www.chicagotribune.com/coronavirus/ct-chicago-st-patricks-day-parade-cancelled-coronavirus-20200311-d5gtbxofc5hxpdfocdepwfsxca-story.html
+3/11/2020,prague,Czech Republic school closings go into effect,https://www.radio.cz/en/section/curraffrs/schools-closing-as-czech-authorities-report-first-coronavirus-case-with-unknown-source
+3/12/2020,newyork,New York St. Patrick's Day festivities postponed,https://www.nycstpatricksparade.org/2020/03/12/press-release-parade-postponed
+3/13/2020,chicago,Illinois Governor announces school closings,https://abc7chicago.com/health/chicago-area-school-closings-event-cancellations-amid-covid-19-outbreak-/5999972/
+3/13/2020,neworleans,Louisiana Governor announces school closings,https://www.klfy.com/louisiana/breaking-governor-edwards-orders-louisiana-schools-closed
+3/13/2020,U.S.,President Trump declares national emergency,https://www.whitehouse.gov/presidential-actions/proclamation-declaring-national-emergency-concerning-novel-coronavirus-disease-covid-19-outbreak/
+3/14/2020,chicago,Archidiocese of Chicago cancels all future masses,https://www.chicagotribune.com/coronavirus/ct-coronavirus-chicago-catholic-schools-closed-20200313-lmjvxzrowve6tlxjbksaofvle4-story.html
+3/15/2020,chicago,Chicago bars & restaurants close inside dining,https://abc7chicago.com/health/illinois-bars-dine-in-restaurants-closing-monday-night-to-limit-covid-19-spread/6017541/
+3/15/2020,newyork,NYC announces school closings,https://www.nbcnews.com/news/us-news/new-york-city-close-schools-bars-restaurants-around-u-s-n1159651
+3/15/2020,U.S.,CDC advises no gatherings of 50 or more,https://www.nytimes.com/2020/03/15/world/coronavirus-live.html
+3/15/2020,newjersey,New Jersey Governor announces school closings,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/16/2020,chicago,Illinois Governor announces school closings,https://abc7chicago.com/health/chicago-area-school-closings-event-cancellations-amid-covid-19-outbreak-/5999972/
+3/16/2020,newyork,NYC school closings go into effect,https://www.nbcnews.com/news/us-news/new-york-city-close-schools-bars-restaurants-around-u-s-n1159651
+3/16/2020,prague,Czech Republic travel ban and quarantine go into effect,https://cz.usembassy.gov/covid-19-information
+3/16/2020,neworleans,New Orleans Mayor implements Stay-at-Home order,https://ready.nola.gov/incident/coronavirus/proclamation-guidance
+3/16/2020,chicago,Illinois Governor bans gatherings of 50 or more,https://abc7chicago.com/health/pritzker-bans-gatherings-of-50-or-more-as-state-preps-for-election/6019036/
+3/16/2020,neworleans,Louisiana school closings go into effect,https://www.klfy.com/louisiana/breaking-governor-edwards-orders-louisiana-schools-closed
+3/17/2020,Worldwide,St. Patrick's Day,
+3/17/2020,chicago,Illinois school closings go into effect,https://abc7chicago.com/health/chicago-area-school-closings-event-cancellations-amid-covid-19-outbreak-/5999972/
+3/17/2020,newyork,NYC Mayor tell city to prepare for Shelter-in-Place,https://www.nbcnewyork.com/news/coronavirus/nypd-to-enforce-closures-as-nyc-celebrates-st-patricks-day-with-no-parade-no-bars/2330440
+3/17/2020,newjersey,"New Jersey closes indoor malls, amusement centers, and parks",https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/18/2020,london,UK Prime Minister announces school closings,https://www.theguardian.com/world/2020/mar/18/coronavirus-why-are-uk-schools-closing-and-what-does-it-mean-for-parents
+3/18/2020,newjersey,New Jersey school closings go into effect,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/20/2020,chicago,Illinois Governor announces Stay-at-Home order,https://abc7chicago.com/society/watch-live-pritzker-announces-stay-at-home-order-amid-covid-19-outbreak-/6032318/
+3/20/2020,newyork,New York Governor announces Stay-at-Home order,https://www.nytimes.com/article/what-is-shelter-in-place-coronavirus.html
+3/20/2020,newjersey,New Jersey to adjust rail service,https://abc7ny.com/traffic/nj-transit-shifts-to-weekend-schedule-during-week-amid-covid-19-crisis/6029934
+3/21/2020,chicago,Illinois Stay-at-Home order goes into effect,https://www.nbcchicago.com/news/local/illinois-stay-at-home-order-now-in-effect/2241919/
+3/21/2020,newjersey,New Jersey Governor announces and implements Stay-at-Home order,https://covid19.nj.gov/faqs/nj-information/general-public/governor-murphy-announces-statewide-stay-at-home-order-closure-of-all-non-essential-retail-businesses
+3/21/2020,chicago,Chicago to close libraries and parks ,https://www.nbcchicago.com/news/local/chicago-to-close-libraries-and-parks-starting-saturday/2241444/
+3/22/2020,neworleans,New Orleans Governor announces Stay-at-Home order,https://www.wwltv.com/article/news/health/coronavirus/la-governor-issues-stay-at-home-order-what-that-means-for-you/289-5533d965-18e4-48f4-86ae-e00e653b2613
+3/23/2020,london,UK school closings go into effect,https://www.theguardian.com/world/2020/mar/18/coronavirus-why-are-uk-schools-closing-and-what-does-it-mean-for-parents
+3/23/2020,neworleans,Louisiana Stay-at-Home order goes into effect,https://www.wwltv.com/article/news/health/coronavirus/la-governor-issues-stay-at-home-order-what-that-means-for-you/289-5533d965-18e4-48f4-86ae-e00e653b2613
+3/23/2020,london,UK Prime Minister announces Stay-at-Home order,https://www.cnn.com/2020/03/23/uk/uk-coronavirus-lockdown-gbr-intl/index.html
+3/24/2020,london,UK Stay-at-Home order goes into effect,https://www.cnn.com/2020/03/23/uk/uk-coronavirus-lockdown-gbr-intl/index.html
+3/24/2020,newjersey,Seaside Heights closes all beaches,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/24/2020,Worldwide,Tokyo 2020 Olympics officially postponed,https://www.espn.com/olympics/story/_/id/28946033/tokyo-olympics-officially-postponed-2021
+3/25/2020,london,Prince Charles tests positive for COVID-19,https://www.bbc.com/news/uk-52033845
+3/25/2020,newjersey,New Jersey Governor announces childcare closings,https://www.nbcphiladelphia.com/news/coronavirus/new-jersey-expands-testing-centers-as-coronavirus-cases-continue-to-rise/2340043
+3/25/2020,london,Air raid siren goes off in London,https://www.mirror.co.uk/news/uk-news/coronavirus-mystery-air-raid-siren-21751920
+3/25/2020,chicago,Chicago Mayor threatens to shut down parks and entire lakefront,https://www.chicagotribune.com/coronavirus/ct-coronavirus-chicago-lakefront-arwady-lightfoot-20200325-feqjcndbmzebrctivt7r4trp3u-story.html
+4/1/2020,newjersey,New Jersey childcare closings go into effect,https://www.nbcphiladelphia.com/news/coronavirus/new-jersey-expands-testing-centers-as-coronavirus-cases-continue-to-rise/2340043
+4/12/2020,Worldwide,Easter Sunday,
