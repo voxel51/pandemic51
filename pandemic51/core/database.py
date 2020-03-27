@@ -8,7 +8,10 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 import os
 
+import numpy as np
 import pymysql
+
+import eta.core.utils as etau
 
 import pandemic51.core.config as p51c
 
@@ -216,12 +219,10 @@ def plot(stream_name, reformat_as_dict=False, cnx=None):
 
     result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
 
-    MIN_DATE=etau.parse_isotime("2020-02-15")
+    MIN_DATE = etau.parse_isotime("2020-02-15")
 
-    if MIN_DATE:
-        output_result = [{"time": t, "sdi": None} for t, sdi in result if t > MIN_DATE]
-    else:
-        output_result = [{"time": t, "sdi": None} for t, sdi in result]
+    output_result = [{"time": t, "sdi": None} for t, sdi in result
+                     if not MIN_DATE or t > MIN_DATE]
 
     # Number of days of data to apply avg_fcn over
     window_size = 3
@@ -241,7 +242,8 @@ def plot(stream_name, reformat_as_dict=False, cnx=None):
     for ind, d in enumerate(output_result):
         time = d["time"]
         output_result[ind]["time"] = time.timestamp()
-        window = [v for t, v in result if t <= time and t > time - timedelta(days=window_size)]
+        window = [v for t, v in result
+                  if t <= time and t > time - timedelta(days=window_size)]
         if len(window) < min_window_count:
             continue
 
