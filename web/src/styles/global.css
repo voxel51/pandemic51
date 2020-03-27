@@ -16,8 +16,14 @@ footer {
 img {
   margin-bottom: 0 !important;
 }
-.player-container {
+.media-container {
   position: relative;
+}
+.video-player-wrapper {
+
+}
+.video-player {
+
 }
 .image-overlay-wrapper {
   top: 0;

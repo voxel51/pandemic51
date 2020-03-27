@@ -32,7 +32,16 @@ export default function Player({city}) {
     );
   }, [city])
 
-  return player;
+  if (!player) {
+    return null;
+  }
+  return (
+    <div className="video-player-wrapper">
+      <div className="video-player">
+        {player}
+      </div>
+    </div>
+  );
 }
 
 Player.propTypes = {
