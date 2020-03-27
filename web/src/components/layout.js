@@ -20,7 +20,7 @@ import Img from 'gatsby-image';
 import CityCard from './cityCard';
 import "./layout.css"
 import "./../utils/typography";
-import ClapprPlayer from './clappr';
+import Player from './player';
 import Chart from './chart';
 import Hidden from '@material-ui/core/Hidden';
 import ImageOverlay from './imageOverlay';
@@ -51,7 +51,7 @@ class Layout extends React.Component  {
     };
   }
   componentDidMount() {
-    fetch("http://34.67.136.168/api/snapshots")
+    fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
         this.setState({ urls: json["data"] })
@@ -111,7 +111,7 @@ class Layout extends React.Component  {
           </Hidden>
             <Grid container spacing={4}>
               <Grid item xs={12} className="detector-container" style={{boxSizing: 'content-box'}}>
-                <ClapprPlayer city={city} />
+                <Player city={city} />
                 <ImageOverlay src={this.state.src} onClose={(e) => {
                   e.stopPropagation();
                   this.setState({src: null});

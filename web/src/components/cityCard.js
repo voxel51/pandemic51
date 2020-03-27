@@ -70,24 +70,24 @@ export default function CityCard(props) {
     <Card className={classes.root + (active ? " active-card" : "")} square>
       <CardActionArea>
         <Link to={"/" + props.cityId}>
-        <CardMedia
-          className={classes.still}
-          image={props.url}
-          title={locations[props.cityId]}
-        />
-        <CardContent className={classes.content}>
-          <Typography variant="h5" component="h2">
-            {props.name}
-          </Typography>
-          <Typography className={classes.pos} color="textSecondary">
-            <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
-          </Typography>
-          <Typography variant="body2" component="p">
-            {locations[props.cityId]}
-          </Typography>
-        </CardContent>
-      </Link>
+          <CardMedia
+            className={classes.still}
+            image={props.url}
+            title={locations[props.cityId]}
+          />
+          <CardContent className={classes.content}>
+            <Typography variant="h5" component="h2">
+              {props.name}
+            </Typography>
+            <Typography className={classes.pos} color="textSecondary">
+              <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
+            </Typography>
+            <Typography variant="body2" component="p">
+              {locations[props.cityId]}
+            </Typography>
+          </CardContent>
+        </Link>
       </CardActionArea>
-      </Card>
-    );
+    </Card>
+  );
 }

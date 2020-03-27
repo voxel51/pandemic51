@@ -75,5 +75,5 @@ for cur_images_dir, _, files in os.walk(images_dir):
         pand.add_stream_history(
             stream_name, utc_dt,
             image_path=new_img_path,
-            labels_path=new_labels_path
+            labels_path=new_labels_path,
         )
