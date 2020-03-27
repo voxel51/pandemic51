@@ -29,7 +29,7 @@ def compute_pdi(timestamps, counts, urls):
     Returns:
         (timestamps, PDIs, urls)
     '''
-    return _compute_pdi_v2(timestamps, counts, urls)
+    return _compute_pdi_v1(timestamps, counts, urls)
 
 
 def compute_pdi_change(timestamps, pdis, num_days=7):
