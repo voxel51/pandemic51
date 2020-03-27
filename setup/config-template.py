@@ -39,5 +39,5 @@ STREAMS_PATH = os.path.join(P51_REPO_DIR, "pandemic51/config/streams.json")
 STREAMS = etas.load_json(STREAMS_PATH)
 
 # Celery periodic task intervals
-STREAM_DOWNLOAD_INTERVAL = 60 * 15
-DENSITY_COMPUTE_INTERVAL = 60 * 15
+DOWNLOAD_STREAM_INTERVAL = 60 * 15
+COMPUTE_DETECTIONS_INTERVAL = 60 * 15

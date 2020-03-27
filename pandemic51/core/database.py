@@ -113,6 +113,24 @@ def query_unprocessed_images(cnx=None):
 
 
 @with_connection
+def set_object_count(id, count, cnx=None):
+    '''Sets the object count for the given ID in the database.
+
+    Args:
+        id: db row ID
+        count: the object count
+        cnx: a db connection. By default, a temporary connection is created
+    '''
+    with cnx.cursor() as cursor:
+        sql = '''
+        UPDATE stream_history SET sdi='{}' where id={};
+        '''.format(count, id)
+        cursor.execute(sql)
+
+    cnx.commit()
+
+
+@with_connection
 def add_stream_labels(id, labels_path, cnx=None):
     '''Adds the given labels to the database.
 
@@ -227,21 +245,3 @@ def query_stream_pdi(stream_name, *args, cnx=None):
     pdis = panp.compute_pdi(times, counts)
 
     return [{"time": t, "pdi": p} for t, p in zip(times, pdis)]
-
-
-@with_connection
-def populate_object_count(id, count, cnx=None):
-    '''Sets the object count for the given ID in the database.
-
-    Args:
-        id: the stream ID
-        count: the object count
-        cnx: a db connection. By default, a temporary connection is created
-    '''
-    with cnx.cursor() as cursor:
-        sql = '''
-        UPDATE stream_history SET count='{}' where id={};
-        '''.format(count, id)
-        cursor.execute(sql)
-
-    cnx.commit()
