@@ -1,3 +1,9 @@
+/**
+ * Image components.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React from "react"
 import { useStaticQuery, graphql } from "gatsby"
 import Img from "gatsby-image"

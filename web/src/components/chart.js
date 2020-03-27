@@ -1,3 +1,9 @@
+/**
+ * Chart definitions.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React, { Component } from "react";
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles';
@@ -58,7 +64,6 @@ const styles = theme => ({
     marginBottom: 12,
   },
 });
-
 
 class Chart extends Component {
   state = {

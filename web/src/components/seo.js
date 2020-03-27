@@ -1,8 +1,10 @@
 /**
- * SEO component that queries for data with
- *  Gatsby's useStaticQuery React hook
+ * SEO component that queries for data with Gatsby's useStaticQuery React hook.
  *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
+ * See: https://www.gatsbyjs.org/docs/use-static-query.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
  */
 
 import React from "react"

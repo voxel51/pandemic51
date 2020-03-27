@@ -1,10 +1,12 @@
 /**
- * Layout component that queries for data
- * with Gatsby's useStaticQuery component
+ * Layout component that queries for data with Gatsby's useStaticQuery
+ * components.
  *
- * See: https://www.gatsbyjs.org/docs/use-static-query/
+ * See: https://www.gatsbyjs.org/docs/use-static-query.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
  */
-
 import React from "react"
 import Helmet from "react-helmet"
 import PropTypes from "prop-types"

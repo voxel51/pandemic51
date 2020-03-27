@@ -1,7 +1,16 @@
+/**
+ * Implement Gatsby's Node APIs in this file.
+ *
+ * See: https://www.gatsbyjs.org/docs/node-apis.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
+
 module.exports = {
   siteMetadata: {
-    title: `Voxel51 // SDI`,
-    description: `Coronavirus Social Density Index by Voxel51`,
+    title: `Voxel51 // PDI`,
+    description: `Live site monitoring the effect of physical distancing measures during the Coronavirus pandemic`,
     author: `Voxel51 Inc.`,
   },
   plugins: [

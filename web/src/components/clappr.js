@@ -1,3 +1,9 @@
+/**
+ * Live stream components.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React, { useState, useEffect, useRef } from "react";
 import Clappr from 'clappr';
 import PropTypes from 'prop-types'
