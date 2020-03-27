@@ -272,10 +272,14 @@ def plot2(stream_name, *args, cnx=None):
 
     avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
 
-    t = [a["time"] for a in output_result],
-    sdi = [a["sdi"] for a in output_result]
+    t = [a["time"] for a in output_result]
 
-    sdi2 = [avg_fcn(sdi[min(0, n-window_size):n]) for n in range(len(sdi))]
+    sdi = np.asarray([a["sdi"] for a in output_result])
+
+    sdi2 = sdi.copy()
+
+    for n in range(len(sdi2)):
+        sdi2[n] = avg_fcn(sdi[max(0, n-window_size):n+1])
 
     return [{"time": t, "sdi": None} for t, sdi in zip(t, sdi2)]
 
