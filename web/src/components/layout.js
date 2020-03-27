@@ -51,7 +51,7 @@ class Layout extends React.Component  {
     };
   }
   componentDidMount() {
-    fetch("http://34.67.136.168/api/snapshots")
+    fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
         this.setState({ urls: json["data"] })
