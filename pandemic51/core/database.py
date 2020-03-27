@@ -225,6 +225,8 @@ def query_stream_pdi(stream_name, *args, cnx):
 
 @with_connection
 def query_market_change(stream_name, *args, cnx):
+    '''Returns the change in PDI for the stream in the past panp.N_HOURS hours
+    '''
     with cnx.cursor() as cursor:
         sql = '''
         select unix_timestamp(datetime) as time, sdi
@@ -239,6 +241,17 @@ def query_market_change(stream_name, *args, cnx):
     pdi_change = panp.market_change(times, pdis)
 
     return {"pdi_change": pdi_change}
+
+
+@with_connection
+def query_snapshots(*args, cnx):
+    '''
+
+    :param args:
+    :param cnx:
+    :return:
+    '''
+    pass
 
 
 @with_connection
