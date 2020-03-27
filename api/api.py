@@ -27,7 +27,7 @@ NAMES = {
 
 US = {"chicago", "newyork", "neworleans", "newjersey"}
 
-EVENTS_CSV_PATH = "./sheets.csv"
+EVENTS_CSV_PATH = "./news_events.csv"
 
 
 @app.route("/snapshots")
