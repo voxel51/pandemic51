@@ -59,7 +59,7 @@ def with_connection(func):
 
 @with_connection
 def add_stream_history(
-        stream_name, dt, image_path, labels_path=None, *args, cnx):
+        stream_name, dt, image_path, labels_path=None, cnx=None):
     '''Adds the given stream history to the database.
 
     Args:
@@ -167,7 +167,7 @@ def add_stream_anno_img(id, anno_img_path, *args, cnx):
 
 
 @with_connection
-def query_stream_history(stream_name=None, reformat_as_dict=False, *args, cnx):
+def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     '''Returns the stream history for the specified stream(s).
 
     Args:
