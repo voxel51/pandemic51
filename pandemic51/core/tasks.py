@@ -22,8 +22,8 @@ def run_on_startup(sender=None, conf=None, **kwargs):
     ''' Execute these other tasks on startup, either as one time or very
     infrequent tasks that should run after system comes online
     '''
-    dofui_task.delay()
-    ccfde_task.delay()
+    dofaui_task.delay()
+    cocfade_task.delay()
 
 
 @app.on_after_configure.connect

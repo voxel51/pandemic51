@@ -115,7 +115,7 @@ def query_unprocessed_images(cnx=None):
 
 
 @with_connection
-def add_stream_labels(id, labels_path, *args, cnx):
+def add_stream_labels(id, labels_path, cnx=None):
     '''Adds the given labels to the database.
 
     Args:
@@ -261,7 +261,7 @@ def query_snapshots(*args, cnx):
         inner join (
             select stream_name, max(datetime) t
             from stream_history where anno_img_path is not null
-            group by stream_name 
+            group by stream_name
         ) i on s.stream_name = i.stream_name and s.datetime = i.t) r;
         '''
         cursor.execute(sql)

@@ -1,14 +1,23 @@
+'''
+pandemic51 config.
+
+Copyright 2020, Voxel51, Inc.
+voxel51.com
+'''
 import os
 
 import eta.core.serial as etas
 
+#
 # If running locally, use the TCP connections
+#
 # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
 # so that your application can use 127.0.0.1:3306 to connect to your
 # Cloud SQL instance
+#
 SQL_HOST = "127.0.0.1"
 
-# Resource Directories
+# Resource directories
 P51_BASEDIR = "/home/{{USER}}/p51_base" # TODO REPLACE ME
 ENV_DIR = os.path.join(P51_BASEDIR, "venv")
 CELERY_DIR = os.path.join(P51_BASEDIR, "celery")
@@ -17,7 +26,7 @@ IMAGES_DIR = os.path.join(DATA_DIR, "images")
 LABELS_DIR = os.path.join(DATA_DIR, "labels")
 ANNO_DIR = os.path.join(DATA_DIR, "anno")
 
-# Repository Directory
+# Repository directory
 P51_REPO_DIR = "{{PANDEMIC51/PARENT/DIR}}" # TODO REPLACE ME
 
 # MySQL
@@ -25,10 +34,10 @@ P51_SQL_USERNAME = "{{USERNAME}}" # TODO REPLACE ME
 P51_SQL_PASSWORD = "{{PASSWORD}}" # TODO REPLACE ME
 P51_SQL_DATABASE_NAME = "p51db"
 
-# Info to download streams
-streams_path = os.path.join(P51_REPO_DIR, "pandemic51/config/streams.json")
-STREAMS = etas.load_json(streams_path)
+# Stream info
+STREAMS_PATH = os.path.join(P51_REPO_DIR, "pandemic51/config/streams.json")
+STREAMS = etas.load_json(STREAMS_PATH)
 
-# CELERY PERIODIC TASKS
+# Celery periodic task intervals
 STREAM_DOWNLOAD_INTERVAL = 60 * 15
 DENSITY_COMPUTE_INTERVAL = 60 * 15
