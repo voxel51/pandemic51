@@ -13,7 +13,7 @@ output_result = pand.query_stream_pdi(stream_name)
 
 d = {
     "time": [a["time"] for a in output_result],
-    "sdi": [a["sdi"] for a in output_result]
+    "pdi": [a["pdi"] for a in output_result]
 }
 
 etas.write_json(d, "test.json")
