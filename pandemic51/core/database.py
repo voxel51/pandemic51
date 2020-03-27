@@ -5,10 +5,8 @@ Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
-from datetime import datetime, timedelta
 import os
 
-import numpy as np
 import pymysql
 
 import pandemic51.core.config as panc
