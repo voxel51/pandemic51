@@ -91,6 +91,9 @@ class Chart extends Component {
 
 
     const contentFormatter = v => {
+      if (!v.payload) {
+        return null;
+      }
       const valid = v.payload.length ? v.payload[0].payload : false;
       const event = valid ? events[valid.event].event : "-";
       const time = valid ? events[valid.event].time : "-";
