@@ -11,11 +11,11 @@ from setuptools import setup, find_packages
 setup(
     name="pandemic51",
     version="0.1.0",
-    description="SDI Project",
+    description="Voxel51's website for monitoring the impact of the coronavirus pandemic",
     author="Voxel51, Inc.",
-    author_email="info@voxel51.com",
+    author_email="dev@voxel51.com",
     url="https://github.com/voxel51/pandemic51",
-    license="BSD-4-Clause",
+    license="",
     packages=find_packages(),
     include_package_data=True,
     classifiers=[
