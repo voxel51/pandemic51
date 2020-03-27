@@ -22,11 +22,23 @@ const cities = {
 }
 
 export default function Player({city}) {
+  const [player, setPlayer] = useState(null);
+
+  useEffect(() => {
+    setPlayer(
+      <ReactHLS url={cities[city]} width='100%' height='100%'
+        videoProps={{muted: true, controls: false, autoPlay: true}}
+      />
+    );
+  }, [city])
+
+  if (!player) {
+    return null;
+  }
+
   return (
     <div className="detector">
-      <ReactHLS url={cities[city]} width='100%' height='100%'
-      videoProps={{muted: true, controls: false, autoPlay: true}}
-      />
+      {player}
     </div>
   );
 }
