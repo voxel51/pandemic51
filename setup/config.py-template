@@ -6,7 +6,7 @@ import eta.core.serial as etas
 # Set up Cloud SQL Proxy (cloud.google.com/sql/docs/mysql/sql-proxy)
 # so that your application can use 127.0.0.1:3306 to connect to your
 # Cloud SQL instance
-SQL_HOST = '127.0.0.1'
+SQL_HOST = "127.0.0.1"
 
 # Resource Directories
 P51_BASEDIR = "/home/{{USER}}/p51_base" # TODO REPLACE ME

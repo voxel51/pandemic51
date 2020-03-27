@@ -15,7 +15,7 @@ setup(
     author="Voxel51, Inc.",
     author_email="dev@voxel51.com",
     url="https://github.com/voxel51/pandemic51",
-    license="",
+    license="BSD-4-Clause",
     packages=find_packages(),
     include_package_data=True,
     classifiers=[
