@@ -259,7 +259,8 @@ def plot2(stream_name, *args, cnx=None):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
+    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result
+              if sdi is not None]
 
     output_result = [{"time": t, "sdi": None} for t, sdi in result]
 
