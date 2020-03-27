@@ -14,7 +14,6 @@ from scipy import signal as sps
 import eta.core.image as etai
 import eta.core.utils as etau
 
-import pandemic51.core.density as pand
 import pandemic51.core.utils as panu
 
 
@@ -42,6 +41,16 @@ def filter_objects(objects):
     return objects.get_matches(filters, match=all)
 
 
+def compute_object_density(objects):
+    # @todo could implement a proper scanline algorithm for this
+    mask = np.zeros((512, 512), dtype=bool)
+    for obj in objects:
+        tlx, tly, w, h = obj.bounding_box.coords_in(img=mask)
+        mask[tly:tly + h, tlx:tlx + w] = True
+
+    return mask.sum() / mask.size
+
+
 # Load data
 label_map = {}
 count_map = {}
@@ -56,7 +65,7 @@ for label_path in label_paths:
     label_map[timestamp] = image_labels
 
     count_map[timestamp] = len(objects)
-    density_map[timestamp] = pand._compute_object_density(objects)
+    density_map[timestamp] = compute_object_density(objects)
 
 
 if MIN_DATE:
