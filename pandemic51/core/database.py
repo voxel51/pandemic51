@@ -12,6 +12,7 @@ import numpy as np
 import pymysql
 
 import pandemic51.core.config as panc
+import pandemic51.core.pdi as panp
 
 
 def connect_database():
@@ -197,15 +198,16 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, *args, cnx):
     return result_dict
 
 
-def query_stream_sdi(stream_name, *args, cnx):
-    '''Returns a time-series of SDI values for the given stream.
+@with_connection
+def query_stream_pdi(stream_name, *args, cnx):
+    '''Returns a time-series of PDI values for the given stream.
 
     Args:
-        stream_name: the name of the stream
+        stream_name: the stream name
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of dicts with "time" and "sdi" values
+        a list of {"time": timestamp, "pdi": <physical distance index>} values
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -215,76 +217,11 @@ def query_stream_sdi(stream_name, *args, cnx):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
+    times, counts = zip(*result)
+    # times, pdis = panp.compute_pdi(times, counts)
+    times, pdis = panp.compute_pdi_v2(times, counts)
 
-    output_result = [{"time": t, "sdi": None} for t, sdi in result]
-
-    # Number of days of data to apply avg_fcn over
-    window_size = 3
-
-    # Top % of window that will be used to average over
-    top = 0.1
-
-    # l-p norm
-    p = 2
-    
-    avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
-    
-    for ind, d in enumerate(output_result):
-        time = d["time"]
-        d["time"] = time.timestamp()
-
-        window = [v for t, v in result
-                  if t <= time and t > time - timedelta(days=window_size)]
-
-        num_top = int(len(window)*top)
-        top_window = sorted(window)[-num_top:] 
-        new_sdi = avg_fcn(top_window)
-
-        output_result[ind]["sdi"] = new_sdi 
-
-    return output_result
-
-
-@with_connection
-def plot2(stream_name, *args, cnx):
-    '''
-    Args:
-        stream_name: if provided, only query a single stream is queried
-        cnx: a connection to the database, if one is already made
-
-    Returns:
-        ...
-    '''
-    with cnx.cursor() as cursor:
-        stream_search = (
-            " where stream_name = '%s'" % stream_name
-            if stream_name else ""
-        )
-
-        sql = '''
-        select unix_timestamp(datetime) as time, sdi
-        from stream_history%s and sdi is not null ORDER BY datetime;
-        ''' % stream_search
-        cursor.execute(sql)
-        result = cursor.fetchall()
-
-    t = [x for x, _ in result]
-    pdi = np.asarray([x for _, x in result])
-
-    # Number of days of data to apply avg_fcn over
-    window_size = 10
-
-    # l-p norm
-    p = 2
-
-    avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
-
-    pdi2 = pdi.copy()
-    for n in range(len(pdi2)):
-        pdi2[n] = avg_fcn(pdi[max(0, n-window_size):n+1])
-
-    return [{"time": time, "sdi": sdi} for time, sdi in zip(t, list(pdi))]
+    return [{"time": t, "pdi": p} for t, p in zip(times, pdis)]
 
 
 @with_connection

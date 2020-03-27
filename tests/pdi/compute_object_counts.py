@@ -1,5 +1,5 @@
 '''
-Test script demonstrating object density calculation on a set of images.
+Script for computing object counts for a set of images.
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com
