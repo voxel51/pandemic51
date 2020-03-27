@@ -59,7 +59,9 @@ class Layout extends React.Component  {
 
   render() {
     const { classes, children, city } = this.props;
-    const { urls } = this.state;
+    const { urls, height } = this.state;
+
+    const setHeight = height => this.setState({height});
 
     const opts = {
       width: "100%",
@@ -110,8 +112,8 @@ class Layout extends React.Component  {
           </Hidden>
             <Grid container spacing={4}>
               <Grid item xs={12} className="media-container">
-                <Player city={city} />
-                <ImageOverlay src={this.state.src} onClose={(e) => {
+                <Player city={city} height={height} setHeight={setHeight} />
+                <ImageOverlay src={this.state.src} height={height} onClose={(e) => {
                   e.stopPropagation();
                   this.setState({src: null});
                 }}/>

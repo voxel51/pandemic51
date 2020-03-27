@@ -4,7 +4,7 @@
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
  */
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
@@ -22,12 +22,19 @@ const cities = {
   "prague": "https://pdi-service.voxel51.com/stream/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
 }
 
-export default function Player({city}) {
+export default function Player({city, height, setHeight}) {
   const [player, setPlayer] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
 
   const onLoad = () => {
     setLoaded(true);
+  };
+
+  const handleMetadata = (e) => {
+    if (setHeight) {
+      const video = e.target;
+      setHeight(video.videoHeight * video.clientWidth / video.videoWidth);
+    }
   };
 
   useEffect(() => {
@@ -41,6 +48,7 @@ export default function Player({city}) {
           controls: false,
           autoPlay: true,
           onLoadedData: onLoad,
+          onLoadedMetadata: handleMetadata,
         }}
       />
     );
@@ -51,7 +59,7 @@ export default function Player({city}) {
   }
   return (
     <div className="video-player-wrapper">
-      <div className="video-player">
+      <div className="video-player" style={{height}}>
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {player}
       </div>
@@ -60,5 +68,7 @@ export default function Player({city}) {
 }
 
 Player.propTypes = {
-  city: PropTypes.string,
+  city: PropTypes.string.isRequired,
+  height: PropTypes.number,
+  setHeight: PropTypes.func,
 }
