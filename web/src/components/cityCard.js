@@ -32,13 +32,13 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   content: {
-    paddingRight: (112 * 16/9) + 16
+    paddingRight: (106.52 * 16/9) + 16
   },
   still: {
     margin: 0,
     right: 0,
-    width: 112 * 16/9,
-    height: 112,
+    width: 106.52 * 16/9,
+    height: 106.52,
     position: "absolute",
   }
 });
@@ -70,24 +70,24 @@ export default function CityCard(props) {
     <Card className={classes.root + (active ? " active-card" : "")} square>
       <CardActionArea>
         <Link to={"/" + props.cityId}>
-        <CardMedia
-          className={classes.still}
-          image={props.url}
-          title={locations[props.cityId]}
-        />
-        <CardContent className={classes.content}>
-          <Typography variant="h5" component="h2">
-            {props.name}
-          </Typography>
-          <Typography variant="h6" component="h3" className={classes.pos} color="textSecondary">
-            <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
-          </Typography>
-          <Typography variant="h6" component="p">
-            {locations[props.cityId]}
-          </Typography>
-        </CardContent>
-      </Link>
+          <CardMedia
+            className={classes.still}
+            image={props.url}
+            title={locations[props.cityId]}
+          />
+          <CardContent className={classes.content}>
+            <Typography variant="h5" component="h2">
+              {props.name}
+            </Typography>
+            <Typography variant="h6" component="h3" className={classes.pos} color="textSecondary">
+              <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
+            </Typography>
+            <Typography variant="body1" component="p">
+              {locations[props.cityId]}
+            </Typography>
+          </CardContent>
+        </Link>
       </CardActionArea>
-      </Card>
-    );
+    </Card>
+  );
 }
