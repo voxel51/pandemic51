@@ -35,6 +35,22 @@ def compute_pdi(timestamps, counts, urls):
     return _compute_pdi_v2(timestamps, counts, urls)
 
 
+def market_change(timestamps, pdis):
+    '''Computes change in PDI over the last week.
+
+    Args:
+        timestamps: a list of timestamps
+        pdis: a list of PDI values
+
+    Returns:
+        the change in pdi over the past N_HOURS
+    '''
+    idx_now = -1
+    target_time = timestamps[idx_now] - 60 * 60 * 24 * N_HOURS
+    idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
+    return pdis[idx_now] - pdis[idx_prev]
+
+
 def _compute_pdi_v1(timestamps, counts, urls):
     times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
     counts = np.asarray(counts)
@@ -76,19 +92,3 @@ def _compute_pdi_v2(timestamps, counts, urls):
     skip = int(V2_WINDOW_SAMPLES / 2)
 
     return timestamps[skip::], pdis[skip::], urls[skip::]
-
-
-def market_change(timestamps, pdis):
-    '''Change in PDI over time
-
-    Args:
-        timestamps, pdis: outputs from `compute_pdi`
-
-    Returns:
-        the change in pdi over the past N_HOURS.
-
-    '''
-    idx_now = -1
-    target_time = timestamps[idx_now] - 60 * 60 * 24 * N_HOURS
-    idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
-    return pdis[idx_now] - pdis[idx_prev]
