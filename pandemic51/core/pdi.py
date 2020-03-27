@@ -12,6 +12,7 @@ import numpy as np
 WINDOW_DAYS = 3
 TOP = 0.1
 LP = 2
+SMOOTHING_WIDTH = 30
 
 
 def compute_pdi(times, counts):
@@ -33,12 +34,16 @@ def compute_pdi(times, counts):
     pdis = []
     for time in times:
         start_time = time - timedelta(days=WINDOW_DAYS)
-        window_counts = counts[start_time <= times <= time]
+        window_counts = counts[(start_time <= times) & (times <= time)]
 
         num_top = int(TOP * len(window_counts))
         top_window_counts = sorted(window_counts)[-num_top:]
         pdi = avg_fcn(top_window_counts)
 
         pdis.append(pdi)
+
+    if SMOOTHING_WIDTH:
+        kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
+        pdis = list(np.convolve(pdis, kernel, mode="same"))
 
     return pdis
