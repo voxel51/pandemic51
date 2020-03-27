@@ -129,6 +129,17 @@ def add_stream_labels(id, labels_path, cnx=None):
 
 
 @with_connection
+def add_stream_anno_img(id, anno_img_path, *args, cnx):
+    with cnx.cursor() as cursor:
+        sql = '''
+        UPDATE stream_history SET anno_img_path='{}' where id={};
+        '''.format(anno_img_path, id)
+        cursor.execute(sql)
+
+    cnx.commit()
+
+
+@with_connection
 def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     '''Returns the stream history for the specified stream(s).
 
@@ -185,7 +196,7 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
 
 
 @with_connection
-def query_stream_sdi(stream_name, cnx=None):
+def query_stream_sdi(stream_name, *args, cnx=None):
     '''Returns a time-series of SDI values for the given stream.
 
     Args:
