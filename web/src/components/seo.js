@@ -13,7 +13,6 @@ import { useStaticQuery, graphql } from "gatsby"
 
 class SEO extends React.Component {
   render() {
-    alert("afgasf");
     return (
         <Helmet>
           <meta charSet="utf-8" />

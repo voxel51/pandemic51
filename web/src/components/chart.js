@@ -11,8 +11,10 @@ import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import moment from 'moment'
 import {
   ResponsiveContainer,
+  ReferenceLine,
   AreaChart,
   Area,
   stop,
@@ -21,33 +23,23 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  ComposedChart,
+  Scatter,
   Tooltip,
+  Line,
   Legend
 } from "recharts";
+import Async from "react-async";
 
-const TABLE_LIST = [
-	{
-		name: 'Page A', uv: 4000, pv: 2400, amt: 2400,
-	},
-	{
-		name: 'Page B', uv: 3000, pv: 1398, amt: 2210,
-	},
-	{
-		name: 'Page C', uv: 2000, pv: 9800, amt: 2290,
-	},
-	{
-		name: 'Page D', uv: 2780, pv: 3908, amt: 2000,
-	},
-	{
-		name: 'Page E', uv: 1890, pv: 4800, amt: 2181,
-	},
-	{
-		name: 'Page F', uv: 2390, pv: 3800, amt: 2500,
-	},
-	{
-		name: 'Page G', uv: 3490, pv: 4300, amt: 2100,
-	}
-];
+const timezones = {
+  "chicago": "America/Chicago",
+  "dublin": "Europe/Dublin",
+  "london": "Europe/London",
+  "neworleans": "America/Chicago",
+  "newjersey": "America/New_York",
+  "newyork": "America/New_York",
+  "prague": "Europe/Prague"
+}
 
 const styles = theme => ({
   root: {
@@ -67,38 +59,84 @@ const styles = theme => ({
 
 class Chart extends Component {
   state = {
-    list: [...TABLE_LIST]
+    list: [],
+    events: [],
+    labels: []
   };
 
+  componentDidMount() {
+
+    fetch(`http://34.67.136.168/api/pdi/${this.props.city}`)
+      .then(response => response.json())
+      .then(json => {
+        console.log(json);
+        this.setState({
+          list: json["data"],
+          events: json["events"],
+          labels: json["labels"]
+        })
+      });
+  }
+
+  handleClick(data) {
+    if (data) {
+      this.props.onClick(this.state.labels[data.activeLabel].url);
+    }
+  }
+
   render() {
-    const { list } = this.state;
-    const { classes, title } = this.props;
+    const { list, events } = this.state;
+    const { classes, title, city } = this.props;
+
+
+
+    const contentFormatter = v => {
+      const valid = v.payload.length ? v.payload[0].payload : false;
+      const event = valid ? events[valid.event].event : "-";
+      const time = valid ? events[valid.event].time : "-";
+      return (
+        <Card square>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              {moment.unix(v.label).tz(timezones[city]).format("dddd,  MMM Do, hh:mm A")}
+            </Typography>
+            <Typography color="textSecondary">
+              PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
+            </Typography>
+            <Typography variant="body2" component="p">
+              {moment.unix(time).tz(timezones[city]).format("MMM Do")} - {event}
+            </Typography>
+          </CardContent>
+        </Card>
+      )
+    }
+
     return (
       <Card className={classes.root} square>
         <CardContent>
-        <Typography variant="h5" component="h3">
-          Header
-        </Typography>
           <ResponsiveContainer width="100%" height={400}>
-<AreaChart width={730} height={250} data={list}
-  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+<ComposedChart width={730} height={250} data={list}
+  margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+  cursor="pointer"
+  onClick={this.handleClick.bind(this)}>
   <defs>
-    <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
-      <stop offset="95%" stopColor="#8884d8" stopOpacity={0}/>
-    </linearGradient>
-    <linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="5%" stopColor="#82ca9d" stopOpacity={0.8}/>
-      <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
+    <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8}/>
+      <stop offset="95%" stopColor="#ff6d04" stopOpacity={0}/>
     </linearGradient>
   </defs>
-  <XAxis dataKey="name" />
-  <YAxis />
-  <CartesianGrid strokeDasharray="3 3" />
-  <Tooltip />
-  <Area type="monotone" dataKey="uv" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-  <Area type="monotone" dataKey="pv" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
-</AreaChart>
+  <XAxis
+        dataKey = 'time'
+        domain = {['dataMin', 'dataMax']}
+        name = 'Time'
+        tickCount={8}
+        tickFormatter = {(unixTime) => moment.unix(unixTime).tz(timezones[city]).format('M/D')}
+        type = 'number'/>
+      <YAxis dataKey = 'pdi' name = 'PDI' />
+      <Tooltip content={contentFormatter}/>
+      <Area type="monotone" dataKey="pdi" stroke="#ff6d04" fillOpacity={1} fill="url(#colorSdi)" />
+      <Line dataKey="event" dot={{ stroke: 'green', strokeWidth: 2 }} />
+</ComposedChart>
       </ResponsiveContainer>
       </CardContent>
       </Card>
@@ -108,6 +146,7 @@ class Chart extends Component {
 
 Chart.propTypes = {
   classes: PropTypes.object.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(Chart);
