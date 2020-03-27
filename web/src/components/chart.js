@@ -71,7 +71,7 @@ class Chart extends Component {
 
   componentDidMount() {
 
-    fetch(`http://34.67.136.168/api/pdi/${this.props.city}`)
+    fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
         console.log(json);

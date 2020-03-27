@@ -25,7 +25,6 @@ export default function Player({city}) {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const playerRef = useRef(null);
-
   const updateSize = () => {
     const parentRef = playerRef.current.parentNode;
     const styles = window.getComputedStyle(parentRef);
