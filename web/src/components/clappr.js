@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
-import Clappr from 'clappr';
 import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
-
+import ReactHLS from 'react-hls';
 const cities = {
   "chicago": "http://34.67.136.168/stream/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
   "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
@@ -22,52 +21,32 @@ export default function ClapprPlayer({city}) {
   const playerRef = useRef(null);
   // only call load() once per instance (todo: call it once ever?)
 
-  const createPlayer = () => {
-    let player = new Clappr.Player({
-      parent: playerRef.current,
-      source: cities[city],
-      width: '100%',
-      height: '100%',
-      mute: true,
-      autoPlay: true,
-      allowUserInteraction: false,
-      hideMediaControl: true,
-      hideVolumeBar: true,
-      chromeless: true,
-      hlsjsConfig: {
-        enableWorker: true
-      }
-    });
-
-
-    return function cleanup() {
-      player.destroy();
-    }
-  };
-  useEffect(createPlayer, [city, width, height]);
-
   const updateSize = () => {
-    const parentRef = playerRef.current.parentNode.parentNode;
-    const styles = window.getComputedStyle(parentRef);
-    const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-    const w = parentRef.clientWidth - padding;
-    const h = w * 9/16;
-    setWidth(w);
-    setHeight(h);
+    if (typeof window !== `undefined`) {
+      const parentRef = playerRef.current.parentNode;
+      const styles = window.getComputedStyle(parentRef);
+      const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
+      const w = parentRef.clientWidth - padding;
+      const h = w * 9/16;
+      setWidth(w);
+      setHeight(h);
+    }
   };
   useEffect(() => {
     updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => {
-      window.removeEventListener("resize", updateSize);
-    };
+    if (typeof window !== `undefined`) {
+      window.addEventListener("resize", updateSize);
+      return () => {
+        window.removeEventListener("resize", updateSize);
+      };
+    }
   });
 
   return (
-    <div className="detector">
-      <div ref={playerRef}
-        style={{width, height}}>
-      </div>
+    <div className="detector" ref={playerRef}>
+      <ReactHLS url={cities[city]} width={width} height={height}
+      videoProps={{muted: true, controls: false, autoPlay: true}}
+      />
     </div>
   );
 }

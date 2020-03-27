@@ -96,7 +96,7 @@ class Chart extends Component {
               {moment.unix(v.label).tz(timezones[city]).format("dddd,  MMM Do, hh:mm A")}
             </Typography>
             <Typography color="textSecondary">
-              {v.payload.length ? v.payload[0].value : "-"} Detections
+              PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
             <Typography variant="body2" component="p">
               {moment.unix(time).tz(timezones[city]).format("MMM Do")} - {event}

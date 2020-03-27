@@ -22,11 +22,13 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    if (typeof window !== `undefined`) {
     const computed = window.getComputedStyle(this.refs.mobile).getPropertyValue("display");
     if (computed === "block" && this.state.mobile === null) {
       this.setState({ mobile: true, rendered: true });
     } else {
       this.setState({ rendered: true});
+    }
     }
   }
 
