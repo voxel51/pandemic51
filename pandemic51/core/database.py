@@ -173,36 +173,14 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     return result_dict
 
 
-def plot(stream_name, reformat_as_dict=False, cnx=None):
+def plot(stream_name, cnx=None):
     '''
     Args:
         stream_name: if provided, only query a single stream is queried
-        reformat_as_dict: whether or not to reformat the query result as a
-            dictionary keyed on `stream_name`
         cnx: a connection to the database, if one is already made
 
     Returns:
-        if NOT reformat_as_dict:
-            a tuple of row tuples of the database table `stream_history`:
-                (id, stream_name, datetime, data_path, labels_path, sdi)
-        if reformat_as_dict:
-            a dictionary of format:
-                {
-                    "<STREAM 1 NAME>": {
-                        "id": [list, of, SQL, row, IDs],
-                        "datetime": [list, of, datetime, objects],
-                        "data_path": [...],
-                        "labels_path": [...],
-                        "sdi": [list, of, sdi, floats]
-                    },
-                    "<STREAM 2 NAME>": {
-                        ...,
-                        "datetime": [list, of, datetime, objects],
-                        ...,
-                        "sdi": [list, of, sdi, floats]
-                    },
-                    ...
-                }
+        ...
     '''
     with cnx.cursor() as cursor:
         stream_search = (
