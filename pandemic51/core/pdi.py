@@ -20,17 +20,22 @@ V2_WINDOW_SAMPLES = 100
 N_HOURS = 24 * 7
 
 
-def _compute_pdi_v1(timestamps, counts, urls):
+def compute_pdi(timestamps, counts, urls):
     '''Computes the physical distancing indexes (PDIs) for the given
     time-series data.
 
     Args:
         timestamps: a list of timestamps
         counts: a list of object counts
+        urls: a list of annotated image URLs
 
     Returns:
-        the list of PDI values
+        (timestamps, PDIs, urls)
     '''
+    return _compute_pdi_v2(timestamps, counts, urls)
+
+
+def _compute_pdi_v1(timestamps, counts, urls):
     times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
     counts = np.asarray(counts)
 
@@ -73,9 +78,6 @@ def _compute_pdi_v2(timestamps, counts, urls):
     return timestamps[skip::], pdis[skip::], urls[skip::]
 
 
-compute_pdi = _compute_pdi_v2
-
-
 def market_change(timestamps, pdis):
     '''Change in PDI over time
 
@@ -89,5 +91,4 @@ def market_change(timestamps, pdis):
     idx_now = -1
     target_time = timestamps[idx_now] - 60 * 60 * 24 * N_HOURS
     idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
-
     return pdis[idx_now] - pdis[idx_prev]
