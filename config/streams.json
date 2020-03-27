@@ -33,5 +33,10 @@
     "webpage": "https://www.earthcam.com/world/czechrepublic/prague/?cam=grandhotel_str",
     "chunk_path": "https://videos-3.earthcam.com/fecnetwork/14191.flv/chunklist_w1339994956.m3u8",
     "GMT": "1"
+  },
+  "fort_lauderdale": {
+    "webpage": "https://www.earthcam.com/usa/florida/lauderdalebythesea/?cam=windjammer",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/windjammerHD2.flv/chunklist_w199477428.m3u8",
+    "GMT": "-4"
   }
 }
