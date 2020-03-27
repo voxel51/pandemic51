@@ -9,10 +9,9 @@ from datetime import datetime, timedelta
 import numpy as np
 
 
-V1_WINDOW_DAYS = 3
-V1_TOP = 0.1
+V1_WINDOW_DAYS = 2
 V1_LP = 2
-V1_SMOOTHING_WIDTH = 30
+V1_SMOOTHING_WIDTH = 40
 
 V2_LP = 2
 V2_WINDOW_SAMPLES = 100
@@ -57,24 +56,25 @@ def _compute_pdi_v1(timestamps, counts, urls):
     times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
     counts = np.asarray(counts)
 
-    avg_fcn = lambda x: np.linalg.norm(x, ord=V1_LP) / (len(x) ** (1 / V1_LP))
+    avg_fcn = lambda x: np.linalg.norm(x, ord=V1_LP) / (
+                len(x) ** (1 / V1_LP))
 
     pdis = []
     for time in times:
         start_time = time - timedelta(days=V1_WINDOW_DAYS)
         window_counts = counts[(start_time <= times) & (times <= time)]
-
-        num_top = int(V1_TOP * len(window_counts))
-        top_window_counts = sorted(window_counts)[-num_top:]
-        pdi = avg_fcn(top_window_counts)
-
+        pdi = avg_fcn(window_counts)
         pdis.append(pdi)
 
     if V1_SMOOTHING_WIDTH:
         kernel = np.ones(V1_SMOOTHING_WIDTH) / V1_SMOOTHING_WIDTH
         pdis = list(np.convolve(pdis, kernel, mode="same"))
 
-    return timestamps, pdis, urls
+    # skip start up values
+    skip = int(np.argwhere(
+        times > times[0] + timedelta(days=V1_WINDOW_DAYS))[0])
+
+    return timestamps[skip::], pdis[skip::], urls[skip::]
 
 
 def _compute_pdi_v2(timestamps, counts, urls):
