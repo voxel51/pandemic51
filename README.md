@@ -104,7 +104,19 @@ tail -f -n 10 $CELERY_DIR/worker*
 
 #### 7) Download models
 
-Download the model(s) that you need via the `download_models.py` script.
+Download the model(s) that you need by running the following script:
+
+```bash
+bash download_models.bash
+```
+
+#### 8) Download historical data
+
+Download some historical data to work with by running the following script:
+
+```bash
+bash download_historical_data.bash
+```
 
 
 ## Copyright

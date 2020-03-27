@@ -1,12 +1,16 @@
+/**
+ * Header components.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import { Link } from "gatsby"
 import PropTypes from "prop-types"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars, faTimes } from '@fortawesome/free-solid-svg-icons'
 import React from "react"
 
-
 class Header extends React.Component {
-
   constructor() {
     super();
     this.onClick = this.handleClick.bind(this);
@@ -22,16 +26,14 @@ class Header extends React.Component {
   }
 
   componentDidMount() {
+    if (typeof window !== `undefined`) {
     const computed = window.getComputedStyle(this.refs.mobile).getPropertyValue("display");
     if (computed === "block" && this.state.mobile === null) {
       this.setState({ mobile: true, rendered: true });
     } else {
       this.setState({ rendered: true});
     }
-  }
-
-  componentShouldUpdate() {
-    return true;
+    }
   }
 
   render() {
