@@ -74,7 +74,6 @@ class Chart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         this.setState({
           list: json["data"],
           events: json["events"],

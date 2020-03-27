@@ -22,29 +22,9 @@ const cities = {
 }
 
 export default function Player({city}) {
-  const [height, setHeight] = useState(0);
-  const [width, setWidth] = useState(0);
-  const playerRef = useRef(null);
-  const updateSize = () => {
-    const parentRef = playerRef.current.parentNode;
-    const styles = window.getComputedStyle(parentRef);
-    const padding = parseFloat(styles.paddingLeft) + parseFloat(styles.paddingRight);
-    const w = parentRef.clientWidth - padding;
-    const h = w * 9/16;
-    setWidth(w);
-    setHeight(h);
-  };
-  useEffect(() => {
-    updateSize();
-    window.addEventListener("resize", updateSize);
-    return () => {
-      window.removeEventListener("resize", updateSize);
-    };
-  });
-
   return (
-    <div className="detector" ref={playerRef}>
-      <ReactHLS url={cities[city]} width={width} height={height}
+    <div className="detector">
+      <ReactHLS url={cities[city]} width='100%' height='100%'
       videoProps={{muted: true, controls: false, autoPlay: true}}
       />
     </div>
