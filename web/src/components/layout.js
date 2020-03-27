@@ -82,8 +82,7 @@ class Layout extends React.Component  {
   Physical Distancing Index
   </h2>
   <div class="body_block__text">
-    Using our AI-powered video understanding capabilities, Voxel51 has generated the Physical Distancing Index (PDI) to track how the Coronavirus and subsequent policies and calls for physical distancing are impacting social behavior.
-      <h3 class="force-pad-top6 force-pad-bot1"><span class="text-tertiary-on-dark">Stop the spread. Flatten the curve.</span></h3>
+    The Physical Distancing Index (PDI), created by Voxel51, uses computer vision to track how the coronavirus and governing policies are impacting social behavior in real-time.
   </div>
 </div>
 </div>

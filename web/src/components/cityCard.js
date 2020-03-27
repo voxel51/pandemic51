@@ -40,6 +40,13 @@ const useStyles = makeStyles({
     width: 99.5 * 16/9,
     height: 99.5,
     position: "absolute",
+  },
+  chip: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    margin: "0 .5rem .5rem 0",
+    padding: "0.5rem"
   }
 });
 
@@ -76,6 +83,13 @@ export default function CityCard(props) {
             title={locations[props.cityId]}
           />
           <CardContent className={classes.content}>
+            <Card className={classes.chip} square>
+              <CardContent style={{padding: 0}}>
+                <Typography variant="body2" component="p">
+                  {locations[props.cityId]}
+                </Typography>
+              </CardContent>
+            </Card>
             <Typography variant="h5" component="h2">
               {props.name}
             </Typography>
