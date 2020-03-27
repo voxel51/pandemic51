@@ -106,10 +106,10 @@ class Chart extends Component {
             <Typography variant="h5" component="h2">
               {moment.unix(v.label).tz(timezones[city]).format("dddd,  MMM Do, hh:mm A")}
             </Typography>
-            <Typography variant="h6" component="h3" color="textSecondary">
+            <Typography variant="h6" component="h3" style={{color: "rgb(255, 109, 4)"}}>
               PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
-            <Typography variant="body2" component="p">
+            <Typography variant="h6" component="h3">
               {moment.unix(time).tz(timezones[city]).format("MMM Do")} {bull} {event}
             </Typography>
           </CardContent>
