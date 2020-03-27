@@ -11,8 +11,6 @@ import os
 import numpy as np
 import pymysql
 
-import eta.core.utils as etau
-
 import pandemic51.core.config as p51c
 
 
