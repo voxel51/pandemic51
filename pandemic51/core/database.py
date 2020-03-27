@@ -5,9 +5,13 @@ Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
+from datetime import datetime, timedelta
 import os
 
+import numpy as np
 import pymysql
+
+import eta.core.utils as etau
 
 import pandemic51.core.config as p51c
 
@@ -181,36 +185,14 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
 
 
 @with_connection
-def plot(stream_name, reformat_as_dict=False, *args, cnx=None):
+def plot(stream_name, *args, cnx=None):
     '''
     Args:
         stream_name: if provided, only query a single stream is queried
-        reformat_as_dict: whether or not to reformat the query result as a
-            dictionary keyed on `stream_name`
         cnx: a connection to the database, if one is already made
 
     Returns:
-        if NOT reformat_as_dict:
-            a tuple of row tuples of the database table `stream_history`:
-                (id, stream_name, datetime, data_path, labels_path, sdi)
-        if reformat_as_dict:
-            a dictionary of format:
-                {
-                    "<STREAM 1 NAME>": {
-                        "id": [list, of, SQL, row, IDs],
-                        "datetime": [list, of, datetime, objects],
-                        "data_path": [...],
-                        "labels_path": [...],
-                        "sdi": [list, of, sdi, floats]
-                    },
-                    "<STREAM 2 NAME>": {
-                        ...,
-                        "datetime": [list, of, datetime, objects],
-                        ...,
-                        "sdi": [list, of, sdi, floats]
-                    },
-                    ...
-                }
+        ...
     '''
     with cnx.cursor() as cursor:
         stream_search = (
@@ -225,7 +207,35 @@ def plot(stream_name, reformat_as_dict=False, *args, cnx=None):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return [{"time": time, "sdi": sdi} for time, sdi in result]
+    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
+
+    output_result = [{"time": t, "sdi": None} for t, sdi in result]
+
+    # Number of days of data to apply avg_fcn over
+    window_size = 3
+
+    # Top % of window that will be used to average over
+    top = 0.1
+
+    # l-p norm
+    p = 2
+    
+    avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
+    
+    for ind, d in enumerate(output_result):
+        time = d["time"]
+        d["time"] = time.timestamp()
+
+        window = [v for t, v in result
+                  if t <= time and t > time - timedelta(days=window_size)]
+
+        num_top = int(len(window)*top)
+        top_window = sorted(window)[-num_top:] 
+        new_sdi = avg_fcn(top_window)
+
+        output_result[ind]["sdi"] = new_sdi 
+
+    return output_result
 
 
 @with_connection
