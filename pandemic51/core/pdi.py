@@ -53,13 +53,13 @@ def compute_pdi(timestamps, counts):
 
 
 def compute_pdi_v2(timestamps, counts):
-    # counts = np.asarray(counts)
-    #
-    # avg_fcn = lambda x: np.linalg.norm(x, ord=V2_LP) / (len(x) ** (1 / V2_LP))
-    #
-    # pdi = np.zeros(counts.shape)
-    # for n in range(len(pdi)):
-    #     pdi[n] = avg_fcn(pdi[max(0, n-V2_WINDOW_SAMPLES):n+1])
+    counts = np.asarray(counts)
+
+    avg_fcn = lambda x: np.linalg.norm(x, ord=V2_LP) / (len(x) ** (1 / V2_LP))
+
+    pdi = np.zeros(counts.shape)
+    for n in range(len(pdi)):
+        pdi[n] = avg_fcn(counts[max(0, n-V2_WINDOW_SAMPLES):n+1])
 
     # startup time
     skip = int(V2_WINDOW_SAMPLES / 2)
