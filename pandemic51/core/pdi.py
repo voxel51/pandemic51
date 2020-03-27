@@ -23,7 +23,7 @@ def compute_pdi(timestamps, counts):
     time-series data.
 
     Args:
-        times: a list of timestamps
+        timestamps: a list of timestamps
         counts: a list of object counts
 
     Returns:

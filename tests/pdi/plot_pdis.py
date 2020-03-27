@@ -75,7 +75,7 @@ times = [t.timestamp() for t in count_map.keys()]
 counts = list(count_map.values())
 
 # Compute PDI
-pdis = panp.compute_pdi(times, counts)
+_, pdis = panp.compute_pdi(times, counts)
 
 
 #
