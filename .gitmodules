@@ -4,6 +4,3 @@
 [submodule "automl"]
 	path = automl
 	url = https://github.com/google/automl
-[submodule "m3u8"]
-	path = m3u8
-	url = https://github.com/globocom/m3u8

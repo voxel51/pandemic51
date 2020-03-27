@@ -13,6 +13,9 @@ git submodule update
 
 # Install m3u8
 echo "***** INSTALLING M3U8 *****"
+if [[ ! -d m3u8 ]]; then
+    git clone https://github.com/globocom/m3u8
+fi
 cd m3u8
 python setup.py build
 python setup.py install
