@@ -9,6 +9,7 @@ import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 import ReactHLS from 'react-hls';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 
 const cities = {
@@ -23,11 +24,24 @@ const cities = {
 
 export default function Player({city}) {
   const [player, setPlayer] = useState(null);
+  const [isLoaded, setLoaded] = useState(false);
+
+  const onLoad = () => {
+    setLoaded(true);
+  };
 
   useEffect(() => {
     setPlayer(
-      <ReactHLS url={cities[city]} width='100%' height='100%'
-        videoProps={{muted: true, controls: false, autoPlay: true}}
+      <ReactHLS
+        url={cities[city]}
+        width='100%'
+        height='100%'
+        videoProps={{
+          muted: true,
+          controls: false,
+          autoPlay: true,
+          onLoadedData: onLoad,
+        }}
       />
     );
   }, [city])
@@ -38,6 +52,7 @@ export default function Player({city}) {
   return (
     <div className="video-player-wrapper">
       <div className="video-player">
+        {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {player}
       </div>
     </div>
