@@ -9,7 +9,7 @@ import os
 import celery
 
 import pandemic51.core.config as panc
-import pandemic51.core.density as pand
+import pandemic51.core.detections as pand
 import pandemic51.core.streaming as pans
 
 

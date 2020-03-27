@@ -1,5 +1,5 @@
 '''
-Core methods for detecting objects in images.
+Methods for detecting objects in images.
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com
