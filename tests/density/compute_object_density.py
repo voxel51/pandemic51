@@ -10,7 +10,7 @@ import eta.core.annotations as etaa
 import eta.core.image as etai
 import eta.core.utils as etau
 
-import pandemic51.core.density as pand
+import pandemic51.core.detections as pand
 
 
 IMAGES_DIR = "data/prague_imgs"
