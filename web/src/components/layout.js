@@ -24,7 +24,6 @@ import Player from './player';
 import Chart from './chart';
 import Hidden from '@material-ui/core/Hidden';
 import ImageOverlay from './imageOverlay';
-import SEO from './seo';
 import Header from './header';
 import Footer from './footer';
 import Typography from '@material-ui/core/Typography';
