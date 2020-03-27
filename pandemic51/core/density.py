@@ -13,7 +13,6 @@ import numpy as np
 import tensorflow as tf
 
 import eta.core.annotations as etaa
-import eta.core.data as etad
 import eta.core.image as etai
 import eta.core.learning as etal
 
