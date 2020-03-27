@@ -31,13 +31,13 @@ def with_connection(func):
     '''Decorator that creates a database connection and closes it upon call
     completion if a connection is not provided by the function.
 
-    Expects the function to have an optional keyword argument `cnx`.
+    Expects the function to take `*args` and `cnx` like this:
 
     Example use:
 
         ```
         @with_connection
-        def your_function(..., cnx=None, ...):
+        def your_function(..., *args, cnx):
             ...
         ```
     '''
@@ -59,7 +59,7 @@ def with_connection(func):
 
 @with_connection
 def add_stream_history(
-        stream_name, dt, image_path, labels_path=None, cnx=None):
+        stream_name, dt, image_path, labels_path=None, *args, cnx):
     '''Adds the given stream history to the database.
 
     Args:
@@ -92,7 +92,7 @@ def add_stream_history(
 
 
 @with_connection
-def query_unprocessed_images(cnx=None):
+def query_unprocessed_images(*args, cnx):
     '''Gets all unprocessed images, i.e., those with no `labels_path` in the
     database.
 
@@ -113,7 +113,7 @@ def query_unprocessed_images(cnx=None):
 
 
 @with_connection
-def set_object_count(id, count, cnx=None):
+def set_object_count(id, count, *args, cnx):
     '''Sets the object count for the given ID in the database.
 
     Args:
@@ -123,7 +123,7 @@ def set_object_count(id, count, cnx=None):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        UPDATE stream_history SET sdi='{}' where id={};
+        UPDATE stream_history SET count='{}' where id={};
         '''.format(count, id)
         cursor.execute(sql)
 
@@ -131,7 +131,7 @@ def set_object_count(id, count, cnx=None):
 
 
 @with_connection
-def add_stream_labels(id, labels_path, cnx=None):
+def add_stream_labels(id, labels_path, *args, cnx):
     '''Adds the given labels to the database.
 
     Args:
@@ -149,7 +149,7 @@ def add_stream_labels(id, labels_path, cnx=None):
 
 
 @with_connection
-def add_stream_anno_img(id, anno_img_path, cnx=None):
+def add_stream_anno_img(id, anno_img_path, *args, cnx):
     '''Adds the annotation image path to the database.
 
     Args:
@@ -167,7 +167,7 @@ def add_stream_anno_img(id, anno_img_path, cnx=None):
 
 
 @with_connection
-def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
+def query_stream_history(stream_name=None, reformat_as_dict=False, *args, cnx):
     '''Returns the stream history for the specified stream(s).
 
     Args:
@@ -223,7 +223,7 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
 
 
 @with_connection
-def query_stream_pdi(stream_name, *args, cnx=None):
+def query_stream_pdi(stream_name, *args, cnx):
     '''Returns a time-series of PDI values for the given stream.
 
     Args:
@@ -231,17 +231,75 @@ def query_stream_pdi(stream_name, *args, cnx=None):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"time": timestamp, "pdi": <physical distance index>} values
+        a list of {"time": t, "pdi": p, "url": u} entries
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime) as time, count
-        from stream_history where stream_name = '%s' and count is not null ORDER BY datetime;
+        select unix_timestamp(datetime) as time, count, anno_img_path
+        from stream_history where stream_name = '%s' and count is not null
+        and anno_img_path is not null ORDER BY datetime;
         ''' % stream_name
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    times, counts = zip(*result)
-    pdis = panp.compute_pdi(times, counts)
+    times, counts, urls = zip(*result)
+    times, pdis, urls = panp.compute_pdi(times, counts, urls)
 
-    return [{"time": t, "pdi": p} for t, p in zip(times, pdis)]
+    return [
+        {"time": t, "pdi": p, "url": u} for t, p, u in zip(times, pdis, urls)]
+
+
+@with_connection
+def query_market_change(stream_name, *args, cnx):
+    '''Returns the "market change" in PDI for the stream over the past week.
+
+    Args:
+        stream_name: the stream name
+        cnx: a db connection. By default, a temporary connection is created
+
+    Returns:
+        {"pdi_change": pdi_change}
+    '''
+    with cnx.cursor() as cursor:
+        sql = '''
+        select unix_timestamp(datetime) as time, count, anno_img_path url
+        from stream_history where stream_name = '%s' and count is not null
+        and anno_img_path is not null ORDER BY datetime;
+        ''' % stream_name
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    times, counts, urls = zip(*result)
+    times, pdis, _ = panp.compute_pdi(times, counts, urls)
+
+    pdi_change = panp.market_change(times, pdis)
+
+    return {"pdi_change": pdi_change}
+
+
+@with_connection
+def query_snapshots(*args, cnx):
+    '''Returns a snapshot of the current streams.
+
+    Args:
+        cnx: a db connection. By default, a temporary connection is created
+
+    Returns:
+        a list of {"city": c, "url": u, "time": t} entries
+    '''
+    with cnx.cursor() as cursor:
+        sql = '''
+        select stream_name, unix_timestamp(datetime), url from (
+            select s.stream_name, s.datetime, s.anno_img_path url
+            from stream_history s
+            inner join (
+                select stream_name, max(datetime) t
+                from stream_history where anno_img_path is not null
+                group by stream_name
+            ) i on s.stream_name = i.stream_name and s.datetime = i.t
+        ) r;
+        '''
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return [{"city": c, "url": u, "time": t } for c, t, u in result]
