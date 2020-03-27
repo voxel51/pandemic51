@@ -237,6 +237,49 @@ def plot(stream_name, *args, cnx=None):
 
 
 @with_connection
+def plot2(stream_name, *args, cnx=None):
+    '''
+    Args:
+        stream_name: if provided, only query a single stream is queried
+        cnx: a connection to the database, if one is already made
+
+    Returns:
+        ...
+    '''
+    with cnx.cursor() as cursor:
+        stream_search = (
+            " where stream_name = '%s'" % stream_name
+            if stream_name else ""
+        )
+
+        sql = '''
+        select unix_timestamp(datetime) as time, sdi
+        from stream_history%s and sdi is not null ORDER BY datetime;
+        ''' % stream_search
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
+
+    output_result = [{"time": t, "sdi": None} for t, sdi in result]
+
+    # Number of days of data to apply avg_fcn over
+    window_size = 10
+
+    # l-p norm
+    p = 2
+
+    avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
+
+    t = [a["time"] for a in output_result],
+    sdi = [a["sdi"] for a in output_result]
+
+    sdi2 = [avg_fcn(sdi[min(0, n-window_size):n]) for n in range(len(sdi))]
+
+    return [{"time": t, "sdi": None} for t, sdi in zip(t, sdi2)]
+
+
+@with_connection
 def populate_object_count(id, count, *args, cnx):
     with cnx.cursor() as cursor:
         sql = '''
