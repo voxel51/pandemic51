@@ -230,8 +230,8 @@ def plot(stream_name, reformat_as_dict=False, cnx=None):
     # Top % of window that will be used to average over
     top = 0.1
 
-    # Minimum number of samples that need to be in the window in order to compute sdi
-    # This is to remove large gaps
+    # Minimum number of samples that need to be in the window in order to
+    # compute sdi. This is to remove large gaps
     min_window_count = 5
 
     # l-p norm
