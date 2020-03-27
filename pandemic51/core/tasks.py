@@ -19,11 +19,10 @@ app.config_from_object("pandemic51.core.celery_config")
 
 @celery.signals.celeryd_init.connect()
 def run_on_startup(sender=None, conf=None, **kwargs):
-    ''' Execute these other tasks on startup, either as one time or very
-    infrequent tasks that should run after system comes online
+    '''Execute these tasks on startup, either as one time or very infrequent
+    tasks that should run after system comes online.
     '''
-    dofaui_task.delay()
-    cocfade_task.delay()
+    compute_detections_task.delay()
 
 
 @app.on_after_configure.connect
@@ -31,28 +30,25 @@ def setup_periodic_tasks(sender, **kwargs):
     '''Setup periodic Celery tasks.'''
     for stream_name in panc.STREAMS:
         sender.add_periodic_task(
-            panc.STREAM_DOWNLOAD_INTERVAL, das_task.s(stream_name))
-        sender.add_periodic_task(
-            panc.DENSITY_COMPUTE_INTERVAL, dofaui_task.s())
-        sender.add_periodic_task(
-            panc.DENSITY_COMPUTE_INTERVAL, cocfade_task.s())
+            panc.DOWNLOAD_STREAM_INTERVAL, download_stream_task.s(stream_name))
+
+    sender.add_periodic_task(
+        panc.COMPUTE_DETECTIONS_INTERVAL, compute_detections_task.s())
 
 
 @app.task()
-def das_task(stream_name):
-    '''Task for downloading and storing images.'''
+def download_stream_task(stream_name):
+    '''Downloads and stores images for the given stream.
+
+    Args:
+        stream_name: the stream name
+    '''
     tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
     pans.download_and_store(
         stream_name, out_dir=panc.IMAGES_DIR, tmpdirbase=tmpdirbase)
 
 
 @app.task()
-def dofaui_task():
-    '''Task for detecting objects for all unprocessed images.'''
+def compute_detections_task():
+    '''Computes detections for all new images.'''
     pand.detect_objects_in_unprocessed_images()
-
-
-@app.task()
-def cocfade_task():
-    '''Task for computing object counts for all DB entries.'''
-    pand.compute_object_counts_for_db_entries()
