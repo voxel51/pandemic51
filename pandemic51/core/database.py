@@ -251,7 +251,15 @@ def query_snapshots(*args, cnx):
     :param cnx:
     :return:
     '''
-    pass
+    with cnx.cursor() as cursor:
+        sql = '''
+        select unix_timestamp(datetime) as time, sdi
+        from stream_history where stream_name = '%s' and sdi is not null ORDER BY datetime;
+        ''' % "ASDF"
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    return None
 
 
 @with_connection
