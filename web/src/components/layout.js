@@ -52,7 +52,6 @@ class Layout extends React.Component  {
     fetch("http://34.67.136.168/api/snapshots")
       .then(response => response.json())
       .then(json => {
-        console.log(json);
         this.setState({ urls: json["data"] })
       });
   }
@@ -78,10 +77,10 @@ class Layout extends React.Component  {
 
       <div className="cta">
         <h2 class="body_block__title">
-  Social Distancing Index
+  Physical Distancing Index
   </h2>
   <div class="body_block__text">
-    Using our AI-powered video understanding capabilities, Voxel51 has generated the Social Distancing Index (SDI) to track how the Coronavirus and subsequent policies and calls for social distancing are impacting social behavior.
+    Using our AI-powered video understanding capabilities, Voxel51 has generated the Physical Distancing Index (PDI) to track how the Coronavirus and subsequent policies and calls for social distancing are impacting social behavior.
       <h3 class="force-pad-top6 force-pad-bot1"><span class="text-tertiary-on-dark">Stop the spread. Flatten the curve.</span></h3>
   </div>
 </div>
@@ -102,7 +101,7 @@ class Layout extends React.Component  {
           <Hidden smDown>
           <Grid container spacing={4}>
             <Grid item md={12}>
-              <Chart title="Social Distancing Index (SDI)" city={city}
+              <Chart title="Physical Distancing Index (PDI)" city={city}
                 // todo: use correct image url
                 onClick={(_) => this.setState({src: urls[city]})}/>
             </Grid>

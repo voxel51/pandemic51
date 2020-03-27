@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Text } from "react";
 import PropTypes from 'prop-types'
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -17,7 +17,10 @@ import {
   XAxis,
   YAxis,
   CartesianGrid,
+  ComposedChart,
+  Scatter,
   Tooltip,
+  Line,
   Legend
 } from "recharts";
 import Async from "react-async";
@@ -57,7 +60,7 @@ class Chart extends Component {
 
   componentDidMount() {
 
-    fetch(`http://34.67.136.168/api/data/${this.props.city}`)
+    fetch(`http://34.67.136.168/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
         console.log(json);
@@ -78,11 +81,35 @@ class Chart extends Component {
   render() {
     const { list, events } = this.state;
     const { classes, title, city } = this.props;
+
+
+
+    const contentFormatter = v => {
+      const valid = v.payload.length ? v.payload[0].payload : false;
+      const event = valid ? events[valid.event].event : "-";
+      const time = valid ? events[valid.event].time : "-";
+      return (
+        <Card square>
+          <CardContent>
+            <Typography variant="h5" component="h2">
+              {moment.unix(v.label).tz(timezones[city]).format("dddd,  MMM Do, hh:mm A")}
+            </Typography>
+            <Typography color="textSecondary">
+              {v.payload.length ? v.payload[0].value : "-"} Detections
+            </Typography>
+            <Typography variant="body2" component="p">
+              {moment.unix(time).tz(timezones[city]).format("MMM Do")} - {event}
+            </Typography>
+          </CardContent>
+        </Card>
+      )
+    }
+
     return (
       <Card className={classes.root} square>
         <CardContent>
           <ResponsiveContainer width="100%" height={400}>
-<AreaChart width={730} height={250} data={list}
+<ComposedChart width={730} height={250} data={list}
   margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
   cursor="pointer"
   onClick={this.handleClick.bind(this)}>
@@ -92,25 +119,18 @@ class Chart extends Component {
       <stop offset="95%" stopColor="#ff6d04" stopOpacity={0}/>
     </linearGradient>
   </defs>
-  <XAxis         dataKey = 'time'
-        domain = {['auto', 'auto']}
+  <XAxis
+        dataKey = 'time'
+        domain = {['dataMin', 'dataMax']}
         name = 'Time'
         tickCount={8}
         tickFormatter = {(unixTime) => moment.unix(unixTime).tz(timezones[city]).format('M/D')}
         type = 'number'/>
-      <YAxis dataKey = 'sdi' name = 'SDI' />
-      <Tooltip
-        formatter={ (v, n, p) => {
-          return [v, "Detections"]
-      }}
-      labelFormatter={ val => {
-        return moment.unix(val).tz(timezones[city]).format("dddd,  MMM Do, hh:mm A");
-      }}/>
-  {events.map((value, idx) => {
-          return <ReferenceLine x={value.time} stroke="green" label={value.event} alwaysShow={true}/>
-        })}
-  <Area type="monotone" dataKey="sdi" stroke="#ff6d04" fillOpacity={1} fill="url(#colorSdi)" />
-</AreaChart>
+      <YAxis dataKey = 'pdi' name = 'PDI' />
+      <Tooltip content={contentFormatter}/>
+      <Area type="monotone" dataKey="pdi" stroke="#ff6d04" fillOpacity={1} fill="url(#colorSdi)" />
+      <Line dataKey="event" dot={{ stroke: 'green', strokeWidth: 2 }} />
+</ComposedChart>
       </ResponsiveContainer>
       </CardContent>
       </Card>
