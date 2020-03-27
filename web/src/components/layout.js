@@ -103,7 +103,7 @@ class Layout extends React.Component  {
             <Grid item md={12}>
               <Chart title="Physical Distancing Index (PDI)" city={city}
                 // todo: use correct image url
-                onClick={(_) => this.setState({src: urls[city]})}/>
+                onClick={(_) => this.setState({src: _})}/>
             </Grid>
           </Grid>
           </Hidden>

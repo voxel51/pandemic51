@@ -55,7 +55,8 @@ const styles = theme => ({
 class Chart extends Component {
   state = {
     list: [],
-    events: []
+    events: [],
+    labels: []
   };
 
   componentDidMount() {
@@ -66,15 +67,15 @@ class Chart extends Component {
         console.log(json);
         this.setState({
           list: json["data"],
-          events: json["events"]
+          events: json["events"],
+          labels: json["labels"]
         })
       });
   }
 
   handleClick(data) {
     if (data) {
-      console.log('chart clicked at', data.activeLabel);
-      this.props.onClick('some-image-url');
+      this.props.onClick(this.state.labels[data.activeLabel].url);
     }
   }
 
