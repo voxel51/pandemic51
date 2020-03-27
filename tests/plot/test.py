@@ -8,7 +8,7 @@ import pandemic51.core.database as pand
 
 stream_name = "time_square"
 
-output_result = pand.plot2(stream_name)
+output_result = pand.query_stream_pdi(stream_name)
 
 
 d = {
