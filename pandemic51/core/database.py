@@ -218,8 +218,7 @@ def query_stream_pdi(stream_name, *args, cnx):
         result = cursor.fetchall()
 
     times, counts = zip(*result)
-    # times, pdis = panp.compute_pdi(times, counts)
-    times, pdis = panp.compute_pdi_v2(times, counts)
+    times, pdis = panp.compute_pdi(times, counts)
 
     return [{"time": t, "pdi": p} for t, p in zip(times, pdis)]
 
