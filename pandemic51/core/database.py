@@ -224,6 +224,24 @@ def query_stream_pdi(stream_name, *args, cnx):
 
 
 @with_connection
+def query_market_change(stream_name, *args, cnx):
+    with cnx.cursor() as cursor:
+        sql = '''
+        select unix_timestamp(datetime) as time, sdi
+        from stream_history where stream_name = '%s' and sdi is not null ORDER BY datetime;
+        ''' % stream_name
+        cursor.execute(sql)
+        result = cursor.fetchall()
+
+    times, counts = zip(*result)
+    times, pdis = panp.compute_pdi(times, counts)
+
+    pdi_change = panp.market_change(times, pdis)
+
+    return {"pdi_change": pdi_change}
+
+
+@with_connection
 def populate_object_count(id, count, *args, cnx):
     '''Sets the object count for the given ID in the database.
 

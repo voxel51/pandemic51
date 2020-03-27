@@ -17,8 +17,10 @@ SMOOTHING_WIDTH = 30
 V2_LP = 2
 V2_WINDOW_SAMPLES = 100
 
+N_HOURS = 24 * 7
 
-def compute_pdi(timestamps, counts):
+
+def _compute_pdi_v1(timestamps, counts):
     '''Computes the physical distancing indexes (PDIs) for the given
     time-series data.
 
@@ -52,7 +54,7 @@ def compute_pdi(timestamps, counts):
     return timestamps, pdis
 
 
-def compute_pdi_v2(timestamps, counts):
+def _compute_pdi_v2(timestamps, counts):
     counts = np.asarray(counts)
 
     avg_fcn = lambda x: np.linalg.norm(x, ord=V2_LP) / (len(x) ** (1 / V2_LP))
@@ -69,3 +71,23 @@ def compute_pdi_v2(timestamps, counts):
     skip = int(V2_WINDOW_SAMPLES / 2)
 
     return timestamps[skip::], pdis[skip::]
+
+
+compute_pdi = _compute_pdi_v2
+
+
+def market_change(timestamps, pdis):
+    '''Change in PDI over time
+
+    Args:
+        timestamps, pdis: outputs from `compute_pdi`
+
+    Returns:
+        the change in pdi over the past N_HOURS.
+
+    '''
+    idx_now = -1
+    target_time = timestamps[idx_now] - 60 * 60 * 24 * N_HOURS
+    idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
+
+    return pdis[idx_now] - pdis[idx_prev]
