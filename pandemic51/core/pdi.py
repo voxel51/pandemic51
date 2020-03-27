@@ -63,6 +63,9 @@ def compute_pdi_change(timestamps, pdis, num_days=7):
     if not timestamps:
         return 0.0
 
-    target_time = timestamps[-1] - 60 * 60 * 24 * 24 * num_days
-    idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
-    return pdis[-1] - pdis[idx_prev]
+    times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
+
+    old_time = times[-1] - timedelta(days=num_days)
+    old_idx = np.argmin(np.abs(times - old_time))
+
+    return pdis[-1] - pdis[old_idx]
