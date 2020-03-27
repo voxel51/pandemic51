@@ -167,13 +167,6 @@ class Chart extends Component {
               <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
             </ComposedChart>
           </ResponsiveContainer>
-          <Typography gutterBottom variant="h5" component="h2">
-            Physical Distancing Index
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            Lizards are a widespread group of squamate reptiles, with over 6,000
-            species, ranging across all continents except Antarctica
-          </Typography>
         </CardContent>
       </Card>
     )

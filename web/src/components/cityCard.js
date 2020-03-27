@@ -70,6 +70,16 @@ const locations = {
   "prague": "Grand Hotel"
 }
 
+/* On hold
+<Card className={classes.chip} square>
+  <CardContent style={{padding: 0}}>
+    <Typography variant="body2" component="p">
+      {locations[props.cityId]}
+    </Typography>
+  </CardContent>
+</Card>
+*/
+
 export default function CityCard(props) {
   const classes = useStyles();
   const active = props.cityId === props.active && props.cityId !== undefined;
@@ -83,13 +93,6 @@ export default function CityCard(props) {
             title={locations[props.cityId]}
           />
           <CardContent className={classes.content}>
-            <Card className={classes.chip} square>
-              <CardContent style={{padding: 0}}>
-                <Typography variant="body2" component="p">
-                  {locations[props.cityId]}
-                </Typography>
-              </CardContent>
-            </Card>
             <Typography variant="h5" component="h2">
               {props.name}
             </Typography>
