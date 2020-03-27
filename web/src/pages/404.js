@@ -53,8 +53,10 @@ const NotFoundPage = () => {
   const classes = useStyles();
 
   return (
-  <Grid className={classes.root} container spacing={8} justify="center" alignItems="center">
-    <Grid item xs={12}>
+    <>
+      <SEO/>
+      <Grid className={classes.root} container spacing={8} justify="center" alignItems="center">
+        <Grid item xs={12}>
           <Paper className={classes.paper} square>
             <Img className="logo" fluid={data.file.childImageSharp.fluid} alt=""/>
             <Divider className={classes.divide}/>
@@ -62,10 +64,9 @@ const NotFoundPage = () => {
               404: Not Found
           </Typography>
           </Paper>
-
-      <SEO title="" />
-    </Grid>
-  </Grid>
+        </Grid>
+      </Grid>
+    </>
   )
 }
 
