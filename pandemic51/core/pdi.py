@@ -45,10 +45,12 @@ def compute_pdi_change(timestamps, pdis, num_days=7):
     Returns:
         the change in PDI (postive = increase, negative = decrease)
     '''
-    idx_now = -1
-    target_time = timestamps[idx_now] - 60 * 60 * 24 * 24 * num_days
+    if not timestamps:
+        return 0.0
+
+    target_time = timestamps[-1] - 60 * 60 * 24 * 24 * num_days
     idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
-    return pdis[idx_now] - pdis[idx_prev]
+    return pdis[-1] - pdis[idx_prev]
 
 
 def _compute_pdi_v1(timestamps, counts, urls):
