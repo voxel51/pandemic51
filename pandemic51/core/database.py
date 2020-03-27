@@ -93,13 +93,14 @@ def add_stream_history(
 
 @with_connection
 def query_unprocessed_images(cnx=None):
-    '''Get all columns of `stream_history` where `labels_path` is unpopulated.
+    '''Gets all unprocessed images, i.e., those with no `labels_path` in the
+    database.
 
     Args:
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a tuple of (id, labels_path) tuples
+        a tuple of (id, image path) tuples
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -113,10 +114,10 @@ def query_unprocessed_images(cnx=None):
 
 @with_connection
 def add_stream_labels(id, labels_path, cnx=None):
-    '''Adds the labels for the given stream to the DB.
+    '''Adds the given labels to the database.
 
     Args:
-        id: the stream ID
+        id: db row ID
         labels_path: the path to the labels
         cnx: a db connection. By default, a temporary connection is created
     '''
@@ -130,7 +131,14 @@ def add_stream_labels(id, labels_path, cnx=None):
 
 
 @with_connection
-def add_stream_anno_img(id, anno_img_path, *args, cnx):
+def add_stream_anno_img(id, anno_img_path, cnx=None):
+    '''Adds the annotation image path to the database.
+
+    Args:
+        id: db row ID
+        anno_img_path: the path to the annotated image
+        cnx: a db connection. By default, a temporary connection is created
+    '''
     with cnx.cursor() as cursor:
         sql = '''
         UPDATE stream_history SET anno_img_path='{}' where id={};
