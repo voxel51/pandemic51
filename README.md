@@ -2,10 +2,12 @@
 
 Voxel51's website for monitoring the impact of the coronavirus pandemic.
 
+<img src="https://user-images.githubusercontent.com/3719547/74191434-8fe4f500-4c21-11ea-8d73-555edfce0854.png" alt="voxel51-logo.png" width="40%"/>
+
 
 ## Installation
 
-### 1) Set Environment Variables
+### 1) Set environment variables
 
 Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc`:
 
@@ -26,7 +28,7 @@ export P51_SQL_USERNAME="<USERNAME>"
 export P51_SQL_PASSWORD="<PASSWORD>"
 export P51_SQL_DATABASE_NAME="p51db"
 
-# virtualenv shortcuts
+# Virtualenv shortcut
 covid19() { source "${ENV_DIR}/covid19/bin/activate"; }
 exit() {
     case `command -v python` in
@@ -35,7 +37,7 @@ exit() {
     esac
 }
 
-# login shortcut command
+# Login shortcut
 alias p51mysql="mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME"
 ```
 
@@ -46,7 +48,7 @@ Before running the installation script, following the instructions in
 for Linux systems.
 
 
-### 3) Install
+### 3) Install backend
 
 ```bash
 # activate the `covid19` virtual environment
@@ -58,7 +60,7 @@ bash install.bash
 ### 4) Create a config
 
 ```bash
-cp setup/config.py-template pandemic51/core/config.py
+cp setup/template-config.py pandemic51/core/config.py
 ```
 
 Then modify `config.py`, populating any `{{TODO}}`s with correct values. Many
@@ -79,10 +81,10 @@ Celery is currently only configured for Linux as a `systemd` daemon.
 
 > todo(tyler): make a configuration for MacOS with `launchd`
 
-1) copy the templates in `setup/` and replace any `{{ENV_VAR}}` with the
+- Copy the templates in `setup/` and replace any `{{ENV_VAR}}` with the
 respective environment variable value.
-2) Place `celery.service` & `celerybeat.service` in `/lib/systemd/system`
-3) start the services:
+- Place `celery.service` & `celerybeat.service` in `/lib/systemd/system`
+- Start the services
 
 Any time a file is added or modified in `/lib/systemd/system`
 

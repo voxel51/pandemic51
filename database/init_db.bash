@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Initializes the database.
+#
+# Copyright 2020, Voxel51, Inc.
+# voxel51.com
+#
 
 echo "Configuring MYSQL"
 

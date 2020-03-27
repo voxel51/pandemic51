@@ -1,3 +1,9 @@
+/**
+ * Image overlay components.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton';
