@@ -31,11 +31,10 @@ def setup_periodic_tasks(sender, **kwargs):
     '''Setup periodic Celery tasks.'''
     for stream_name in panc.STREAMS:
         sender.add_periodic_task(
-            panc.STREAM_DOWNLOAD_INTERVAL, das_task.s(stream_name))
-        sender.add_periodic_task(
-            panc.DENSITY_COMPUTE_INTERVAL, dofaui_task.s())
-        sender.add_periodic_task(
-            panc.DENSITY_COMPUTE_INTERVAL, cocfade_task.s())
+            panc.DOWNLOAD_STREAM_INTERVAL, download_stream_task.s(stream_name))
+
+    sender.add_periodic_task(
+        panc.COMPUTE_DETECTIONS_INTERVAL, compute_detections_task.s())
 
 
 @app.task()
