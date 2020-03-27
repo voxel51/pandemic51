@@ -14,7 +14,7 @@ This script allows you to choose a stream, the path to which can be found by
 inspecting the webpage of the stream and look for an m3u8 file. In this case it
 is chunklist.m3u8.
 
-Copyright 2017-2020, Voxel51, Inc.
+Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 import pandemic51.core.streaming as pans

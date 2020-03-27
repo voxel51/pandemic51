@@ -1,7 +1,7 @@
 '''
 Methods for downloading and working with video streams.
 
-Copyright 2017-2020, Voxel51, Inc.
+Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from datetime import datetime
@@ -32,7 +32,7 @@ CHUNK_URL_SLEEP_SECONDS = 1
 
 def update_streams(stream_name, streams):
     '''Updates the given stream in the stream dictionary and serializes it to
-    disk at `pandemic51.core.config.streams_path`.
+    disk at `pandemic51.core.config.STREAMS_PATH`.
 
     Args:
         stream_name: the stream name
@@ -43,7 +43,7 @@ def update_streams(stream_name, streams):
     '''
     chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
     streams[stream_name]["chunk_path"] = chunk_path
-    etas.write_json(streams, panc.streams_path)
+    etas.write_json(streams, panc.STREAMS_PATH)
     return chunk_path
 
 
@@ -119,7 +119,7 @@ def download_chunk(stream_name, output_dir):
         stream_name: the stream name
         output_dir: the output directory
     '''
-    streams = etas.load_json(panc.streams_path)
+    streams = etas.load_json(panc.STREAMS_PATH)
     chunk_path = streams[stream_name]["chunk_path"]
     base_path = os.path.split(chunk_path)[0]
     output_path = os.path.join(output_dir, stream_name)
@@ -148,7 +148,7 @@ def download_stream(stream_name, output_dir, timeout=None):
         timeout: duration (in seconds) to continue streaming. If None, continue
             forever
     '''
-    streams = etas.load_json(panc.streams_path)
+    streams = etas.load_json(panc.STREAMS_PATH)
     chunk_path = streams[stream_name]["chunk_path"]
     base_path = os.path.split(chunk_path)[0]
     output_path = os.path.join(output_dir, stream_name)

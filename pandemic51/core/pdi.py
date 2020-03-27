@@ -1,7 +1,7 @@
 '''
 Methods for computing physical distancing index (PDI).
 
-Copyright 2017-2020, Voxel51, Inc.
+Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from datetime import datetime, timedelta
