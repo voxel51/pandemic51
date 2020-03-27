@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# Linux preinstall script.
+#
+# Copyright 2020, Voxel51, Inc.
+# voxel51.com
+#
 
 sudo apt update
 sudo apt upgrade

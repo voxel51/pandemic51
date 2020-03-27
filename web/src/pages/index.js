@@ -1,3 +1,9 @@
+/**
+ * Site index.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React from "react"
 import { Link } from "gatsby"
 

@@ -1,3 +1,9 @@
+/**
+ * Live stream components.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
@@ -13,13 +19,10 @@ const cities = {
   "prague": "http://34.67.136.168/stream/fecnetwork/14191.flv/chunklist_w1339994956.m3u8"
 }
 
-const DETECTION_INTERVAL_MS = 1000;
-
 export default function ClapprPlayer({city}) {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   const playerRef = useRef(null);
-  // only call load() once per instance (todo: call it once ever?)
 
   const updateSize = () => {
     if (typeof window !== `undefined`) {

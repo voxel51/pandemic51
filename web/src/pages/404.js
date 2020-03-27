@@ -1,3 +1,9 @@
+/**
+ * 404 page.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import React from "react"
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import SEO from "../components/seo"

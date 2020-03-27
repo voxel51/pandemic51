@@ -4,6 +4,8 @@ CREATE TABLE stream_history (
     datetime DATETIME,
     data_path varchar(255),
     labels_path varchar(255),
+    anno_img_path varchar(255),
+    sdi float,
     PRIMARY KEY (`id`)
 )
 AUTO_INCREMENT=1;
