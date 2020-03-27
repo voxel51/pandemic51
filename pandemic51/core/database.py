@@ -8,7 +8,10 @@ from collections import defaultdict
 from datetime import datetime, timedelta
 import os
 
+import numpy as np
 import pymysql
+
+import eta.core.utils as etau
 
 import pandemic51.core.config as p51c
 
@@ -232,7 +235,9 @@ def plot(stream_name, reformat_as_dict=False, cnx=None):
     for ind, d in enumerate(output_result):
         time = d["time"]
         output_result[ind]["time"] = time.timestamp()
-        window = [v for t, v in result if t <= time and t > time - timedelta(days=window_size)]
+        window = [v for t, v in result
+                  if t <= time and t > time - timedelta(days=window_size)]
+
         num_top = int(len(window)*top)
         top_window = sorted(window)[-num_top:] 
         new_sdi = avg_fcn(top_window)
