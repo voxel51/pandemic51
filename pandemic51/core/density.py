@@ -9,7 +9,6 @@ import os
 import pathlib
 import random
 
-import numpy as np
 import tensorflow as tf
 
 import eta.core.annotations as etaa
@@ -119,16 +118,6 @@ def _load_efficientdet_model(model_name):
     return config.build()
 
 
-def _compute_object_density(objects):
-    # @todo could implement a proper scanline algorithm for this
-    mask = np.zeros((512, 512), dtype=bool)
-    for obj in objects:
-        tlx, tly, w, h = obj.bounding_box.coords_in(img=mask)
-        mask[tly:tly + h, tlx:tlx + w] = True
-
-    return mask.sum() / mask.size
-
-
 def _filter_objects(objects):
     filters = []
     if CONFIDENCE_THRESH:
@@ -147,8 +136,7 @@ def _process_image(detector, img_path, labels_path, anno_path=None):
     objects = _filter_objects(objects)
 
     count = len(objects)
-    density = _compute_object_density(objects)
-    logger.info("Found %d objects (density = %.3f)", count, density)
+    logger.info("Found %d objects", count)
 
     image_labels = etai.ImageLabels()
     image_labels.add_objects(objects)
