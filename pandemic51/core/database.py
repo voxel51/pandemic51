@@ -5,13 +5,12 @@ Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
-from datetime import datetime, timedelta
 import os
 
-import numpy as np
 import pymysql
 
 import pandemic51.core.config as panc
+import pandemic51.core.pdi as panp
 
 
 def connect_database():
@@ -191,11 +190,11 @@ def query_stream_sdi(stream_name, cnx=None):
     '''Returns a time-series of SDI values for the given stream.
 
     Args:
-        stream_name: the name of the stream
+        stream_name: the stream name
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of dicts with "time" and "sdi" values
+        a list of {"time": timestamp, "pdi": <physical distance index>} values
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -205,35 +204,10 @@ def query_stream_sdi(stream_name, cnx=None):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
+    times, counts = zip(*result)
+    pdis = panp.compute_pdi(times, counts)
 
-    output_result = [{"time": t, "sdi": None} for t, sdi in result]
-
-    # Number of days of data to apply avg_fcn over
-    window_size = 3
-
-    # Top % of window that will be used to average over
-    top = 0.1
-
-    # l-p norm
-    p = 2
-
-    avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
-
-    for ind, d in enumerate(output_result):
-        time = d["time"]
-        d["time"] = time.timestamp()
-
-        window = [v for t, v in result
-                  if t <= time and t > time - timedelta(days=window_size)]
-
-        num_top = int(len(window)*top)
-        top_window = sorted(window)[-num_top:]
-        new_sdi = avg_fcn(top_window)
-
-        output_result[ind]["sdi"] = new_sdi
-
-    return output_result
+    return [{"time": t, "pdi": p} for t, p in zip(times, pdis)]
 
 
 @with_connection

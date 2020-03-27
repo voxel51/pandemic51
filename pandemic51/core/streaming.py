@@ -198,7 +198,7 @@ def download_and_store(
     '''Downloads an image from the latest stream, and add it to the database.
 
     Args:
-        stream_name: the name of the stream
+        stream_name: the stream name
         outdir: the output directory
         tmpdirbase: an optional base directory for the temp directory to use
         width: an optional width to resize the image
