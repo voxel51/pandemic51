@@ -28,12 +28,14 @@ export default function ImageOverlay({src, onClose}) {
   };
 
   return (
-    <div className="image-overlay">
-      <img src={src} onLoad={handleLoad} style={imageStyle}/>
-      {isLoaded ? null : <CircularProgress className="loading-icon" />}
-      <IconButton aria-label="close" className="close-button" onClick={onClose}>
-        <CloseIcon />
-      </IconButton>
+    <div className="image-overlay-wrapper">
+      <div className="image-overlay">
+        <img src={src} onLoad={handleLoad} style={imageStyle}/>
+        {isLoaded ? null : <CircularProgress className="loading-icon" />}
+        <IconButton aria-label="close" className="close-button" onClick={onClose}>
+          <CloseIcon />
+        </IconButton>
+      </div>
     </div>
   );
 }

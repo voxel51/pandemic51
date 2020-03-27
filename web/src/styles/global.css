@@ -19,20 +19,20 @@ img {
 .player-container {
   position: relative;
 }
-.boxes {
+.image-overlay-wrapper {
   top: 0;
   left: 0;
   position: absolute;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
 }
 .image-overlay {
-  top: 0;
-  left: 0;
-  position: absolute;
+  position: relative;
+  width: 100%;
+  height: 100%;
   display: flex;
-  width: calc(100% - 32px);
-  height: calc(100% - 32px);
   background: rgba(100, 100, 100, 0.5);
-  margin: 16px;
 }
 .image-overlay img {
   width: 100%;
