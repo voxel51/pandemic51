@@ -18,8 +18,6 @@ V2_LP = 2
 V2_WINDOW_SAMPLES = 100
 V2_SMOOTHING_WIDTH = 30
 
-N_HOURS = 24 * 7
-
 
 def compute_pdi(timestamps, counts, urls):
     '''Computes the physical distancing indexes (PDIs) for the given data.
@@ -35,18 +33,20 @@ def compute_pdi(timestamps, counts, urls):
     return _compute_pdi_v2(timestamps, counts, urls)
 
 
-def market_change(timestamps, pdis):
-    '''Computes change in PDI over the last week.
+def compute_pdi_change(timestamps, pdis, num_days=7):
+    '''Computes change in PDI over the given number of days.
 
     Args:
         timestamps: a list of timestamps
         pdis: a list of PDI values
+        num_days: the number of days over which to compute the PDI change. By
+            default, this is 7 days
 
     Returns:
-        the change in pdi over the past N_HOURS
+        the change in PDI (postive = increase, negative = decrease)
     '''
     idx_now = -1
-    target_time = timestamps[idx_now] - 60 * 60 * 24 * N_HOURS
+    target_time = timestamps[idx_now] - 60 * 60 * 24 * 24 * num_days
     idx_prev = int(np.argwhere(np.array(timestamps) > target_time)[0])
     return pdis[idx_now] - pdis[idx_prev]
 

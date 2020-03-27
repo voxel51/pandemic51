@@ -272,7 +272,7 @@ def query_market_change(stream_name, *args, cnx):
     times, counts, urls = zip(*result)
     times, pdis, _ = panp.compute_pdi(times, counts, urls)
 
-    pdi_change = panp.market_change(times, pdis)
+    pdi_change = panp.compute_pdi_change(times, pdis)
 
     return {"pdi_change": pdi_change}
 
@@ -302,4 +302,4 @@ def query_snapshots(*args, cnx):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return [{"city": c, "url": u, "time": t } for c, t, u in result]
+    return [{"city": c, "url": u, "time": t} for c, t, u in result]
