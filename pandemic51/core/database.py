@@ -201,7 +201,7 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
             stream_search = ""
 
         sql = '''
-        select id, stream_name, datetime, data_path, labels_path, sdi
+        select id, stream_name, datetime, data_path, labels_path, count
         from stream_history%s ORDER BY datetime;
         ''' % stream_search
         cursor.execute(sql)
@@ -235,8 +235,8 @@ def query_stream_pdi(stream_name, *args, cnx=None):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime) as time, sdi
-        from stream_history where stream_name = '%s' and sdi is not null ORDER BY datetime;
+        select unix_timestamp(datetime) as time, count
+        from stream_history where stream_name = '%s' and count is not null ORDER BY datetime;
         ''' % stream_name
         cursor.execute(sql)
         result = cursor.fetchall()
