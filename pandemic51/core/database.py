@@ -216,22 +216,13 @@ def plot(stream_name, reformat_as_dict=False, cnx=None):
 
     result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
 
-    MIN_DATE=etau.parse_isotime("2020-02-15")
-
-    if MIN_DATE:
-        output_result = [{"time": t, "sdi": None} for t, sdi in result if t > MIN_DATE]
-    else:
-        output_result = [{"time": t, "sdi": None} for t, sdi in result]
+    output_result = [{"time": t, "sdi": None} for t, sdi in result]
 
     # Number of days of data to apply avg_fcn over
     window_size = 3
 
     # Top % of window that will be used to average over
     top = 0.1
-
-    # Minimum number of samples that need to be in the window in order to compute sdi
-    # This is to remove large gaps
-    min_window_count = 5
 
     # l-p norm
     p = 2
@@ -242,16 +233,11 @@ def plot(stream_name, reformat_as_dict=False, cnx=None):
         time = d["time"]
         output_result[ind]["time"] = time.timestamp()
         window = [v for t, v in result if t <= time and t > time - timedelta(days=window_size)]
-        if len(window) < min_window_count:
-            continue
-
         num_top = int(len(window)*top)
         top_window = sorted(window)[-num_top:] 
         new_sdi = avg_fcn(top_window)
 
         output_result[ind]["sdi"] = new_sdi 
-
-    output_result = [d for d in output_result if d["sdi"]]
 
     return output_result
 
