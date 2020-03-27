@@ -1,7 +1,7 @@
 '''
 Adds historical data to the database and data store.
 
-Copyright 2017-2020, Voxel51, Inc.
+Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from datetime import datetime

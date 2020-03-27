@@ -1,7 +1,7 @@
 '''
 Test script for interface with a TFLite model.
 
-Copyright 2017-2020, Voxel51, Inc.
+Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 import glob

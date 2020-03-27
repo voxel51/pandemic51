@@ -2,7 +2,7 @@
 Interface for deploying EfficientDet detectors trained using the AutoML library
 at https://github.com/google/automl/tree/master/efficientdet.
 
-Copyright 2017-2020 Voxel51, Inc.
+Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
 import logging
