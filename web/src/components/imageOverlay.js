@@ -8,6 +8,7 @@ import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types'
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export default function ImageOverlay({src, onClose}) {
   const [isLoaded, setLoaded] = useState(false);
@@ -29,6 +30,7 @@ export default function ImageOverlay({src, onClose}) {
   return (
     <div className="image-overlay">
       <img src={src} onLoad={handleLoad} style={imageStyle}/>
+      {isLoaded ? null : <CircularProgress className="loading-icon" />}
       <IconButton aria-label="close" className="close-button" onClick={onClose}>
         <CloseIcon />
       </IconButton>
