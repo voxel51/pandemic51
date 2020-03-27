@@ -274,7 +274,7 @@ def plot2(stream_name, *args, cnx=None):
     for n in range(len(pdi2)):
         pdi2[n] = avg_fcn(pdi[max(0, n-window_size):n+1])
 
-    return [{"time": time, "sdi": sdi} for time, sdi in zip(t, list(pdi))]
+    return [{"time": time, "sdi": sdi} for time, sdi in zip(t, list(pdi2))]
 
 
 @with_connection
