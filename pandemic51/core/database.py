@@ -197,8 +197,8 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
 
 
 @with_connection
-def query_stream_sdi(stream_name, *args, cnx=None):
-    '''Returns a time-series of SDI values for the given stream.
+def query_stream_pdi(stream_name, *args, cnx=None):
+    '''Returns a time-series of PDI values for the given stream.
 
     Args:
         stream_name: the stream name
