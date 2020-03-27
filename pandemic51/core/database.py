@@ -94,7 +94,7 @@ def add_stream_history(
 
 
 @with_connection
-def query_unprocessed_images(cnx=None):
+def query_unprocessed_images(*args, cnx):
     '''Gets all unprocessed images, i.e., those with no `labels_path` in the
     database.
 
@@ -115,7 +115,25 @@ def query_unprocessed_images(cnx=None):
 
 
 @with_connection
-def add_stream_labels(id, labels_path, cnx=None):
+def set_object_count(id, count, *args, cnx):
+    '''Sets the object count for the given ID in the database.
+
+    Args:
+        id: db row ID
+        count: the object count
+        cnx: a db connection. By default, a temporary connection is created
+    '''
+    with cnx.cursor() as cursor:
+        sql = '''
+        UPDATE stream_history SET sdi='{}' where id={};
+        '''.format(count, id)
+        cursor.execute(sql)
+
+    cnx.commit()
+
+
+@with_connection
+def add_stream_labels(id, labels_path, *args, cnx):
     '''Adds the given labels to the database.
 
     Args:
@@ -133,7 +151,7 @@ def add_stream_labels(id, labels_path, cnx=None):
 
 
 @with_connection
-def add_stream_anno_img(id, anno_img_path, cnx=None):
+def add_stream_anno_img(id, anno_img_path, *args, cnx):
     '''Adds the annotation image path to the database.
 
     Args:
@@ -185,7 +203,7 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, *args, cnx):
             stream_search = ""
 
         sql = '''
-        select id, stream_name, datetime, data_path, labels_path, sdi
+        select id, stream_name, datetime, data_path, labels_path, count
         from stream_history%s ORDER BY datetime;
         ''' % stream_search
         cursor.execute(sql)
@@ -219,14 +237,14 @@ def query_stream_pdi(stream_name, *args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime) as time, sdi, anno_img_path url
-        from stream_history where stream_name = '%s' and sdi is not null and anno_img_path is not null ORDER BY datetime;
+        select unix_timestamp(datetime) as time, count, anno_img_path
+        from stream_history where stream_name = '%s' and count is not null and anno_img_path is not null ORDER BY datetime;
         ''' % stream_name
         cursor.execute(sql)
         result = cursor.fetchall()
 
     times, counts, urls = zip(*result)
-    times, pdis, urls= panp.compute_pdi(times, counts, urls)
+    times, pdis, urls = panp.compute_pdi(times, counts, urls)
 
     return [{"time": t, "pdi": p, "url": u}
             for t, p, u in zip(times, pdis, urls)]
@@ -268,21 +286,3 @@ def query_snapshots(*args, cnx):
         result = cursor.fetchall()
 
     return [{"city": c, "url": u, "time": t } for c, t, u in result]
-
-
-@with_connection
-def populate_object_count(id, count, *args, cnx):
-    '''Sets the object count for the given ID in the database.
-
-    Args:
-        id: the stream ID
-        count: the object count
-        cnx: a db connection. By default, a temporary connection is created
-    '''
-    with cnx.cursor() as cursor:
-        sql = '''
-        UPDATE stream_history SET sdi='{}' where id={};
-        '''.format(count, id)
-        cursor.execute(sql)
-
-    cnx.commit()
