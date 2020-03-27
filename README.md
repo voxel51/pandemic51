@@ -60,7 +60,7 @@ bash install.bash
 ### 4) Create a config
 
 ```bash
-cp setup/template-config.py pandemic51/core/config.py
+cp setup/config-template.py pandemic51/core/config.py
 ```
 
 Then modify `config.py`, populating any `{{TODO}}`s with correct values. Many
