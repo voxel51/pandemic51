@@ -19,6 +19,16 @@ img {
 .media-container {
   position: relative;
 }
+.media-container .loading-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin-top: -20px;
+  margin-left: -20px;
+  color: var(--color-primary);
+}
 .video-player-wrapper {
   position: absolute;
   top: 0;
@@ -34,16 +44,6 @@ img {
   display: flex;
   background-color: var(--gray-dark1);
 }
-.video-player .loading-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 40px;
-  height: 40px;
-  margin-top: -20px;
-  margin-left: -20px;
-  color: var(--color-primary);
-}
 .image-overlay-wrapper {
   position: absolute;
   top: 0;
@@ -55,17 +55,13 @@ img {
 .image-overlay {
   position: relative;
   width: 100%;
-  height: 100%;
+  height: 400px;
   display: flex;
   background-color: rgba(100, 100, 100, 0.5);
 }
 .image-overlay img {
   width: 100%;
   height: 100%;
-}
-.image-overlay .loading-icon {
-  margin: auto;
-  color: var(--bg-light-secondary);
 }
 .image-overlay .close-button {
   position: absolute;
