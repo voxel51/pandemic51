@@ -109,7 +109,7 @@ class Chart extends Component {
                 .tz(timezones[city])
                 .format("dddd,  MMM Do, hh:mm A")}
             </Typography>
-            <Typography color="textSecondary">
+            <Typography variant="h6" component="h3" style={{color: "rgb(255, 109, 4)"}}>
               PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
             <Typography variant="body2" component="p">
