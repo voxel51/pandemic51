@@ -41,9 +41,9 @@ def compute_pdi(timestamps, counts, urls):
         kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
         pdis = list(np.convolve(pdis, kernel, mode="same"))
 
-    # skip start up values
-    skip = int(np.argwhere(
-        times > times[0] + timedelta(days=WINDOW_DAYS))[0])
+    # Omit startup values
+    startup_time = times[0] + timedelta(days=WINDOW_DAYS)
+    skip = np.argwhere(times > startup_time)[0, 0]
 
     return timestamps[skip::], pdis[skip::], urls[skip::]
 
