@@ -231,7 +231,7 @@ def query_stream_pdi(stream_name, *args, cnx):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"time": timestamp, "pdi": <physical distance index>} values
+        a list of {"time": t, "pdi": p, "url": u} entries
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -245,13 +245,20 @@ def query_stream_pdi(stream_name, *args, cnx):
     times, counts, urls = zip(*result)
     times, pdis, urls = panp.compute_pdi(times, counts, urls)
 
-    return [{"time": t, "pdi": p, "url": u}
-            for t, p, u in zip(times, pdis, urls)]
+    return [
+        {"time": t, "pdi": p, "url": u} for t, p, u in zip(times, pdis, urls)]
 
 
 @with_connection
 def query_market_change(stream_name, *args, cnx):
-    '''Returns the change in PDI for the stream in the past panp.N_HOURS hours
+    '''Returns the "market change" in PDI for the stream over the past week.
+
+    Args:
+        stream_name: the stream name
+        cnx: a db connection. By default, a temporary connection is created
+
+    Returns:
+        {"pdi_change": pdi_change}
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -272,6 +279,14 @@ def query_market_change(stream_name, *args, cnx):
 
 @with_connection
 def query_snapshots(*args, cnx):
+    '''Returns a snapshot of the current streams.
+
+    Args:
+        cnx: a db connection. By default, a temporary connection is created
+
+    Returns:
+        a list of {"city": c, "url": u, "time": t} entries
+    '''
     with cnx.cursor() as cursor:
         sql = '''
         select stream_name, unix_timestamp(datetime), url from (
