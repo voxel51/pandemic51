@@ -20,7 +20,7 @@ V2_WINDOW_SAMPLES = 100
 N_HOURS = 24 * 7
 
 
-def _compute_pdi_v1(timestamps, counts):
+def _compute_pdi_v1(timestamps, counts, urls):
     '''Computes the physical distancing indexes (PDIs) for the given
     time-series data.
 
@@ -51,10 +51,10 @@ def _compute_pdi_v1(timestamps, counts):
         kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
         pdis = list(np.convolve(pdis, kernel, mode="same"))
 
-    return timestamps, pdis
+    return timestamps, pdis, urls
 
 
-def _compute_pdi_v2(timestamps, counts):
+def _compute_pdi_v2(timestamps, counts, urls):
     counts = np.asarray(counts)
 
     avg_fcn = lambda x: np.linalg.norm(x, ord=V2_LP) / (len(x) ** (1 / V2_LP))
@@ -70,7 +70,7 @@ def _compute_pdi_v2(timestamps, counts):
     # startup time
     skip = int(V2_WINDOW_SAMPLES / 2)
 
-    return timestamps[skip::], pdis[skip::]
+    return timestamps[skip::], pdis[skip::], urls[skip::]
 
 
 compute_pdi = _compute_pdi_v2

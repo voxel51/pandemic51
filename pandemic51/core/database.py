@@ -211,16 +211,17 @@ def query_stream_pdi(stream_name, *args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime) as time, sdi
-        from stream_history where stream_name = '%s' and sdi is not null ORDER BY datetime;
+        select unix_timestamp(datetime) as time, sdi, anno_img_path url
+        from stream_history where stream_name = '%s' and sdi is not null and anno_img_path is not null ORDER BY datetime;
         ''' % stream_name
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    times, counts = zip(*result)
-    times, pdis = panp.compute_pdi(times, counts)
+    times, counts, urls = zip(*result)
+    times, pdis, urls= panp.compute_pdi(times, counts, urls)
 
-    return [{"time": t, "pdi": p} for t, p in zip(times, pdis)]
+    return [{"time": t, "pdi": p, "url": u}
+            for t, p, u in zip(times, pdis, urls)]
 
 
 @with_connection
@@ -229,14 +230,14 @@ def query_market_change(stream_name, *args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime) as time, sdi
-        from stream_history where stream_name = '%s' and sdi is not null ORDER BY datetime;
+        select unix_timestamp(datetime) as time, sdi, anno_img_path url
+        from stream_history where stream_name = '%s' and sdi is not null and anno_img_path is not null ORDER BY datetime;
         ''' % stream_name
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    times, counts = zip(*result)
-    times, pdis = panp.compute_pdi(times, counts)
+    times, counts, urls = zip(*result)
+    times, pdis, _ = panp.compute_pdi(times, counts, urls)
 
     pdi_change = panp.market_change(times, pdis)
 
@@ -245,21 +246,20 @@ def query_market_change(stream_name, *args, cnx):
 
 @with_connection
 def query_snapshots(*args, cnx):
-    '''
-
-    :param args:
-    :param cnx:
-    :return:
-    '''
     with cnx.cursor() as cursor:
-        sql = '''
-        select unix_timestamp(datetime) as time, sdi
-        from stream_history where stream_name = '%s' and sdi is not null ORDER BY datetime;
-        ''' % "ASDF"
+        sql = ''' select stream_name, unix_timestamp(datetime), url from (
+        select s.stream_name, s.datetime, s.anno_img_path url
+        from stream_history s
+        inner join (
+            select stream_name, max(datetime) t
+            from stream_history where anno_img_path is not null
+            group by stream_name 
+        ) i on s.stream_name = i.stream_name and s.datetime = i.t) r;
+        '''
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return None
+    return [{"city": c, "url": u, "time": t } for c, t, u in result]
 
 
 @with_connection
