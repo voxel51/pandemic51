@@ -1,18 +1,20 @@
 '''
-Convert a video to a configurable-resolution image
+Test converting a video to a configurable-resolution image.
 
+Copyright 2017-2020, Voxel51, Inc.
+voxel51.com
 '''
 import glob
 import os
 
-from pandemic51.core.streaming import vid2img
+import pandemic51.core.streaming as pans
 
 
-input_pattern = "out/video/time_square/*.mp4"
-out_dir = "out/img/time_square"
+INPUT_PATTERN = "out/video/time_square/*.mp4"
+OUT_DIR = "out/img/time_square"
 
-for input_path in glob.glob(input_pattern):
+for input_path in glob.glob(INPUT_PATTERN):
     outfilename = os.path.splitext(os.path.basename(input_path))[0] + ".png"
-    out_path = os.path.join(out_dir, outfilename)
+    out_path = os.path.join(OUT_DIR, outfilename)
 
-    vid2img(input_path, out_path)
+    pans.sample_first_frame(input_path, out_path)

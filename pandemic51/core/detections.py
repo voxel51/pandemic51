@@ -1,5 +1,5 @@
 '''
-Core methods for detecting objects in images.
+Methods for detecting objects in images.
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com
@@ -9,11 +9,9 @@ import os
 import pathlib
 import random
 
-import numpy as np
 import tensorflow as tf
 
 import eta.core.annotations as etaa
-import eta.core.data as etad
 import eta.core.image as etai
 import eta.core.learning as etal
 
@@ -36,9 +34,12 @@ ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
 def detect_objects_in_images(inpaths, outpaths):
     '''Detects objects in the given images and writes the output labels to
     disk.
+
+    Args:
+        inpaths: a list of input paths to process
+        outpaths: a list of paths to write the output labels
     '''
     detector = _load_efficientdet_model(MODEL_NAME)
-
     with detector:
         for inpath, outpath in zip(inpaths, outpaths):
             _process_image(detector, inpath, outpath)
@@ -79,18 +80,22 @@ def detect_objects_in_unprocessed_images():
             pand.add_stream_labels(id, labels_path)
 
 
-def compute_object_counts_for_db_entries(null_only=True):
-    '''Computes object counts for all (non-null, by default) DB entries and
-    stores the results in the DB.
+def compute_object_counts_for_db_entries(recompute_all=False):
+    '''Computes object counts for all non-null (by default) DB entries and
+    stores the results.
+
+    Args:
+        recompute_all: whether to recompute all object counts. By default, this
+            is False
     '''
     cnx = pand.connect_database()
     rows = pand.query_stream_history(cnx=cnx)
 
-    for id, stream_name, datetime, data_path, labels_path, sdi in rows:
+    for id, _, _, _, labels_path, count in rows:
         if not labels_path:
             continue
 
-        if null_only and sdi is not None:
+        if count is not None and not recompute_all:
             continue
 
         image_labels = etai.ImageLabels.from_json(labels_path)
@@ -113,16 +118,6 @@ def _load_efficientdet_model(model_name):
     return config.build()
 
 
-def _compute_object_density(objects):
-    # @todo could implement a proper scanline algorithm for this
-    mask = np.zeros((512, 512), dtype=bool)
-    for obj in objects:
-        tlx, tly, w, h = obj.bounding_box.coords_in(img=mask)
-        mask[tly:tly + h, tlx:tlx + w] = True
-
-    return mask.sum() / mask.size
-
-
 def _filter_objects(objects):
     filters = []
     if CONFIDENCE_THRESH:
@@ -141,14 +136,10 @@ def _process_image(detector, img_path, labels_path, anno_path=None):
     objects = _filter_objects(objects)
 
     count = len(objects)
-    density = _compute_object_density(objects)
-    logger.info("Found %d objects (density = %.3f)", count, density)
+    logger.info("Found %d objects", count)
 
     image_labels = etai.ImageLabels()
     image_labels.add_objects(objects)
-
-    #image_labels.add_attribute(etad.NumericAttribute("count", count))
-    #image_labels.add_attribute(etad.NumericAttribute("density", density))
 
     logger.info("Writing labels to '%s'", labels_path)
     image_labels.write_json(labels_path)

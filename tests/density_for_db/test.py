@@ -6,7 +6,7 @@ labels on disk.
 Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
-import pandemic51.core.density as pand
+import pandemic51.core.detections as pand
 
 
 pand.detect_objects_in_unprocessed_images()

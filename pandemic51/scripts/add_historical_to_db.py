@@ -1,9 +1,8 @@
-'''Add Historical Data to the database and data store
+'''
+Adds historical data to the database and data store.
 
 Copyright 2017-2020, Voxel51, Inc.
 voxel51.com
-
-Tyler Ganter, tyler@voxel51.com
 '''
 from datetime import datetime
 import logging
@@ -62,14 +61,17 @@ for cur_images_dir, _, files in os.walk(images_dir):
         assert os.path.exists(img_path), "Missing image: %s" % img_path
         assert os.path.exists(labels_path), "Missing labels: %s" % labels_path
 
-        logger.info("Moving file:\n\t%s\n\t-> %s" % (img_path, new_img_path))
+        logger.info(
+            "Moving file:\n\t%s\n\t-> %s", img_path, new_img_path)
         shutil.move(img_path, new_img_path)
 
-        logger.info("Moving file:\n\t%s\n\t-> %s" % (labels_path, new_labels_path))
+        logger.info(
+            "Moving file:\n\t%s\n\t-> %s", labels_path, new_labels_path)
         shutil.move(labels_path, new_labels_path)
 
-        logger.info("Adding stream history:\n\t%s | %s | %s | %s"
-                    % (stream_name, utc_dt, new_img_path, new_labels_path))
+        logger.info(
+            "Adding stream history:\n\t%s | %s | %s | %s",
+            stream_name, utc_dt, new_img_path, new_labels_path)
         pand.add_stream_history(
             stream_name, utc_dt,
             image_path=new_img_path,
