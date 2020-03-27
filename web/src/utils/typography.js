@@ -1,3 +1,9 @@
+/**
+ * Typography definitions.
+ *
+ * Copyright 2020, Voxel51, Inc.
+ * voxel51.com
+ */
 import Typography from "typography";
 
 const typography = new Typography({
