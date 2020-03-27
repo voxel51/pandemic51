@@ -259,8 +259,6 @@ def plot2(stream_name, *args, cnx=None):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
-
     t = [x for x, _ in result]
     sdi = np.asarray([x for _, x in result])
 
@@ -275,10 +273,9 @@ def plot2(stream_name, *args, cnx=None):
     sdi2 = sdi.copy()
 
     for n in range(len(sdi2)):
-        print(sdi[max(0, n-window_size):n+1])
         sdi2[n] = avg_fcn(sdi[max(0, n-window_size):n+1])
 
-    return [{"time": t, "sdi": None} for t, sdi in zip(t, sdi2)]
+    return [{"time": t, "sdi": None} for t, sdi in zip(t, list(sdi2))]
 
 
 @with_connection
