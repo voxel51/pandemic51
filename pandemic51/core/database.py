@@ -59,7 +59,7 @@ def with_connection(func):
 
 @with_connection
 def add_stream_history(
-        stream_name, dt, image_path, labels_path=None, *args, cnx):
+        stream_name, dt, image_path, labels_path=None, cnx=None):
     '''Adds the given stream history to the database.
 
     Args:
@@ -167,7 +167,7 @@ def add_stream_anno_img(id, anno_img_path, *args, cnx):
 
 
 @with_connection
-def query_stream_history(stream_name=None, reformat_as_dict=False, *args, cnx):
+def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     '''Returns the stream history for the specified stream(s).
 
     Args:
@@ -271,16 +271,18 @@ def query_market_change(stream_name, *args, cnx):
 @with_connection
 def query_snapshots(*args, cnx):
     with cnx.cursor() as cursor:
-        sql = ''' select stream_name, unix_timestamp(datetime), url from (
-        select s.stream_name, s.datetime, s.anno_img_path url
-        from stream_history s
-        inner join (
-            select stream_name, max(datetime) t
-            from stream_history where anno_img_path is not null
-            group by stream_name
-        ) i on s.stream_name = i.stream_name and s.datetime = i.t) r;
+        sql = '''
+        select stream_name, unix_timestamp(datetime), url from (
+            select s.stream_name, s.datetime, s.anno_img_path url
+            from stream_history s
+            inner join (
+                select stream_name, max(datetime) t
+                from stream_history where anno_img_path is not null
+                group by stream_name
+            ) i on s.stream_name = i.stream_name and s.datetime = i.t
+        ) r;
         '''
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return [{"city": c, "url": u, "time": t } for c, t, u in result]
+    return [{"city": c, "url": u, "time": t} for c, t, u in result]
