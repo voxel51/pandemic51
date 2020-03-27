@@ -250,8 +250,8 @@ def query_stream_pdi(stream_name, *args, cnx):
 
 
 @with_connection
-def query_market_change(stream_name, *args, cnx):
-    '''Returns the "market change" in PDI for the stream over the past week.
+def query_pdi_change(stream_name, *args, cnx):
+    '''Returns the change in PDI for the stream over the past week.
 
     Args:
         stream_name: the stream name
