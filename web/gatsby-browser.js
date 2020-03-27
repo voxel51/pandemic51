@@ -7,3 +7,7 @@
  * voxel51.com
  */
 import "./src/styles/global.css"
+
+export function shouldUpdateScroll() {
+  return false;
+}
