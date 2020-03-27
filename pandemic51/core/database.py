@@ -260,7 +260,7 @@ def plot2(stream_name, *args, cnx=None):
         result = cursor.fetchall()
 
     t = [x for x, _ in result]
-    sdi = np.asarray([x for _, x in result])
+    pdi = np.asarray([x for _, x in result])
 
     # Number of days of data to apply avg_fcn over
     window_size = 10
@@ -270,12 +270,11 @@ def plot2(stream_name, *args, cnx=None):
 
     avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
 
-    sdi2 = sdi.copy()
+    pdi2 = pdi.copy()
+    for n in range(len(pdi2)):
+        pdi2[n] = avg_fcn(pdi[max(0, n-window_size):n+1])
 
-    for n in range(len(sdi2)):
-        sdi2[n] = avg_fcn(sdi[max(0, n-window_size):n+1])
-
-    return [{"time": t, "sdi": None} for t, sdi in zip(t, list(sdi2))]
+    return [{"time": time, "sdi": sdi} for time, sdi in zip(t, list(pdi))]
 
 
 @with_connection
