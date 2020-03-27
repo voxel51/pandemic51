@@ -16,7 +16,7 @@ footer {
 img {
   margin-bottom: 0 !important;
 }
-.detector, .detector-container {
+.player-container {
   position: relative;
 }
 .boxes {

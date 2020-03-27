@@ -109,7 +109,7 @@ class Layout extends React.Component  {
           </Grid>
           </Hidden>
             <Grid container spacing={4}>
-              <Grid item xs={12} className="detector-container" style={{boxSizing: 'content-box'}}>
+              <Grid item xs={12} className="player-container">
                 <Player city={city} />
                 <ImageOverlay src={this.state.src} onClose={(e) => {
                   e.stopPropagation();

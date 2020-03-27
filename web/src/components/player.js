@@ -32,15 +32,7 @@ export default function Player({city}) {
     );
   }, [city])
 
-  if (!player) {
-    return null;
-  }
-
-  return (
-    <div className="detector">
-      {player}
-    </div>
-  );
+  return player;
 }
 
 Player.propTypes = {
