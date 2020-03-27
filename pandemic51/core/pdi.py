@@ -61,6 +61,10 @@ def compute_pdi_v2(timestamps, counts):
     for n in range(len(pdis)):
         pdis[n] = avg_fcn(counts[max(0, n-V2_WINDOW_SAMPLES):n+1])
 
+    if SMOOTHING_WIDTH:
+        kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
+        pdis = list(np.convolve(pdis, kernel, mode="same"))
+
     # startup time
     skip = int(V2_WINDOW_SAMPLES / 2)
 
