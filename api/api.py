@@ -15,7 +15,7 @@ import pandemic51.core.config as panc
 import pandemic51.core.database as pand
 
 
-NAMES = {
+STREAMS_MAP = {
     "london": "abbey_road",
     "chicago": "chicago",
     "dublin": "dublin",
@@ -25,38 +25,51 @@ NAMES = {
     "neworleans": "new_orleans",
 }
 
-US = {"chicago", "newyork", "neworleans", "newjersey"}
+US_CITIES = {"chicago", "newyork", "neworleans", "newjersey"}
 
 EVENTS_CSV_PATH = "./news_events.csv"
 
 
 @app.route("/snapshots")
 def snapshots():
-    inv = {v: k for k, v in NAMES.items()}
-    r = pand.query_snapshots()
-    res = {}
-    for i in r:
-        if i["city"] not in inv:
+    '''Serves snapshots for all cities.
+
+    Returns:
+        {"data": data}
+    '''
+    names_rev = {v: k for k, v in STREAMS_MAP.items()}
+
+    data = {}
+    for snapshot in pand.query_snapshots():
+        if snapshot["city"] not in names_rev:
             continue
 
-        res[inv[i["city"]]] = (
+        data[names_rev[snapshot["city"]]] = (
             "https://pdi-service.voxel51.com/snapshots" +
-            i["url"].replace(panc.P51_BASEDIR + "/data", "")
+            snapshot["url"].replace(panc.P51_BASEDIR + "/data", "")
         )
 
-    return {"data": res}
+    return {"data": data}
 
 
 @app.route("/pdi/<city>")
 def pdi(city):
-    if city not in NAMES:
+    '''Serves data for the given city.
+
+    Args:
+        city: the city
+
+    Returns:
+        {"data": data, "events": events, "labels" : labels}
+    '''
+    if city not in STREAMS_MAP:
         return 404, "Not Found"
 
     raw = pd.read_csv(EVENTS_CSV_PATH)
     events = []
     for date, city_, event, ref in zip(
             raw["date"], raw["city"], raw["event"], raw["reference"]):
-        if city_.strip(" ") == "U.S." and city in US:
+        if city_.strip(" ") == "U.S." and city in US_CITIES:
             pass
         elif city_.strip(" ") == "Worldwide":
             pass
@@ -77,17 +90,14 @@ def pdi(city):
 
     devents = {int(e["time"]): e for e in events}
     levents = [e["time"] for e in events]
-    points = pand.query_stream_pdi(NAMES[city])
-
-    def closest(lst, K):
-        return lst[min(range(len(lst)), key=lambda i: abs(lst[i] - K))]
+    points = pand.query_stream_pdi(STREAMS_MAP[city])
 
     for p in points:
         p["url"] = (
             "https://pdi-service.voxel51.com/snapshots" +
             p["url"].replace(panc.P51_BASEDIR + "/data", "")
         )
-        p["event"] = closest(levents, p["time"])
+        p["event"] = _closest(levents, p["time"])
         p["event_val"] = 0
 
     labels = {p["time"]: p for p in points}
@@ -95,5 +105,9 @@ def pdi(city):
     return {"data": points, "events": devents, "labels" : labels}
 
 
+def _closest(lst, K):
+    return lst[min(range(len(lst)), key=lambda i: abs(lst[i] - K))]
+
+
 if __name__ == "__main__":
-    app.run(host='0.0.0.0')
+    app.run(host="0.0.0.0")
