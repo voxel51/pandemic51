@@ -34,9 +34,9 @@ P51_SQL_USERNAME = "{{USERNAME}}" # TODO REPLACE ME
 P51_SQL_PASSWORD = "{{PASSWORD}}" # TODO REPLACE ME
 P51_SQL_DATABASE_NAME = "p51db"
 
-# Info to download streams
-streams_path = os.path.join(P51_REPO_DIR, "pandemic51/config/streams.json")
-STREAMS = etas.load_json(streams_path)
+# Stream info
+STREAMS_PATH = os.path.join(P51_REPO_DIR, "pandemic51/config/streams.json")
+STREAMS = etas.load_json(STREAMS_PATH)
 
 # Celery periodic task intervals
 DOWNLOAD_STREAM_INTERVAL = 60 * 15

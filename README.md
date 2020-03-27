@@ -1,6 +1,6 @@
 # pandemic51
 
-Voxel51's website for monitoring the impact of the coronavirus pandemic.
+Voxel51's website for monitoring the impact of the Coronavirus pandemic.
 
 <img src="https://user-images.githubusercontent.com/3719547/74191434-8fe4f500-4c21-11ea-8d73-555edfce0854.png" alt="voxel51-logo.png" width="40%"/>
 
@@ -60,7 +60,7 @@ bash install.bash
 ### 4) Create a config
 
 ```bash
-cp setup/template-config.py pandemic51/core/config.py
+cp setup/config-template.py pandemic51/core/config.py
 ```
 
 Then modify `config.py`, populating any `{{TODO}}`s with correct values. Many
