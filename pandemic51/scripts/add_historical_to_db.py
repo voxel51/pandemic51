@@ -54,7 +54,7 @@ for cur_images_dir, _, files in os.walk(images_dir):
         timestamp = panu.parse_epoch_timestamp_from_path(img_path)
         utc_dt = datetime.utcfromtimestamp(timestamp)
 
-        new_img_path = os.path.join(panc.IMAGE_DIRS, stream_name, filename)
+        new_img_path = os.path.join(panc.IMAGES_DIR, stream_name, filename)
         new_labels_path = os.path.join(
             panc.LABELS_DIR, stream_name, json_filename)
 
