@@ -261,7 +261,8 @@ def plot2(stream_name, *args, cnx=None):
 
     result = [(datetime.utcfromtimestamp(t), sdi) for t, sdi in result]
 
-    output_result = [{"time": t, "sdi": None} for t, sdi in result]
+    t = [x for x, _ in result]
+    sdi = np.asarray([x for _, x in result])
 
     # Number of days of data to apply avg_fcn over
     window_size = 10
@@ -270,10 +271,6 @@ def plot2(stream_name, *args, cnx=None):
     p = 2
 
     avg_fcn = lambda x: np.linalg.norm(x, ord=p) / (len(x) ** (1 / p))
-
-    t = [a["time"] for a in output_result]
-
-    sdi = np.asarray([a["sdi"] for a in output_result])
 
     sdi2 = sdi.copy()
 
