@@ -9,20 +9,20 @@ from datetime import datetime, timedelta
 import numpy as np
 
 
-WINDOW_DAYS = 3
-TOP = 0.1
-LP = 2
-SMOOTHING_WIDTH = 30
+V1_WINDOW_DAYS = 3
+V1_TOP = 0.1
+V1_LP = 2
+V1_SMOOTHING_WIDTH = 30
 
 V2_LP = 2
 V2_WINDOW_SAMPLES = 100
+V2_SMOOTHING_WIDTH = 30
 
 N_HOURS = 24 * 7
 
 
 def compute_pdi(timestamps, counts, urls):
-    '''Computes the physical distancing indexes (PDIs) for the given
-    time-series data.
+    '''Computes the physical distancing indexes (PDIs) for the given data.
 
     Args:
         timestamps: a list of timestamps
@@ -39,21 +39,21 @@ def _compute_pdi_v1(timestamps, counts, urls):
     times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
     counts = np.asarray(counts)
 
-    avg_fcn = lambda x: np.linalg.norm(x, ord=LP) / (len(x) ** (1 / LP))
+    avg_fcn = lambda x: np.linalg.norm(x, ord=V1_LP) / (len(x) ** (1 / V1_LP))
 
     pdis = []
     for time in times:
-        start_time = time - timedelta(days=WINDOW_DAYS)
+        start_time = time - timedelta(days=V1_WINDOW_DAYS)
         window_counts = counts[(start_time <= times) & (times <= time)]
 
-        num_top = int(TOP * len(window_counts))
+        num_top = int(V1_TOP * len(window_counts))
         top_window_counts = sorted(window_counts)[-num_top:]
         pdi = avg_fcn(top_window_counts)
 
         pdis.append(pdi)
 
-    if SMOOTHING_WIDTH:
-        kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
+    if V1_SMOOTHING_WIDTH:
+        kernel = np.ones(V1_SMOOTHING_WIDTH) / V1_SMOOTHING_WIDTH
         pdis = list(np.convolve(pdis, kernel, mode="same"))
 
     return timestamps, pdis, urls
@@ -66,10 +66,10 @@ def _compute_pdi_v2(timestamps, counts, urls):
 
     pdis = np.zeros(counts.shape)
     for n in range(len(pdis)):
-        pdis[n] = avg_fcn(counts[max(0, n-V2_WINDOW_SAMPLES):n+1])
+        pdis[n] = avg_fcn(counts[max(0, n - V2_WINDOW_SAMPLES):n + 1])
 
-    if SMOOTHING_WIDTH:
-        kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
+    if V2_SMOOTHING_WIDTH:
+        kernel = np.ones(V2_SMOOTHING_WIDTH) / V2_SMOOTHING_WIDTH
         pdis = list(np.convolve(pdis, kernel, mode="same"))
 
     # startup time
