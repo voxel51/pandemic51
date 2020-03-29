@@ -19,7 +19,7 @@ from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import eta.core.serial as etas
 import eta.core.utils as etau
 
-import pandemic51.core.config as panc
+import pandemic51.config as panc
 from pandemic51.core.database import add_stream_history
 
 
@@ -32,7 +32,7 @@ CHUNK_URL_SLEEP_SECONDS = 1
 
 def update_streams(stream_name, streams):
     '''Updates the given stream in the stream dictionary and serializes it to
-    disk at `pandemic51.core.config.STREAMS_PATH`.
+    disk at `pandemic51.config.STREAMS_PATH`.
 
     Args:
         stream_name: the stream name

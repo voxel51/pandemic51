@@ -9,7 +9,7 @@ import os
 
 import pymysql
 
-import pandemic51.core.config as panc
+import pandemic51.config as panc
 import pandemic51.core.pdi as panp
 
 
