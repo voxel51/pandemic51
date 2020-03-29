@@ -14,7 +14,7 @@ import pandemic51.core.streaming as pans
 
 
 app = celery.Celery("pandemic51.core.tasks")
-app.config_from_object("pandemic51.core.celery_config")
+app.config_from_object("pandemic51.celery_config")
 
 
 @celery.signals.celeryd_init.connect()
