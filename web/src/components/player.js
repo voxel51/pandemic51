@@ -10,7 +10,6 @@ import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
 import ReactHLS from 'react-hls';
 
-
 const cities = {
   "chicago": "https://pdi-service.voxel51.com/stream/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
   "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
@@ -34,6 +33,7 @@ export default function Player({city}) {
     setWidth(w);
     setHeight(h);
   };
+
   useEffect(() => {
     updateSize();
     window.addEventListener("resize", updateSize);
