@@ -7,10 +7,10 @@
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
  */
-import React from "react"
-import Helmet from "react-helmet"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import React from "react";
+import Helmet from "react-helmet";
+import PropTypes from "prop-types";
+import { useStaticQuery, graphql } from "gatsby";
 import { withStyles, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -18,7 +18,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Img from 'gatsby-image';
 import CityCard from './cityCard';
-import "./layout.css"
+import "./layout.css";
 import "./../utils/typography";
 import Player from './player';
 import Chart from './chart';
@@ -32,15 +32,12 @@ const styles = {
     wrapper: {
       display: "flex",
       minHeight: "100vh",
-      flexDirection: "column"
+      flexDirection: "column",
     },
     root: {
       width: "100%",
     }
 };
-
-
-
 
 class Layout extends React.Component  {
   constructor(props) {

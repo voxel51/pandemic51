@@ -15,6 +15,7 @@ import Clock from 'react-live-clock';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { Link } from "gatsby";
+
 const useStyles = makeStyles({
   root: {
     marginBottom: '1rem',
@@ -32,12 +33,12 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   content: {
-    paddingRight: (106.52 * 16/9) + 16
+    paddingRight: (106.52 * 16 / 9) + 16,
   },
   still: {
     margin: 0,
     right: 0,
-    width: 106.52 * 16/9,
+    width: 106.52 * 16 / 9,
     height: 106.52,
     position: "absolute",
   }
@@ -50,7 +51,7 @@ const timezones = {
   "neworleans": "America/Chicago",
   "newjersey": "America/New_York",
   "newyork": "America/New_York",
-  "prague": "Europe/Prague"
+  "prague": "Europe/Prague",
 }
 
 const locations = {
@@ -60,7 +61,7 @@ const locations = {
   "neworleans": "Bourbon Street",
   "newjersey": "Seaside Heights",
   "newyork": "Times Square",
-  "prague": "Grand Hotel"
+  "prague": "Grand Hotel",
 }
 
 export default function CityCard(props) {
