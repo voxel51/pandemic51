@@ -4,11 +4,11 @@
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
  */
-import { Link } from "gatsby"
-import PropTypes from "prop-types"
-import React from "react"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFacebook, faGithub, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons"
+import { Link } from "gatsby";
+import PropTypes from "prop-types";
+import React from "react";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faFacebook, faGithub, faLinkedin, faTwitter } from "@fortawesome/free-brands-svg-icons";
 
 const Footer = (props) => (
   <footer class="body_part footer">
