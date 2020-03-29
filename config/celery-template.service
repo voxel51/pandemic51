@@ -1,8 +1,11 @@
 # Place in /lib/systemd/system as celery.service
-# to start run:
+#
+# To start, run:
 #   sudo systemctl daemon-reload
 #   sudo systemctl start celery.service
-[[Unit]
+#
+
+[Unit]
 Description=Celery Service
 After=network.target
 

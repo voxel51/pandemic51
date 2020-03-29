@@ -1,5 +1,5 @@
 '''
-pandemic51 config.
+Backend app config.
 
 Copyright 2020, Voxel51, Inc.
 voxel51.com
