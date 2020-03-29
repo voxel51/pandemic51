@@ -108,34 +108,13 @@ img {
     --padding-y: 10rem;
 }
 
-.cta-wrapper {
-  width: 100%;
-  background: var(--bg-dark-primary);
-  background-image: url("../images/design.svg");
-  background-size: cover;
-}
 .contentBody {
   flex-grow: 1;
   margin: 4rem auto;
   maxWidth: 1040px;
   padding: 1rem var(--padding-x);
 }
-.cta {
-  text-align: center;
-  flex-grow: 1;
-  margin: 0 auto;
-  max-width: 1040px;
-    padding: 4rem var(--padding-x);
-      display: grid;
-    grid-template-columns: 1fr 61.7% 1fr;
-    grid-template-areas:
-        ". title ."
-        ". visual ."
-        ". text ."
-        ". hook .";
-    justify-items: center;
-    align-items: start;
-}
+
 
 body {
     background: var(--bg-light-secondary);
@@ -198,6 +177,20 @@ a, a:hover {
 
   --padding-x: 10rem;
   --padding-y: 10rem;
+}
+
+.body_block__title--left {
+  grid-area: title;
+  align-self: left;
+  justify-self: start;
+  padding-bottom: 1rem;
+}
+
+.body_block__title--right {
+  grid-area: title;
+  align-self: right;
+  justify-self: start;
+  padding-bottom: 1rem;
 }
 
 /* sets everything to border-box but allows override */
@@ -435,17 +428,17 @@ img::-moz-selection {
 }
 
 .bg-header-dark-fancy {
-  background-image: url("/images/header_dark_fancy.svg");
+  background-image: url("../images/design.svg");
   background-size: cover;
 }
 
 .bg-header-dark-fancy2 {
-  background-image: url("/images/header_dark_fancy2.svg");
+  background-image: url("../images/design.svg");
   background-size: cover;
 }
 
 .bg-footer-dark {
-  background-image: url("/images/footer_dark.svg");
+  background-image: url("../images/footer.svg");
   background-size: cover;
   background-position: 0 -30%;
 }
@@ -1168,7 +1161,7 @@ hr {
   grid-area: text;
   width: 100%;
   padding-bottom: 2rem;
-  color: var(--text-secondary-on-dark);
+  color: var(--text-secondary-on-light);
 }
 
 .body_block--center > .body_block__text {
