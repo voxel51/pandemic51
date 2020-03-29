@@ -4,8 +4,6 @@ Celery tasks.
 Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
-import os
-
 import celery
 
 import pandemic51.config as panc
