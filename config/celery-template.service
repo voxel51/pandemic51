@@ -11,10 +11,10 @@ After=network.target
 
 [Service]
 Type=forking
-User={{YOUR_USERNAME}}
-Group={{YOUR_USERNAME}}
-EnvironmentFile={{P51_REPO_DIR}}/pandemic51/setup/celery.conf
-WorkingDirectory={{P51_REPO_DIR}}/pandemic51/pandemic51/core
+User={{USERNAME}}
+Group={{USERNAME}}
+EnvironmentFile={{P51_REPO_DIR}}/config/celery.conf
+WorkingDirectory={{P51_REPO_DIR}}/pandemic51/core
 ExecStart=/bin/sh -c '${CELERY_BIN} multi start ${CELERYD_NODES} \
   -A ${CELERY_APP} --pidfile=${CELERYD_PID_FILE} \
   --logfile=${CELERYD_LOG_FILE} --loglevel=${CELERYD_LOG_LEVEL} ${CELERYD_OPTS}'

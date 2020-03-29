@@ -10,10 +10,10 @@ Description=Celery Beat Service
 After=network.target
 
 [Service]
-User={{YOUR_USERNAME}}
-Group={{YOUR_USERNAME}}
-EnvironmentFile={{P51_REPO_DIR}}/pandemic51/setup/celery.conf
-WorkingDirectory={{P51_REPO_DIR}}/pandemic51/pandemic51/core
+User={{USERNAME}}
+Group={{USERNAME}}
+EnvironmentFile={{P51_REPO_DIR}}/config/celery.conf
+WorkingDirectory={{P51_REPO_DIR}}/pandemic51/core
 ExecStart=/bin/sh -c '${CELERY_BIN} beat \
   -A ${CELERY_APP} --pidfile=${CELERYBEAT_PID_FILE} \
   --logfile=${CELERYBEAT_LOG_FILE} --loglevel=${CELERYBEAT_LOG_LEVEL} ${CELERYBEAT_OPTS}'
