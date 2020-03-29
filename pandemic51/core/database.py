@@ -178,21 +178,23 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        if NOT reformat_as_dict:
-            a tuple of row tuples of the database table `stream_history`:
-                (id, stream_name, datetime, data_path, labels_path, count)
-        if reformat_as_dict:
-            a dictionary of format:
-                {
-                    "<STREAM NAME>": {
-                        "id": [list, of, SQL, row, IDs],
-                        "datetime": [...],
-                        "data_path": [...],
-                        "labels_path": [...],
-                        "count": [...],
-                    },
-                    ...
-                }
+        if `reformat_as_dict == False`:
+            (
+                (id, stream_name, datetime, data_path, labels_path, count),
+                ...
+            )
+
+        if `reformat_as_dict == True`:
+            {
+                "<stream-name>": {
+                    "id": [...],
+                    "datetime": [...],
+                    "data_path": [...],
+                    "labels_path": [...],
+                    "count": [...],
+                },
+                ...
+            }
     '''
     with cnx.cursor() as cursor:
         if stream_name:
@@ -231,7 +233,14 @@ def query_stream_pdi(stream_name, *args, cnx):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"time": t, "pdi": p, "url": u} entries
+        [
+            {
+                "time": t,
+                "pdi": p,
+                "url": u,
+            },
+            ...
+        ]
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -260,7 +269,13 @@ def query_pdi_changes(stream_name=None, cnx=None):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        {"<stream-name>": {"week": week, "max": max}, ...}
+        {
+            "<stream-name>": {
+                "week": week,
+                "max": max,
+            },
+            ...
+        }
     '''
     with cnx.cursor() as cursor:
         if stream_name:
@@ -301,7 +316,14 @@ def query_snapshots(*args, cnx):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"stream_name": s, "time": t, "url": u} entries
+        [
+            {
+                "stream_name": s,
+                "time": t,
+                "url": u,
+            },
+            ...
+        ]
     '''
     with cnx.cursor() as cursor:
         sql = '''
