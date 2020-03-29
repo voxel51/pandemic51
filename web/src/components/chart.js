@@ -5,13 +5,13 @@
  * voxel51.com
  */
 import React, { Component } from "react";
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
-import moment from 'moment'
+import moment from 'moment';
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -38,7 +38,7 @@ const timezones = {
   "neworleans": "America/Chicago",
   "newjersey": "America/New_York",
   "newyork": "America/New_York",
-  "prague": "Europe/Prague"
+  "prague": "Europe/Prague",
 }
 
 const styles = theme => ({
@@ -92,8 +92,6 @@ class Chart extends Component {
   render() {
     const { list, events } = this.state;
     const { classes, title, city } = this.props;
-
-
 
     const contentFormatter = v => {
       if (!v.payload) {
