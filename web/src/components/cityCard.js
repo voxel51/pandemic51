@@ -40,6 +40,13 @@ const useStyles = makeStyles({
     width: 106.52 * 16/9,
     height: 106.52,
     position: "absolute",
+  },
+  chip: {
+    position: "absolute",
+    right: 0,
+    bottom: 0,
+    margin: "0 .5rem .5rem 0",
+    padding: "0.5rem"
   }
 });
 
@@ -62,6 +69,16 @@ const locations = {
   "newyork": "Times Square",
   "prague": "Grand Hotel"
 }
+
+/* On hold
+<Card className={classes.chip} square>
+  <CardContent style={{padding: 0}}>
+    <Typography variant="body2" component="p">
+      {locations[props.cityId]}
+    </Typography>
+  </CardContent>
+</Card>
+*/
 
 export default function CityCard(props) {
   const classes = useStyles();

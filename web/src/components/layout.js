@@ -20,42 +20,39 @@ import SB from './sb';
 import PD from './pd';
 import CityCard from './cityCard';
 import "./layout.css"
-import "./../utils/typography";
-import Player from './player';
-import Chart from './chart';
-import Hidden from '@material-ui/core/Hidden';
-import ImageOverlay from './imageOverlay';
-import Header from './header';
-import Footer from './footer';
-import Typography from '@material-ui/core/Typography';
+import "./../utils/typography"
+import Player from "./player"
+import Chart from "./chart"
+import Hidden from "@material-ui/core/Hidden"
+import ImageOverlay from "./imageOverlay"
+import Header from "./header"
+import Footer from "./footer"
+import Typography from "@material-ui/core/Typography"
 
 const styles = {
-    wrapper: {
-      display: "flex",
-      minHeight: "100vh",
-      flexDirection: "column"
-    },
-    root: {
-      width: "100%",
-    }
-};
+  wrapper: {
+    display: "flex",
+    minHeight: "100vh",
+    flexDirection: "column",
+  },
+  root: {
+    width: "100%",
+  },
+}
 
-
-
-
-class Layout extends React.Component  {
+class Layout extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      urls: {}
-    };
+      urls: {},
+    }
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
         this.setState({ urls: json["data"] })
-      });
+      })
   }
 
   render() {

@@ -69,6 +69,9 @@ img {
   right: 5px;
   background-color: rgba(240, 240, 240, 0.8);
 }
+
+
+
 :root {
     --color-primary: rgb(255, 109, 4);
     --color-primary-muted: rgb(208, 87, 0);
@@ -107,14 +110,6 @@ img {
     --padding-x: 10rem;
     --padding-y: 10rem;
 }
-
-.contentBody {
-  flex-grow: 1;
-  margin: 4rem auto;
-  maxWidth: 1040px;
-  padding: 1rem var(--padding-x);
-}
-
 
 body {
     background: var(--bg-light-secondary);
