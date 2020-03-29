@@ -43,9 +43,7 @@ def download_stream_task(stream_name):
     Args:
         stream_name: the stream name
     '''
-    tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
-    pans.download_and_store(
-        stream_name, out_dir=panc.IMAGES_DIR, tmpdirbase=tmpdirbase)
+    pans.download_and_store(stream_name, outdir=panc.IMAGES_DIR)
 
 
 @app.task()

@@ -193,14 +193,12 @@ def sample_first_frame(inpath, outpath, width=None, height=None):
     return True
 
 
-def download_and_store(
-        stream_name, out_dir, tmpdirbase=None, width=None, height=None):
+def download_and_store(stream_name, outdir, width=None, height=None):
     '''Downloads an image from the latest stream, and add it to the database.
 
     Args:
         stream_name: the stream name
         outdir: the output directory
-        tmpdirbase: an optional base directory for the temp directory to use
         width: an optional width to resize the image
         height: an optional height to resize the image
 
@@ -208,7 +206,7 @@ def download_and_store(
         image_path: path the the downloaded image on disk
         dt: datetime object of when the image was downloaded
     '''
-    with etau.TempDir(basedir=tmpdirbase) as tmpdir:
+    with etau.TempDir() as tmpdir:
         # Download video
         video_path, dt = download_chunk(stream_name, tmpdir)
 
@@ -218,7 +216,7 @@ def download_and_store(
         # Create path for image
         vpath = pathlib.Path(video_path)
         image_path = os.path.join(
-            out_dir, vpath.parent.stem, "%d.png" % timestamp)
+            outdir, vpath.parent.stem, "%d.png" % timestamp)
 
         is_new_img = sample_first_frame(
             video_path, image_path, width=width, height=height)
