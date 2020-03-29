@@ -49,7 +49,8 @@ def compute_pdi(timestamps, counts, urls):
 
 
 def compute_pdi_change(timestamps, pdis, num_days=7):
-    '''Computes change in PDI over the given number of days.
+    '''Computes change in PDI, both over the given number of days and since the
+    alltime maximum.
 
     Args:
         timestamps: a list of timestamps
@@ -58,14 +59,20 @@ def compute_pdi_change(timestamps, pdis, num_days=7):
             default, this is 7 days
 
     Returns:
-        the change in PDI (postive = increase, negative = decrease)
+        (num_days_change, max_change)
     '''
     if not timestamps:
-        return 0.0
+        return 0.0, 0.0
 
     times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
 
-    old_time = times[-1] - timedelta(days=num_days)
-    old_idx = np.argmin(np.abs(times - old_time))
+    current_pdi = pdis[-1]
+    max_pdi = max(pdis)
 
-    return pdis[-1] - pdis[old_idx]
+    old_time = times[-1] - timedelta(days=num_days)
+    old_pdi = pdis[np.argmin(np.abs(times - old_time))]
+
+    num_days_change = (current_pdi - old_pdi) / old_pdi
+    max_change = (current_pdi - max_pdi) / max_pdi
+
+    return num_days_change, max_change
