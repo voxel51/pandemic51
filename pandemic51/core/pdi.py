@@ -50,7 +50,11 @@ def compute_pdi(timestamps, counts, urls):
 
 def compute_pdi_change(timestamps, pdis, num_days=7):
     '''Computes change in PDI, both over the given number of days and since the
-    alltime maximum.
+    all-time maximum.
+
+    The return values are expressed as relative changes, where
+    postive = increase and negative = decrease. Multiply by 100 to get
+    percentages.
 
     Args:
         timestamps: a list of timestamps

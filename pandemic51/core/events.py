@@ -20,8 +20,14 @@ def load_events_for_city(city):
         city: the city name
 
     Returns:
-        a dict mapping timestamps to {"time": t, "event": e, "reference": r}
-            dictionaries
+        {
+            "<time>": {
+                "time": time,
+                "event": event,
+                "reference": reference,
+            },
+            ...
+        }
     '''
     raw = pd.read_csv(panc.EVENTS_PATH)
 

@@ -235,9 +235,9 @@ def query_stream_pdi(stream_name, *args, cnx):
     Returns:
         [
             {
-                "time": t,
-                "pdi": p,
-                "url": u,
+                "time": time,
+                "pdi": pdi,
+                "url": url,
             },
             ...
         ]
