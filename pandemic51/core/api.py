@@ -4,26 +4,47 @@ Backend API methods.
 Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
+from collections import defaultdict
+
 import pandemic51.config as panc
 import pandemic51.core.database as pand
 import pandemic51.core.events as pane
 
 
 def get_snapshots():
-    '''Returns a dictionary of snapshot URLs.
+    '''Returns a dictionary of snapshot info.
 
     Returns:
-        a dict mapping city names to snapshot URLs
+        {
+            "<city>": {
+                "url": url,
+                "week": week,
+                "max": max,
+            },
+            ...
+        }
     '''
     streams_to_cities = {v: k for k, v in panc.STREAMS_MAP.items()}
-    snapshots = {}
+
+    snapshots = defaultdict(dict)
+
+    # Get snapshot URLs
     for snapshot in pand.query_snapshots():
         stream_name = snapshot["stream_name"]
         if stream_name not in streams_to_cities:
             continue
 
         city = streams_to_cities[stream_name]
-        snapshots[city] = _make_snapshot_url(snapshot["url"])
+        snapshots[city]["url"] = _make_snapshot_url(snapshot["url"])
+
+    # Get PDI changes
+    pdi_changes = pand.query_pdi_changes()
+    for stream_name, pdi_change in pdi_changes.items():
+        if stream_name not in streams_to_cities:
+            continue
+
+        city = streams_to_cities[stream_name]
+        snapshots[city].update(pdi_change)
 
     return snapshots
 
