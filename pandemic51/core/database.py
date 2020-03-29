@@ -285,7 +285,7 @@ def query_snapshots(*args, cnx):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"city": c, "url": u, "time": t} entries
+        a list of {"stream_name": s, "time": t, "url": u} entries
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -302,4 +302,4 @@ def query_snapshots(*args, cnx):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return [{"city": c, "url": u, "time": t} for c, t, u in result]
+    return [{"stream_name": s, "time": t, "url": u} for s, t, u in result]
