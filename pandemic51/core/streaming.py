@@ -32,7 +32,7 @@ CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
 
 
-def update_streams(stream_name, streams):
+def update_streams(stream_name, streams=None):
     '''Updates the given stream in the stream dictionary and serializes it to
     disk at `pandemic51.config.STREAMS_PATH`.
 
@@ -43,6 +43,9 @@ def update_streams(stream_name, streams):
     Returns:
         the chunk path
     '''
+    if not streams:
+        streams = etas.load_json(panc.STREAMS_PATH)
+
     chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
     streams[stream_name]["chunk_path"] = chunk_path
     etas.write_json(streams, panc.STREAMS_PATH, pretty_print=True)

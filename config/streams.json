@@ -16,12 +16,12 @@
     },
     "new_jersey": {
         "webpage": "https://www.earthcam.com/usa/newjersey/seasideheights/?cam=seasideheights",
-        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/5173.flv/chunklist_w1368912903.m3u8",
+        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/5173.flv/chunklist_w388987438.m3u8",
         "GMT": "-4"
     },
     "abbey_road": {
         "webpage": "https://www.earthcam.com/world/england/london/abbeyroad/?cam=abbeyroad_uk",
-        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/AbbeyRoadHD1.flv/chunklist_w521245988.m3u8",
+        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/AbbeyRoadHD1.flv/chunklist_w1572856775.m3u8",
         "GMT": "0"
     },
     "dublin": {
@@ -31,12 +31,12 @@
     },
     "prague": {
         "webpage": "https://www.earthcam.com/world/czechrepublic/prague/?cam=grandhotel_str",
-        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/14191.flv/chunklist_w427727124.m3u8",
+        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/14191.flv/chunklist_w1232990143.m3u8",
         "GMT": "1"
     },
     "fort_lauderdale": {
         "webpage": "https://www.earthcam.com/usa/florida/lauderdalebythesea/?cam=windjammer",
-        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/windjammerHD2.flv/chunklist_w214009101.m3u8",
+        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/windjammerHD2.flv/chunklist_w1112899540.m3u8",
         "GMT": "-4"
     }
 }
