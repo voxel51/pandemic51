@@ -1,6 +1,8 @@
 # Mac Pre-install instructions
 
-Install `mysql` using [homebrew](https://brew.sh/).
+> todo: complete this!
+
+Install `mysql` using [homebrew](https://brew.sh).
 
 You can start/stop the service via:
 
@@ -12,5 +14,5 @@ brew services stop mysql
 
 ## Copyright
 
-Copyright 2017-2020, Voxel51, Inc.<br>
+Copyright 2020, Voxel51, Inc.<br>
 voxel51.com
