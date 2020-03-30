@@ -56,7 +56,7 @@ const Footer = props => (
         What is the Physical Distancing Index?
       </h2>
       <div class="body_block__text">
-        Our <a href="https://voxel51.com/platform"> Platform’s </a> ccomputer
+        Our <a href="https://voxel51.com/platform"> Platform’s </a> computer
         vision and state-of-the-art deep learning models are able to detect and
         identify pedestrians, vehicles, and other human-centric objects in the
         frames of each live street cam video stream every 15 minutes. . Using
