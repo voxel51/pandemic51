@@ -27,8 +27,8 @@ ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
 
 
 # Input images to process
-inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:50]
-#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)
+inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)  # all
+#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:50]  # first 50
 
 # Path to write output labels
 outpaths = [
