@@ -144,6 +144,8 @@ def get_stream_url(city):
             url.split(".com/")[1]
         )
 
+    return url
+
 
 def _make_snapshot_url(url):
     return panc.SNAPSHOTS_URL + url.replace(panc.DATA_DIR, "")
