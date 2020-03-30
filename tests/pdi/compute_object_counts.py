@@ -10,14 +10,14 @@ import eta.core.annotations as etaa
 import eta.core.image as etai
 import eta.core.utils as etau
 
+import pandemic51.config as panc
 import pandemic51.core.detections as pand
 
 
-IMAGES_DIR = "data/prague_imgs"
-#IMAGES_DIR = "data/timessquare_imgs"
+IMAGES_DIR = os.path.join(
+    panc.PANDEMIC51_DIR, "data/historical/images/timessquare_imgs")
 
 LABELS_DIR = "out/labels"
-
 IMAGES_ANNO_DIR = "out/anno"
 
 ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
@@ -27,8 +27,8 @@ ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
 
 
 # Input images to process
-#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:10]
-inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)
+inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)  # all
+#inpaths = etau.list_files(IMAGES_DIR, abs_paths=True)[:50]  # first 50
 
 # Path to write output labels
 outpaths = [

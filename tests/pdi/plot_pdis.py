@@ -4,12 +4,12 @@ Script for plotting physical distancing index (PDI).
 Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
+from datetime import datetime
 import os
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy import signal as sps
 
 import eta.core.image as etai
 import eta.core.utils as etau
@@ -24,8 +24,8 @@ CONFIDENCE_THRESH = 0.1
 
 LABELS_WHITELIST = {"person", "bicycle", "car", "motorcycle"}
 
-#MIN_DATE = None
-MIN_DATE = etau.parse_isotime("2020-02-01")
+MIN_DATE = None
+#MIN_DATE = etau.parse_isotime("2020-01-01")
 
 
 # Input images to process
@@ -42,16 +42,6 @@ def filter_objects(objects):
     return objects.get_matches(filters, match=all)
 
 
-def compute_object_density(objects):
-    # @todo could implement a proper scanline algorithm for this
-    mask = np.zeros((512, 512), dtype=bool)
-    for obj in objects:
-        tlx, tly, w, h = obj.bounding_box.coords_in(img=mask)
-        mask[tly:tly + h, tlx:tlx + w] = True
-
-    return mask.sum() / mask.size
-
-
 # Load data
 count_map = {}
 for label_path in label_paths:
@@ -62,7 +52,6 @@ for label_path in label_paths:
     objects = filter_objects(objects)
 
     count_map[timestamp] = len(objects)
-    #count_map[timestamp] = compute_object_density(objects)
 
 
 if MIN_DATE:
@@ -70,13 +59,14 @@ if MIN_DATE:
 
 
 # Extract time series
-plt_times = mpl.dates.date2num(list(count_map.keys()))
 times = [t.timestamp() for t in count_map.keys()]
 counts = list(count_map.values())
 
 # Compute PDI
-_, pdis = panp.compute_pdi(times, counts)
+times, pdis, counts = panp.compute_pdi(times, counts, counts)
 
+timestamps = [datetime.utcfromtimestamp(t) for t in times]
+plt_times = mpl.dates.date2num(timestamps)
 
 #
 # Plot results

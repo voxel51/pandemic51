@@ -51,7 +51,7 @@ const cities = {
   neworleans: "New Orleans",
   newjersey: "New Jersey",
   newyork: "New York",
-  prague: "Prague"
+  prague: "Prague",
 }
 
 const styles = theme => ({
@@ -95,7 +95,7 @@ class Chart extends Component {
 
   handleClick(data) {
     if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url);
+      this.props.onClick(this.state.labels[data.activeLabel].url)
     }
   }
 
@@ -108,7 +108,7 @@ class Chart extends Component {
         return null
       }
       const valid = v.payload.length ? v.payload[0].payload : false
-      const event = valid && valid.event ? events[valid.event].event : false
+      const event = valid && events[valid.event] ? events[valid.event].event : false
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
@@ -120,19 +120,23 @@ class Chart extends Component {
                 .tz(timezones[city])
                 .format("dddd,  MMM Do, hh:mm A")}
             </Typography>
-            <Typography variant="h6" component="h3" style={{color: "rgb(255, 109, 4)"}}>
+            <Typography
+              variant="h6"
+              component="h3"
+              style={{ color: "rgb(255, 109, 4)" }}
+            >
               PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
             {(() => {
               if (event && time) {
                 return (
-                    <Typography variant="body2" component="p">
-                      {moment
-                        .unix(time)
-                        .tz(timezones[city])
-                        .format("MMM Do")}{" "}
-                      {bull} {event}
-                    </Typography>
+                  <Typography variant="body2" component="p">
+                    {moment
+                      .unix(time)
+                      .tz(timezones[city])
+                      .format("MMM Do")}{" "}
+                    {bull} {event}
+                  </Typography>
                 )
               }
             })()}
@@ -144,7 +148,11 @@ class Chart extends Component {
     return (
       <Card className={classes.root} square>
         <CardContent>
-          <Typography variant="h4" component="h2" style={{marginBottom: "1rem"}}>
+          <Typography
+            variant="h4"
+            component="h2"
+            style={{ marginBottom: "1rem" }}
+          >
             {cities[city]}
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
@@ -175,7 +183,12 @@ class Chart extends Component {
                 }
                 type="number"
               />
-              <YAxis dataKey="pdi" name="PDI" width={25} label="physical distancing index"/>
+              <YAxis
+                dataKey="pdi"
+                name="PDI"
+                width={25}
+                label="physical distancing index"
+              />
               <Tooltip content={contentFormatter} />
               <Area
                 type="monotone"
