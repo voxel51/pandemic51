@@ -77,7 +77,7 @@ const Footer = props => (
       <div class="body_block__text" align="left">
         <br />
         We named the Voxel51 Physical Distancing Index (PDI) in response to the{" "}
-        <a href="https://www.forbes.com/sites/carolkinseygoman/2020/03/23/dont-let-physical-distancing-become-social-distancing/#157df7f949e6">
+        <a target="_blank" href="https://www.forbes.com/sites/carolkinseygoman/2020/03/23/dont-let-physical-distancing-become-social-distancing/#157df7f949e6">
           World Health Organization’s recommendation{" "}
         </a>{" "}
         to do so. Physical distancing is intended to reduce the spread of the
@@ -101,6 +101,7 @@ const Footer = props => (
           <li>
             <a
               class="button-primary"
+              target="_blank"
               href="https://share.hsforms.com/1HZqZoRqsTneuXFm8pVzR1A2ykyk"
             >
               Subscribe
@@ -109,6 +110,7 @@ const Footer = props => (
           <li>
             <a
               class="button-secondary"
+              target="_blank"
               href="https://github.com/voxel51/pandemic51"
             >
               Contribute
@@ -160,22 +162,22 @@ const Footer = props => (
       <div class="footer__icons">
         <ul class="list-inline">
           <li>
-            <a href="https://www.linkedin.com/company/voxel51/">
+            <a target="_blank" href="https://www.linkedin.com/company/voxel51/">
               <FontAwesomeIcon icon={faLinkedin} />
             </a>
           </li>
           <li>
-            <a href="https://github.com/voxel51/">
+            <a target="_blank" href="https://github.com/voxel51/">
               <FontAwesomeIcon icon={faGithub} />
             </a>
           </li>
           <li>
-            <a href="https://twitter.com/voxel51">
+            <a target="_blank" href="https://twitter.com/voxel51">
               <FontAwesomeIcon icon={faTwitter} />
             </a>
           </li>
           <li>
-            <a href="https://www.facebook.com/voxel51/">
+            <a target="_blank" href="https://www.facebook.com/voxel51/">
               <FontAwesomeIcon icon={faFacebook} />
             </a>
           </li>
