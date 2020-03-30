@@ -9,4 +9,4 @@ Pillow==7.0.0
 PyMySQL==0.9.3
 redis==3.4.1
 selenium==3.141.0
-tensorflow==1.15.0
+tensorflow==1.15.2
