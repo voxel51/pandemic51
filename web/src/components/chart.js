@@ -192,7 +192,7 @@ class Chart extends Component {
                   value: "PDI",
                   angle: -90,
                   position: "insideLeft",
-                  offset: -15,
+                  offset: -20,
                 }}
               />
               <Tooltip content={contentFormatter} />
