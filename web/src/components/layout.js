@@ -63,7 +63,9 @@ class Layout extends React.Component {
   render() {
     const { classes, children, city } = this.props;
     const { data } = this.state;
-    const setHeight = height => this.setState({ height })
+    const { data, height } = this.state;
+
+    const setHeight = height => this.setState({height});
 
     return (
       <div className={classes.wrapper}>
