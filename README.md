@@ -67,7 +67,7 @@ We strongly recommend creating a virtual environment for your development work:
 ```bash
 ENV_DIR=/path/for/your/venv
 
-virtualenv -p /usr/local/bin/python3.6 covid19
+virtualenv -p /usr/local/bin/python3.6 ${ENV_DIR}/covid19
 source ${ENV_DIR}/covid19/bin/activate
 ```
 
