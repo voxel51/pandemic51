@@ -45,7 +45,7 @@ def compute_pdi(timestamps, counts, urls):
     # Omit startup values
     startup_time = times[0] + timedelta(days=WINDOW_DAYS)
     indices = np.argwhere(times > startup_time)
-    skip = indices[0, 0] if indices else 0
+    skip = indices[0, 0] if indices.size != 0 else 0
 
     return timestamps[skip::], pdis[skip::], urls[skip::]
 
