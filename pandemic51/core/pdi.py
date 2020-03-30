@@ -59,7 +59,7 @@ def normalize_pdi_values(pdi):
         pdi: a list of PDI values
 
     Returns:
-        a list of normalized PDI values
+        a list of normalized PDI values in [0, 1]
     '''
     return list(np.asarray(pdi) / max(pdi))
 

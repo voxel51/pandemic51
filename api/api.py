@@ -58,8 +58,8 @@ def pdi(city):
 
 @app.route("/pdi-all")
 def pdi_all():
-    '''Serves normalized PDI data for all cities, for comparison on a single
-    graph.
+    '''Serves PDI data for all cities, normalized to [0, 1] for comparison on a
+    single graph.
 
     Returns:
         {
