@@ -155,7 +155,7 @@ class Chart extends Component {
           <Typography
             variant="h4"
             component="h2"
-            style={{ marginBottom: "1rem" }}
+            style={{ marginBottom: "1rem", textAlign: "center" }}
           >
             PDI: {cities[city]}
           </Typography>
