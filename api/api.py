@@ -6,8 +6,6 @@ voxel51.com
 '''
 from flask import Flask
 
-import eta.core.serial as etas
-
 import pandemic51.config as panc
 import pandemic51.core.api as pana
 
@@ -58,21 +56,39 @@ def pdi(city):
     return {"data": points, "events": events, "labels": labels}
 
 
+@app.route("/pdi-all")
+def pdi_all():
+    '''Serves normalized PDI data for all cities, for comparison on a single
+    graph.
+
+    Returns:
+        {
+            "cities": {
+                "<city>": {
+                    "time": [...],
+                    "normalized_pdi": [...],
+                },
+                ...
+            }
+        }
+    '''
+    return {"cities": pana.get_all_pdi_graph_data()}
+
+
 @app.route("/streams/<city>")
 def stream(city):
-    '''Serves a city's up to date stream URL.
+    '''Serves the given city's stream URL.
 
     Args:
         city: the city
 
     Returns:
-        {
-            "url": url
-        }
+        {"url": url}
     '''
-    stream_name = panc.STREAMS_MAP[city]
-    url = etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
-    return {"url": url}
+    if city not in panc.STREAMS_MAP:
+        return 404, "Not Found"
+
+    return {"url": pana.get_stream_url(city)}
 
 
 if __name__ == "__main__":
