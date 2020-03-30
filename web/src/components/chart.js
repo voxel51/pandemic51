@@ -108,8 +108,8 @@ class Chart extends Component {
         return null
       }
       const valid = v.payload.length ? v.payload[0].payload : false
-      const event = valid ? events[valid.event].event : "-"
-      const time = valid ? events[valid.event].time : "-"
+      const event = valid && valid.event ? events[valid.event].event : false
+      const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
         <Card square>
@@ -123,13 +123,19 @@ class Chart extends Component {
             <Typography variant="h6" component="h3" style={{color: "rgb(255, 109, 4)"}}>
               PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
-            <Typography variant="body2" component="p">
-              {moment
-                .unix(time)
-                .tz(timezones[city])
-                .format("MMM Do")}{" "}
-              {bull} {event}
-            </Typography>
+            {(() => {
+              if (event && time) {
+                return (
+                    <Typography variant="body2" component="p">
+                      {moment
+                        .unix(time)
+                        .tz(timezones[city])
+                        .format("MMM Do")}{" "}
+                      {bull} {event}
+                    </Typography>
+                )
+              }
+            })()}
           </CardContent>
         </Card>
       )
