@@ -32,6 +32,16 @@ import Header from "./header"
 import Footer from "./footer"
 import Typography from "@material-ui/core/Typography"
 
+const CITIES = {
+  chicago: "Chicago",
+  dublin: "Dublin",
+  london: "London",
+  newjersey: "New Jersey",
+  neworleans: "New Orleans",
+  newyork: "New York",
+  prague: "Prague",
+};
+
 const styles = {
   wrapper: {
     display: "flex",
@@ -62,102 +72,51 @@ class Layout extends React.Component {
 
   render() {
     const { classes, children, city } = this.props;
-    const { data } = this.state;
     const { data, height } = this.state;
 
     const setHeight = height => this.setState({height});
 
     return (
-      <div className={classes.wrapper}>
-        <Helmet>
-          <meta name="referrer" content="no-referrer" />
-        </Helmet>
-        <Header />
-        <div className={classes.root + " pad-root"}>
-          <div className="contentBody">
-              <Grid container spacing={4}>
-                <Grid item xs={12} md={4}>
-                  <CityCard
-                    cityId="chicago"
-                    name="Chicago"
-                    active={city}
-                    payload={data["chicago"]}
-                  />
-                  <CityCard
-                    cityId="dublin"
-                    name="Dublin"
-                    active={city}
-                    payload={data["dublin"]}
-                  />
-                  <CityCard
-                    cityId="fortlauderdale"
-                    name="Fort Lauderdale"
-                    active={city}
-                    payload={data["fortlauderdale"]}
-                  />
-                  <CityCard
-                    cityId="london"
-                    name="London"
-                    active={city}
-                    payload={data["london"]}
-                  />
-                  <CityCard
-                    cityId="newjersey"
-                    name="New Jersey"
-                    active={city}
-                    payload={data["newjersey"]}
-                  />
-                  <CityCard
-                    cityId="neworleans"
-                    name="New Orleans"
-                    active={city}
-                    payload={data["neworleans"]}
-                  />
-                  <CityCard
-                    cityId="newyork"
-                    name="New York"
-                    active={city}
-                    payload={data["newyork"]}
-                  />
-                  <CityCard
-                    cityId="prague"
-                    name="Prague"
-                    active={city}
-                    payload={data["prague"]}
-                  />
+    <div className={classes.wrapper}>
+      <Helmet>
+        <meta name="referrer" content="no-referrer"/>
+      </Helmet>
+      <Header/>
+<div className={classes.root}>
+  <div className="contentBody">
+      <Grid container spacing={4}>
+        <Grid item xs={12} md={4}>
+          {Object.keys(CITIES).sort().map(cityId => (
+            <CityCard
+              key={cityId}
+              cityId={cityId}
+              name={CITIES[cityId]}
+              active={city == cityId}
+              url={data && data[cityId] ? data[cityId]["url"] : undefined}
+            />
+          ))}
+        </Grid>
+        <Grid item xs={12} md={8}>
+          <Hidden smDown>
+          <Grid container spacing={4}>
+            <Grid item md={12}>
+              <Chart title="Physical Distancing Index (PDI)" city={city}
+                // todo: use correct image url
+                onClick={(_) => this.setState({src: _})}/>
+            </Grid>
+          </Grid>
+          </Hidden>
+            <Grid container spacing={4}>
+              <Grid item xs={12} className="media-container">
+                <Player city={city} height={height} setHeight={setHeight} />
+                <ImageOverlay src={this.state.src} height={height} onClose={(e) => {
+                  e.stopPropagation();
+                  this.setState({src: null});
+                }}/>
                 </Grid>
-            <Hidden smDown>
-                <Grid item xs={12} md={8}>
-                  <Grid container spacing={4}>
-                    <Grid item md={12}>
-                      <Chart
-                        title="Physical Distancing Index (PDI)"
-                        city={city}
-                        // todo: use correct image url
-                        onClick={_ => this.setState({ src: _ })}
-                      />
-                    </Grid>
-                  </Grid>
-                  <Grid container spacing={4}>
-                    <Grid item xs={12} className="media-container">
-                      <Player
-                        city={city}
-                        height={height}
-                        setHeight={setHeight}
-                      />
-                      <ImageOverlay
-                        src={this.state.src}
-                        height={height}
-                        onClose={e => {
-                          e.stopPropagation()
-                          this.setState({ src: null })
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                </Grid>
-            </Hidden>
               </Grid>
+            </Grid>
+          </Grid>
           </div>
         </div>
         <Footer />

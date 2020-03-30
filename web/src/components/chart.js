@@ -94,8 +94,8 @@ class Chart extends Component {
   }
 
   handleClick(data) {
-    if (data) {
-      this.props.onClick(this.state.labels[data.activeLabel].url)
+    if (data && data.activeLabel) {
+      this.props.onClick(this.state.labels[data.activeLabel].url);
     }
   }
 
