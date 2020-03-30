@@ -5,7 +5,7 @@
  * voxel51.com
  */
 import React, { useState, useEffect, useRef } from "react";
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 import IconButton from '@material-ui/core/IconButton';
 import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';

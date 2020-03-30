@@ -11,7 +11,6 @@ import "@tensorflow/tfjs";
 import ReactHLS from 'react-hls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-
 const cities = {
   "chicago": "https://pdi-service.voxel51.com/stream/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
   "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",

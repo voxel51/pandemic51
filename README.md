@@ -1,98 +1,126 @@
 # pandemic51
 
 Voxel51's website for monitoring the impact of the Coronavirus pandemic.
+See it live at https://pdi.voxel51.com.
 
 <img src="https://user-images.githubusercontent.com/3719547/74191434-8fe4f500-4c21-11ea-8d73-555edfce0854.png" alt="voxel51-logo.png" width="40%"/>
 
 
-## Installation
+## Organization
 
-### 1) Set environment variables
-
-Put the following at the bottom of your `~/.bash_profile` or `~/.bashrc`:
-
-```bash
-# Resource Directories
-export P51_BASEDIR="/home/<USER>/p51_base"
-export ENV_DIR=${P51_BASEDIR}"/venv"
-export CELERY_DIR=${P51_BASEDIR}"/celery"
-export DATA_DIR=${P51_BASEDIR}"/data"
-export IMAGE_DIR=${DATA_DIR}"/images"
-export LABELS_DIR=${DATA_DIR}"/labels"
-
-# Repository directory
-export P51_REPO_DIR="<PANDEMIC51/PARENT/DIR>"
-
-# MySQL
-export P51_SQL_USERNAME="<USERNAME>"
-export P51_SQL_PASSWORD="<PASSWORD>"
-export P51_SQL_DATABASE_NAME="p51db"
-
-# Virtualenv shortcut
-covid19() { source "${ENV_DIR}/covid19/bin/activate"; }
-exit() {
-    case `command -v python` in
-        ${ENV_DIR}/*) deactivate;;
-        *) builtin exit;;
-    esac
-}
-
-# Login shortcut
-alias p51mysql="mysql -u $P51_SQL_USERNAME -p$P51_SQL_PASSWORD $P51_SQL_DATABASE_NAME"
+```
+.
+├── api                      <-- API definition
+├── config                   <-- config files and templates
+├── pandemic51               <-- core backend libary
+├── README.md                <-- this README
+├── scripts                  <-- handy scripts
+└── web                      <-- web client
 ```
 
-### 2) Pre-installation
 
-Before running the installation script, following the instructions in
-`mac_preinstall.md` for MacOS local development or run `linux_preinstall.bash`
-for Linux systems.
+## Installation
 
-
-### 3) Install backend
+### Clone the repository
 
 ```bash
-# activate the `covid19` virtual environment
-source ${ENV_DIR}/covid19/bin/activate
+git clone https://github.com/voxel51/pandemic51
+```
 
+### Environment variables and configuration
+
+Add the following to your `~/.bash_profile` or `~/.bashrc`, setting `{{CWD}}`
+to your current working directory and setting your MySQL username and password:
+
+```bash
+# Pandemic51 resources
+export P51_BASE_DIR="{{CWD}}"
+export P51_REPO_DIR="${P51_BASE_DIR}/pandemic51"
+export P51_CELERY_DIR="${P51_BASE_DIR}/celery"
+export P51_DATA_DIR="${P51_BASE_DIR}/data"
+export P51_SQL_USERNAME="{{USERNAME}}"
+export P51_SQL_PASSWORD="{{PASSWORD}}"
+export P51_SQL_DATABASE_NAME=p51db
+
+# Login shortcut
+alias p51mysql="mysql -u ${P51_SQL_USERNAME} -p ${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME}"
+```
+
+With the above in-place, `source` your config to apply the changes.
+
+Next, create a `pandemic51/config.py` from the provided template:
+
+```bash
+cp config/config-template.py pandemic51/config.py
+```
+
+and customize any values as needed.
+
+### Pre-installation
+
+For Linux users, run the `scripts/linux_preinstall.bash` script.
+
+> todo: finish MacOS preinstall script
+
+We strongly recommend creating a virtual environment for your development work:
+
+```bash
+ENV_DIR=/path/for/your/venv
+
+virtualenv -p /usr/local/bin/python3.6 ${ENV_DIR}/covid19
+source ${ENV_DIR}/covid19/bin/activate
+```
+
+### Installation
+
+Run the install script:
+
+```bash
 bash install.bash
 ```
 
-### 4) Create a config
+### Initialize the database
 
 ```bash
-cp setup/config-template.py pandemic51/core/config.py
-```
-
-Then modify `config.py`, populating any `{{TODO}}`s with correct values. Many
-of these need to exactly match the environment variable with the same name.
-
-### 5) Initialize the database
-
-```bash
-bash database/init_db.bash
+bash scripts/init_db.bash
 ```
 
 This can be run at anytime to wipe the database.
 
+### Initialize Celery
 
-### 6) Initialize Celery
+Celery is configured for Linux as a `systemd` daemon.
 
-Celery is currently only configured for Linux as a `systemd` daemon.
+> todo: make a configuration for MacOS with `launchd`
 
-> todo(tyler): make a configuration for MacOS with `launchd`
+First, create copies of the Celery templates:
 
-- Copy the templates in `setup/` and replace any `{{ENV_VAR}}` with the
-respective environment variable value.
-- Place `celery.service` & `celerybeat.service` in `/lib/systemd/system`
-- Start the services
+```bash
+cp config/celery-template.conf config/celery.conf
+cp config/celery-template.service config/celery.service
+cp config/celerybeat-template.service config/celerybeat.service
+```
 
-Any time a file is added or modified in `/lib/systemd/system`
+and fill in all `{{VALUE}}` placeholders with the appropriate values.
+
+Then place `celery.service` & `celerybeat.service` in `/lib/systemd/system`:
+
+```bash
+mv config/celery.service /lib/systemd/system
+mv config/celerybeat.service /lib/systemd/system
+```
+
+and start the services using the instructions below.
+
+#### Cheatsheet
+
+Any time a file is added or modified in `/lib/systemd/system`, run:
 
 ```bash
 sudo systemctl daemon-reload
 ```
 
-To manage the celery/beat services:
+Control the celery/celerybeat services as follows:
 
 ```bash
 systemctl {start|stop|restart|status} celery.service celerybeat.service
@@ -101,27 +129,25 @@ systemctl {start|stop|restart|status} celery.service celerybeat.service
 To watch logs:
 
 ```bash
-tail -f -n 10 $CELERY_DIR/worker*
+tail -f -n 10 ${P51_CELERY_DIR}/worker*
 ```
 
-#### 7) Download models
+### Download data
 
 Download the model(s) that you need by running the following script:
 
 ```bash
-bash download_models.bash
+bash scripts/download_models.bash
 ```
-
-#### 8) Download historical data
 
 Download some historical data to work with by running the following script:
 
 ```bash
-bash download_historical_data.bash
+bash scripts/download_historical_data.bash
 ```
 
 
 ## Copyright
 
-Copyright 2017-2020, Voxel51, Inc.<br>
+Copyright 2020, Voxel51, Inc.<br>
 voxel51.com

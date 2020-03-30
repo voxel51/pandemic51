@@ -15,8 +15,7 @@ import eta.core.annotations as etaa
 import eta.core.image as etai
 import eta.core.learning as etal
 
-import pandemic51.constants as panc
-import pandemic51.core.config as panco
+import pandemic51.config as panc
 import pandemic51.core.database as pand
 
 
@@ -66,12 +65,12 @@ def detect_objects_in_unprocessed_images():
             ipath = pathlib.Path(image_path)
 
             labels_path = str(os.path.join(
-                panco.LABELS_DIR, ipath.parent.stem, ipath.stem + ".json"))
+                panc.LABELS_DIR, ipath.parent.stem, ipath.stem + ".json"))
 
             anno_path = str(os.path.join(
-                panco.ANNO_DIR, ipath.parent.stem, ipath.stem + ".jpg"))
+                panc.ANNO_DIR, ipath.parent.stem, ipath.stem + ".jpg"))
 
-            if os.path.exists(labels_path):
+            if os.path.exists(labels_path) and os.path.exists(anno_path):
                 # Another worker processed this image, so skip
                 continue
 

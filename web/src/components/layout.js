@@ -49,21 +49,20 @@ class Layout extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      urls: {},
-    }
+      data: {}
+    };
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
-        this.setState({ urls: json["data"] })
-      })
+        this.setState({ data: json["data"] })
+      });
   }
 
   render() {
-    const { classes, children, city } = this.props
-    const { urls, height } = this.state
-
+    const { classes, children, city } = this.props;
+    const { data } = this.state;
     const setHeight = height => this.setState({ height })
 
     return (
@@ -80,49 +79,49 @@ class Layout extends React.Component {
                     cityId="chicago"
                     name="Chicago"
                     active={city}
-                    url={urls["chicago"]}
+                    payload={data["chicago"]}
                   />
                   <CityCard
                     cityId="dublin"
                     name="Dublin"
                     active={city}
-                    url={urls["dublin"]}
+                    payload={data["dublin"]}
                   />
                   <CityCard
                     cityId="fortlauderdale"
                     name="Fort Lauderdale"
                     active={city}
-                    url={urls["fortlauderdale"]}
+                    payload={data["fortlauderdale"]}
                   />
                   <CityCard
                     cityId="london"
                     name="London"
                     active={city}
-                    url={urls["london"]}
+                    payload={data["london"]}
                   />
                   <CityCard
                     cityId="newjersey"
                     name="New Jersey"
                     active={city}
-                    url={urls["newjersey"]}
+                    payload={data["newjersey"]}
                   />
                   <CityCard
                     cityId="neworleans"
                     name="New Orleans"
                     active={city}
-                    url={urls["neworleans"]}
+                    payload={data["neworleans"]}
                   />
                   <CityCard
                     cityId="newyork"
                     name="New York"
                     active={city}
-                    url={urls["newyork"]}
+                    payload={data["newyork"]}
                   />
                   <CityCard
                     cityId="prague"
                     name="Prague"
                     active={city}
-                    url={urls["prague"]}
+                    payload={data["prague"]}
                   />
                 </Grid>
             <Hidden smDown>

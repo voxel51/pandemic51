@@ -51,5 +51,5 @@ will detect changes and go.
 
 ## Copyright
 
-Copyright 2017-2020, Voxel51, Inc.<br>
+Copyright 2020, Voxel51, Inc.<br>
 voxel51.com

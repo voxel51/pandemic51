@@ -4,17 +4,15 @@ Celery tasks.
 Copyright 2020 Voxel51, Inc.
 voxel51.com
 '''
-import os
-
 import celery
 
-import pandemic51.core.config as panc
+import pandemic51.config as panc
 import pandemic51.core.detections as pand
 import pandemic51.core.streaming as pans
 
 
 app = celery.Celery("pandemic51.core.tasks")
-app.config_from_object("pandemic51.core.celery_config")
+app.config_from_object("pandemic51.celery_config")
 
 
 @celery.signals.celeryd_init.connect()
@@ -43,9 +41,7 @@ def download_stream_task(stream_name):
     Args:
         stream_name: the stream name
     '''
-    tmpdirbase = os.path.join(panc.DATA_DIR, "tmp")
-    pans.download_and_store(
-        stream_name, out_dir=panc.IMAGES_DIR, tmpdirbase=tmpdirbase)
+    pans.download_and_store(stream_name, outdir=panc.IMAGES_DIR)
 
 
 @app.task()
