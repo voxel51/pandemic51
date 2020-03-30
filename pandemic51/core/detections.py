@@ -70,7 +70,7 @@ def detect_objects_in_unprocessed_images():
             anno_path = str(os.path.join(
                 panc.ANNO_DIR, ipath.parent.stem, ipath.stem + ".jpg"))
 
-            if os.path.exists(labels_path):
+            if os.path.exists(labels_path) and os.path.exists(anno_path):
                 # Another worker processed this image, so skip
                 continue
 
