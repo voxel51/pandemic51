@@ -30,21 +30,6 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-  content: {paddingRight: (107 * 16 / 9) + 8},
-  still: {
-    margin: 0,
-    right: 0,
-    width: 107 * 16 / 9,
-    height: 107,
-    position: 'absolute',
-  },
-  chip: {
-    position: 'absolute',
-    right: 0,
-    bottom: 0,
-    margin: '0 .5rem .5rem 0',
-    padding: ',0.5rem'
-  },
   bullet: {
     display: 'inline-block',
     margin: '0 2px',
@@ -75,7 +60,7 @@ const locations = {
 }
 
 export default function
-CityCard(props) {
+MobileCityCard(props) {
   const classes = useStyles();
   const active = props.active;
   const bull = <span className={classes.bullet}>•</span>
@@ -83,12 +68,7 @@ CityCard(props) {
     <Card className={classes.root + (active ? ' active-card' : '')} square>
       <CardActionArea>
         <Link to={'/' + props.cityId}>
-          <CardMedia
-            className={classes.still}
-            image={props.url}
-            title={locations[props.cityId]}
-          />
-          <CardContent className={classes.content}>
+          <CardContent>
             <Typography variant="h5" component="h2">
               {props.name}
             </Typography>
