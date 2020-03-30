@@ -22,7 +22,7 @@ def compute_pdi(timestamps, counts, *args):
     Args:
         timestamps: a list of timestamps
         counts: a list of object counts
-        *args: optional additional lists to trunate to match the other outputs
+        *args: optional additional lists to truncate to match the other outputs
 
     Returns:
         (timestamps, PDIs, *args)
