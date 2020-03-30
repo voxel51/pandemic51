@@ -35,6 +35,7 @@ import Async from "react-async"
 const timezones = {
   chicago: "America/Chicago",
   dublin: "Europe/Dublin",
+  fortlauderdale: "America/New_York",
   london: "Europe/London",
   neworleans: "America/Chicago",
   newjersey: "America/New_York",
@@ -45,6 +46,7 @@ const timezones = {
 const cities = {
   chicago: "Chicago",
   dublin: "Dublin",
+  fortlauderdale: "Fort Lauderdale",
   london: "London",
   neworleans: "New Orleans",
   newjersey: "New Jersey",
@@ -168,7 +170,7 @@ class Chart extends Component {
                 }
                 type="number"
               />
-              <YAxis dataKey="pdi" name="PDI"  width={25} domain={[0, 100]}/>
+              <YAxis dataKey="pdi" name="PDI"  width={25}/>
               <Tooltip content={contentFormatter} />
               <Area
                 type="monotone"

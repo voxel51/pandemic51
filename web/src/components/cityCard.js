@@ -32,7 +32,7 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   content: {
-    paddingRight: (107 * 16/9) + 16
+    paddingRight: (107 * 16/9) + 8
   },
   still: {
     margin: 0,
@@ -53,6 +53,7 @@ const useStyles = makeStyles({
 const timezones = {
   "chicago": "America/Chicago",
   "dublin": "Europe/Dublin",
+  "fortlauderdale": "America/New_York",
   "london": "Europe/London",
   "neworleans": "America/Chicago",
   "newjersey": "America/New_York",
@@ -67,18 +68,9 @@ const locations = {
   "neworleans": "Bourbon Street",
   "newjersey": "Seaside Heights",
   "newyork": "Times Square",
-  "prague": "Grand Hotel"
+  "prague": "Grand Hotel",
+  "fortlauderdale": "Wind Jammer"
 }
-
-/* On hold
-<Card className={classes.chip} square>
-  <CardContent style={{padding: 0}}>
-    <Typography variant="body2" component="p">
-      {locations[props.cityId]}
-    </Typography>
-  </CardContent>
-</Card>
-*/
 
 export default function CityCard(props) {
   const classes = useStyles();
