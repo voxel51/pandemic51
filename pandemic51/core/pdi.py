@@ -38,7 +38,8 @@ def compute_pdi(timestamps, counts, urls):
         pdis.append(pdi)
 
     if SMOOTHING_WIDTH:
-        kernel = np.ones(SMOOTHING_WIDTH) / SMOOTHING_WIDTH
+        kernel_size = min(SMOOTHING_WIDTH, len(pdis))
+        kernel = np.ones(kernel_size) / kernel_size
         pdis = list(np.convolve(pdis, kernel, mode="same"))
 
     # Omit startup values
