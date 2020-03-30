@@ -206,8 +206,7 @@ def download_and_store(stream_name, outdir, width=None, height=None):
         image_path: path the the downloaded image on disk
         dt: datetime object of when the image was downloaded
     '''
-    # @todo(Tyler) figure out why ffmpeg fails to read/write from `/tmp`
-    with etau.TempDir(basedir=panc.DATA_DIR) as tmpdir:
+    with etau.TempDir(basedir=panc.BASE_DIR) as tmpdir:
         # Download video
         video_path, dt = download_chunk(stream_name, tmpdir)
 

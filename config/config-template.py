@@ -22,9 +22,6 @@ import eta.core.serial as etas
 SQL_HOST = "127.0.0.1"
 
 # MySQL
-# @todo(Tyler) figure out why celery can't read environment variables
-# P51_SQL_USERNAME = os.environ.get("P51_SQL_USERNAME", None)
-# P51_SQL_PASSWORD = os.environ.get("P51_SQL_PASSWORD", None)
 P51_SQL_USERNAME = "{{P51_SQL_USERNAME}}"
 P51_SQL_PASSWORD = "{{P51_SQL_PASSWORD}}"
 P51_SQL_DATABASE_NAME = "p51db"
