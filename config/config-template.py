@@ -22,8 +22,8 @@ import eta.core.serial as etas
 SQL_HOST = "127.0.0.1"
 
 # MySQL
-P51_SQL_USERNAME = os.environ.get("P51_SQL_USERNAME", None)
-P51_SQL_PASSWORD = os.environ.get("P51_SQL_PASSWORD", None)
+P51_SQL_USERNAME = "{{P51_SQL_USERNAME}}"
+P51_SQL_PASSWORD = "{{P51_SQL_PASSWORD}}"
 P51_SQL_DATABASE_NAME = "p51db"
 
 ###############################################################################

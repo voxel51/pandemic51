@@ -54,7 +54,8 @@ Next, create a `pandemic51/config.py` from the provided template:
 cp config/config-template.py pandemic51/config.py
 ```
 
-and customize any values as needed.
+and customize any values as needed. Be sure to match `P51_SQL_USERNAME` and 
+`P51_SQL_PASSWORD` to the values you set to your environment variables.
 
 ### Pre-installation
 
