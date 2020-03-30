@@ -259,53 +259,40 @@ def query_stream_pdi(stream_name, *args, cnx):
 
 
 @with_connection
-def query_pdi_changes(stream_name=None, cnx=None):
-    '''Returns the relative change in PDI for the stream(s) over both the past
-    week and all-time.
+def query_all_pdi(*args, cnx):
+    '''Returns the PDI values for all available streams.
 
     Args:
-        stream_name: the stream name to query. By default, all streams are
-            returned
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
         {
             "<stream-name>": {
-                "week": week,
-                "max": max,
+                "time": [...],
+                "pdi": [...],
             },
             ...
         }
     '''
     with cnx.cursor() as cursor:
-        if stream_name:
-            stream_search = " and stream_name = '%s'" % stream_name
-        else:
-            stream_search = ""
-
         sql = '''
-        select stream_name, unix_timestamp(datetime), count, anno_img_path
-        from stream_history where count is not null and
-        anno_img_path is not null%s ORDER BY datetime;
-        ''' % stream_search
+        select stream_name, unix_timestamp(datetime), count
+        from stream_history where count is not null ORDER BY datetime;
+        '''
         cursor.execute(sql)
         result = cursor.fetchall()
 
     data = defaultdict(lambda: defaultdict(list))
-    for stream_name, time, count, url in result:
-        data[stream_name]["times"].append(time)
-        data[stream_name]["counts"].append(count)
-        data[stream_name]["urls"].append(url)
+    for stream_name, time, count in result:
+        data[stream_name]["time"].append(time)
+        data[stream_name]["count"].append(count)
 
-    pdi_changes = {}
+    all_pdis = {}
     for stream_name, d in data.items():
-        times, pdis, _ = panp.compute_pdi(d["times"], d["counts"], d["urls"])
+        times, pdis = panp.compute_pdi(d["time"], d["count"])
+        all_pdis[stream_name] = {"time": times, "pdi": pdis}
 
-        week_change, max_change = panp.compute_pdi_change(times, pdis)
-
-        pdi_changes[stream_name] = {"week": week_change, "max": max_change}
-
-    return pdi_changes
+    return all_pdis
 
 
 @with_connection

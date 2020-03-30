@@ -6,9 +6,12 @@ voxel51.com
 '''
 from collections import defaultdict
 
+import eta.core.serial as etas
+
 import pandemic51.config as panc
 import pandemic51.core.database as pand
 import pandemic51.core.events as pane
+import pandemic51.core.pdi as panp
 
 
 def get_snapshots():
@@ -37,14 +40,19 @@ def get_snapshots():
         city = streams_to_cities[stream_name]
         snapshots[city]["url"] = _make_snapshot_url(snapshot["url"])
 
-    # Get PDI changes
-    pdi_changes = pand.query_pdi_changes()
-    for stream_name, pdi_change in pdi_changes.items():
+    # Get all PDI values
+    all_pdi = pand.query_all_pdi()
+
+    # Compute PDI changes
+    for stream_name, data in all_pdi.items():
         if stream_name not in streams_to_cities:
             continue
 
         city = streams_to_cities[stream_name]
-        snapshots[city].update(pdi_change)
+        week_change, max_change = panp.compute_pdi_change(
+            data["time"], data["pdi"])
+        snapshots[city]["week"] = week_change
+        snapshots[city]["max"] = max_change
 
     return snapshots
 
@@ -72,6 +80,52 @@ def get_pdi_graph_data(city):
     pane.add_events_to_points(points, events)
 
     return points, events
+
+
+def get_all_pdi_graph_data():
+    '''Gets normalized PDI graph data for all cities, for comparison on a
+    single graph.
+
+    Returns:
+        {
+            "<city>": {
+                "time": [...],
+                "normalized_pdi": [...],
+            },
+            ...
+        }
+    '''
+    streams_to_cities = {v: k for k, v in panc.STREAMS_MAP.items()}
+
+    # Get all PDI values
+    all_pdi = pand.query_all_pdi()
+
+    # Normalize PDI values
+    graph_data = {}
+    for stream_name, data in all_pdi.items():
+        if stream_name not in streams_to_cities:
+            continue
+
+        city = streams_to_cities[stream_name]
+        graph_data[city] = {
+            "time": data["time"],
+            "normalized_pdi": panp.normalize_pdi_values(data["pdi"]),
+        }
+
+    return graph_data
+
+
+def get_stream_url(city):
+    '''Gets the stream URL for the given city.
+
+    Args:
+        city: the city
+
+    Returns:
+        the stream URL
+    '''
+    stream_name = panc.STREAMS_MAP[city]
+    return etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
 
 
 def _make_snapshot_url(url):
