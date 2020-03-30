@@ -834,6 +834,10 @@ hr {
   .body_part {
     padding: 6.0rem 3.0rem;
   }
+
+  .mobileContent {
+    margin: 3.0rem 3.0rem;
+  }
 }
 
 /* body_block--left

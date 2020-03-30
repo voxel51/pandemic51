@@ -13,7 +13,7 @@ import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import Divider from "@material-ui/core/Divider"
 import moment from "moment"
-import HelpTooltip from './help';
+import HelpTooltip from "./help"
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -56,7 +56,9 @@ const cities = {
 }
 
 const styles = theme => ({
-  root: {},
+  root: {
+    width: "100%",
+  },
   bullet: {
     display: "inline-block",
     margin: "0 2px",
@@ -109,7 +111,8 @@ class Chart extends Component {
         return null
       }
       const valid = v.payload.length ? v.payload[0].payload : false
-      const event = valid && events[valid.event] ? events[valid.event].event : false
+      const event =
+        valid && events[valid.event] ? events[valid.event].event : false
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
@@ -148,7 +151,7 @@ class Chart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent style={{position: "relative"}}>
+        <CardContent style={{ position: "relative", width: "100%" }}>
           <Typography
             variant="h4"
             component="h2"
@@ -158,8 +161,7 @@ class Chart extends Component {
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
-              width={730}
-              height={200}
+              width="100%"
               data={list}
               margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
               cursor="pointer"
@@ -206,7 +208,7 @@ class Chart extends Component {
               <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
             </ComposedChart>
           </ResponsiveContainer>
-          <HelpTooltip/>
+          <HelpTooltip />
         </CardContent>
       </Card>
     )

@@ -77,7 +77,7 @@ const locations = {
 export default function
 CityCard(props) {
   const classes = useStyles();
-  const active = props.cityId === props.active && props.cityId !== undefined;
+  const active = props.active;
   const bull = <span className={classes.bullet}>•</span>
   return (
     <Card className={classes.root + (active ? ' active-card' : '')} square>
@@ -96,7 +96,7 @@ CityCard(props) {
               <Clock format={'hh:mm:ss A'} ticking={true} timezone={timezones[props.cityId]} />
             </Typography>
             <Typography variant='body1' component='p'>
-              {locations[props.cityId]} {bull} +10%
+              {locations[props.cityId]}
             </Typography>
           </CardContent>
         </Link>
