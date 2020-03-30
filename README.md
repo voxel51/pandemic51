@@ -135,16 +135,16 @@ tail -f -n 10 ${P51_CELERY_DIR}/worker*
 
 ### Download data
 
-Download the model(s) that you need by running the following script:
-
-```bash
-bash scripts/download_models.bash
-```
-
 Download some historical data to work with by running the following script:
 
 ```bash
 bash scripts/download_historical_data.bash
+```
+
+Download the detector checkpoint by running the following script:
+
+```bash
+bash scripts/download_model.bash
 ```
 
 
