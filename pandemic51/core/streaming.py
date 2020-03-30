@@ -86,7 +86,7 @@ def _get_chunk_url(webpage):
     caps["goog:loggingPrefs"] = {"performance": "ALL"}
     chrome_options = Options()
     chrome_options.add_argument("--headless")
-    driver = webdriver.Chrome(desired_capabilities=caps, options=chrome_options)
+    driver = webdriver.Chrome(desired_capabilities=caps, options=chrome_options, executable_path="/usr/bin/chromedriver")
     driver.get(webpage)
 
     chunk_url = None

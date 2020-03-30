@@ -15,7 +15,7 @@ import pandemic51.core.streaming as pans
 
 
 app = Flask(__name__)
-
+app.config["PATH"] = "/usr/bin/"
 
 @app.route("/snapshots")
 def snapshots():
@@ -78,6 +78,9 @@ def stream(city):
         urllib.request.urlopen(url)
     except urllib.error.HTTPError:
         url = pans.update_streams(stream_name)
+
+    if "earthcam" in url:
+        url = "https://pdi-service.voxel51.com/stream/" + url.split(".com/")[1]
 
     return {"url": url}
 
