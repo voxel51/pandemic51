@@ -5,11 +5,13 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from flask import Flask
+import urllib
 
 import eta.core.serial as etas
 
 import pandemic51.config as panc
 import pandemic51.core.api as pana
+import pandemic51.core.streaming as pans
 
 
 app = Flask(__name__)
@@ -72,6 +74,11 @@ def stream(city):
     '''
     stream_name = panc.STREAMS_MAP[city]
     url = etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
+    try:
+        urllib.request.urlopen(url)
+    except urllib.error.HTTPError:
+        url = pans.update_streams(stream_name)
+
     return {"url": url}
 
 

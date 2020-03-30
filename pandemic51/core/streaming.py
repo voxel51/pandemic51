@@ -31,10 +31,13 @@ CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
 
 
-def get_uris(chunk_path, stream_name, streams):
+def get_uris(chunk_path, stream_name, streams=None):
     '''Attempts to load uris from a given chunk path. Will handle HTTPS 
     Errors and update the chunk path.
     '''
+    if not streams:
+        streams = etas.load_json(panc.STREAMS_PATH)
+
     try:
         uris = m3u8.load(chunk_path).segments.uri
         if not uris:
