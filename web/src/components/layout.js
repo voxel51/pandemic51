@@ -43,20 +43,20 @@ class Layout extends React.Component  {
   constructor(props) {
     super(props);
     this.state = {
-      urls: {}
+      data: {}
     };
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
-        this.setState({ urls: json["data"] })
+        this.setState({ data: json["data"] })
       });
   }
 
   render() {
     const { classes, children, city } = this.props;
-    const { urls } = this.state;
+    const { data } = this.state;
 
     const opts = {
       width: "100%",
@@ -87,13 +87,13 @@ class Layout extends React.Component  {
   <div className="contentBody">
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
-          <CityCard cityId="chicago" name="Chicago" active={city} url={urls["chicago"]}/>
-          <CityCard cityId="dublin" name="Dublin" active={city} url={urls["dublin"]}/>
-          <CityCard cityId="london" name="London" active={city} url={urls["london"]}/>
-          <CityCard cityId="newjersey" name="New Jersey" active={city} url={urls["newjersey"]}/>
-          <CityCard cityId="neworleans" name="New Orleans" active={city} url={urls["neworleans"]}/>
-          <CityCard cityId="newyork" name="New York" active={city} url={urls["newyork"]}/>
-          <CityCard cityId="prague" name="Prague" active={city} url={urls["prague"]}/>
+          <CityCard cityId="chicago" name="Chicago" active={city} url={data["chicago"]["url"]}/>
+          <CityCard cityId="dublin" name="Dublin" active={city} url={data["dublin"]["url"]}/>
+          <CityCard cityId="london" name="London" active={city} url={data["london"]["url"]}/>
+          <CityCard cityId="newjersey" name="New Jersey" active={city} url={data["newjersey"]["url"]}/>
+          <CityCard cityId="neworleans" name="New Orleans" active={city} url={data["neworleans"]["url"]}/>
+          <CityCard cityId="newyork" name="New York" active={city} url={data["newyork"]["url"]}/>
+          <CityCard cityId="prague" name="Prague" active={city} url={data["prague"]["url"]}/>
         </Grid>
         <Grid item xs={12} md={8}>
           <Hidden smDown>

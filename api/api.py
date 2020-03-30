@@ -15,10 +15,19 @@ app = Flask(__name__)
 
 @app.route("/snapshots")
 def snapshots():
-    '''Serves snapshot URLs for all cities.
+    '''Serves snapshots for all cities.
 
     Returns:
-        {"data": {"<city>": "<snapshot-url>", ...}}
+        {
+            "data": {
+                "<city>": {
+                    "url": url,
+                    "week": week,
+                    "max": max,
+                },
+                ...
+            }
+        }
     '''
     return {"data": pana.get_snapshots()}
 
@@ -31,7 +40,11 @@ def pdi(city):
         city: the city
 
     Returns:
-        {"data": data, "events": events, "labels" : labels}
+        {
+            "data": data,
+            "events": events,
+            "labels" : labels
+        }
     '''
     if city not in panc.STREAMS_MAP:
         return 404, "Not Found"
