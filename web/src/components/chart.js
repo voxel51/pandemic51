@@ -108,7 +108,7 @@ class Chart extends Component {
         return null
       }
       const valid = v.payload.length ? v.payload[0].payload : false
-      const event = valid && valid.event ? events[valid.event].event : false
+      const event = valid && events[valid.event] ? events[valid.event].event : false
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
