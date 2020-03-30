@@ -51,6 +51,14 @@ def update_streams(stream_name, streams):
 def _get_uris(chunk_path, stream_name, streams=None):
     '''Attempts to load uris from a given chunk path. Will handle HTTPS 
     Errors and update the chunk path.
+
+    Args:
+        chunk_path: URL of the chunklist to attempt to load
+        stream_name: name of the stream corresponding to chunk_path
+        streams: current dict of stream info, will be loaded if not provided
+
+    Returns:
+        uris: the uris present in the chunk_path
     '''
     if not streams:
         streams = etas.load_json(panc.STREAMS_PATH)
