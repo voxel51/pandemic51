@@ -1,22 +1,5 @@
 # Physical distancing index (PDI) tests
 
-## Download sample data
-
-Download some sample images to `data/` by running the following commands:
-
-```bash
-eta gdrive download-dir 1RE-JMlKLYpQbfOkbwMFRhr_xaQ7ULVl_ data/
-
-shopt -s nullglob
-for f in data/*.zip; do
-    unzip $f  -d data/
-    rm $f
-done
-```
-
-
-## Compute some PDIs
-
 Compute object counts by executing the script:
 
 ```py

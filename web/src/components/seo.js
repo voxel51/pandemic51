@@ -33,7 +33,7 @@ function SEO({ description, lang, meta }) {
       htmlAttributes={{
         lang,
       }}
-      title={`Voxel51 // SDI`}
+      title={`Voxel51 // PDI`}
       titleTemplate={``}
       meta={[
         {
@@ -42,7 +42,7 @@ function SEO({ description, lang, meta }) {
         },
         {
           property: `og:title`,
-          content: `Voxel51 // SDI`,
+          content: `Voxel51 // PDI`,
         },
         {
           property: `og:description`,
@@ -62,7 +62,7 @@ function SEO({ description, lang, meta }) {
         },
         {
           name: `twitter:title`,
-          content: `Voxel51 // SDI`,
+          content: `Voxel51 // PDI`,
         },
         {
           name: `twitter:description`,
