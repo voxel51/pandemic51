@@ -5,13 +5,9 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from flask import Flask
-import urllib
-
-import eta.core.serial as etas
 
 import pandemic51.config as panc
 import pandemic51.core.api as pana
-import pandemic51.core.streaming as pans
 
 
 app = Flask(__name__)
@@ -60,29 +56,39 @@ def pdi(city):
     return {"data": points, "events": events, "labels": labels}
 
 
+@app.route("/pdi-all")
+def pdi_all():
+    '''Serves PDI data for all cities, normalized to [0, 1] for comparison on a
+    single graph.
+
+    Returns:
+        {
+            "cities": {
+                "<city>": {
+                    "time": [...],
+                    "normalized_pdi": [...],
+                },
+                ...
+            }
+        }
+    '''
+    return {"cities": pana.get_all_pdi_graph_data()}
+
+
 @app.route("/streams/<city>")
 def stream(city):
-    '''Serves a city's up to date stream URL.
+    '''Serves the given city's stream URL.
 
     Args:
         city: the city
 
     Returns:
-        {
-            "url": url
-        }
+        {"url": url}
     '''
-    stream_name = panc.STREAMS_MAP[city]
-    url = etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
-    try:
-        urllib.request.urlopen(url)
-    except urllib.error.HTTPError:
-        url = pans.update_streams(stream_name)
+    if city not in panc.STREAMS_MAP:
+        return 404, "Not Found"
 
-    if "earthcam" in url:
-        url = "https://pdi-service.voxel51.com/stream/" + url.split(".com/")[1]
-
-    return {"url": url}
+    return {"url": pana.get_stream_url(city)}
 
 
 if __name__ == "__main__":
