@@ -4,6 +4,9 @@ html {
 html {
   height: 100%;
 }
+*:focus {
+  outline: none !important;
+}
 body {
   min-height: 100%;
   display: grid;
@@ -830,6 +833,10 @@ hr {
 @media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
   .body_part {
     padding: 6.0rem 3.0rem;
+  }
+
+  .mobileContent {
+    margin: 3.0rem 3.0rem;
   }
 }
 

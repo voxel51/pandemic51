@@ -139,16 +139,6 @@ class Header extends React.Component {
             the world.
           </div>
         </div>
-
-        <div class="body_part bg-light-primary body_block--centerfull">
-          <div class="body_block__text" align="center">
-            Click on live video streams from some of the world’s most visited
-            streets to see how different cities react to physical distancing.
-            Hover over the graph to view a day-by-day timeline of the average
-            daily number of people on the street (Voxel51’s PDI metric) and
-            social behaviors over time.
-          </div>
-        </div>
       </>
     )
   }
