@@ -274,7 +274,7 @@ def query_pdi_change(stream_name, *args, cnx):
 
     pdi_change = panp.compute_pdi_change(times, pdis)
 
-    return {"pdi_change": pdi_change}
+    return pdi_change
 
 
 @with_connection

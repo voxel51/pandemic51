@@ -23,7 +23,10 @@ def get_snapshots():
             continue
 
         city = streams_to_cities[stream_name]
-        snapshots[city] = _make_snapshot_url(snapshot["url"])
+        snapshots[city] = {
+            "url": _make_snapshot_url(snapshot["url"])
+            "change": pand.query_pdi_change(stream_name)
+        }
 
     return snapshots
 
