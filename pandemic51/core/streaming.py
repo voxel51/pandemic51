@@ -10,6 +10,7 @@ import logging
 import os
 import pathlib
 import time
+from urllib.error import HTTPError
 
 import ffmpy
 import m3u8
@@ -28,6 +29,23 @@ logger = logging.getLogger(__name__)
 
 CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
+
+
+def get_uris(chunk_path, stream_name, streams):
+    '''Attempts to load uris from a given chunk path. Will handle HTTPS 
+    Errors and update the chunk path.
+    '''
+    try:
+        uris = m3u8.load(chunk_path).segments.uri
+        if not uris:
+            chunk_path = update_streams(stream_name, streams)
+            uris = m3u8.load(chunk_path).segments.uri
+
+    except HTTPError:
+        chunk_path = update_streams(stream_name, streams)
+        uris = m3u8.load(chunk_path).segments.uri
+
+    return uris
 
 
 def update_streams(stream_name, streams):
@@ -124,15 +142,7 @@ def download_chunk(stream_name, output_dir):
     base_path = os.path.split(chunk_path)[0]
     output_path = os.path.join(output_dir, stream_name)
 
-    uris = m3u8.load(chunk_path).segments.uri
-
-    if not uris:
-        chunk_path = update_streams(stream_name, streams)
-        uris = m3u8.load(chunk_path).segments.uri
-
-        if not uris:
-            return None
-
+    uris = get_uris(chunk_path, stream_name, streams)
     uri = uris[0]
 
     logger.info("Processing URI '%s'", uri)
@@ -158,7 +168,7 @@ def download_stream(stream_name, output_dir, timeout=None):
     start = time.time()
     while timeout is None or (time.time() - start < timeout):
         time.sleep(1)
-        uris = m3u8.load(chunk_path).segments.uri
+        uris = get_uris(chunk_path, stream_name, streams)
         for uri in uris:
             if uri not in processed_uris:
                 logger.info("Processing URI '%s'", uri)
