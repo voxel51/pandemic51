@@ -161,6 +161,7 @@ def download_chunk(stream_name, output_dir):
 
     uris = _get_uris(chunk_path, stream_name, streams)
     uri = uris[0]
+    uri = uris[-1]
 
     logger.info("Processing URI '%s'", uri)
     return save_video(base_path, uri, output_path), datetime.utcnow()
