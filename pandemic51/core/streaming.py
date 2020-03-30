@@ -44,7 +44,7 @@ def update_streams(stream_name, streams):
     '''
     chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
     streams[stream_name]["chunk_path"] = chunk_path
-    etas.write_json(streams, panc.STREAMS_PATH)
+    etas.write_json(streams, panc.STREAMS_PATH, pretty_print=True)
     return chunk_path
 
 
