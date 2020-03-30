@@ -22,5 +22,8 @@ data/
 out/
 out.*/
 
-setup/celery.conf
-pandemic51/core/config.py
+config/celery.conf
+config/celery.service
+config/celerybeat.service
+
+pandemic51/config.py

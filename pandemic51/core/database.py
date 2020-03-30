@@ -9,7 +9,7 @@ import os
 
 import pymysql
 
-import pandemic51.core.config as panc
+import pandemic51.config as panc
 import pandemic51.core.pdi as panp
 
 
@@ -178,21 +178,23 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        if NOT reformat_as_dict:
-            a tuple of row tuples of the database table `stream_history`:
-                (id, stream_name, datetime, data_path, labels_path, count)
-        if reformat_as_dict:
-            a dictionary of format:
-                {
-                    "<STREAM NAME>": {
-                        "id": [list, of, SQL, row, IDs],
-                        "datetime": [...],
-                        "data_path": [...],
-                        "labels_path": [...],
-                        "count": [...],
-                    },
-                    ...
-                }
+        if `reformat_as_dict == False`:
+            (
+                (id, stream_name, datetime, data_path, labels_path, count),
+                ...
+            )
+
+        if `reformat_as_dict == True`:
+            {
+                "<stream-name>": {
+                    "id": [...],
+                    "datetime": [...],
+                    "data_path": [...],
+                    "labels_path": [...],
+                    "count": [...],
+                },
+                ...
+            }
     '''
     with cnx.cursor() as cursor:
         if stream_name:
@@ -231,13 +233,20 @@ def query_stream_pdi(stream_name, *args, cnx):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"time": t, "pdi": p, "url": u} entries
+        [
+            {
+                "time": time,
+                "pdi": pdi,
+                "url": url,
+            },
+            ...
+        ]
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime) as time, count, anno_img_path
-        from stream_history where stream_name = '%s' and count is not null
-        and anno_img_path is not null ORDER BY datetime;
+        select unix_timestamp(datetime), count, anno_img_path
+        from stream_history where stream_name = '%s' and count is not null and
+        anno_img_path is not null ORDER BY datetime;
         ''' % stream_name
         cursor.execute(sql)
         result = cursor.fetchall()
@@ -250,31 +259,53 @@ def query_stream_pdi(stream_name, *args, cnx):
 
 
 @with_connection
-def query_market_change(stream_name, *args, cnx):
-    '''Returns the "market change" in PDI for the stream over the past week.
+def query_pdi_changes(stream_name=None, cnx=None):
+    '''Returns the relative change in PDI for the stream(s) over both the past
+    week and all-time.
 
     Args:
-        stream_name: the stream name
+        stream_name: the stream name to query. By default, all streams are
+            returned
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        {"pdi_change": pdi_change}
+        {
+            "<stream-name>": {
+                "week": week,
+                "max": max,
+            },
+            ...
+        }
     '''
     with cnx.cursor() as cursor:
+        if stream_name:
+            stream_search = " and stream_name = '%s'" % stream_name
+        else:
+            stream_search = ""
+
         sql = '''
-        select unix_timestamp(datetime) as time, count, anno_img_path url
-        from stream_history where stream_name = '%s' and count is not null
-        and anno_img_path is not null ORDER BY datetime;
-        ''' % stream_name
+        select stream_name, unix_timestamp(datetime), count, anno_img_path
+        from stream_history where count is not null and
+        anno_img_path is not null%s ORDER BY datetime;
+        ''' % stream_search
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    times, counts, urls = zip(*result)
-    times, pdis, _ = panp.compute_pdi(times, counts, urls)
+    data = defaultdict(lambda: defaultdict(list))
+    for stream_name, time, count, url in result:
+        data[stream_name]["times"].append(time)
+        data[stream_name]["counts"].append(count)
+        data[stream_name]["urls"].append(url)
 
-    pdi_change = panp.compute_pdi_change(times, pdis)
+    pdi_changes = {}
+    for stream_name, d in data.items():
+        times, pdis, _ = panp.compute_pdi(d["times"], d["counts"], d["urls"])
 
-    return {"pdi_change": pdi_change}
+        week_change, max_change = panp.compute_pdi_change(times, pdis)
+
+        pdi_changes[stream_name] = {"week": week_change, "max": max_change}
+
+    return pdi_changes
 
 
 @with_connection
@@ -285,7 +316,14 @@ def query_snapshots(*args, cnx):
         cnx: a db connection. By default, a temporary connection is created
 
     Returns:
-        a list of {"city": c, "url": u, "time": t} entries
+        [
+            {
+                "stream_name": s,
+                "time": t,
+                "url": u,
+            },
+            ...
+        ]
     '''
     with cnx.cursor() as cursor:
         sql = '''
@@ -302,4 +340,4 @@ def query_snapshots(*args, cnx):
         cursor.execute(sql)
         result = cursor.fetchall()
 
-    return [{"city": c, "url": u, "time": t} for c, t, u in result]
+    return [{"stream_name": s, "time": t, "url": u} for s, t, u in result]

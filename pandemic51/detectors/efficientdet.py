@@ -19,7 +19,7 @@ from eta.core.objects import DetectedObject, DetectedObjectContainer
 import eta.core.tfutils as etat
 import eta.core.utils as etau
 
-import pandemic51.constants as panc
+import pandemic51.config as panc
 
 try:
     #

@@ -7,10 +7,10 @@
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
  */
-import React from "react"
-import Helmet from "react-helmet"
-import PropTypes from "prop-types"
-import { useStaticQuery, graphql } from "gatsby"
+import React from "react";
+import Helmet from "react-helmet";
+import PropTypes from "prop-types";
+import { useStaticQuery, graphql } from "gatsby";
 import { withStyles, makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -18,7 +18,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Img from 'gatsby-image';
 import CityCard from './cityCard';
-import "./layout.css"
+import "./layout.css";
 import "./../utils/typography";
 import Player from './player';
 import Chart from './chart';
@@ -32,34 +32,31 @@ const styles = {
     wrapper: {
       display: "flex",
       minHeight: "100vh",
-      flexDirection: "column"
+      flexDirection: "column",
     },
     root: {
       width: "100%",
     }
 };
 
-
-
-
 class Layout extends React.Component  {
   constructor(props) {
     super(props);
     this.state = {
-      urls: {}
+      data: {}
     };
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
-        this.setState({ urls: json["data"] })
+        this.setState({ data: json["data"] })
       });
   }
 
   render() {
     const { classes, children, city } = this.props;
-    const { urls, height } = this.state;
+    const { data, height } = this.state;
 
     const setHeight = height => this.setState({height});
 
@@ -92,13 +89,13 @@ class Layout extends React.Component  {
   <div className="contentBody">
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
-          <CityCard cityId="chicago" name="Chicago" active={city} url={urls["chicago"]}/>
-          <CityCard cityId="dublin" name="Dublin" active={city} url={urls["dublin"]}/>
-          <CityCard cityId="london" name="London" active={city} url={urls["london"]}/>
-          <CityCard cityId="newjersey" name="New Jersey" active={city} url={urls["newjersey"]}/>
-          <CityCard cityId="neworleans" name="New Orleans" active={city} url={urls["neworleans"]}/>
-          <CityCard cityId="newyork" name="New York" active={city} url={urls["newyork"]}/>
-          <CityCard cityId="prague" name="Prague" active={city} url={urls["prague"]}/>
+          <CityCard cityId="chicago" name="Chicago" active={city} url={data["chicago"]["url"]}/>
+          <CityCard cityId="dublin" name="Dublin" active={city} url={data["dublin"]["url"]}/>
+          <CityCard cityId="london" name="London" active={city} url={data["london"]["url"]}/>
+          <CityCard cityId="newjersey" name="New Jersey" active={city} url={data["newjersey"]["url"]}/>
+          <CityCard cityId="neworleans" name="New Orleans" active={city} url={data["neworleans"]["url"]}/>
+          <CityCard cityId="newyork" name="New York" active={city} url={data["newyork"]["url"]}/>
+          <CityCard cityId="prague" name="Prague" active={city} url={data["prague"]["url"]}/>
         </Grid>
         <Grid item xs={12} md={8}>
           <Hidden smDown>
