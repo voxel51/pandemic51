@@ -79,7 +79,9 @@ def stream(city):
     except urllib.error.HTTPError:
         url = pans.update_streams(stream_name)
 
-    if "earthcam" in url:
+    if "videos2archives" in url:
+        url = "https://pdi-service.voxel51.com/stream-archive/" + url.split(".com/")[1]
+    elif "earthcam" in url:
         url = "https://pdi-service.voxel51.com/stream/" + url.split(".com/")[1]
 
     return {"url": url}
