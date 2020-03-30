@@ -33,7 +33,8 @@ export default function Player({city, height, setHeight}) {
   const handleMetadata = (e) => {
     if (setHeight) {
       const video = e.target;
-      setHeight(video.videoHeight * video.clientWidth / video.videoWidth);
+      const container = video.parentNode.parentNode;
+      setHeight(video.videoHeight * container.clientWidth / video.videoWidth);
     }
   };
 
