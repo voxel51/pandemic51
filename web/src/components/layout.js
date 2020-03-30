@@ -28,6 +28,16 @@ import Header from './header';
 import Footer from './footer';
 import Typography from '@material-ui/core/Typography';
 
+const CITIES = {
+  chicago: "Chicago",
+  dublin: "Dublin",
+  london: "London",
+  newjersey: "New Jersey",
+  neworleans: "New Orleans",
+  newyork: "New York",
+  prague: "Prague",
+};
+
 const styles = {
     wrapper: {
       display: "flex",
@@ -56,7 +66,9 @@ class Layout extends React.Component  {
 
   render() {
     const { classes, children, city } = this.props;
-    const { data } = this.state;
+    const { data, height } = this.state;
+
+    const setHeight = height => this.setState({height});
 
     const opts = {
       width: "100%",
@@ -87,13 +99,15 @@ class Layout extends React.Component  {
   <div className="contentBody">
       <Grid container spacing={4}>
         <Grid item xs={12} md={4}>
-          <CityCard cityId="chicago" name="Chicago" active={city} url={data["chicago"]["url"]}/>
-          <CityCard cityId="dublin" name="Dublin" active={city} url={data["dublin"]["url"]}/>
-          <CityCard cityId="london" name="London" active={city} url={data["london"]["url"]}/>
-          <CityCard cityId="newjersey" name="New Jersey" active={city} url={data["newjersey"]["url"]}/>
-          <CityCard cityId="neworleans" name="New Orleans" active={city} url={data["neworleans"]["url"]}/>
-          <CityCard cityId="newyork" name="New York" active={city} url={data["newyork"]["url"]}/>
-          <CityCard cityId="prague" name="Prague" active={city} url={data["prague"]["url"]}/>
+          {Object.keys(CITIES).sort().map(cityId => (
+            <CityCard
+              key={cityId}
+              cityId={cityId}
+              name={CITIES[cityId]}
+              active={city == cityId}
+              url={data && data[cityId] ? data[cityId]["url"] : undefined}
+            />
+          ))}
         </Grid>
         <Grid item xs={12} md={8}>
           <Hidden smDown>
@@ -106,9 +120,9 @@ class Layout extends React.Component  {
           </Grid>
           </Hidden>
             <Grid container spacing={4}>
-              <Grid item xs={12} className="detector-container" style={{boxSizing: 'content-box'}}>
-                <Player city={city} />
-                <ImageOverlay src={this.state.src} onClose={(e) => {
+              <Grid item xs={12} className="media-container">
+                <Player city={city} height={height} setHeight={setHeight} />
+                <ImageOverlay src={this.state.src} height={height} onClose={(e) => {
                   e.stopPropagation();
                   this.setState({src: null});
                 }}/>
