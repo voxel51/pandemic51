@@ -147,6 +147,14 @@ bash scripts/download_historical_data.bash
 ```
 
 
+## Acknowledgements
+
+This project uses an EfficientDet model checkpoint that was graciously made
+available by the authors of the
+[automl/efficientdet](https://github.com/google/automl/tree/master/efficientdet)
+project.
+
+
 ## Copyright
 
 Copyright 2020, Voxel51, Inc.<br>
