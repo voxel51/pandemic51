@@ -4,7 +4,7 @@
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
  */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import PropTypes from 'prop-types'
 import * as cocoSsd from '@tensorflow-models/coco-ssd';
 import "@tensorflow/tfjs";
@@ -25,18 +25,32 @@ const cities = {
 export default function Player({city, height, setHeight}) {
   const [player, setPlayer] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
+  const wrapperRef = useRef(null);
 
   const onLoad = () => {
     setLoaded(true);
   };
 
-  const handleMetadata = (e) => {
+  const handleResize = (video) => {
     if (setHeight) {
-      const video = e.target;
       const container = video.parentNode.parentNode;
       setHeight(video.videoHeight * container.clientWidth / video.videoWidth);
     }
   };
+
+  const handleMetadata = (e) => {
+    handleResize(e.target);
+  };
+
+  useEffect(() => {
+    const callback = () => {
+      handleResize(wrapperRef.current.querySelector('video'));
+    }
+    window.addEventListener('resize', callback);
+    return () => {
+      window.removeEventListener('resize', callback);
+    }
+  }, [wrapperRef.current]);
 
   useEffect(() => {
     setPlayer(
@@ -59,7 +73,7 @@ export default function Player({city, height, setHeight}) {
     return null;
   }
   return (
-    <div className="video-player-wrapper">
+    <div ref={wrapperRef} className="video-player-wrapper">
       <div className="video-player" style={{height}}>
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {player}
