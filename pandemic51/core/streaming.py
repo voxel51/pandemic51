@@ -31,7 +31,24 @@ CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
 
 
-def get_uris(chunk_path, stream_name, streams=None):
+def update_streams(stream_name, streams):
+    '''Updates the given stream in the stream dictionary and serializes it to
+    disk at `pandemic51.config.STREAMS_PATH`.
+
+    Args:
+        stream_name: the stream name
+        streams: the current dict of stream info
+
+    Returns:
+        the chunk path
+    '''
+    chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
+    streams[stream_name]["chunk_path"] = chunk_path
+    etas.write_json(streams, panc.STREAMS_PATH)
+    return chunk_path
+
+
+def _get_uris(chunk_path, stream_name, streams=None):
     '''Attempts to load uris from a given chunk path. Will handle HTTPS 
     Errors and update the chunk path.
     '''
@@ -49,23 +66,6 @@ def get_uris(chunk_path, stream_name, streams=None):
         uris = m3u8.load(chunk_path).segments.uri
 
     return uris
-
-
-def update_streams(stream_name, streams):
-    '''Updates the given stream in the stream dictionary and serializes it to
-    disk at `pandemic51.config.STREAMS_PATH`.
-
-    Args:
-        stream_name: the stream name
-        streams: the current dict of stream info
-
-    Returns:
-        the chunk path
-    '''
-    chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
-    streams[stream_name]["chunk_path"] = chunk_path
-    etas.write_json(streams, panc.STREAMS_PATH)
-    return chunk_path
 
 
 def _get_chunk_url(webpage):
@@ -145,7 +145,7 @@ def download_chunk(stream_name, output_dir):
     base_path = os.path.split(chunk_path)[0]
     output_path = os.path.join(output_dir, stream_name)
 
-    uris = get_uris(chunk_path, stream_name, streams)
+    uris = _get_uris(chunk_path, stream_name, streams)
     uri = uris[0]
 
     logger.info("Processing URI '%s'", uri)
@@ -171,7 +171,7 @@ def download_stream(stream_name, output_dir, timeout=None):
     start = time.time()
     while timeout is None or (time.time() - start < timeout):
         time.sleep(1)
-        uris = get_uris(chunk_path, stream_name, streams)
+        uris = _get_uris(chunk_path, stream_name, streams)
         for uri in uris:
             if uri not in processed_uris:
                 logger.info("Processing URI '%s'", uri)
