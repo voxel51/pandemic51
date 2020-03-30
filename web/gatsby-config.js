@@ -34,22 +34,22 @@ module.exports = {
         background_color: `#663399`,
         theme_color: `#663399`,
         display: `minimal-ui`,
-        icon: `src/images/logo.png` // This path is relative to the root of the site.
+        icon: `src/images/logo.png`, // This path is relative to the root of the site.
       },
     },
     {
       resolve: `gatsby-plugin-material-ui`,
       options: {
         stylesProvider: {
-          injectFirst: true
+          injectFirst: true,
         },
       },
     },
     {
       resolve: `gatsby-plugin-typography`,
       options: {
-        pathToConfigModule: "src/utils/typography.js"
-      }
+        pathToConfigModule: "src/utils/typography.js",
+      },
     },
     {
       resolve: `gatsby-plugin-prefetch-google-fonts`,
@@ -57,10 +57,10 @@ module.exports = {
         fonts: [
           {
             family: `Palanquin`,
-            variants: [`400`, `600`, `700`, `800`]
-          }
+            variants: [`400`, `600`, `700`, `800`],
+          },
         ],
       },
-    }
-  ]
+    },
+  ],
 }

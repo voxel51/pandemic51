@@ -1,5 +1,5 @@
 /**
- * New York live stream.
+ * Chicago live stream.
  *
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
@@ -10,11 +10,11 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const NewYorkPage = () => (
+const FortLauderdalePage = () => (
   <>
     <SEO/>
-    <Layout city="newyork"/>
+    <Layout city="fortlauderdale"/>
   </>
 )
 
-export default NewYorkPage
+export default FortLauderdalePage
