@@ -113,7 +113,7 @@ mv config/celerybeat.service /lib/systemd/system
 
 and start the services using the instructions below.
 
-#### Cheatsheet
+#### Celery cheatsheet
 
 Any time a file is added or modified in `/lib/systemd/system`, run:
 
