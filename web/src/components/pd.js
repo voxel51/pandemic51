@@ -24,7 +24,7 @@ const Image = (props) => {
     query {
       placeholderImage: file(relativePath: { eq: "physical-distancing.png" }) {
         childImageSharp {
-          fluid(maxWidth: 300) {
+          fluid(maxWidth: 1000) {
             ...GatsbyImageSharpFluid
           }
         }

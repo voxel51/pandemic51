@@ -32,13 +32,13 @@ const useStyles = makeStyles({
     marginBottom: 12,
   },
   content: {
-    paddingRight: (106.52 * 16/9) + 16
+    paddingRight: (107 * 16/9) + 16
   },
   still: {
     margin: 0,
     right: 0,
-    width: 106.52 * 16/9,
-    height: 106.52,
+    width: 107 * 16/9,
+    height: 107,
     position: "absolute",
   },
   chip: {

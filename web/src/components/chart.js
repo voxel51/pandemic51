@@ -42,6 +42,16 @@ const timezones = {
   prague: "Europe/Prague",
 }
 
+const cities = {
+  chicago: "Chicago",
+  dublin: "Dublin",
+  london: "London",
+  neworleans: "New Orleans",
+  newjersey: "New Jersey",
+  newyork: "New York",
+  prague: "Prague"
+}
+
 const styles = theme => ({
   root: {},
   bullet: {
@@ -123,15 +133,19 @@ class Chart extends Component {
       )
     }
 
+    const bull = <span className={classes.bullet}>•</span>
     return (
       <Card className={classes.root} square>
         <CardContent>
-          <ResponsiveContainer width="100%" height={400}>
+          <Typography variant="h4" component="h2" style={{marginBottom: "1rem"}}>
+            {cities[city]} {bull} Physical Distancing Index (PDI)
+          </Typography>
+          <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               width={730}
-              height={250}
+              height={200}
               data={list}
-              margin={{ top: 0, right: 0, left: 0, bottom: 0 }}
+              margin={{ top: 0, right: 0, left: 10, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
             >
@@ -154,7 +168,7 @@ class Chart extends Component {
                 }
                 type="number"
               />
-              <YAxis dataKey="pdi" name="PDI"  width={25}/>
+              <YAxis dataKey="pdi" name="PDI"  width={25} domain={[0, 100]}/>
               <Tooltip content={contentFormatter} />
               <Area
                 type="monotone"

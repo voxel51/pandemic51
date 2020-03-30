@@ -281,6 +281,20 @@ h4 {
 /* handle Mobile typography and spacing */
 @media only screen and (min-device-width : 320px) and (max-device-width : 850px) {
 
+.pad-root {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto auto auto;
+    grid-template-areas:
+        "title"
+        "visual"
+        "text"
+        "hook";
+    justify-items: center;
+    align-items: center;
+    padding: 6rem 3.0rem 3.0rem 3.0rem;
+}
+
 body {
   font-size: 1.4rem;
 }
