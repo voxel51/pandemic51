@@ -16,6 +16,7 @@ import ffmpy
 import m3u8
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.chrome.options import Options
 
 import eta.core.serial as etas
 import eta.core.utils as etau
@@ -80,7 +81,9 @@ def _get_chunk_url(webpage):
     # Reference: https://stackoverflow.com/q/52633697
     caps = DesiredCapabilities.CHROME
     caps["goog:loggingPrefs"] = {"performance": "ALL"}
-    driver = webdriver.Chrome(desired_capabilities=caps)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(desired_capabilities=caps, options=chrome_options)
     driver.get(webpage)
 
     chunk_url = None
