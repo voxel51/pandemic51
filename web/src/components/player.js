@@ -11,21 +11,28 @@ import "@tensorflow/tfjs";
 import ReactHLS from 'react-hls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-const cities = {
-  "chicago": "https://pdi-service.voxel51.com/stream/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
-  "dublin": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/4054.flv/chunklist.m3u8",
-  "fortlauderdale": "https://pdi-service/voxel51.com/stream/fecnetwork/windjammerHD2.flv/chunklist_w199477428.m3u8",
-  "london": "https://pdi-service.voxel51.com/stream/fecnetwork/AbbeyRoadHD1.flv/chunklist_w99014656.m3u8",
-  "newjersey": "https://pdi-service.voxel51.com/stream/fecnetwork/5173.flv/chunklist_w246713699.m3u8",
-  "neworleans": "https://pdi-service.voxel51.com/stream/fecnetwork/4280.flv/chunklist_w2121039669.m3u8",
-  "newyork": "https://d3o4twxzdiwvsf.cloudfront.net/fecnetwork/hdtimes10.flv/chunklist.m3u8",
-  "prague": "https://pdi-service.voxel51.com/stream/fecnetwork/14191.flv/chunklist_w1339994956.m3u8",
-}
-
 export default function Player({city, height, setHeight}) {
+  const [url, setUrl] = useState(null);
   const [player, setPlayer] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
   const wrapperRef = useRef(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const updateUrl = async () => {
+      let res = await fetch(`https://pdi-service.voxel51.com/api/streams/${city}`);
+      res = await res.json();
+      if (!cancelled) {
+        setUrl(res.url);
+      }
+    };
+    setUrl(null);
+    setLoaded(false);
+    updateUrl();
+    return () => {
+      cancelled = true;
+    };
+  }, [city]);
 
   const onLoad = () => {
     setLoaded(true);
@@ -55,7 +62,7 @@ export default function Player({city, height, setHeight}) {
   useEffect(() => {
     setPlayer(
       <ReactHLS
-        url={cities[city]}
+        url={url}
         width='100%'
         height='100%'
         videoProps={{
@@ -67,7 +74,7 @@ export default function Player({city, height, setHeight}) {
         }}
       />
     );
-  }, [city])
+  }, [url])
 
   if (!player) {
     return null;
