@@ -13,6 +13,7 @@ import CardContent from "@material-ui/core/CardContent"
 import Typography from "@material-ui/core/Typography"
 import Divider from "@material-ui/core/Divider"
 import moment from "moment"
+import HelpTooltip from './help';
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -147,7 +148,7 @@ class Chart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent>
+        <CardContent style={{position: "relative"}}>
           <Typography
             variant="h4"
             component="h2"
@@ -205,6 +206,7 @@ class Chart extends Component {
               <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
             </ComposedChart>
           </ResponsiveContainer>
+          <HelpTooltip/>
         </CardContent>
       </Card>
     )
