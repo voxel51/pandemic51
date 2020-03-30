@@ -62,8 +62,8 @@ export default function SimpleModal() {
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
+        aria-labelledby="graph help"
+        aria-describedby="graph help"
         style={{
           border: "none",
           margin: "auto",

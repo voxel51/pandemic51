@@ -16,8 +16,32 @@ import {
 } from "@fortawesome/free-brands-svg-icons"
 import SB from "./sb"
 import PD from "./pd"
+import HubspotForm from 'react-hubspot-form'
+import Modal from "@material-ui/core/Modal"
 
-const Footer = props => (
+
+const Footer = props => {
+  const [open, setOpen] = React.useState(false)
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const body = (
+    <HubspotForm
+   portalId='4972700'
+   formId='1d9a99a1-1aac-4e77-ae5c-59bca55cd1d4'
+   onSubmit={() => console.log('Submit!')}
+   onReady={(form) => console.log('Form ready!')}
+   loading={<div>Loading...</div>}
+   />
+  )
+
+  return (
   <>
     <div class="body_part bg-light-primary body_block--right">
       <div class="body_block__title">
@@ -56,14 +80,7 @@ const Footer = props => (
         What is the Physical Distancing Index?
       </h2>
       <div class="body_block__text">
-        Our <a href="https://voxel51.com/platform"> Platform’s </a> computer
-        vision and state-of-the-art deep learning models are able to detect and
-        identify pedestrians, vehicles, and other human-centric objects in the
-        frames of each live street cam video stream every 15 minutes. . Using
-        this raw data, we compute the PDI, an aggregate statistical measure that
-        captures the average density of human activity within view of the camera
-        over time. Note that PDI is a privacy-preserving measure that does not
-        extract any identifying information about the individuals in the video.
+        Our <a href="https://voxel51.com/platform"> Platform’s </a> computer vision and state-of-the-art deep learning models are able to detect and identify pedestrians, vehicles, and other human-centric objects in the frames of each live street cam video stream in real-time. Using images sampled from each video stream every 15 minutes, we compute the Physical Distancing Index or PDI,  an aggregate statistical measure that captures the average density of human activity within view of the camera over time. Outputs of the detections, or positive hits, in the video streams are represented in the data points on the graph above. Note that PDI is a privacy-preserving measure that does not extract any identifying information about the individuals in the video.
       </div>
     </div>
 
@@ -77,7 +94,7 @@ const Footer = props => (
       <div class="body_block__text" align="left">
         <br />
         We named the Voxel51 Physical Distancing Index (PDI) in response to the{" "}
-        <a href="https://www.forbes.com/sites/carolkinseygoman/2020/03/23/dont-let-physical-distancing-become-social-distancing/#157df7f949e6">
+        <a target="_blank" href="https://www.forbes.com/sites/carolkinseygoman/2020/03/23/dont-let-physical-distancing-become-social-distancing/#157df7f949e6">
           World Health Organization’s recommendation{" "}
         </a>{" "}
         to do so. Physical distancing is intended to reduce the spread of the
@@ -99,20 +116,37 @@ const Footer = props => (
       <div class="body_block__hook">
         <ul class="list-inline">
           <li>
-            <a
+            <button
+              onClick={handleOpen}
               class="button-primary"
-              href="https://share.hsforms.com/1HZqZoRqsTneuXFm8pVzR1A2ykyk"
             >
               Subscribe
-            </a>
+            </button>
           </li>
           <li>
             <a
               class="button-secondary"
+              target="_blank"
               href="https://github.com/voxel51/pandemic51"
             >
               Contribute
             </a>
+                  <Modal
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="graph help"
+        aria-describedby="graph help"
+        style={{
+          border: "none",
+          margin: "auto",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: "color:rgb(244, 244, 244)"
+        }}
+      >
+        {body}
+      </Modal>
           </li>
         </ul>
       </div>
@@ -195,6 +229,7 @@ const Footer = props => (
       </div>
     </footer>
   </>
-)
+  )
+}
 
 export default Footer

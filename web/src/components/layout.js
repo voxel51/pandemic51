@@ -34,13 +34,13 @@ import Footer from "./footer"
 import Typography from "@material-ui/core/Typography"
 
 const CITIES = {
-  chicago: "Chicago",
   dublin: "Dublin",
   london: "London",
   newjersey: "New Jersey",
   neworleans: "New Orleans",
   newyork: "New York",
   prague: "Prague",
+  fortlauderdale: "Fort Lauderdale",
 }
 
 const styles = {
