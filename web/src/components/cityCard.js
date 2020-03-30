@@ -66,9 +66,8 @@ const locations = {
 
 export default function CityCard(props) {
   const classes = useStyles();
-  const active = props.cityId === props.active && props.cityId !== undefined;
   return (
-    <Card className={classes.root + (active ? " active-card" : "")} square>
+    <Card className={classes.root + (props.active ? " active-card" : "")} square>
       <CardActionArea>
         <Link to={"/" + props.cityId}>
           <CardMedia
