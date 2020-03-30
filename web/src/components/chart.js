@@ -135,12 +135,11 @@ class Chart extends Component {
       )
     }
 
-    const bull = <span className={classes.bullet}>•</span>
     return (
       <Card className={classes.root} square>
         <CardContent>
           <Typography variant="h4" component="h2" style={{marginBottom: "1rem"}}>
-            {cities[city]} {bull} Physical Distancing Index (PDI)
+            {cities[city]}
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
@@ -170,7 +169,7 @@ class Chart extends Component {
                 }
                 type="number"
               />
-              <YAxis dataKey="pdi" name="PDI"  width={25}/>
+              <YAxis dataKey="pdi" name="PDI" width={25} label="physical distancing index"/>
               <Tooltip content={contentFormatter} />
               <Area
                 type="monotone"
