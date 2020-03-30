@@ -54,7 +54,7 @@ Next, create a `pandemic51/config.py` from the provided template:
 cp config/config-template.py pandemic51/config.py
 ```
 
-and customize any values as needed. Be sure to match `P51_SQL_USERNAME` and 
+and customize any values as needed. Be sure to match `P51_SQL_USERNAME` and
 `P51_SQL_PASSWORD` to the values you set to your environment variables.
 
 ### Pre-installation
@@ -135,17 +135,25 @@ tail -f -n 10 ${P51_CELERY_DIR}/worker*
 
 ### Download data
 
-Download the model(s) that you need by running the following script:
-
-```bash
-bash scripts/download_models.bash
-```
-
 Download some historical data to work with by running the following script:
 
 ```bash
 bash scripts/download_historical_data.bash
 ```
+
+Download the detector checkpoint by running the following script:
+
+```bash
+bash scripts/download_model.bash
+```
+
+
+## Acknowledgements
+
+This project uses an EfficientDet model checkpoint that was graciously made
+available by the authors of the
+[automl/efficientdet](https://github.com/google/automl/tree/master/efficientdet)
+project.
 
 
 ## Copyright
