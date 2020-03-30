@@ -1,10 +1,10 @@
-# Pandemic51 web client
+# Pandemic51 Web Client
 
 Web client for the Pandemic51 project, built using
 [Node.js](https://nodejs.org) and [Gatsby](https://www.gatsbyjs.org).
 
 
-## Steps to Setup Environment
+## Environment setup
 
 Install [nvm/Node.js for Gatsby](https://www.gatsbyjs.org/tutorial/part-zero/).
 [Here is more information about Node.js](https://medium.com/stackfame/how-to-update-node-js-to-latest-version-linux-ubuntu-osx-windows-others-105749e90040).
@@ -41,7 +41,7 @@ Gatsby CLI, which you can run with `yarn` (below) or directly using
 [`npx`](https://www.npmjs.com/package/npx).
 
 
-## Developing and Running
+## Local development
 
 In `./web` run `yarn run develop` (or just `yarn develop`). This runs
 `gatsby develop`, which is basically is a continuous build-process with an
