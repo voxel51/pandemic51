@@ -15,7 +15,7 @@ import pandemic51.core.streaming as pans
 
 
 app = Flask(__name__)
-app.config["PATH"] = "/usr/bin/"
+
 
 @app.route("/snapshots")
 def snapshots():
