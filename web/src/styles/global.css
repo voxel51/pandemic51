@@ -70,7 +70,9 @@ img {
   position: absolute;
   top: 5px;
   right: 5px;
-  background-color: rgba(240, 240, 240, 0.8);
+  color: var(--color-primary);
+  border: 2px solid var(--color-primary);
+  background-color: var(--gray-light2);
 }
 
 
