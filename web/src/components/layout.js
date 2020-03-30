@@ -101,6 +101,7 @@ class Layout extends React.Component  {
         <Grid item xs={12} md={4}>
           {Object.keys(CITIES).sort().map(cityId => (
             <CityCard
+              key={cityId}
               cityId={cityId}
               name={CITIES[cityId]}
               active={city == cityId}
