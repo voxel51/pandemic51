@@ -17,8 +17,6 @@ import HelpTooltip from "./help"
 import {
   ResponsiveContainer,
   ReferenceLine,
-  AreaChart,
-  Area,
   stop,
   defs,
   linearGradient,
@@ -43,7 +41,7 @@ const timezones = {
   newjersey: "America/New_York",
   newyork: "America/New_York",
   prague: "Europe/Prague",
-  average: "Etc/GMT"
+  average: "Etc/GMT",
 }
 
 const cities = {
@@ -55,7 +53,7 @@ const cities = {
   newjersey: "New Jersey",
   newyork: "New York",
   prague: "Prague",
-  average: "Average"
+  average: "Average",
 }
 
 const styles = theme => ({
@@ -89,14 +87,12 @@ const colors = [
   "#88807f",
   "#d93be0",
   "#7da043",
-  "#cccccc"
+  "#14ae32",
 ]
 
 class BigChart extends Component {
   state = {
-    list: [],
-    events: [],
-    labels: [],
+    data: [],
   }
 
   componentDidMount() {
@@ -113,6 +109,46 @@ class BigChart extends Component {
     const { data } = this.state
     const { classes, title, city } = this.props
 
+    const contentFormatter = v => {
+      if (!v.payload) {
+        return null
+      }
+      const bull = <span className={classes.bullet}>•</span>
+      return (
+        <Card square style={{ overflow: "visible", opacity: 0.9 }}>
+          <CardContent style={{ overflow: "visible" }}>
+            <Typography variant="h5" component="h2">
+              {moment
+                .unix(v.label)
+                .tz("Etc/GMT")
+                .format("dddd,  MMM Do, hh:mm A z")}
+            </Typography>
+            {v.payload
+              .sort((a, b) => {
+                if (a.dataKey === "average") return -1
+                if (b.dataKey === "average") return 1
+                if (!a.value && !b.value) return 0
+                if (!a.value) return -1
+                if (!b.value) return 1
+                return b.value - a.value
+              })
+              .map((v, i) => {
+                if (!v.value) return
+                return (
+                  <Typography
+                    variant="h5"
+                    component="h3"
+                    style={{ color: v.color }}
+                  >
+                    {cities[v.dataKey]} {bull}{" "}
+                    {v.value.toLocaleString("en", { style: "percent" })}
+                  </Typography>
+                )
+              })}
+          </CardContent>
+        </Card>
+      )
+    }
     return (
       <Card className={classes.root} square>
         <CardContent
@@ -123,7 +159,7 @@ class BigChart extends Component {
             component="h2"
             style={{ marginBottom: "3rem", textAlign: "center" }}
           >
-            Uniformly Sampled Comparison
+            Comparison of PDI Across Locations
           </Typography>
           <ResponsiveContainer width="100%" height={400}>
             <ComposedChart
@@ -153,7 +189,7 @@ class BigChart extends Component {
                 }
                 label={
                   <Label
-                    value="Normalized PDI"
+                    value="PDI Percentile"
                     position="insideLeft"
                     angle={-90}
                     offset={-30}
@@ -163,6 +199,7 @@ class BigChart extends Component {
               />
               <Tooltip
                 allowEscapeViewBox={{ x: true, y: true }}
+                content={contentFormatter}
                 formatter={(v, n, p) => {
                   return [
                     v.toLocaleString("en", { style: "percent" }),
@@ -179,13 +216,14 @@ class BigChart extends Component {
               {Object.keys(timezones)
                 .sort()
                 .map((val, i) => (
-                  <Area
+                  <Line
                     type="monotone"
                     dataKey={val}
                     stroke={val === "average" ? "#ff6d04" : colors[i]}
-                    strokeWidth={val === "average" ? 6 : 3}
-                    fillOpacity={1}
+                    strokeWidth={val === "average" ? 8 : 3}
+                    strokeOpacity={val === "average" ? 1 : 0.5}
                     fill={`url(#color${String(colors[i])})`}
+                    dot={false}
                   />
                 ))}
             </ComposedChart>

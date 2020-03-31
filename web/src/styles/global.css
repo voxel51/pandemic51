@@ -846,6 +846,7 @@ hr {
     margin: 0;
     padding: 2rem 0;
     z-index: 1000;
+    position: absolute;
   }
 
   .mobileContent {
@@ -853,6 +854,16 @@ hr {
   }
   .big-chart-body {
     margin: 3.0rem 3.0rem;
+  }
+  .loading-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin-top: -20px;
+    margin-left: -20px;
+    color: var(--color-primary);
   }
 }
 

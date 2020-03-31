@@ -29,6 +29,7 @@ import {
   Scatter,
   Tooltip,
   Line,
+  Label,
   Legend,
 } from "recharts"
 import Async from "react-async"
@@ -128,7 +129,7 @@ class Chart extends Component {
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
-        <Card square style={{ overflow: "visible" }}>
+        <Card square style={{ overflow: "visible", opacity: 0.9 }}>
           <CardContent style={{ overflow: "visible" }}>
             <Typography variant="h5" component="h2">
               {moment
@@ -141,7 +142,8 @@ class Chart extends Component {
               component="h3"
               style={{ color: "rgb(255, 109, 4)" }}
             >
-              PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
+              PDI {bull}{" "}
+              {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
             {(() => {
               if (event && time) {
@@ -203,12 +205,15 @@ class Chart extends Component {
                 dataKey="pdi"
                 name="PDI"
                 width={25}
-                label={{
-                  value: "PDI",
-                  angle: -90,
-                  position: "insideLeft",
-                  offset: -20,
-                }}
+                label={
+                  <Label
+                    value="Physical Distancing Index"
+                    position="insideLeft"
+                    angle={-90}
+                    offset={-20}
+                    style={{ textAnchor: "middle" }}
+                  />
+                }
               />
               <Tooltip
                 content={contentFormatter}

@@ -31,7 +31,7 @@ module.exports = {
         name: `Voxel51 // PDI: Measuring the Social Impact of the Coronavirus Pandemic`,
         short_name: `Voxel51 // PDI`,
         start_url: `/`,
-        background_color: `#663399`,
+        background_color: `#ffffff`,
         theme_color: `#ff6d04`,
         display: `minimal-ui`,
         icon: `src/images/logo.png`, // This path is relative to the root of the site.
