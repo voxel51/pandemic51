@@ -181,7 +181,7 @@ class BigChart extends Component {
                   <Area
                     type="monotone"
                     dataKey={val}
-                    stroke={val === "average" ? "#000" : colors[i]}
+                    stroke={val === "average" ? "#ff6d04" : colors[i]}
                     strokeWidth={val === "average" ? 6 : 3}
                     fillOpacity={1}
                     fill={`url(#color${String(colors[i])})`}
