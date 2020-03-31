@@ -22,6 +22,7 @@ class Header extends React.Component {
   }
 
   handleClick(event) {
+    event.preventDefault();
     this.setState({ nav: !this.state.nav })
   }
 
@@ -59,13 +60,13 @@ class Header extends React.Component {
           </div>
 
           <div id="nav__main__mobilebutton--on" style={obj} ref="mobile">
-            <a href="javascript:void(0);" onClick={this.onClick}>
+            <a href="#" onClick={this.onClick}>
               <FontAwesomeIcon icon={faBars} />
             </a>
           </div>
 
           <div id="nav__main__mobilebutton--off" style={{ display: off }}>
-            <a href="javascript:void(0);" onClick={this.onClick}>
+            <a href="#" onClick={this.onClick}>
               <FontAwesomeIcon icon={faTimes} />
             </a>
           </div>
