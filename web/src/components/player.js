@@ -6,7 +6,6 @@
  */
 import React, { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
-import * as cocoSsd from "@tensorflow-models/coco-ssd"
 import "@tensorflow/tfjs"
 import ReactHLS from "react-hls"
 import CircularProgress from "@material-ui/core/CircularProgress"
