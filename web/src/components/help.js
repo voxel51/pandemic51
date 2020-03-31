@@ -46,7 +46,6 @@ export default function SimpleModal() {
             will overlay the video stream.
           </Hidden>
         </Typography>
-        <SimpleModal />
       </CardContent>
     </Card>
   )

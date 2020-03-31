@@ -172,6 +172,11 @@ class Layout extends React.Component {
             </Hidden>
           </div>
         </div>
+        <div className={classes.root + " bg-light-primary"}>
+          <div className="contentBody">
+            <BigChart/>
+          </div>
+          </div>
         <Footer />
       </div>
     )
@@ -180,11 +185,6 @@ class Layout extends React.Component {
 
 /*
 
-        <div className={classes.root + " bg-light-primary"}>
-          <div className="contentBody">
-            <BigChart/>
-          </div>
-          </div>
 
   */
 

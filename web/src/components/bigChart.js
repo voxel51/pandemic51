@@ -58,6 +58,7 @@ const cities = {
 const styles = theme => ({
   root: {
     width: "100%",
+    overflow: "visible"
   },
   bullet: {
     display: "inline-block",
@@ -98,23 +99,9 @@ class BigChart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi-all`)
       .then(response => response.json())
       .then(json => {
-        const data = {}
-        for (const city in json.cities) {
-          const cityTimes = json.cities[city].time
-          const cityPdis = json.cities[city].normalized_pdi
-          for (const i in cityTimes) {
-            if (data[cityTimes[i]] === undefined)
-              data[cityTimes[i]] = { time: cityTimes[i] }
-            data[cityTimes[i]][city] = cityPdis[i]
-          }
-        }
-        const array = []
-        for (const point in data) {
-          array.push(data[point])
-        }
-        console.log(array)
+        console.log(json.data);
         this.setState({
-          data: array,
+          data: json.data,
         })
       })
   }
@@ -125,7 +112,7 @@ class BigChart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent style={{ position: "relative", width: "100%" }}>
+        <CardContent style={{ position: "relative", width: "100%", overflow: "visible" }}>
           <Typography
             variant="h4"
             component="h2"
@@ -133,10 +120,10 @@ class BigChart extends Component {
           >
             Comparison
           </Typography>
-          <ResponsiveContainer width="100%" height={250}>
+          <ResponsiveContainer width="100%" height={400}>
             <ComposedChart
               data={data}
-              margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
+              margin={{ top: 0, right: 0, left: 40, bottom: 0 }}
             >
               <defs>
                 {Object.keys(timezones)
@@ -182,14 +169,17 @@ class BigChart extends Component {
                 name="PDI"
                 width={25}
                 domain={[0, 1]}
+                tickFormatter={v => v.toLocaleString("en", {style: "percent"})}
                 label={{
                   value: "PDI",
                   angle: -90,
                   position: "insideLeft",
-                  offset: -20,
+                  offset: -30,
                 }}
               />
-              <Tooltip />
+              <Tooltip allowEscapeViewBox={{x: true, y: true}} formatter={(v, n, p) => {
+                return [v.toLocaleString("en", {style: "percent"}), n]
+              }} labelFormatter={(v) => moment.unix(v).tz("Etc/GMT").format("dddd,  MMM Do, hh:mm A")}/>
               {Object.keys(timezones)
                 .sort()
                 .map((val, i) => (
