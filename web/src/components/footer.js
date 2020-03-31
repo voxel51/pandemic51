@@ -129,9 +129,9 @@ const Footer = props => {
         <div class="body_block__hook">
           <ul class="list-inline">
             <li>
-              <button onClick={handleOpen} class="button-primary" style={{width: "100%"}}>
+              <a onClick={handleOpen} class="button-primary">
                 Contact Us
-              </button>
+              </a>
             </li>
             <li>
               <a
