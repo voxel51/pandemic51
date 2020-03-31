@@ -89,13 +89,15 @@ def get_all_pdi_graph_data():
     single graph.
 
     Returns:
-        {
-            "<city>": {
-                "time": [...],
-                "normalized_pdi": [...],
+        [
+            {
+                "time": time,
+                "<city1>": <normalized-pdi>,
+                "<city2>": <normalized-pdi>,
+                ...
             },
             ...
-        }
+        ]
     '''
     streams_to_cities = {v: k for k, v in panc.STREAMS_MAP.items()}
 
@@ -103,18 +105,19 @@ def get_all_pdi_graph_data():
     all_pdi = pand.query_all_pdi()
 
     # Normalize PDI values
-    graph_data = {}
+    norm_pdi = {}
     for stream_name, data in all_pdi.items():
         if stream_name not in streams_to_cities:
             continue
 
         city = streams_to_cities[stream_name]
-        graph_data[city] = {
+        norm_pdi[city] = {
             "time": data["time"],
-            "normalized_pdi": panp.normalize_pdi_values(data["pdi"]),
+            "pdi": panp.normalize_pdi_values(data["pdi"]),
         }
 
-    return graph_data
+    # Resample to uniform times
+    return panp.resample_pdis(norm_pdi)
 
 
 def get_stream_url(city):
