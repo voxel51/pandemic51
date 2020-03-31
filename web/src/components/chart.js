@@ -115,6 +115,10 @@ class Chart extends Component {
     }
   }
 
+  handleMouseLeave(data) {
+    this.props.onClick(null)
+  }
+
   render() {
     const { list, events } = this.state
     const { classes, title, city } = this.props
@@ -181,6 +185,8 @@ class Chart extends Component {
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
               onTouchEnd={this.handleClick.bind(this)}
+              onMouseMove={this.handleClick.bind(this)}
+              onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>
                 <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
