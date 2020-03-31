@@ -142,7 +142,7 @@ class Chart extends Component {
               component="h3"
               style={{ color: "rgb(255, 109, 4)" }}
             >
-              PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
+              PDI {bull} {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
             {(() => {
               if (event && time) {
