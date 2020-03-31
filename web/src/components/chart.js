@@ -55,6 +55,17 @@ const cities = {
   prague: "Prague",
 }
 
+const formal = {
+  chicago: "Chicago, Illinois, USA",
+  dublin: "Dublin, Ireland",
+  fortlauderdale: "Fort Lauderdale, Florida, USA",
+  london: "London, England",
+  neworleans: "New Orleans, Louisiana, USA",
+  newjersey: "Seaside Heights, New Jersey, USA",
+  newyork: "New York City, New York, USA",
+  prague: "Prague, Czech Republic",
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -158,7 +169,7 @@ class Chart extends Component {
             component="h2"
             style={{ marginBottom: "1rem", textAlign: "center" }}
           >
-            PDI: {cities[city]}
+            PDI: {formal[city]}
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
