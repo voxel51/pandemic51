@@ -178,6 +178,8 @@ class Chart extends Component {
               margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
+              onMouseUp={this.handleClick.bind(this)}
+              onTouchEnd={this.handleClick.bind(this)}
             >
               <defs>
                 <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
