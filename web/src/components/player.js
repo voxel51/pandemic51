@@ -62,20 +62,36 @@ export default function Player({ city, height, setHeight, children }) {
   }, [wrapperRef.current])
 
   useEffect(() => {
-    setPlayer(
-      <ReactHLS
-        url={url}
-        width="100%"
-        height="100%"
-        videoProps={{
-          muted: true,
-          controls: false,
-          autoPlay: true,
-          onLoadedData: onLoad,
-          onLoadedMetadata: handleMetadata,
-        }}
-      />
-    )
+    const videoProps = {
+      muted: true,
+      controls: false,
+      autoPlay: true,
+      onLoadedData: onLoad,
+      onLoadedMetadata: handleMetadata,
+    }
+
+    if (!window.MediaSource) {
+      setPlayer(
+        <ReactHLS
+          url={url}
+          width="100%"
+          height="100%"
+          videoProps={videoProps}
+        />
+      )
+    } else {
+      // likely iOS: https://github.com/video-dev/hls.js/issues/2262
+      setPlayer(
+        <div class="player-area">
+          <video
+            src={url}
+            width="100%"
+            height="100%"
+            {...videoProps}
+          />
+        </div>
+      )
+    }
   }, [url])
 
   if (!player) {
