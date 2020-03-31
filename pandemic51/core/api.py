@@ -7,6 +7,8 @@ voxel51.com
 from collections import defaultdict
 import urllib
 
+import numpy as np
+
 import eta.core.serial as etas
 
 import pandemic51.config as panc
@@ -92,6 +94,7 @@ def get_all_pdi_graph_data():
         [
             {
                 "time": time,
+                "average": <average-normalized-pdi>,
                 "<city1>": <normalized-pdi>,
                 "<city2>": <normalized-pdi>,
                 ...
@@ -117,7 +120,14 @@ def get_all_pdi_graph_data():
         }
 
     # Resample to uniform times
-    return panp.resample_pdis(norm_pdi)
+    data = panp.resample_pdis(norm_pdi)
+
+    # Add average PDI series
+    for d in data:
+        vals = [v for k, v in d.items() if k != "time" and v is not None]
+        d["average"] = np.mean(vals) if vals else None
+
+    return data
 
 
 def get_stream_url(city):
