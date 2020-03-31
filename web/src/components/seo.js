@@ -33,7 +33,7 @@ function SEO({ description, lang, meta }) {
       htmlAttributes={{
         lang,
       }}
-      title={`Voxel51 // PDI`}
+      title={site.siteMetadata.title}
       titleTemplate={``}
       meta={[
         {
@@ -82,7 +82,7 @@ SEO.defaultProps = {
 SEO.propTypes = {
   description: PropTypes.string,
   lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object)
+  meta: PropTypes.arrayOf(PropTypes.object),
 }
 
 export default SEO

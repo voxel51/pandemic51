@@ -9,7 +9,7 @@
 
 module.exports = {
   siteMetadata: {
-    title: `Voxel51 // PDI`,
+    title: `Voxel51 // PDI: Measuring the Social Impact of the Coronavirus Pandemic`,
     description: `Live site monitoring the effect of physical distancing measures during the Coronavirus pandemic`,
     author: `Voxel51 Inc.`,
   },
@@ -28,11 +28,11 @@ module.exports = {
     {
       resolve: `gatsby-plugin-manifest`,
       options: {
-        name: `gatsby-starter-default`,
-        short_name: `starter`,
+        name: `Voxel51 // PDI: Measuring the Social Impact of the Coronavirus Pandemic`,
+        short_name: `Voxel51 // PDI`,
         start_url: `/`,
         background_color: `#663399`,
-        theme_color: `#663399`,
+        theme_color: `#ff6d04`,
         display: `minimal-ui`,
         icon: `src/images/logo.png`, // This path is relative to the root of the site.
       },

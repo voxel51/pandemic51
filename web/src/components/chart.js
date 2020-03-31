@@ -55,9 +55,21 @@ const cities = {
   prague: "Prague",
 }
 
+const formal = {
+  chicago: "Chicago, Illinois, USA",
+  dublin: "Dublin, Ireland",
+  fortlauderdale: "Fort Lauderdale, Florida, USA",
+  london: "London, England",
+  neworleans: "New Orleans, Louisiana, USA",
+  newjersey: "Seaside Heights, New Jersey, USA",
+  newyork: "New York City, New York, USA",
+  prague: "Prague, Czech Republic",
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
+    overflow: "visible",
   },
   bullet: {
     display: "inline-block",
@@ -116,8 +128,8 @@ class Chart extends Component {
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
-        <Card square>
-          <CardContent>
+        <Card square style={{ overflow: "visible" }}>
+          <CardContent style={{ overflow: "visible" }}>
             <Typography variant="h5" component="h2">
               {moment
                 .unix(v.label)
@@ -155,17 +167,18 @@ class Chart extends Component {
           <Typography
             variant="h4"
             component="h2"
-            style={{ marginBottom: "1rem" }}
+            style={{ marginBottom: "1rem", textAlign: "center" }}
           >
-            PDI: {cities[city]}
+            PDI: {formal[city]}
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
-              width="100%"
               data={list}
               margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
+              onMouseUp={this.handleClick.bind(this)}
+              onTouchEnd={this.handleClick.bind(this)}
             >
               <defs>
                 <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
@@ -197,7 +210,10 @@ class Chart extends Component {
                   offset: -20,
                 }}
               />
-              <Tooltip content={contentFormatter} />
+              <Tooltip
+                content={contentFormatter}
+                allowEscapeViewBox={{ x: true, y: true }}
+              />
               <Area
                 type="monotone"
                 dataKey="pdi"

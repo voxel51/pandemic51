@@ -4,9 +4,9 @@
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
  */
-import React from "react";
-import { useStaticQuery, graphql } from "gatsby";
-import Img from "gatsby-image";
+import React from "react"
+import { useStaticQuery, graphql } from "gatsby"
+import Img from "gatsby-image"
 
 /*
  * This component is built using `gatsby-image` to automatically serve
@@ -19,7 +19,7 @@ import Img from "gatsby-image";
  * - `gatsby-image`: https://gatsby.dev/gatsby-image
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query
  */
-const Image = (props) => {
+const Image = props => {
   const data = useStaticQuery(graphql`
     query {
       placeholderImage: file(relativePath: { eq: "social-behavior.png" }) {
