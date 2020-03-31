@@ -50,7 +50,7 @@ def update_stream_chunk_path(stream_name):
     return chunk_path
 
 
-@retry(stop_max_attempt_number=7, wait_fixed=500)
+@retry(stop_max_attempt_number=10, wait_fixed=100)
 def _get_chunk_path_and_uris(stream_name):
     '''Attempts to load uris from a given chunk path. Will handle HTTPS 
     Errors and update the chunk path.
