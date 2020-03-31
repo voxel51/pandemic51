@@ -17,8 +17,6 @@ import HelpTooltip from "./help"
 import {
   ResponsiveContainer,
   ReferenceLine,
-  AreaChart,
-  Area,
   stop,
   defs,
   linearGradient,
@@ -179,13 +177,14 @@ class BigChart extends Component {
               {Object.keys(timezones)
                 .sort()
                 .map((val, i) => (
-                  <Area
+                  <Line
                     type="monotone"
                     dataKey={val}
                     stroke={val === "average" ? "#ff6d04" : colors[i]}
                     strokeWidth={val === "average" ? 6 : 3}
                     fillOpacity={1}
                     fill={`url(#color${String(colors[i])})`}
+                    dot={false}
                   />
                 ))}
             </ComposedChart>
