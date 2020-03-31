@@ -14,7 +14,7 @@ import pandas as pd
 import pandemic51.config as panc
 
 
-MAX_EVENT_AGE_DAYS = 1
+MAX_EVENT_AGE_DAYS = 3
 
 
 def load_events_for_city(city):
