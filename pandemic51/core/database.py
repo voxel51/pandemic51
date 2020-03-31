@@ -76,17 +76,20 @@ def add_stream_history(
 
         if labels_path is not None:
             sql = '''
-                INSERT INTO stream_history(stream_name, datetime, data_path, labels_path)
-                VALUES('{}', '{}', '{}', '{}');
-                '''.format(
-                    stream_name, formatted_timestamp, image_path, labels_path)
+                insert into `stream_history`
+                (`stream_name`, `datetime`, `data_path`, `labels_path`)
+                values (%s, %s, %s, %s);
+                '''
+            cursor.execute(
+                sql,
+                (stream_name, formatted_timestamp, image_path, labels_path))
         else:
             sql = '''
-                INSERT INTO stream_history(stream_name, datetime, data_path)
-                VALUES('{}', '{}', '{}');
-                '''.format(stream_name, formatted_timestamp, image_path)
-
-        cursor.execute(sql)
+                insert into `stream_history`
+                (`stream_name`, `datetime`, `data_path`)
+                values (%s, %s, %s);
+                '''
+            cursor.execute(sql, (stream_name, formatted_timestamp, image_path))
 
     cnx.commit()
 
@@ -104,8 +107,9 @@ def query_unprocessed_images(*args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select id, data_path from stream_history where labels_path is NULL;
-        '''
+            select `id`, `data_path` from `stream_history`
+            where `labels_path` is null;
+            '''
         cursor.execute(sql)
         result = cursor.fetchall()
 
@@ -122,10 +126,8 @@ def set_object_count(id, count, *args, cnx):
         cnx: a db connection. By default, a temporary connection is created
     '''
     with cnx.cursor() as cursor:
-        sql = '''
-        UPDATE stream_history SET count='{}' where id={};
-        '''.format(count, id)
-        cursor.execute(sql)
+        sql = "update `stream_history` set `count`=%s where `id`=%s;"
+        cursor.execute(sql, (count, id))
 
     cnx.commit()
 
@@ -140,10 +142,8 @@ def add_stream_labels(id, labels_path, *args, cnx):
         cnx: a db connection. By default, a temporary connection is created
     '''
     with cnx.cursor() as cursor:
-        sql = '''
-        UPDATE stream_history SET labels_path='{}' where id={};
-        '''.format(labels_path, id)
-        cursor.execute(sql)
+        sql = "update `stream_history` set `labels_path`=%s where id=%s;"
+        cursor.execute(sql, (labels_path, id))
 
     cnx.commit()
 
@@ -158,10 +158,8 @@ def add_stream_anno_img(id, anno_img_path, *args, cnx):
         cnx: a db connection. By default, a temporary connection is created
     '''
     with cnx.cursor() as cursor:
-        sql = '''
-        UPDATE stream_history SET anno_img_path='{}' where id={};
-        '''.format(anno_img_path, id)
-        cursor.execute(sql)
+        sql = "update `stream_history` set `anno_img_path`=%s where `id`=%s;"
+        cursor.execute(sql, (anno_img_path, id))
 
     cnx.commit()
 
@@ -198,15 +196,18 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     '''
     with cnx.cursor() as cursor:
         if stream_name:
-            stream_search = " where stream_name = '%s'" % stream_name
+            stream_search = " where `stream_name`=%s"
+            args = stream_name
         else:
             stream_search = ""
+            args = None
 
         sql = '''
-        select id, stream_name, datetime, data_path, labels_path, count
-        from stream_history%s ORDER BY datetime;
-        ''' % stream_search
-        cursor.execute(sql)
+            select `id`, `stream_name`, `datetime`, `data_path`, `labels_path`, 
+            `count`
+            from `stream_history`%s order by `datetime`;
+            ''' % stream_search
+        cursor.execute(sql, args)
         result = cursor.fetchall()
 
     if not reformat_as_dict:
@@ -244,18 +245,21 @@ def query_stream_pdi(stream_name, *args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select unix_timestamp(datetime), count, anno_img_path
-        from stream_history where stream_name = '%s' and count is not null and
-        anno_img_path is not null ORDER BY datetime;
-        ''' % stream_name
-        cursor.execute(sql)
+            select unix_timestamp(`datetime`), `count`, `anno_img_path`
+            from `stream_history`
+            where `stream_name`=%s
+            and `count` is not null
+            and `anno_img_path` is not null
+            order by `datetime`;
+            '''
+        cursor.execute(sql, stream_name)
         result = cursor.fetchall()
 
     times, counts, urls = zip(*result)
     times, pdis, urls = panp.compute_pdi(times, counts, urls)
 
-    return [
-        {"time": t, "pdi": p, "url": u} for t, p, u in zip(times, pdis, urls)]
+    return [{"time": t, "pdi": p, "url": u}
+            for t, p, u in zip(times, pdis, urls)]
 
 
 @with_connection
@@ -276,9 +280,9 @@ def query_all_pdi(*args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select stream_name, unix_timestamp(datetime), count
-        from stream_history where count is not null ORDER BY datetime;
-        '''
+            select `stream_name`, unix_timestamp(`datetime`), `count`
+            from `stream_history` where `count` is not null order by `datetime`;
+            '''
         cursor.execute(sql)
         result = cursor.fetchall()
 
@@ -314,16 +318,16 @@ def query_snapshots(*args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-        select stream_name, unix_timestamp(datetime), url from (
-            select s.stream_name, s.datetime, s.anno_img_path url
-            from stream_history s
-            inner join (
-                select stream_name, max(datetime) t
-                from stream_history where anno_img_path is not null
-                group by stream_name
-            ) i on s.stream_name = i.stream_name and s.datetime = i.t
-        ) r;
-        '''
+            select `stream_name`, unix_timestamp(`datetime`), url from (
+                select s.stream_name, s.datetime, s.anno_img_path url
+                from `stream_history` s
+                inner join (
+                    select `stream_name`, max(`datetime`) t
+                    from `stream_history` where `anno_img_path` is not null
+                    group by `stream_name`
+                ) i on s.stream_name = i.stream_name and s.datetime = i.t
+            ) r;
+            '''
         cursor.execute(sql)
         result = cursor.fetchall()
 
