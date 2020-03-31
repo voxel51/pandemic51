@@ -109,17 +109,6 @@ class BigChart extends Component {
   render() {
     const { data } = this.state
     const { classes, title, city } = this.props
-const AxisLabel = ({ axisType, x, y, width, height, stroke, children }) => {
-  const isVert = axisType === 'yAxis';
-  const cx = isVert ? x : x + (width / 2);
-  const cy = isVert ? (height / 2) + y : y + height + 10;
-  const rot = isVert ? `270 ${cx} ${cy}` : 0;
-  return (
-    <text x={cx} y={cy} transform={`rotate(${rot})`} textAnchor="middle" stroke={stroke}>
-      {children}
-    </text>
-  );
-};
 
     return (
       <Card className={classes.root} square>
@@ -134,7 +123,7 @@ const AxisLabel = ({ axisType, x, y, width, height, stroke, children }) => {
           <ResponsiveContainer width="100%" height={400}>
             <ComposedChart
               data={data}
-              margin={{ top: 0, right: 0, left: 40, bottom: 0 }}
+              margin={{ top: 5, right: 0, left: 40, bottom: 0 }}
             >
               <defs>
                 {Object.keys(timezones)
@@ -190,7 +179,7 @@ const AxisLabel = ({ axisType, x, y, width, height, stroke, children }) => {
         />}
               />
               <Tooltip allowEscapeViewBox={{x: true, y: true}} formatter={(v, n, p) => {
-                return [v.toLocaleString("en", {style: "percent"}), n]
+                return [v.toLocaleString("en", {style: "percent"}), cities[n]]
               }} labelFormatter={(v) => moment.unix(v).tz("Etc/GMT").format("dddd,  MMM Do, hh:mm A z")}/>
               {Object.keys(timezones)
                 .sort()
