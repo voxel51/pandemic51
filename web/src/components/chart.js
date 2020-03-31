@@ -69,7 +69,7 @@ const formal = {
 const styles = theme => ({
   root: {
     width: "100%",
-    overflow: "visible"
+    overflow: "visible",
   },
   bullet: {
     display: "inline-block",
@@ -128,8 +128,8 @@ class Chart extends Component {
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
-        <Card square style={{overflow: "visible"}}>
-          <CardContent style={{overflow: "visible"}}>
+        <Card square style={{ overflow: "visible" }}>
+          <CardContent style={{ overflow: "visible" }}>
             <Typography variant="h5" component="h2">
               {moment
                 .unix(v.label)
@@ -208,7 +208,10 @@ class Chart extends Component {
                   offset: -20,
                 }}
               />
-              <Tooltip content={contentFormatter} allowEscapeViewBox={{x: true, y: true}}/>
+              <Tooltip
+                content={contentFormatter}
+                allowEscapeViewBox={{ x: true, y: true }}
+              />
               <Area
                 type="monotone"
                 dataKey="pdi"

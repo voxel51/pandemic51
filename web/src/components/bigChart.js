@@ -30,7 +30,7 @@ import {
   Tooltip,
   Line,
   Legend,
-  Label
+  Label,
 } from "recharts"
 import Async from "react-async"
 
@@ -59,7 +59,7 @@ const cities = {
 const styles = theme => ({
   root: {
     width: "100%",
-    overflow: "visible"
+    overflow: "visible",
   },
   bullet: {
     display: "inline-block",
@@ -112,7 +112,9 @@ class BigChart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent style={{ position: "relative", width: "100%", overflow: "visible" }}>
+        <CardContent
+          style={{ position: "relative", width: "100%", overflow: "visible" }}
+        >
           <Typography
             variant="h4"
             component="h2"
@@ -169,18 +171,34 @@ class BigChart extends Component {
                 name="PDI"
                 width={25}
                 domain={[0, 1]}
-                tickFormatter={v => v.toLocaleString("en", {style: "percent"})}
-                label={    <Label
-        value="Normalized PDI"
-        position="insideLeft"
-        angle={-90}
-        offset={-30}
-        style={{ textAnchor: 'middle' }}
-        />}
+                tickFormatter={v =>
+                  v.toLocaleString("en", { style: "percent" })
+                }
+                label={
+                  <Label
+                    value="Normalized PDI"
+                    position="insideLeft"
+                    angle={-90}
+                    offset={-30}
+                    style={{ textAnchor: "middle" }}
+                  />
+                }
               />
-              <Tooltip allowEscapeViewBox={{x: true, y: true}} formatter={(v, n, p) => {
-                return [v.toLocaleString("en", {style: "percent"}), cities[n]]
-              }} labelFormatter={(v) => moment.unix(v).tz("Etc/GMT").format("dddd,  MMM Do, hh:mm A z")}/>
+              <Tooltip
+                allowEscapeViewBox={{ x: true, y: true }}
+                formatter={(v, n, p) => {
+                  return [
+                    v.toLocaleString("en", { style: "percent" }),
+                    cities[n],
+                  ]
+                }}
+                labelFormatter={v =>
+                  moment
+                    .unix(v)
+                    .tz("Etc/GMT")
+                    .format("dddd,  MMM Do, hh:mm A z")
+                }
+              />
               {Object.keys(timezones)
                 .sort()
                 .map((val, i) => (
