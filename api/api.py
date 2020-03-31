@@ -63,16 +63,18 @@ def pdi_all():
 
     Returns:
         {
-            "cities": {
-                "<city>": {
-                    "time": [...],
-                    "normalized_pdi": [...],
+            "data": [
+                {
+                    "time": time,
+                    "<city1>": <normalized-pdi>,
+                    "<city2>": <normalized-pdi>,
+                    ...
                 },
                 ...
-            }
+            ]
         }
     '''
-    return {"cities": pana.get_all_pdi_graph_data()}
+    return {"data": pana.get_all_pdi_graph_data()}
 
 
 @app.route("/streams/<city>")
