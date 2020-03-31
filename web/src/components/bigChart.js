@@ -128,9 +128,9 @@ class BigChart extends Component {
                 if (a.dataKey === "average") return -1
                 if (b.dataKey === "average") return 1
                 if (!a.value && !b.value) return 0
-                if (!a.value) return 1
-                if (!b.value) return -1
-                return a.value - b.value
+                if (!a.value) return -1
+                if (!b.value) return 1
+                return b.value - a.value
               })
               .map((v, i) => {
                 if (!v.value) return
