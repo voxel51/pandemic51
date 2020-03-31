@@ -126,7 +126,7 @@ class Header extends React.Component {
             </div>
           </div>
         </nav>
-        <div class="bg-header-dark-fancy2 body_part bg-dark-primary body_block--centerfull force-pad-bottom0">
+        <div class="bg-header-dark-fancy2 body_part bg-dark-primary body_block--centerfull force-pad-y3">
           <h2 class="body_block__title">
             Measuring the Social Impact of the <br />
             Coronavirus Pandemic
