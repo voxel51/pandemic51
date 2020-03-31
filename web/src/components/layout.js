@@ -200,10 +200,10 @@ class Layout extends React.Component {
             What insights can we derive from this comparison? Clearly all
             locations we are monitoring showed a similar trend corresponding
             with the spread of the virus and local statutes limiting movement.
-            The Dublin response, for example, was the earliest significant drop.
-            The Seaside Heights feed was steadily trending downward until the
-            recent weekend with good weather but has again fallen off at the
-            start of the work-week.
+            The Prague response, for example, was the earliest significant drop
+            (March 8th). The Seaside Heights feed was steadily trending downward
+            until the recent weekend with good weather but has again fallen off
+            at the start of the work-week.
             <br />
             <br />
             <BigChart />
