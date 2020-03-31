@@ -43,6 +43,7 @@ const timezones = {
   newjersey: "America/New_York",
   newyork: "America/New_York",
   prague: "Europe/Prague",
+  average: "Etc/GMT"
 }
 
 const cities = {
@@ -54,6 +55,7 @@ const cities = {
   newjersey: "New Jersey",
   newyork: "New York",
   prague: "Prague",
+  average: "Average"
 }
 
 const styles = theme => ({
@@ -127,32 +129,6 @@ class BigChart extends Component {
               data={data}
               margin={{ top: 5, right: 0, left: 40, bottom: 0 }}
             >
-              <defs>
-                {Object.keys(timezones)
-                  .sort()
-                  .map((val, i) => {
-                    return (
-                      <linearGradient
-                        id={"color" + String(i)}
-                        x1="0"
-                        y1="0"
-                        x2="0"
-                        y2="1"
-                      >
-                        <stop
-                          offset="5%"
-                          stopColor={colors[i]}
-                          stopOpacity={0.8}
-                        />
-                        <stop
-                          offset="95%"
-                          stopColor={colors[i]}
-                          stopOpacity={0}
-                        />
-                      </linearGradient>
-                    )
-                  })}
-              </defs>
               <XAxis
                 dataKey="time"
                 domain={["dataMin", "dataMax"]}
@@ -205,8 +181,8 @@ class BigChart extends Component {
                   <Area
                     type="monotone"
                     dataKey={val}
-                    stroke={colors[i]}
-                    strokeWidth={3}
+                    stroke={val === "average" ? "#000" : colors[i]}
+                    strokeWidth={val === "average" ? 6 : 3}
                     fillOpacity={1}
                     fill={`url(#color${String(colors[i])})`}
                   />
