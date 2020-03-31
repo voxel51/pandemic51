@@ -173,7 +173,7 @@ class Layout extends React.Component {
           </div>
         </div>
         <div className={classes.root + " bg-light-primary"}>
-          <div className="contentBody">
+          <div className="big-chart-body contentBody">
             <BigChart/>
           </div>
           </div>

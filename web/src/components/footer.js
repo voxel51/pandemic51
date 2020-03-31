@@ -135,7 +135,7 @@ the World Health Organization’s recommendation (ref:{" "}
           <ul class="list-inline">
             <li>
               <a onClick={handleOpen} class="button-primary">
-                Contact Us
+                Subscribe
               </a>
             </li>
             <li>

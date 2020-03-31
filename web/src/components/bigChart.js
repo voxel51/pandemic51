@@ -30,6 +30,7 @@ import {
   Tooltip,
   Line,
   Legend,
+  Label
 } from "recharts"
 import Async from "react-async"
 
@@ -99,7 +100,6 @@ class BigChart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi-all`)
       .then(response => response.json())
       .then(json => {
-        console.log(json.data);
         this.setState({
           data: json.data,
         })
@@ -109,6 +109,17 @@ class BigChart extends Component {
   render() {
     const { data } = this.state
     const { classes, title, city } = this.props
+const AxisLabel = ({ axisType, x, y, width, height, stroke, children }) => {
+  const isVert = axisType === 'yAxis';
+  const cx = isVert ? x : x + (width / 2);
+  const cy = isVert ? (height / 2) + y : y + height + 10;
+  const rot = isVert ? `270 ${cx} ${cy}` : 0;
+  return (
+    <text x={cx} y={cy} transform={`rotate(${rot})`} textAnchor="middle" stroke={stroke}>
+      {children}
+    </text>
+  );
+};
 
     return (
       <Card className={classes.root} square>
@@ -116,9 +127,9 @@ class BigChart extends Component {
           <Typography
             variant="h4"
             component="h2"
-            style={{ marginBottom: "1rem", textAlign: "center" }}
+            style={{ marginBottom: "3rem", textAlign: "center" }}
           >
-            Comparison
+            Uniformly Sampled Comparison
           </Typography>
           <ResponsiveContainer width="100%" height={400}>
             <ComposedChart
@@ -170,16 +181,17 @@ class BigChart extends Component {
                 width={25}
                 domain={[0, 1]}
                 tickFormatter={v => v.toLocaleString("en", {style: "percent"})}
-                label={{
-                  value: "PDI",
-                  angle: -90,
-                  position: "insideLeft",
-                  offset: -30,
-                }}
+                label={    <Label
+        value="Normalized PDI"
+        position="insideLeft"
+        angle={-90}
+        offset={-30}
+        style={{ textAnchor: 'middle' }}
+        />}
               />
               <Tooltip allowEscapeViewBox={{x: true, y: true}} formatter={(v, n, p) => {
                 return [v.toLocaleString("en", {style: "percent"}), n]
-              }} labelFormatter={(v) => moment.unix(v).tz("Etc/GMT").format("dddd,  MMM Do, hh:mm A")}/>
+              }} labelFormatter={(v) => moment.unix(v).tz("Etc/GMT").format("dddd,  MMM Do, hh:mm A z")}/>
               {Object.keys(timezones)
                 .sort()
                 .map((val, i) => (
@@ -187,6 +199,7 @@ class BigChart extends Component {
                     type="monotone"
                     dataKey={val}
                     stroke={colors[i]}
+                    strokeWidth={3}
                     fillOpacity={1}
                     fill={`url(#color${String(colors[i])})`}
                   />
