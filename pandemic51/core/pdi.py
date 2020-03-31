@@ -15,7 +15,7 @@ WINDOW_DAYS = 2
 LP = 2
 SMOOTHING_WIDTH = 40
 
-ALL_GRAPH_START_DATE = dateutil.parser.parse("2020-02-01")
+ALL_GRAPH_START_DATE = dateutil.parser.parse("2020-02-18")
 
 
 def compute_pdi(timestamps, counts, *args):
