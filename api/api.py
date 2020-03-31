@@ -66,6 +66,7 @@ def pdi_all():
             "data": [
                 {
                     "time": time,
+                    "average": <average-normalized-pdi>,
                     "<city1>": <normalized-pdi>,
                     "<city2>": <normalized-pdi>,
                     ...
