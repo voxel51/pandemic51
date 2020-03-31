@@ -173,7 +173,7 @@ class Layout extends React.Component {
           </div>
         </div>
         <Middle />
-        <div className={classes.root + " bg-light-secondary"}>
+        <div className={classes.root + " bg-light-primary"}>
           <div className="big-chart-body contentBody">
             <div class="body_block__title--left">
               <h2>Comparing the Response</h2>
@@ -186,9 +186,9 @@ class Layout extends React.Component {
             differences. As such, we needed to normalize the data, or create a
             common starting point in order to make a fair comparison so that we
             could examine the differences over time. To normalize the PDIs, we
-            set the maximum value for each location to 1.0, and scaled the other
-            values accordingly. The comparison chart below plots the normalized
-            PDIs.
+            set the maximum value for each location to 100%, and scaled the
+            other values accordingly. The comparison chart below plots the
+            normalized PDIs.
             <br />
             <br />
             Consider the Times Square and Seaside Heights feeds; the Times

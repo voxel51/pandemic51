@@ -6,7 +6,6 @@
  */
 import React from "react"
 import SB from "./sb"
-import PD from "./pd"
 
 const Middle = () => {
   return (
@@ -59,38 +58,6 @@ const Middle = () => {
           video streams are represented in the data points on the graph above.
           Note that PDI is a privacy-preserving measure that does not extract
           any identifying information about the individuals in the video.
-        </div>
-      </div>
-
-      <div class="body_part bg-light-primary body_block--left">
-        <div class="body_block__title">
-          <h2>Physical Distancing versus Social Distancing</h2>
-        </div>
-        <div class="body_block__visual">
-          <PD />
-        </div>
-        <div class="body_block__text" align="left">
-          <br />
-          We named the Voxel51 Physical Distancing Index (PDI) in response to
-          the World Health Organization’s recommendation (ref:{" "}
-          <a
-            traget="_blank"
-            href="https://www.washingtonpost.com/lifestyle/wellness/social-distancing-coronavirus-physical-distancing/2020/03/25/a4d4b8bc-6ecf-11ea-aa80-c2470c6b2034_story.html"
-          >
-            Washington Post
-          </a>
-          ,{" "}
-          <a
-            target="_blank"
-            href="https://www.forbes.com/sites/carolkinseygoman/2020/03/23/dont-let-physical-distancing-become-social-distancing/#157df7f949e6"
-          >
-            Forbes
-          </a>
-          ) to do so. Physical distancing is intended to reduce the spread of
-          the virus between individuals, especially in situations where an
-          individual is carrying the virus but does not show symptoms. We
-          wholeheartedly believe that it is intensely important to maintain
-          social connections during this time of physical separation.
         </div>
       </div>
     </>
