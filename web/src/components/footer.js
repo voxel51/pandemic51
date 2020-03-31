@@ -32,13 +32,14 @@ const Footer = props => {
   }
 
   const body = (
+    <div
+      style={{background: "rgb(244, 244, 244)", padding: "2rem"}}>
     <HubspotForm
    portalId='4972700'
    formId='1d9a99a1-1aac-4e77-ae5c-59bca55cd1d4'
-   onSubmit={() => console.log('Submit!')}
-   onReady={(form) => console.log('Form ready!')}
    loading={<div>Loading...</div>}
-   />
+ />
+ </div>
   )
 
   return (
@@ -120,7 +121,7 @@ const Footer = props => {
               onClick={handleOpen}
               class="button-primary"
             >
-              Subscribe
+              Contact Us
             </button>
           </li>
           <li>
@@ -142,7 +143,6 @@ const Footer = props => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          background: "color:rgb(244, 244, 244)"
         }}
       >
         {body}

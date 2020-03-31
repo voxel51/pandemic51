@@ -27,6 +27,7 @@ import "./layout.css"
 import "./../utils/typography"
 import Player from "./player"
 import Chart from "./chart"
+import BigChart from "./bigChart"
 import Hidden from "@material-ui/core/Hidden"
 import ImageOverlay from "./imageOverlay"
 import Header from "./header"
@@ -162,16 +163,21 @@ class Layout extends React.Component {
             </Hidden>
           </div>
         </div>
-        <div className={classes.root + " bg-light-primary"}>
-          <div className="contentBody">
-            <BigChart/>
-          </div>
-        </div>
         <Footer />
       </div>
     )
   }
 }
+
+  /*
+
+        <div className={classes.root + " bg-light-primary"}>
+          <div className="contentBody">
+            <BigChart/>
+          </div>
+          </div>
+
+  */
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

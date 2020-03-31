@@ -33,7 +33,7 @@ export default function SimpleModal() {
           <Hidden smDown>
             Click on live video streams from some of the world’s most visited
             streets to see how different cities react to physical distancing.
-            Click on the graph to view a day-by-day timeline of the average
+            Touch the graph to view a day-by-day timeline of the average
             daily number of people on the street (Voxel51’s PDI metric) and
             social behaviors over time.
           </Hidden>

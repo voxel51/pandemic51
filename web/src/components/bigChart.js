@@ -77,6 +77,16 @@ const styles = theme => ({
   },
 })
 
+const colors = [
+  "#7eacd9",
+  "#1f5972",
+  "#938516",
+  "#a170e0",
+  "#88807f",
+  "#d93be0",
+  "#f39da0"
+]
+
 class BigChart extends Component {
   state = {
     list: [],
@@ -88,67 +98,29 @@ class BigChart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi-all`)
       .then(response => response.json())
       .then(json => {
-        console.log(json);
+        const data = {};
+        for (const city in json.cities) {
+          const cityTimes = json.cities[city].time;
+          const cityPdis = json.cities[city].normalized_pdi;
+          for (const i in cityTimes) {
+            if (data[cityTimes[i]] === undefined) data[cityTimes[i]] = {time: cityTimes[i]};
+            data[cityTimes[i]][city] = cityPdis[i];
+          }
+        }
+        const array = []
+        for (const point in data) {
+          array.push(data[point]);
+        }
+        console.log(array);
         this.setState({
-          list: json["data"],
-          events: json["events"],
-          labels: json["labels"],
+          data: array,
         })
       })
   }
 
-  handleClick(data) {
-    if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url)
-    }
-  }
-
   render() {
-    const { list, events } = this.state
+    const { data } = this.state
     const { classes, title, city } = this.props
-
-    const contentFormatter = v => {
-      if (!v.payload) {
-        return null
-      }
-      const valid = v.payload.length ? v.payload[0].payload : false
-      const event =
-        valid && events[valid.event] ? events[valid.event].event : false
-      const time = valid && valid.event ? events[valid.event].time : false
-      const bull = <span className={classes.bullet}>•</span>
-      return (
-        <Card square>
-          <CardContent>
-            <Typography variant="h5" component="h2">
-              {moment
-                .unix(v.label)
-                .tz(timezones[city])
-                .format("dddd,  MMM Do, hh:mm A")}
-            </Typography>
-            <Typography
-              variant="h6"
-              component="h3"
-              style={{ color: "rgb(255, 109, 4)" }}
-            >
-              PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
-            </Typography>
-            {(() => {
-              if (event && time) {
-                return (
-                  <Typography variant="body2" component="p">
-                    {moment
-                      .unix(time)
-                      .tz(timezones[city])
-                      .format("MMM Do")}{" "}
-                    {bull} {event}
-                  </Typography>
-                )
-              }
-            })()}
-          </CardContent>
-        </Card>
-      )
-    }
 
     return (
       <Card className={classes.root} square>
@@ -158,21 +130,23 @@ class BigChart extends Component {
             component="h2"
             style={{ marginBottom: "1rem", textAlign: "center" }}
           >
-            PDI: {cities[city]}
+            Comparison
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               width="100%"
-              data={list}
+              data={data}
               margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
-              cursor="pointer"
-              onClick={this.handleClick.bind(this)}
             >
               <defs>
-                <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#ff6d04" stopOpacity={0} />
+                {Object.keys(timezones).sort().map((val, i) => {
+                  return (
+                <linearGradient id={"color" + String(i)} x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={colors[i]} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={colors[i]} stopOpacity={0} />
                 </linearGradient>
+                  )
+              })}
               </defs>
               <XAxis
                 dataKey="time"
@@ -182,7 +156,7 @@ class BigChart extends Component {
                 tickFormatter={unixTime =>
                   moment
                     .unix(unixTime)
-                    .tz(timezones[city])
+                    .tz(timezones.london)
                     .format("M/D")
                 }
                 type="number"
@@ -191,6 +165,7 @@ class BigChart extends Component {
                 dataKey="pdi"
                 name="PDI"
                 width={25}
+                domain={[0, 1]}
                 label={{
                   value: "PDI",
                   angle: -90,
@@ -198,18 +173,18 @@ class BigChart extends Component {
                   offset: -20,
                 }}
               />
-              <Tooltip content={contentFormatter} />
+              <Tooltip />
+              {Object.keys(timezones).sort().map((val, i) => (
               <Area
                 type="monotone"
-                dataKey="pdi"
-                stroke="#ff6d04"
+                dataKey={val}
+                stroke={colors[i]}
                 fillOpacity={1}
-                fill="url(#colorSdi)"
+                fill={`url(#color${String(colors[i])})`}
               />
-              <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
+              ))}
             </ComposedChart>
           </ResponsiveContainer>
-          <HelpTooltip />
         </CardContent>
       </Card>
     )
