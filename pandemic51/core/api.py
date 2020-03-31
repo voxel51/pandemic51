@@ -5,6 +5,7 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
+import urllib
 
 import eta.core.serial as etas
 
@@ -12,6 +13,7 @@ import pandemic51.config as panc
 import pandemic51.core.database as pand
 import pandemic51.core.events as pane
 import pandemic51.core.pdi as panp
+import pandemic51.core.streaming as pans
 
 
 def get_snapshots():
@@ -125,7 +127,24 @@ def get_stream_url(city):
         the stream URL
     '''
     stream_name = panc.STREAMS_MAP[city]
-    return etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
+    url = etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
+    try:
+        urllib.request.urlopen(url)
+    except urllib.error.HTTPError:
+        url = pans.update_streams(stream_name)
+
+    if "videos2archives" in url:
+        url = (
+            "https://pdi-service.voxel51.com/stream-archive/" +
+            url.split(".com/")[1]
+        )
+    elif "earthcam" in url:
+        url = (
+            "https://pdi-service.voxel51.com/stream/" +
+            url.split(".com/")[1]
+        )
+
+    return url
 
 
 def _make_snapshot_url(url):

@@ -8,7 +8,7 @@ import pandemic51.core.streaming as pans
 
 
 STREAM_NAMES = [
-    "time_square", "chicago", "chicago_wrigleyville", "new_orleans",
+    "time_square", "chicago", "new_orleans", "fort_lauderdale",
     "new_jersey", "abbey_road", "dublin", "prague"]
 
 OUT_BASEDIR = "out"
