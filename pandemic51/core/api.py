@@ -131,7 +131,7 @@ def get_stream_url(city):
     try:
         urllib.request.urlopen(url)
     except urllib.error.HTTPError:
-        url = pans.update_streams(stream_name)
+        url = pans.update_stream_chunk_path(stream_name)
 
     if "videos2archives" in url:
         url = (
