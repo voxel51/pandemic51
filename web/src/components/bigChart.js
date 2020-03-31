@@ -88,7 +88,8 @@ const colors = [
   "#a170e0",
   "#88807f",
   "#d93be0",
-  "#f39da0",
+  "#7da043",
+  "#cccccc"
 ]
 
 class BigChart extends Component {
