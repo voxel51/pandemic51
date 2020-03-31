@@ -27,6 +27,7 @@ import "./layout.css"
 import "./../utils/typography"
 import Player from "./player"
 import Chart from "./chart"
+import BigChart from "./bigChart"
 import Hidden from "@material-ui/core/Hidden"
 import ImageOverlay from "./imageOverlay"
 import Header from "./header"
@@ -34,13 +35,12 @@ import Footer from "./footer"
 import Typography from "@material-ui/core/Typography"
 
 const CITIES = {
-  chicago: "Chicago",
   dublin: "Dublin",
   london: "London",
   newjersey: "New Jersey",
-  neworleans: "New Orleans",
   newyork: "New York",
   prague: "Prague",
+  fortlauderdale: "Fort Lauderdale",
 }
 
 const styles = {
@@ -139,6 +139,16 @@ class Layout extends React.Component {
                   // todo: use correct image url
                   onClick={_ => this.setState({ src: _ })}
                 />
+                <Player city={city} height={height} setHeight={setHeight}>
+                  <ImageOverlay
+                    src={this.state.src}
+                    height={height}
+                    onClose={e => {
+                      e.stopPropagation()
+                      this.setState({ src: null })
+                    }}
+                  />
+                </Player>
                 <Grid container spacing={4} style={{ marginTop: "1rem" }}>
                   {Object.keys(CITIES)
                     .sort()
@@ -162,11 +172,21 @@ class Layout extends React.Component {
             </Hidden>
           </div>
         </div>
+        <div className={classes.root + " bg-light-primary"}>
+          <div className="big-chart-body contentBody">
+            <BigChart />
+          </div>
+        </div>
         <Footer />
       </div>
     )
   }
 }
+
+/*
+
+
+  */
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired,

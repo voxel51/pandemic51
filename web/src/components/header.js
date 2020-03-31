@@ -22,7 +22,7 @@ class Header extends React.Component {
   }
 
   handleClick(event) {
-    event.preventDefault();
+    event.preventDefault()
     this.setState({ nav: !this.state.nav })
   }
 

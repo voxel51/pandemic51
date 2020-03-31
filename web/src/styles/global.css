@@ -837,7 +837,21 @@ hr {
     padding: 6.0rem 3.0rem;
   }
 
+  .video-player-wrapper {
+    position: relative;
+    padding: 2rem 0;
+  }
+
+  .image-overlay-wrapper {
+    margin: 0;
+    padding: 2rem 0;
+    z-index: 1000;
+  }
+
   .mobileContent {
+    margin: 3.0rem 3.0rem;
+  }
+  .big-chart-body {
     margin: 3.0rem 3.0rem;
   }
 }
