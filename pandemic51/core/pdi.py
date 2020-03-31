@@ -96,7 +96,7 @@ def resample_pdis(pdis_map, num_samples=150, start_date=ALL_GRAPH_START_DATE):
     timestamps = np.linspace(
         start_timestamp, stop_timestamp, num=num_samples, dtype=int)
 
-    samples = [{"time": t} for t in timestamps]
+    samples = [{"time": int(t)} for t in timestamps]
     for key, data in pdis_map.items():
         f = spi.interp1d(
             data["time"], data["pdi"], kind="linear", bounds_error=False,
