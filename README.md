@@ -63,7 +63,9 @@ For Linux users, run the `scripts/linux_preinstall.bash` script.
 
 > todo: finish MacOS preinstall script
 
-[Download `chromedriver`](https://sites.google.com/a/chromium.org/chromedriver/downloads) for your version of Google Chrome and move it to `/usr/bin/`.
+[Download `chromedriver`](
+    https://sites.google.com/a/chromium.org/chromedriver/downloads) for your 
+    version of Google Chrome and move it to `/usr/bin/`.
 
 We strongly recommend creating a virtual environment for your development work:
 
