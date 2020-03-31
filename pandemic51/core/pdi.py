@@ -5,13 +5,17 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from datetime import datetime, timedelta
+import dateutil.parser
 
 import numpy as np
+import scipy.interpolate as spi
 
 
 WINDOW_DAYS = 2
 LP = 2
 SMOOTHING_WIDTH = 40
+
+ALL_GRAPH_START_DATE = dateutil.parser.parse("2020-02-01")
 
 
 def compute_pdi(timestamps, counts, *args):
@@ -62,6 +66,45 @@ def normalize_pdi_values(pdi):
         a list of normalized PDI values in [0, 1]
     '''
     return list(np.asarray(pdi) / max(pdi))
+
+
+def resample_pdis(pdis_map, num_samples=150, start_date=ALL_GRAPH_START_DATE):
+    '''Resamples the given PDI time series to uniformly spaced time intervals,
+    using linear interpolation to impute values as necessary.
+
+    Missing data are filled with `None`s.
+
+    Args:
+        pdi_map: a dict mapping keys to {"time": [...], "pdi": [...]} dicts
+        num_samples: the number of uniformly spaced samples to take
+        start_date: a datetime specifying the start date for sampling
+
+    Returns:
+        [
+            {
+                "time": <timestamp>,
+                "<key1>": <pdi>,
+                "<key2>": <pdi>,
+                ...
+            },
+            ...
+        ]
+    '''
+    start_timestamp = int(start_date.timestamp())
+    stop_timestamp = int(max(max(d["time"]) for d in pdis_map.values()))
+
+    timestamps = np.linspace(
+        start_timestamp, stop_timestamp, num=num_samples, dtype=int)
+
+    samples = [{"time": t} for t in timestamps]
+    for key, data in pdis_map.items():
+        f = spi.interp1d(
+            data["time"], data["pdi"], kind="linear", bounds_error=False,
+            fill_value=-1)
+        for sample, pdi in zip(samples, f(timestamps)):
+            sample[key] = pdi if pdi >= 0 else None
+
+    return samples
 
 
 def compute_pdi_change(timestamps, pdis, num_days=7):
