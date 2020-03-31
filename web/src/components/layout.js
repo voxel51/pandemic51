@@ -187,14 +187,23 @@ class Layout extends React.Component {
             common starting point in order to make a fair comparison so that we
             could examine the differences over time. To normalize the PDIs, we
             set the maximum value for each location to 1.0, and scaled the other
-            values accordingly. The comparison chart above/to the right/to the
-            left, plots the Normalized PDIs.
+            values accordingly. The comparison chart below plots the normalized
+            PDIs.
             <br />
             <br />
             Consider the Times Square and Seaside Heights feeds; the Times
             Square area is physically much larger and generally occupied by more
             people year round, whereas the Seaside Heights location is sparsely
             populated in the winter but densely in the summer.
+            <br />
+            <br />
+            What insights can we derive from this comparison? Clearly all
+            locations we are monitoring showed a similar trend corresponding
+            with the spread of the virus and local statutes limiting movement.
+            The Dublin response, for example, was the earliest significant drop.
+            The Seaside Heights feed was steadily trending downward until the
+            recent weekend with good weather but has again fallen off at the
+            start of the work-week.
             <br />
             <br />
             <BigChart />

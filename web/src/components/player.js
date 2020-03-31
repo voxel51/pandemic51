@@ -83,12 +83,7 @@ export default function Player({ city, height, setHeight, children }) {
       // likely iOS: https://github.com/video-dev/hls.js/issues/2262
       setPlayer(
         <div class="player-area">
-          <video
-            src={url}
-            width="100%"
-            height="100%"
-            {...videoProps}
-          />
+          <video src={url} width="100%" height="100%" {...videoProps} />
         </div>
       )
     }

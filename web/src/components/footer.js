@@ -61,7 +61,10 @@ const Footer = props => {
                 target="_blank"
                 href="https://github.com/voxel51/pandemic51"
               >
-                <FontAwesomeIcon icon={faGithub} style={{ marginRight: '0.5em' }} />
+                <FontAwesomeIcon
+                  icon={faGithub}
+                  style={{ marginRight: "0.5em" }}
+                />
                 Contribute
               </a>
             </li>
