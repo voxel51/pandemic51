@@ -10,11 +10,13 @@ import logging
 import os
 import pathlib
 import time
+from urllib.error import HTTPError
 
 import ffmpy
 import m3u8
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
+from selenium.webdriver.chrome.options import Options
 
 import eta.core.serial as etas
 import eta.core.utils as etau
@@ -30,28 +32,59 @@ CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
 
 
-def update_streams(stream_name, streams):
+def update_stream_chunk_path(stream_name):
     '''Updates the given stream in the stream dictionary and serializes it to
     disk at `pandemic51.config.STREAMS_PATH`.
 
     Args:
         stream_name: the stream name
-        streams: the current dict of stream info
 
     Returns:
         the chunk path
     '''
+    streams = etas.load_json(panc.STREAMS_PATH)
     chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
     streams[stream_name]["chunk_path"] = chunk_path
-    etas.write_json(streams, panc.STREAMS_PATH)
+    etas.write_json(streams, panc.STREAMS_PATH, pretty_print=True)
     return chunk_path
+
+
+def _get_chunk_path_and_uris(stream_name):
+    '''Attempts to load uris from a given chunk path. Will handle HTTPS 
+    Errors and update the chunk path.
+
+    Args:
+        chunk_path: URL of the chunklist to attempt to load
+        stream_name: name of the stream corresponding to chunk_path
+
+    Returns:
+        uris: the uris present in the chunk_path
+    '''
+    streams = etas.load_json(panc.STREAMS_PATH)
+    chunk_path = streams[stream_name]["chunk_path"]
+
+    try:
+        uris = m3u8.load(chunk_path).segments.uri
+        if not uris:
+            chunk_path = update_stream_chunk_path(stream_name)
+            uris = m3u8.load(chunk_path).segments.uri
+
+    except HTTPError:
+        chunk_path = update_stream_chunk_path(stream_name)
+        uris = m3u8.load(chunk_path).segments.uri
+
+    return chunk_path, uris
 
 
 def _get_chunk_url(webpage):
     # Reference: https://stackoverflow.com/q/52633697
     caps = DesiredCapabilities.CHROME
     caps["goog:loggingPrefs"] = {"performance": "ALL"}
-    driver = webdriver.Chrome(desired_capabilities=caps)
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(
+        desired_capabilities=caps, options=chrome_options,
+        executable_path="/usr/bin/chromedriver")
     driver.get(webpage)
 
     chunk_url = None
@@ -88,17 +121,18 @@ def _process_browser_log_entry(entry):
     return json.loads(entry["message"])["message"]
 
 
-def save_video(base_path, uri, output_dir):
+def save_video(chunk_path, uri, output_dir):
     '''Saves the video at the given URI to the given output directory.
 
     Args:
-        base_path: the base path for the video URI
+        chunk_path: the URL path for the chunklist
         uri: the video URI
         output_dir: the output directory
 
     Returns:
         the output video path
     '''
+    base_path = os.path.split(chunk_path)[0]
     input_video = os.path.join(base_path, uri)
     out_name = os.path.splitext(uri)[0] + ".mp4"
     output_video_path = os.path.join(output_dir, out_name)
@@ -119,24 +153,13 @@ def download_chunk(stream_name, output_dir):
         stream_name: the stream name
         output_dir: the output directory
     '''
-    streams = etas.load_json(panc.STREAMS_PATH)
-    chunk_path = streams[stream_name]["chunk_path"]
-    base_path = os.path.split(chunk_path)[0]
     output_path = os.path.join(output_dir, stream_name)
 
-    uris = m3u8.load(chunk_path).segments.uri
-
-    if not uris:
-        chunk_path = update_streams(stream_name, streams)
-        uris = m3u8.load(chunk_path).segments.uri
-
-        if not uris:
-            return None
-
-    uri = uris[0]
+    chunk_path, uris = _get_chunk_path_and_uris(stream_name)
+    uri = uris[-1]
 
     logger.info("Processing URI '%s'", uri)
-    return save_video(base_path, uri, output_path), datetime.utcnow()
+    return save_video(chunk_path, uri, output_path), datetime.utcnow()
 
 
 def download_stream(stream_name, output_dir, timeout=None):
@@ -148,9 +171,6 @@ def download_stream(stream_name, output_dir, timeout=None):
         timeout: duration (in seconds) to continue streaming. If None, continue
             forever
     '''
-    streams = etas.load_json(panc.STREAMS_PATH)
-    chunk_path = streams[stream_name]["chunk_path"]
-    base_path = os.path.split(chunk_path)[0]
     output_path = os.path.join(output_dir, stream_name)
 
     processed_uris = []
@@ -158,11 +178,11 @@ def download_stream(stream_name, output_dir, timeout=None):
     start = time.time()
     while timeout is None or (time.time() - start < timeout):
         time.sleep(1)
-        uris = m3u8.load(chunk_path).segments.uri
+        chunk_path, uris = _get_chunk_path_and_uris(stream_name)
         for uri in uris:
             if uri not in processed_uris:
                 logger.info("Processing URI '%s'", uri)
-                save_video(base_path, uri, output_path)
+                save_video(chunk_path, uri, output_path)
                 processed_uris.append(uri)
 
 

@@ -14,16 +14,18 @@ LP = 2
 SMOOTHING_WIDTH = 40
 
 
-def compute_pdi(timestamps, counts, urls):
+def compute_pdi(timestamps, counts, *args):
     '''Computes the physical distancing indexes (PDIs) for the given data.
+
+    The input series may be truncated if necessary to produce valid PDIs.
 
     Args:
         timestamps: a list of timestamps
         counts: a list of object counts
-        urls: a list of annotated image URLs
+        *args: optional additional lists to truncate to match the other outputs
 
     Returns:
-        (timestamps, PDIs, urls)
+        (timestamps, PDIs, *args)
     '''
     times = np.asarray([datetime.utcfromtimestamp(t) for t in timestamps])
     counts = np.asarray(counts)
@@ -47,7 +49,19 @@ def compute_pdi(timestamps, counts, urls):
     indices = np.argwhere(times > startup_time)
     skip = indices[0, 0] if indices.size != 0 else 0
 
-    return timestamps[skip::], pdis[skip::], urls[skip::]
+    return (timestamps[skip::], pdis[skip::]) + tuple(a[skip::] for a in args)
+
+
+def normalize_pdi_values(pdi):
+    '''Normalizes the given PDI values by scaling them to a max of 1.
+
+    Args:
+        pdi: a list of PDI values
+
+    Returns:
+        a list of normalized PDI values in [0, 1]
+    '''
+    return list(np.asarray(pdi) / max(pdi))
 
 
 def compute_pdi_change(timestamps, pdis, num_days=7):

@@ -33,16 +33,17 @@ export default function SimpleModal() {
           <Hidden smDown>
             Click on live video streams from some of the world’s most visited
             streets to see how different cities react to physical distancing.
-            Touch the graph to view a day-by-day timeline of the average
-            daily number of people on the street (Voxel51’s PDI metric) and
-            social behaviors over time.
+            Touch the graph to view a day-by-day timeline of the average daily
+            number of people on the street (Voxel51’s PDI metric) and social
+            behaviors over time.
           </Hidden>
           <Hidden mdUp>
             Click on live video streams from some of the world’s most visited
             streets to see how different cities react to physical distancing.
             Click on the graph to view a day-by-day timeline of the average
             daily number of people on the street (Voxel51’s PDI metric) and
-            social behaviors over time. An image of our detections from the time will overlay the video stream.
+            social behaviors over time. An image of our detections from the time
+            will overlay the video stream.
           </Hidden>
         </Typography>
         <SimpleModal />

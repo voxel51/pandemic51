@@ -6,6 +6,7 @@ voxel51.com
 '''
 from datetime import datetime, timedelta
 import dateutil.parser
+import time as tm
 
 import numpy as np
 import pandas as pd
@@ -53,7 +54,7 @@ def load_events_for_city(city):
         if not load_event:
             continue
 
-        event_time = int(dateutil.parser.parse(date))
+        event_time = int(tm.mktime(dateutil.parser.parse(date).timetuple()))
         events[event_time] = {
             "time": event_time,
             "event": event.strip('"'),

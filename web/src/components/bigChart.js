@@ -84,7 +84,7 @@ const colors = [
   "#a170e0",
   "#88807f",
   "#d93be0",
-  "#f39da0"
+  "#f39da0",
 ]
 
 class BigChart extends Component {
@@ -98,20 +98,21 @@ class BigChart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi-all`)
       .then(response => response.json())
       .then(json => {
-        const data = {};
+        const data = {}
         for (const city in json.cities) {
-          const cityTimes = json.cities[city].time;
-          const cityPdis = json.cities[city].normalized_pdi;
+          const cityTimes = json.cities[city].time
+          const cityPdis = json.cities[city].normalized_pdi
           for (const i in cityTimes) {
-            if (data[cityTimes[i]] === undefined) data[cityTimes[i]] = {time: cityTimes[i]};
-            data[cityTimes[i]][city] = cityPdis[i];
+            if (data[cityTimes[i]] === undefined)
+              data[cityTimes[i]] = { time: cityTimes[i] }
+            data[cityTimes[i]][city] = cityPdis[i]
           }
         }
         const array = []
         for (const point in data) {
-          array.push(data[point]);
+          array.push(data[point])
         }
-        console.log(array);
+        console.log(array)
         this.setState({
           data: array,
         })
@@ -138,14 +139,30 @@ class BigChart extends Component {
               margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
             >
               <defs>
-                {Object.keys(timezones).sort().map((val, i) => {
-                  return (
-                <linearGradient id={"color" + String(i)} x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor={colors[i]} stopOpacity={0.8} />
-                  <stop offset="95%" stopColor={colors[i]} stopOpacity={0} />
-                </linearGradient>
-                  )
-              })}
+                {Object.keys(timezones)
+                  .sort()
+                  .map((val, i) => {
+                    return (
+                      <linearGradient
+                        id={"color" + String(i)}
+                        x1="0"
+                        y1="0"
+                        x2="0"
+                        y2="1"
+                      >
+                        <stop
+                          offset="5%"
+                          stopColor={colors[i]}
+                          stopOpacity={0.8}
+                        />
+                        <stop
+                          offset="95%"
+                          stopColor={colors[i]}
+                          stopOpacity={0}
+                        />
+                      </linearGradient>
+                    )
+                  })}
               </defs>
               <XAxis
                 dataKey="time"
@@ -173,15 +190,17 @@ class BigChart extends Component {
                 }}
               />
               <Tooltip />
-              {Object.keys(timezones).sort().map((val, i) => (
-              <Area
-                type="monotone"
-                dataKey={val}
-                stroke={colors[i]}
-                fillOpacity={1}
-                fill={`url(#color${String(colors[i])})`}
-              />
-              ))}
+              {Object.keys(timezones)
+                .sort()
+                .map((val, i) => (
+                  <Area
+                    type="monotone"
+                    dataKey={val}
+                    stroke={colors[i]}
+                    fillOpacity={1}
+                    fill={`url(#color${String(colors[i])})`}
+                  />
+                ))}
             </ComposedChart>
           </ResponsiveContainer>
         </CardContent>
