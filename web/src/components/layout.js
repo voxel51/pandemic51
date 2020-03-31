@@ -38,7 +38,6 @@ const CITIES = {
   dublin: "Dublin",
   london: "London",
   newjersey: "New Jersey",
-  neworleans: "New Orleans",
   newyork: "New York",
   prague: "Prague",
   fortlauderdale: "Fort Lauderdale",

@@ -129,7 +129,7 @@ const Footer = props => {
         <div class="body_block__hook">
           <ul class="list-inline">
             <li>
-              <button onClick={handleOpen} class="button-primary">
+              <button onClick={handleOpen} class="button-primary" style={{width: "100%"}}>
                 Contact Us
               </button>
             </li>
@@ -141,6 +141,8 @@ const Footer = props => {
               >
                 Contribute
               </a>
+            </li>
+          </ul>
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -156,8 +158,6 @@ const Footer = props => {
               >
                 {body}
               </Modal>
-            </li>
-          </ul>
         </div>
       </div>
       <footer class="body_part footer">

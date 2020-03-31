@@ -33,7 +33,7 @@ function SEO({ description, lang, meta }) {
       htmlAttributes={{
         lang,
       }}
-      title={`Voxel51 // PDI`}
+      title={site.siteMetadata.title}
       titleTemplate={``}
       meta={[
         {
