@@ -161,7 +161,6 @@ class Chart extends Component {
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
-              width="100%"
               data={list}
               margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
               cursor="pointer"

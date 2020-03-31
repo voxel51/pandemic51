@@ -140,6 +140,19 @@ class Layout extends React.Component {
                   // todo: use correct image url
                   onClick={_ => this.setState({ src: _ })}
                 />
+                      <Player
+                        city={city}
+                        height={height}
+                        setHeight={setHeight}
+                      >
+                      <ImageOverlay
+                        src={this.state.src}
+                        height={height}
+                        onClose={e => {
+                          e.stopPropagation()
+                          this.setState({ src: null })
+                        }}
+                      /></Player>
                 <Grid container spacing={4} style={{ marginTop: "1rem" }}>
                   {Object.keys(CITIES)
                     .sort()

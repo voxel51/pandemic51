@@ -11,7 +11,7 @@ import "@tensorflow/tfjs";
 import ReactHLS from 'react-hls';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export default function Player({city, height, setHeight}) {
+export default function Player({city, height, setHeight, children}) {
   const [url, setUrl] = useState(null);
   const [player, setPlayer] = useState(null);
   const [isLoaded, setLoaded] = useState(false);
@@ -81,6 +81,7 @@ export default function Player({city, height, setHeight}) {
   }
   return (
     <div ref={wrapperRef} className="video-player-wrapper">
+      {children}
       <div className="video-player" style={{height}}>
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {player}
