@@ -31,6 +31,7 @@ import BigChart from "./bigChart"
 import Hidden from "@material-ui/core/Hidden"
 import ImageOverlay from "./imageOverlay"
 import Header from "./header"
+import Middle from "./middle"
 import Footer from "./footer"
 import Typography from "@material-ui/core/Typography"
 
@@ -172,8 +173,31 @@ class Layout extends React.Component {
             </Hidden>
           </div>
         </div>
-        <div className={classes.root + " bg-light-primary"}>
+        <Middle />
+        <div className={classes.root + " bg-light-secondary"}>
           <div className="big-chart-body contentBody">
+            <div class="body_block__title--left">
+              <h2>Comparing the Response</h2>
+            </div>
+            With the far-reaching impact of the coronavirus around the world, we
+            were interested to compare data from each city to see the
+            differences in PDI relative to each city over time. But because the
+            geographical size and the rate of human activity is vastly different
+            in each city (or street cam view), we must account for these
+            differences. As such, we needed to normalize the data, or create a
+            common starting point in order to make a fair comparison so that we
+            could examine the differences over time. To normalize the PDIs, we
+            set the maximum value for each location to 1.0, and scaled the other
+            values accordingly. The comparison chart above/to the right/to the
+            left, plots the Normalized PDIs.
+            <br />
+            <br />
+            Consider the Times Square and Seaside Heights feeds; the Times
+            Square area is physically much larger and generally occupied by more
+            people year round, whereas the Seaside Heights location is sparsely
+            populated in the winter but densely in the summer.
+            <br />
+            <br />
             <BigChart />
           </div>
         </div>
