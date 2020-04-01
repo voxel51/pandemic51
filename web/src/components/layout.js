@@ -62,7 +62,10 @@ class Layout extends React.Component {
     super(props)
     this.state = {
       data: {},
+      overlayData: {},
     }
+    this.openOverlay = this.openOverlay.bind(this);
+    this.closeOverlay = this.closeOverlay.bind(this);
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
@@ -70,6 +73,15 @@ class Layout extends React.Component {
       .then(json => {
         this.setState({ data: json["data"] })
       })
+  }
+
+  openOverlay(overlayData) {
+    this.setState({ overlayData })
+  }
+
+  closeOverlay(e) {
+    e.stopPropagation()
+    this.setState({ overlayData: {} })
   }
 
   render() {
@@ -106,20 +118,21 @@ class Layout extends React.Component {
                     <Chart
                       title="Physical Distancing Index (PDI)"
                       city={city}
-                      onClick={src => this.setState({ src })}
+                      onClick={this.openOverlay}
                     />
                   </Grid>
                 </Grid>
                 <Grid container spacing={4}>
                   <Grid item xs={12} className="media-container">
-                    <Player city={city} height={height} setHeight={setHeight} />
-                    <ImageOverlay
-                      src={this.state.src}
+                    <Player
+                      city={city}
                       height={height}
-                      onClose={e => {
-                        e.stopPropagation()
-                        this.setState({ src: null })
-                      }}
+                      setHeight={setHeight}
+                    />
+                    <ImageOverlay
+                      {...this.state.overlayData}
+                      height={height}
+                      onClose={this.closeOverlay}
                     />
                   </Grid>
                 </Grid>
@@ -128,22 +141,18 @@ class Layout extends React.Component {
           </Hidden>
           <Hidden mdUp>
             <div className="mobileContent">
-              <Chart
-                title="Physical Distancing Index (PDI)"
-                city={city}
-                // todo: use correct image url
-                onClick={_ => this.setState({ src: _ })}
-              />
-              <Player city={city} height={height} setHeight={setHeight}>
-                <ImageOverlay
-                  src={this.state.src}
-                  height={height}
-                  onClose={e => {
-                    e.stopPropagation()
-                    this.setState({ src: null })
-                  }}
+                <Chart
+                  title="Physical Distancing Index (PDI)"
+                  city={city}
+                  onClick={this.openOverlay}
                 />
-              </Player>
+                <Player city={city} height={height} setHeight={setHeight}>
+                  <ImageOverlay
+                    {...this.state.overlayData}
+                    height={height}
+                    onClose={this.closeOverlay}
+                  />
+                </Player>
               <Grid container spacing={4} style={{ marginTop: "1rem" }}>
                 {Object.keys(CITIES)
                   .sort()
