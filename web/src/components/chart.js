@@ -109,9 +109,20 @@ class Chart extends Component {
       })
   }
 
-  handleClick(data) {
-    if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url)
+  formatFullTime(rawTime) {
+    return moment
+      .unix(rawTime)
+      .tz(timezones[this.props.city])
+      .format("dddd,  MMM Do, hh:mm A")
+  }
+
+  handleClick(event) {
+    if (event && event.activeLabel) {
+      const data = this.state.labels[event.activeLabel];
+      this.props.onClick({
+        src: data.url,
+        timestamp: this.formatFullTime(data.time),
+      })
     }
   }
 
@@ -132,10 +143,7 @@ class Chart extends Component {
         <Card square style={{ overflow: "visible", opacity: 0.9 }}>
           <CardContent style={{ overflow: "visible" }}>
             <Typography variant="h5" component="h2">
-              {moment
-                .unix(v.label)
-                .tz(timezones[city])
-                .format("dddd,  MMM Do, hh:mm A")}
+              {this.formatFullTime(v.label)}
             </Typography>
             <Typography
               variant="h6"
