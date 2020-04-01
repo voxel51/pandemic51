@@ -10,7 +10,13 @@ import IconButton from "@material-ui/core/IconButton"
 import CloseIcon from "@material-ui/icons/Close"
 import CircularProgress from "@material-ui/core/CircularProgress"
 
-export default function ImageOverlay({ src, height, timestamp, clicked, onClose }) {
+export default function ImageOverlay({
+  src,
+  height,
+  timestamp,
+  clicked,
+  onClose,
+}) {
   const [isLoaded, setLoaded] = useState(false)
 
   useEffect(() => setLoaded(false), [src])

@@ -177,7 +177,7 @@ class BigChart extends Component {
                 tickFormatter={unixTime =>
                   moment
                     .unix(unixTime)
-                      .tz("Etc/GTM")
+                    .tz("Etc/GTM")
                     .format("M/D")
                 }
                 type="number"

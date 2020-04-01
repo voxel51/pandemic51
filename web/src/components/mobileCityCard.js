@@ -46,7 +46,7 @@ const timezones = {
   newjersey: "America/New_York",
   newyork: "America/New_York",
   prague: "Europe/Prague",
-  lasvegas: "America/Los_Angeles"
+  lasvegas: "America/Los_Angeles",
 }
 
 const locations = {

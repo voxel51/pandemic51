@@ -122,7 +122,7 @@ class Chart extends Component {
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -135,7 +135,7 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -153,7 +153,7 @@ class Chart extends Component {
       timestamp: null,
       clicked: null,
     })
-  }, 200);
+  }, 200)
 
   render() {
     const { list, events } = this.state
@@ -262,11 +262,11 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
                 ))}
-              {selectedTime ?
-                <ReferenceLine x={selectedTime} stroke="#ff6d04" /> :
-                null}
+              {selectedTime ? (
+                <ReferenceLine x={selectedTime} stroke="#ff6d04" />
+              ) : null}
               <Area
                 type="monotone"
                 dataKey="pdi"
