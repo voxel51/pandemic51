@@ -119,7 +119,7 @@ class Chart extends Component {
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[String(event.activelabel)];
+      const data = this.state.labels[event.activelabel];
       this.props.onClick({
         src: data.url,
         timestamp: this.formatFullTime(data.time),
@@ -131,7 +131,7 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[String(event.activelabel)];
+      const data = this.state.labels[event.activelabel];
       this.props.onClick({
         src: data.url,
         timestamp: this.formatFullTime(data.time),
