@@ -34,7 +34,7 @@ def setup_periodic_tasks(sender, **kwargs):
         panc.COMPUTE_DETECTIONS_INTERVAL, compute_detections_task.s())
 
 
-@app.task()
+@app.task(time_limit=120)
 def download_stream_task(stream_name):
     '''Downloads and stores images for the given stream.
 

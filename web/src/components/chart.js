@@ -29,9 +29,11 @@ import {
   Scatter,
   Tooltip,
   Line,
+  Label,
   Legend,
 } from "recharts"
 import Async from "react-async"
+import debounce from "lodash/debounce"
 
 const timezones = {
   chicago: "America/Chicago",
@@ -108,11 +110,44 @@ class Chart extends Component {
       })
   }
 
-  handleClick(data) {
-    if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url)
+  formatFullTime(rawTime) {
+    return moment
+      .unix(rawTime)
+      .tz(timezones[this.props.city])
+      .format("dddd,  MMM Do, hh:mm A")
+  }
+
+  handleClick(event) {
+    if (event && event.activeLabel) {
+      const data = this.state.labels[event.activeLabel];
+      this.props.onClick({
+        src: data.url,
+        timestamp: this.formatFullTime(data.time),
+        clicked: true,
+      })
     }
   }
+
+  handleHover = debounce(event => {
+    if (this.props.clicked) return
+    if (event && event.activeLabel) {
+      const data = this.state.labels[event.activeLabel];
+      this.props.onClick({
+        src: data.url,
+        timestamp: this.formatFullTime(data.time),
+        clicked: false,
+      })
+    }
+  }, 200)
+
+  handleMouseLeave = debounce(event => {
+    if (this.props.clicked) return
+    this.props.onClick({
+      src: null,
+      timestamp: null,
+      clicked: null,
+    })
+  }, 200);
 
   render() {
     const { list, events } = this.state
@@ -128,20 +163,18 @@ class Chart extends Component {
       const time = valid && valid.event ? events[valid.event].time : false
       const bull = <span className={classes.bullet}>•</span>
       return (
-        <Card square style={{ overflow: "visible" }}>
+        <Card square style={{ overflow: "visible", opacity: 0.9 }}>
           <CardContent style={{ overflow: "visible" }}>
             <Typography variant="h5" component="h2">
-              {moment
-                .unix(v.label)
-                .tz(timezones[city])
-                .format("dddd,  MMM Do, hh:mm A")}
+              {this.formatFullTime(v.label)}
             </Typography>
             <Typography
               variant="h6"
               component="h3"
               style={{ color: "rgb(255, 109, 4)" }}
             >
-              PDI: {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
+              PDI {bull}{" "}
+              {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
             </Typography>
             {(() => {
               if (event && time) {
@@ -174,11 +207,14 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
+              margin={{ top: 0, right: 5, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
               onTouchEnd={this.handleClick.bind(this)}
+              onTouchMove={this.handleHover.bind(this)}
+              onMouseMove={this.handleHover.bind(this)}
+              onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>
                 <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
@@ -203,17 +239,25 @@ class Chart extends Component {
                 dataKey="pdi"
                 name="PDI"
                 width={25}
-                label={{
-                  value: "PDI",
-                  angle: -90,
-                  position: "insideLeft",
-                  offset: -20,
-                }}
+                label={
+                  <Label
+                    value="Physical Distancing Index"
+                    position="insideLeft"
+                    angle={-90}
+                    offset={-20}
+                    style={{ textAnchor: "middle" }}
+                  />
+                }
               />
               <Tooltip
                 content={contentFormatter}
-                allowEscapeViewBox={{ x: true, y: true }}
+                allowEscapeViewBox={{ x: false, y: false }}
               />
+              {Object.keys(events)
+                .sort()
+                .map(v => (
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                ))}
               <Area
                 type="monotone"
                 dataKey="pdi"
@@ -221,7 +265,6 @@ class Chart extends Component {
                 fillOpacity={1}
                 fill="url(#colorSdi)"
               />
-              <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />

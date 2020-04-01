@@ -6,7 +6,6 @@
  */
 import React, { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
-import * as cocoSsd from "@tensorflow-models/coco-ssd"
 import "@tensorflow/tfjs"
 import ReactHLS from "react-hls"
 import CircularProgress from "@material-ui/core/CircularProgress"
@@ -51,6 +50,10 @@ export default function Player({ city, height, setHeight, children }) {
     handleResize(e.target)
   }
 
+  const handleClick = e => {
+    e.target.play()
+  }
+
   useEffect(() => {
     const callback = () => {
       handleResize(wrapperRef.current.querySelector("video"))
@@ -62,27 +65,44 @@ export default function Player({ city, height, setHeight, children }) {
   }, [wrapperRef.current])
 
   useEffect(() => {
-    setPlayer(
-      <ReactHLS
-        url={url}
-        width="100%"
-        height="100%"
-        videoProps={{
-          muted: true,
-          controls: false,
-          autoPlay: true,
-          onLoadedData: onLoad,
-          onLoadedMetadata: handleMetadata,
-        }}
-      />
-    )
+    const videoProps = {
+      muted: true,
+      controls: false,
+      autoPlay: true,
+      playsInline: true,
+      onLoadedData: onLoad,
+      onLoadedMetadata: handleMetadata,
+      onClick: handleClick,
+    }
+
+    if (window.MediaSource) {
+      setPlayer(
+        <ReactHLS
+          url={url}
+          width="100%"
+          height="100%"
+          videoProps={videoProps}
+        />
+      )
+    } else {
+      // likely iOS: https://github.com/video-dev/hls.js/issues/2262
+      setPlayer(
+        <div class="player-area">
+          <video src={url} width="100%" height="100%" {...videoProps} />
+        </div>
+      )
+    }
   }, [url])
 
   if (!player) {
     return null
   }
   return (
-    <div ref={wrapperRef} className="video-player-wrapper">
+    <div
+      ref={wrapperRef}
+      className="video-player-wrapper"
+      style={{ height: height + 40 }}
+    >
       {children}
       <div className="video-player" style={{ height }}>
         {isLoaded ? null : <CircularProgress className="loading-icon" />}

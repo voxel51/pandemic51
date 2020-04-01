@@ -10,7 +10,7 @@ import IconButton from "@material-ui/core/IconButton"
 import CloseIcon from "@material-ui/icons/Close"
 import CircularProgress from "@material-ui/core/CircularProgress"
 
-export default function ImageOverlay({ src, height, onClose }) {
+export default function ImageOverlay({ src, height, timestamp, clicked, onClose }) {
   const [isLoaded, setLoaded] = useState(false)
 
   useEffect(() => setLoaded(false), [src])
@@ -32,13 +32,16 @@ export default function ImageOverlay({ src, height, onClose }) {
       <div className="image-overlay" style={{ height }}>
         <img src={src} onLoad={handleLoad} style={imageStyle} />
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
-        <IconButton
-          aria-label="close"
-          className="close-button"
-          onClick={onClose}
-        >
-          <CloseIcon />
-        </IconButton>
+        {timestamp ? <div className="image-timestamp">{timestamp}</div> : null}
+        {clicked ? (
+          <IconButton
+            aria-label="close"
+            className="close-button"
+            onClick={onClose}
+          >
+            <CloseIcon />
+          </IconButton>
+        ) : null}
       </div>
     </div>
   )
@@ -47,5 +50,7 @@ export default function ImageOverlay({ src, height, onClose }) {
 ImageOverlay.propTypes = {
   src: PropTypes.string,
   height: PropTypes.number,
+  timestamp: PropTypes.string,
+  clicked: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
 }
