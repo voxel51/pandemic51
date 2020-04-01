@@ -106,4 +106,3 @@ def _find_event_index(time, event_times):
 
 def _mktime(time):
     return int(tm.mktime(time.timetuple()))
-
