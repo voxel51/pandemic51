@@ -27,4 +27,4 @@ columns_to_keep = ["stream_name", "timestamp", "count"]
 df = df.drop(columns=[col for col in columns if col not in columns_to_keep])
 
 # write to CSV
-df.to_csv("counts.csv")
+df.to_csv("counts.csv", index=False)
