@@ -219,6 +219,11 @@ class Chart extends Component {
                 content={contentFormatter}
                 allowEscapeViewBox={{ x: true, y: true }}
               />
+              {Object.keys(events)
+                .sort()
+                .map(v => (
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                ))}
               <Area
                 type="monotone"
                 dataKey="pdi"
@@ -226,11 +231,6 @@ class Chart extends Component {
                 fillOpacity={1}
                 fill="url(#colorSdi)"
               />
-              {Object.keys(events)
-                .sort()
-                .map(v => (
-                  <ReferenceLine x={v} stroke="#666" />
-                ))}
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
