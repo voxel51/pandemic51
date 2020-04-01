@@ -45,6 +45,19 @@ const timezones = {
   lasvegas: "America/Los_Angeles",
 }
 
+const cities = {
+  chicago: "Chicago",
+  dublin: "Dublin",
+  fortlauderdale: "Fort Lauderdale",
+  london: "London",
+  neworleans: "New Orleans",
+  newjersey: "New Jersey",
+  newyork: "New York",
+  prague: "Prague",
+  average: "Average",
+  lasvegas: "Las Vegas",
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -77,6 +90,7 @@ const colors = [
   "#d93be0",
   "#7da043",
   "#14ae32",
+  "#ef62c4",
 ]
 
 class BigChart extends Component {
