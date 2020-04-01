@@ -51,13 +51,17 @@ def load_events_for_city(city):
         if reference == "nan":
             load_event = False
 
+        event = str(event).strip('"')
+        if event == "nan":
+            load_event = False
+
         if not load_event:
             continue
 
         event_time = int(tm.mktime(dateutil.parser.parse(date).timetuple()))
         events[event_time] = {
             "time": event_time,
-            "event": event.strip('"'),
+            "event": event,
             "reference": reference,
         }
 
@@ -95,7 +99,7 @@ def _find_event_index(time, event_times):
         # Time is before all events
         return None
 
-    if time - event_times[idx] > timedelta(days=MAX_EVENT_AGE_DAYS):
+    if abs(time - event_times[idx]) > timedelta(days=MAX_EVENT_AGE_DAYS):
         # Last event is too old
         return None
 
