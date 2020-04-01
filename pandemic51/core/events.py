@@ -94,10 +94,15 @@ def add_events_to_points(points, events):
 
 
 def _find_event_index(time, event_times):
-    idx = np.argmin(np.abs(time - event_times))
+    events = np.asarray([_mktime(t) for t in event_times])
+    idx = np.argmin(np.abs(_mktime(time) - events))
 
     if abs(time - event_times[idx]) > timedelta(days=EVENT_TOOLTIP_RADIUS):
         # Nearest event is too far away
         return None
 
     return idx
+
+
+def _mktime(time):
+    return int(tm.mktime(time.timetuple()))
