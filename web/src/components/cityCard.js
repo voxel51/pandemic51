@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography"
 import { Link } from "gatsby"
 import React from "react"
 import Clock from "react-live-clock"
+import Hidden from "@material-ui/core/Hidden"
 
 const useStyles = makeStyles({
   root: {
@@ -82,31 +83,56 @@ export default function CityCard(props) {
     <Card className={classes.root + (active ? " active-card" : "")} square>
       <CardActionArea>
         <Link to={"/" + props.cityId}>
-          <CardMedia
-            className={classes.still}
-            image={props.url}
-            title={locations[props.cityId]}
-          />
-          <CardContent className={classes.content}>
-            <Typography variant="h5" component="h2">
-              {props.name}
-            </Typography>
-            <Typography
-              variant="h6"
-              component="h3"
-              className={classes.pos}
-              color="textSecondary"
-            >
-              <Clock
-                format={"hh:mm:ss A"}
-                ticking={true}
-                timezone={timezones[props.cityId]}
-              />
-            </Typography>
-            <Typography variant="body1" component="p">
-              {locations[props.cityId]}
-            </Typography>
-          </CardContent>
+          <Hidden mdDown>
+            <CardMedia
+              className={classes.still}
+              image={props.url}
+              title={locations[props.cityId]}
+            />
+
+            <CardContent className={classes.content}>
+              <Typography variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              <Typography
+                variant="h6"
+                component="h3"
+                className={classes.pos}
+                color="textSecondary"
+              >
+                <Clock
+                  format={"hh:mm:ss A"}
+                  ticking={true}
+                  timezone={timezones[props.cityId]}
+                />
+              </Typography>
+              <Typography variant="body1" component="p">
+                {locations[props.cityId]}
+              </Typography>
+            </CardContent>
+          </Hidden>
+          <Hidden lgUp>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              <Typography
+                variant="h6"
+                component="h3"
+                className={classes.pos}
+                color="textSecondary"
+              >
+                <Clock
+                  format={"hh:mm:ss A"}
+                  ticking={true}
+                  timezone={timezones[props.cityId]}
+                />
+              </Typography>
+              <Typography variant="body1" component="p">
+                {locations[props.cityId]}
+              </Typography>
+            </CardContent>
+          </Hidden>
         </Link>
       </CardActionArea>
     </Card>

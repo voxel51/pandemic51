@@ -98,7 +98,11 @@ export default function Player({ city, height, setHeight, children }) {
     return null
   }
   return (
-    <div ref={wrapperRef} className="video-player-wrapper">
+    <div
+      ref={wrapperRef}
+      className="video-player-wrapper"
+      style={{ height: height + 40 }}
+    >
       {children}
       <div className="video-player" style={{ height }}>
         {isLoaded ? null : <CircularProgress className="loading-icon" />}

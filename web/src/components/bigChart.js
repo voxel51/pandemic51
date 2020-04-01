@@ -198,7 +198,7 @@ class BigChart extends Component {
                 }
               />
               <Tooltip
-                allowEscapeViewBox={{ x: true, y: true }}
+                allowEscapeViewBox={{ x: false, y: false }}
                 content={contentFormatter}
                 formatter={(v, n, p) => {
                   return [

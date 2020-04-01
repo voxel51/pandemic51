@@ -20,6 +20,7 @@ function SEO({ description, lang, meta }) {
             title
             description
             author
+            image
           }
         }
       }
@@ -41,12 +42,25 @@ function SEO({ description, lang, meta }) {
           content: metaDescription,
         },
         {
+          property: `og:type`,
+          content: `Application`,
+        },
+        {
+          name: `author`,
+          content: `Voxel51`,
+        },
+        {
           property: `og:title`,
-          content: `Voxel51 // PDI`,
+          content: `Voxel51 // PDI: Physical Distancing Index`,
         },
         {
           property: `og:description`,
           content: metaDescription,
+        },
+        {
+          property: `og:image`,
+          name: `image`,
+          content: `https://pdi.voxel51.com/newyork.jpg`,
         },
         {
           property: `og:type`,
@@ -61,8 +75,16 @@ function SEO({ description, lang, meta }) {
           content: site.siteMetadata.author,
         },
         {
+          name: `twitter:site`,
+          content: `@voxel51`,
+        },
+        {
+          name: `twitter:image`,
+          content: `https://pdi.voxel51.com/newyork.jpg`,
+        },
+        {
           name: `twitter:title`,
-          content: `Voxel51 // PDI`,
+          content: `Voxel51 // PDI: Physical Distancing Index`,
         },
         {
           name: `twitter:description`,

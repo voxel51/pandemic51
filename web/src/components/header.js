@@ -133,11 +133,13 @@ class Header extends React.Component {
           </h2>
           <div class="body_block__text" align="center">
             Voxel51 is tracking the impact of the coronavirus global pandemic on
-            social behavior, using a metric we developed called the Voxel51
-            Physical Distancing Index (PDI). The PDI is computed using our
-            cutting-edge computer vision methods from live video streams and
-            tracks how coronavirus news impacts real-time human activity around
-            the world.
+            social behavior, using a metric we developed called the{" "}
+            <b>Voxel51 Physical Distancing Index (PDI)</b>. The PDI helps people
+            understand how the coronavirus is changing human activity in
+            real-time around the world. Using our cutting-edge computer vision
+            models and live video streams from some of the most visited streets
+            in the world, the PDI captures the average amount of human activity
+            and social distancing behaviors in major cities over time.
           </div>
         </div>
       </>

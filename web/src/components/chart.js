@@ -33,6 +33,7 @@ import {
   Legend,
 } from "recharts"
 import Async from "react-async"
+import debounce from "lodash/debounce"
 
 const timezones = {
   chicago: "America/Chicago",
@@ -122,9 +123,31 @@ class Chart extends Component {
       this.props.onClick({
         src: data.url,
         timestamp: this.formatFullTime(data.time),
+        clicked: true,
       })
     }
   }
+
+  handleHover = debounce(event => {
+    if (this.props.clicked) return
+    if (event && event.activeLabel) {
+      const data = this.state.labels[event.activeLabel];
+      this.props.onClick({
+        src: data.url,
+        timestamp: this.formatFullTime(data.time),
+        clicked: false,
+      })
+    }
+  }, 200)
+
+  handleMouseLeave = debounce(event => {
+    if (this.props.clicked) return
+    this.props.onClick({
+      src: null,
+      timestamp: null,
+      clicked: null,
+    })
+  }, 200);
 
   render() {
     const { list, events } = this.state
@@ -184,11 +207,14 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
+              margin={{ top: 0, right: 5, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
               onTouchEnd={this.handleClick.bind(this)}
+              onTouchMove={this.handleHover.bind(this)}
+              onMouseMove={this.handleHover.bind(this)}
+              onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>
                 <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
@@ -225,8 +251,13 @@ class Chart extends Component {
               />
               <Tooltip
                 content={contentFormatter}
-                allowEscapeViewBox={{ x: true, y: true }}
+                allowEscapeViewBox={{ x: false, y: false }}
               />
+              {Object.keys(events)
+                .sort()
+                .map(v => (
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                ))}
               <Area
                 type="monotone"
                 dataKey="pdi"
@@ -234,7 +265,6 @@ class Chart extends Component {
                 fillOpacity={1}
                 fill="url(#colorSdi)"
               />
-              <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
