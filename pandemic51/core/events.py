@@ -51,6 +51,10 @@ def load_events_for_city(city):
         if reference == "nan":
             load_event = False
 
+        event = str(event).strip('"')
+        if event == "nan":
+            load_event = False
+
         if not load_event:
             continue
 
