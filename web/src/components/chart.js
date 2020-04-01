@@ -122,7 +122,7 @@ class Chart extends Component {
     if (data && data.activeLabel) {
       this.props.onClick(this.state.labels[data.activeLabel].url, false)
     }
-  }, 100)
+  }, 250)
 
   handleMouseLeave(data) {
     if (this.props.clicked) return
@@ -195,6 +195,7 @@ class Chart extends Component {
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
               onTouchEnd={this.handleClick.bind(this)}
+              onTouchMove={this.handleHover.bind(this)}
               onMouseMove={this.handleHover.bind(this)}
               onMouseLeave={this.handleMouseLeave.bind(this)}
             >
