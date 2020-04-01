@@ -42,12 +42,25 @@ function SEO({ description, lang, meta }) {
           content: metaDescription,
         },
         {
+          property: `og:type`,
+          content: `Application`,
+        },
+        {
+          name: `author`,
+          content: `Voxel51`,
+        },
+        {
           property: `og:title`,
           content: `Voxel51 // PDI`,
         },
         {
           property: `og:description`,
           content: metaDescription,
+        },
+        {
+          property: `og:image`,
+          name: `image`,
+          content: `https://pdi.voxel51.com/newyork.jpg`,
         },
         {
           property: `og:type`,
