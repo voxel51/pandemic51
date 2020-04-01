@@ -62,6 +62,7 @@ class Layout extends React.Component {
     super(props)
     this.state = {
       data: {},
+      clicked: false,
     }
   }
   componentDidMount() {
@@ -107,7 +108,10 @@ class Layout extends React.Component {
                       <Chart
                         title="Physical Distancing Index (PDI)"
                         city={city}
-                        onClick={src => this.setState({ src })}
+                        clicked={this.state.clicked}
+                        onClick={(src, clicked) =>
+                          this.setState({ src, clicked })
+                        }
                       />
                     </Grid>
                   </Grid>
@@ -123,7 +127,7 @@ class Layout extends React.Component {
                         height={height}
                         onClose={e => {
                           e.stopPropagation()
-                          this.setState({ src: null })
+                          this.setState({ src: null, clicked: false })
                         }}
                       />
                     </Grid>

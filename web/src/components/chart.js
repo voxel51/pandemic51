@@ -33,6 +33,7 @@ import {
   Legend,
 } from "recharts"
 import Async from "react-async"
+import debounce from "lodash/debounce"
 
 const timezones = {
   chicago: "America/Chicago",
@@ -95,6 +96,7 @@ class Chart extends Component {
     list: [],
     events: [],
     labels: [],
+    clicked: false,
   }
 
   componentDidMount() {
@@ -111,12 +113,20 @@ class Chart extends Component {
 
   handleClick(data) {
     if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url)
+      this.props.onClick(this.state.labels[data.activeLabel].url, true)
     }
   }
 
+  handleHover = debounce(data => {
+    if (this.props.clicked) return
+    if (data && data.activeLabel) {
+      this.props.onClick(this.state.labels[data.activeLabel].url, false)
+    }
+  }, 100)
+
   handleMouseLeave(data) {
-    this.props.onClick(null)
+    if (this.props.clicked) return
+    this.props.onClick(null, false)
   }
 
   render() {
@@ -185,7 +195,7 @@ class Chart extends Component {
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
               onTouchEnd={this.handleClick.bind(this)}
-              onMouseMove={this.handleClick.bind(this)}
+              onMouseMove={this.handleHover.bind(this)}
               onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>

@@ -32,6 +32,13 @@ export default function ImageOverlay({ src, height, onClose }) {
       <div className="image-overlay" style={{ height }}>
         <img src={src} onLoad={handleLoad} style={imageStyle} />
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
+        <IconButton
+          aria-label="close"
+          className="close-button"
+          onClick={onClose}
+        >
+          <CloseIcon />
+        </IconButton>
       </div>
     </div>
   )
