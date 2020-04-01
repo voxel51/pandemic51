@@ -76,7 +76,6 @@ class Layout extends React.Component {
   }
 
   openOverlay(overlayData) {
-    console.log('openOverlay', {overlayData})
     this.setState({ overlayData })
   }
 
