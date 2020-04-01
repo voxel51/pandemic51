@@ -51,7 +51,7 @@ function SEO({ description, lang, meta }) {
         },
         {
           property: `og:title`,
-          content: `Voxel51 // PDI`,
+          content: `Voxel51 // PDI: Physical Distancing Index`,
         },
         {
           property: `og:description`,
@@ -84,7 +84,7 @@ function SEO({ description, lang, meta }) {
         },
         {
           name: `twitter:title`,
-          content: `Voxel51 // PDI`,
+          content: `Voxel51 // PDI: Physical Distancing Index`,
         },
         {
           name: `twitter:description`,
