@@ -12,6 +12,7 @@ module.exports = {
     title: `Voxel51 // PDI: Measuring the Social Impact of the Coronavirus Pandemic`,
     description: `Live site monitoring the effect of physical distancing measures during the Coronavirus pandemic`,
     author: `Voxel51 Inc.`,
+    image: "/newyork.jpg"
   },
   plugins: [
     `gatsby-plugin-offline`,

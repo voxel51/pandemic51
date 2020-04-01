@@ -176,7 +176,7 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 0, left: 30, bottom: 0 }}
+              margin={{ top: 0, right: 5, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
@@ -226,7 +226,11 @@ class Chart extends Component {
                 fillOpacity={1}
                 fill="url(#colorSdi)"
               />
-              <Line dataKey="event" dot={{ stroke: "green", strokeWidth: 2 }} />
+              {Object.keys(events)
+                .sort()
+                .map(v => (
+                  <ReferenceLine x={v} stroke="#666" />
+                ))}
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />

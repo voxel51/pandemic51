@@ -20,6 +20,7 @@ function SEO({ description, lang, meta }) {
             title
             description
             author
+            image
           }
         }
       }
@@ -59,6 +60,14 @@ function SEO({ description, lang, meta }) {
         {
           name: `twitter:creator`,
           content: site.siteMetadata.author,
+        },
+        {
+          name: `twitter:site`,
+          content: `@voxel51`,
+        },
+        {
+          name: `twitter:image`,
+          content: `https://pdi.voxel51.com/newyork.jpg`,
         },
         {
           name: `twitter:title`,
