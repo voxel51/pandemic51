@@ -14,7 +14,7 @@ import pandas as pd
 import pandemic51.config as panc
 
 
-MAX_EVENT_AGE_DAYS = 3
+EVENT_TOOLTIP_RADIUS = 1.5
 
 
 def load_events_for_city(city):
@@ -94,13 +94,10 @@ def add_events_to_points(points, events):
 
 
 def _find_event_index(time, event_times):
-    idx = np.searchsorted(event_times, time) - 1
-    if idx < 0:
-        # Time is before all events
-        return None
+    idx = np.argmin(np.abs(time - event_times))
 
-    if abs(time - event_times[idx]) > timedelta(days=MAX_EVENT_AGE_DAYS):
-        # Last event is too old
+    if abs(time - event_times[idx]) > timedelta(days=EVENT_TOOLTIP_RADIUS):
+        # Nearest event is too far away
         return None
 
     return idx
