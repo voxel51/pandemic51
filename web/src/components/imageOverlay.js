@@ -8,12 +8,36 @@ import React, { useState, useEffect, useRef } from "react"
 import PropTypes from "prop-types"
 import IconButton from "@material-ui/core/IconButton"
 import CloseIcon from "@material-ui/icons/Close"
+import ShareIcon from "@material-ui/icons/Share"
 import CircularProgress from "@material-ui/core/CircularProgress"
+import Modal from "@material-ui/core/Modal"
+import Card from "@material-ui/core/Card"
+import CardContent from "@material-ui/core/CardContent"
+import Typography from "@material-ui/core/Typography"
+import Box from "@material-ui/core/Box"
+import Button from "@material-ui/core/Button"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
-export default function ImageOverlay({ src, height, timestamp, clicked, onClose }) {
+export default function ImageOverlay({
+  src,
+  height,
+  timestamp,
+  clicked,
+  onClose,
+}) {
   const [isLoaded, setLoaded] = useState(false)
-
+  const [isCopied, setCopied] = useState(false)
+  const [open, setOpen] = useState(false)
+  const text = useRef(null)
   useEffect(() => setLoaded(false), [src])
+
+  const handleOpen = () => {
+    setOpen(true)
+  }
+
+  const handleClose = () => {
+    setOpen(false)
+  }
 
   const handleLoad = () => {
     setLoaded(true)
@@ -27,6 +51,49 @@ export default function ImageOverlay({ src, height, timestamp, clicked, onClose 
     display: isLoaded ? "block" : "none",
   }
 
+  const body = (
+    <Card square style={{ width: 400, boxShadow: "none" }}>
+      <CardContent>
+        <Typography
+          variant="h3"
+          component="h2"
+          style={{ marginBottom: "2rem" }}
+        >
+          Share this snapshot!
+        </Typography>
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          style={{ width: "100%" }}
+        >
+          <Typography
+            ref={text}
+            variant="h5"
+            component="p"
+            color="textSecondary"
+            style={{ border: "2px", lineHeight: "32px" }}
+          >
+            {isCopied ? "Copied to clipboard!" : window.location.href}
+          </Typography>
+          <CopyToClipboard
+            text={window.location.href}
+            onCopy={() => {setCopied(true); setTimeout(() => setCopied(false), 1000);}}
+          >
+            <Button
+              variant="contained"
+              style={{ background: "#FF6D04", borderRadius: 0 }}
+              square
+            >
+              <Typography variant="h5" component="p" style={{ color: "#fff" }}>
+                Copy
+              </Typography>
+            </Button>
+          </CopyToClipboard>
+        </Box>
+      </CardContent>
+    </Card>
+  )
+
   return (
     <div className="image-overlay-wrapper">
       <div className="image-overlay" style={{ height }}>
@@ -34,13 +101,37 @@ export default function ImageOverlay({ src, height, timestamp, clicked, onClose 
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {timestamp ? <div className="image-timestamp">{timestamp}</div> : null}
         {clicked ? (
-          <IconButton
-            aria-label="close"
-            className="close-button"
-            onClick={onClose}
-          >
-            <CloseIcon />
-          </IconButton>
+          <div className="buttons">
+            <IconButton
+              aria-label="share"
+              className="share-button"
+              onClick={handleOpen}
+            >
+              <ShareIcon />
+            </IconButton>
+            <Modal
+              open={open}
+              onClose={handleClose}
+              aria-labelledby="graph help"
+              aria-describedby="graph help"
+              style={{
+                border: "none",
+                margin: "auto",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              {body}
+            </Modal>
+            <IconButton
+              aria-label="close"
+              className="close-button"
+              onClick={onClose}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
         ) : null}
       </div>
     </div>

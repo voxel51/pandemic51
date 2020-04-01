@@ -65,8 +65,8 @@ class Layout extends React.Component {
       overlayData: {},
       selectedTime: null,
     }
-    this.openOverlay = this.openOverlay.bind(this);
-    this.closeOverlay = this.closeOverlay.bind(this);
+    this.openOverlay = this.openOverlay.bind(this)
+    this.closeOverlay = this.closeOverlay.bind(this)
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
@@ -77,13 +77,16 @@ class Layout extends React.Component {
   }
 
   openOverlay(overlayData) {
-    const selectedTime = overlayData.clicked ? overlayData.time : null;
+    const selectedTime = overlayData.clicked ? overlayData.time : null
     this.setState({
       overlayData,
       selectedTime,
     })
-    window.history.pushState(null, '',
-      selectedTime ? `?t=${selectedTime}` : window.location.href.split('?')[0])
+    window.history.pushState(
+      null,
+      "",
+      selectedTime ? `?t=${selectedTime}` : window.location.href.split("?")[0]
+    )
   }
 
   closeOverlay(e) {
@@ -92,7 +95,7 @@ class Layout extends React.Component {
       overlayData: {},
       selectedTime: null,
     })
-    window.history.pushState(null, '', window.location.href.split('?')[0])
+    window.history.pushState(null, "", window.location.href.split("?")[0])
   }
 
   render() {
@@ -137,11 +140,7 @@ class Layout extends React.Component {
                 </Grid>
                 <Grid container spacing={4}>
                   <Grid item xs={12} className="media-container">
-                    <Player
-                      city={city}
-                      height={height}
-                      setHeight={setHeight}
-                    />
+                    <Player city={city} height={height} setHeight={setHeight} />
                     <ImageOverlay
                       {...this.state.overlayData}
                       height={height}
@@ -154,20 +153,20 @@ class Layout extends React.Component {
           </Hidden>
           <Hidden mdUp>
             <div className="mobileContent">
-                <Chart
-                  title="Physical Distancing Index (PDI)"
-                  city={city}
-                  clicked={this.state.overlayData.clicked}
-                  onClick={this.openOverlay}
-                  selectedTime={this.state.selectedTime}
+              <Chart
+                title="Physical Distancing Index (PDI)"
+                city={city}
+                clicked={this.state.overlayData.clicked}
+                onClick={this.openOverlay}
+                selectedTime={this.state.selectedTime}
+              />
+              <Player city={city} height={height} setHeight={setHeight}>
+                <ImageOverlay
+                  {...this.state.overlayData}
+                  height={height}
+                  onClose={this.closeOverlay}
                 />
-                <Player city={city} height={height} setHeight={setHeight}>
-                  <ImageOverlay
-                    {...this.state.overlayData}
-                    height={height}
-                    onClose={this.closeOverlay}
-                  />
-                </Player>
+              </Player>
               <Grid container spacing={4} style={{ marginTop: "1rem" }}>
                 {Object.keys(CITIES)
                   .sort()

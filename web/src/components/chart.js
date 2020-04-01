@@ -102,17 +102,20 @@ class Chart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
-        this.setState({
-          list: json["data"],
-          events: json["events"],
-          labels: json["labels"],
-        }, () => {
-          const match = window.location.search.match(/t=(\d+)/)
-          if (match) {
-            const selectedTime = Number(match[1])
-            this.handleClick({activeLabel: selectedTime})
+        this.setState(
+          {
+            list: json["data"],
+            events: json["events"],
+            labels: json["labels"],
+          },
+          () => {
+            const match = window.location.search.match(/t=(\d+)/)
+            if (match) {
+              const selectedTime = Number(match[1])
+              this.handleClick({ activeLabel: selectedTime })
+            }
           }
-        })
+        )
       })
   }
 
@@ -125,7 +128,7 @@ class Chart extends Component {
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
       if (!data) {
         return
       }
@@ -141,7 +144,7 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
       if (!data) {
         return
       }
@@ -162,7 +165,7 @@ class Chart extends Component {
       timestamp: null,
       clicked: null,
     })
-  }, 200);
+  }, 200)
 
   render() {
     const { list, events } = this.state
@@ -271,11 +274,11 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
                 ))}
-              {selectedTime ?
-                <ReferenceLine x={selectedTime} stroke="#ff6d04" /> :
-                null}
+              {selectedTime ? (
+                <ReferenceLine x={selectedTime} stroke="#ff6d04" />
+              ) : null}
               <Area
                 type="monotone"
                 dataKey="pdi"
