@@ -63,6 +63,7 @@ class Layout extends React.Component {
     this.state = {
       data: {},
       overlayData: {},
+      selectedTime: null,
     }
     this.openOverlay = this.openOverlay.bind(this);
     this.closeOverlay = this.closeOverlay.bind(this);
@@ -76,12 +77,18 @@ class Layout extends React.Component {
   }
 
   openOverlay(overlayData) {
-    this.setState({ overlayData })
+    this.setState({
+      overlayData,
+      selectedTime: overlayData.clicked ? overlayData.time : null,
+    })
   }
 
   closeOverlay(e) {
     e.stopPropagation()
-    this.setState({ overlayData: {} })
+    this.setState({
+      overlayData: {},
+      selectedTime: null,
+    })
   }
 
   render() {
@@ -120,6 +127,7 @@ class Layout extends React.Component {
                       city={city}
                       onClick={this.openOverlay}
                       clicked={this.state.overlayData.clicked}
+                      selectedTime={this.state.selectedTime}
                     />
                   </Grid>
                 </Grid>
@@ -147,6 +155,7 @@ class Layout extends React.Component {
                   city={city}
                   clicked={this.state.overlayData.clicked}
                   onClick={this.openOverlay}
+                  selectedTime={this.state.selectedTime}
                 />
                 <Player city={city} height={height} setHeight={setHeight}>
                   <ImageOverlay

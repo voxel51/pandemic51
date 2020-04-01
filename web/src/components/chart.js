@@ -122,6 +122,7 @@ class Chart extends Component {
       const data = this.state.labels[event.activeLabel];
       this.props.onClick({
         src: data.url,
+        time: data.time,
         timestamp: this.formatFullTime(data.time),
         clicked: true,
       })
@@ -134,6 +135,7 @@ class Chart extends Component {
       const data = this.state.labels[event.activeLabel];
       this.props.onClick({
         src: data.url,
+        time: data.time,
         timestamp: this.formatFullTime(data.time),
         clicked: false,
       })
@@ -144,6 +146,7 @@ class Chart extends Component {
     if (this.props.clicked) return
     this.props.onClick({
       src: null,
+      time: null,
       timestamp: null,
       clicked: null,
     })
@@ -151,7 +154,7 @@ class Chart extends Component {
 
   render() {
     const { list, events } = this.state
-    const { classes, title, city } = this.props
+    const { classes, title, city, selectedTime } = this.props
 
     const contentFormatter = v => {
       if (!v.payload) {
@@ -258,6 +261,9 @@ class Chart extends Component {
                 .map(v => (
                   <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
                 ))}
+              {selectedTime ?
+                <ReferenceLine x={selectedTime} stroke="#ff6d04" /> :
+                null}
               <Area
                 type="monotone"
                 dataKey="pdi"
