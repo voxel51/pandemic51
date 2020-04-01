@@ -62,7 +62,10 @@ class Layout extends React.Component {
     super(props)
     this.state = {
       data: {},
+      overlayData: {},
     }
+    this.openOverlay = this.openOverlay.bind(this);
+    this.closeOverlay = this.closeOverlay.bind(this);
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
@@ -70,6 +73,15 @@ class Layout extends React.Component {
       .then(json => {
         this.setState({ data: json["data"] })
       })
+  }
+
+  openOverlay(overlayData) {
+    this.setState({ overlayData })
+  }
+
+  closeOverlay(e) {
+    e.stopPropagation()
+    this.setState({ overlayData: {} })
   }
 
   render() {
@@ -107,7 +119,7 @@ class Layout extends React.Component {
                       <Chart
                         title="Physical Distancing Index (PDI)"
                         city={city}
-                        onClick={src => this.setState({ src })}
+                        onClick={this.openOverlay}
                       />
                     </Grid>
                   </Grid>
@@ -119,12 +131,9 @@ class Layout extends React.Component {
                         setHeight={setHeight}
                       />
                       <ImageOverlay
-                        src={this.state.src}
+                        {...this.state.overlayData}
                         height={height}
-                        onClose={e => {
-                          e.stopPropagation()
-                          this.setState({ src: null })
-                        }}
+                        onClose={this.closeOverlay}
                       />
                     </Grid>
                   </Grid>
@@ -136,17 +145,13 @@ class Layout extends React.Component {
                 <Chart
                   title="Physical Distancing Index (PDI)"
                   city={city}
-                  // todo: use correct image url
-                  onClick={_ => this.setState({ src: _ })}
+                  onClick={this.openOverlay}
                 />
                 <Player city={city} height={height} setHeight={setHeight}>
                   <ImageOverlay
-                    src={this.state.src}
+                    {...this.state.overlayData}
                     height={height}
-                    onClose={e => {
-                      e.stopPropagation()
-                      this.setState({ src: null })
-                    }}
+                    onClose={this.closeOverlay}
                   />
                 </Player>
                 <Grid container spacing={4} style={{ marginTop: "1rem" }}>
