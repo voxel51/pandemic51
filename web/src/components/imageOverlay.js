@@ -52,7 +52,7 @@ export default function ImageOverlay({
   }
 
   const body = (
-    <Card square style={{ width: 400, boxShadow: "none" }}>
+    <Card square style={{ width: 450, maxWidth: "100%", boxShadow: "none" }}>
       <CardContent>
         <Typography
           variant="h3"
@@ -77,7 +77,10 @@ export default function ImageOverlay({
           </Typography>
           <CopyToClipboard
             text={window.location.href}
-            onCopy={() => {setCopied(true); setTimeout(() => setCopied(false), 1000);}}
+            onCopy={() => {
+              setCopied(true)
+              setTimeout(() => setCopied(false), 1000)
+            }}
           >
             <Button
               variant="contained"
