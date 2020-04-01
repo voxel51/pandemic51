@@ -62,8 +62,10 @@ class Layout extends React.Component {
     super(props)
     this.state = {
       data: {},
-      clicked: false,
+      overlayData: {},
     }
+    this.openOverlay = this.openOverlay.bind(this);
+    this.closeOverlay = this.closeOverlay.bind(this);
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
@@ -71,6 +73,16 @@ class Layout extends React.Component {
       .then(json => {
         this.setState({ data: json["data"] })
       })
+  }
+
+  openOverlay(overlayData) {
+    console.log('openOverlay', {overlayData})
+    this.setState({ overlayData })
+  }
+
+  closeOverlay(e) {
+    e.stopPropagation()
+    this.setState({ overlayData: {} })
   }
 
   render() {
@@ -108,10 +120,8 @@ class Layout extends React.Component {
                       <Chart
                         title="Physical Distancing Index (PDI)"
                         city={city}
-                        clicked={this.state.clicked}
-                        onClick={(src, clicked) =>
-                          this.setState({ src, clicked })
-                        }
+                        clicked={this.state.overlayData.clicked}
+                        onClick={this.openOverlay}
                       />
                     </Grid>
                   </Grid>
@@ -123,12 +133,9 @@ class Layout extends React.Component {
                         setHeight={setHeight}
                       />
                       <ImageOverlay
-                        src={this.state.src}
+                        {...this.state.overlayData}
                         height={height}
-                        onClose={e => {
-                          e.stopPropagation()
-                          this.setState({ src: null, clicked: false })
-                        }}
+                        onClose={this.closeOverlay}
                       />
                     </Grid>
                   </Grid>
@@ -140,17 +147,14 @@ class Layout extends React.Component {
                 <Chart
                   title="Physical Distancing Index (PDI)"
                   city={city}
-                  // todo: use correct image url
-                  onClick={_ => this.setState({ src: _ })}
+                  clicked={this.state.overlayData.clicked}
+                  onClick={this.openOverlay}
                 />
                 <Player city={city} height={height} setHeight={setHeight}>
                   <ImageOverlay
-                    src={this.state.src}
+                    {...this.state.overlayData}
                     height={height}
-                    onClose={e => {
-                      e.stopPropagation()
-                      this.setState({ src: null })
-                    }}
+                    onClose={this.closeOverlay}
                   />
                 </Player>
                 <Grid container spacing={4} style={{ marginTop: "1rem" }}>
@@ -204,10 +208,10 @@ class Layout extends React.Component {
             What insights can we derive from this comparison? Clearly all
             locations we are monitoring showed a similar trend corresponding
             with the spread of the virus and local statutes limiting movement.
-            The Dublin response, for example, was the earliest significant drop.
-            The Seaside Heights feed was steadily trending downward until the
-            recent weekend with good weather but has again fallen off at the
-            start of the work-week.
+            The Prague response, for example, was the earliest significant drop
+            (March 8th). The Seaside Heights feed was steadily trending downward
+            until the recent weekend with good weather but has again fallen off
+            at the start of the work-week.
             <br />
             <br />
             <BigChart />

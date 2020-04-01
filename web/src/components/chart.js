@@ -96,7 +96,6 @@ class Chart extends Component {
     list: [],
     events: [],
     labels: [],
-    clicked: false,
   }
 
   componentDidMount() {
@@ -111,22 +110,43 @@ class Chart extends Component {
       })
   }
 
-  handleClick(data) {
-    if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url, true)
+  formatFullTime(rawTime) {
+    return moment
+      .unix(rawTime)
+      .tz(timezones[this.props.city])
+      .format("dddd,  MMM Do, hh:mm A")
+  }
+
+  handleClick(event) {
+    if (event && event.activeLabel) {
+      const data = this.state.labels[String(event.activelabel)];
+      this.props.onClick({
+        src: data.url,
+        timestamp: this.formatFullTime(data.time),
+        clicked: true,
+      })
     }
   }
 
-  handleHover = debounce(data => {
+  handleHover = debounce(event => {
     if (this.props.clicked) return
-    if (data && data.activeLabel) {
-      this.props.onClick(this.state.labels[data.activeLabel].url, false)
+    if (event && event.activeLabel) {
+      const data = this.state.labels[String(event.activelabel)];
+      this.props.onClick({
+        src: data.url,
+        timestamp: this.formatFullTime(data.time),
+        clicked: false,
+      })
     }
   }, 250)
 
-  handleMouseLeave(data) {
+  handleMouseLeave(event) {
     if (this.props.clicked) return
-    this.props.onClick(null, false)
+    this.props.onClick({
+      src: null,
+      timestamp: null,
+      clicked: null,
+    })
   }
 
   render() {
@@ -146,10 +166,7 @@ class Chart extends Component {
         <Card square style={{ overflow: "visible", opacity: 0.9 }}>
           <CardContent style={{ overflow: "visible" }}>
             <Typography variant="h5" component="h2">
-              {moment
-                .unix(v.label)
-                .tz(timezones[city])
-                .format("dddd,  MMM Do, hh:mm A")}
+              {this.formatFullTime(v.label)}
             </Typography>
             <Typography
               variant="h6"

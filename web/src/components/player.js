@@ -50,6 +50,10 @@ export default function Player({ city, height, setHeight, children }) {
     handleResize(e.target)
   }
 
+  const handleClick = e => {
+    e.target.play()
+  }
+
   useEffect(() => {
     const callback = () => {
       handleResize(wrapperRef.current.querySelector("video"))
@@ -65,8 +69,10 @@ export default function Player({ city, height, setHeight, children }) {
       muted: true,
       controls: false,
       autoPlay: true,
+      playsInline: true,
       onLoadedData: onLoad,
       onLoadedMetadata: handleMetadata,
+      onClick: handleClick,
     }
 
     if (window.MediaSource) {
