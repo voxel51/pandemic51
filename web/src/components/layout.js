@@ -42,6 +42,7 @@ const CITIES = {
   newyork: "New York",
   prague: "Prague",
   fortlauderdale: "Fort Lauderdale",
+  lasvegas: "Las Vegas",
 }
 
 const styles = {

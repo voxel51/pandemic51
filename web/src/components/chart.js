@@ -44,6 +44,7 @@ const timezones = {
   newjersey: "America/New_York",
   newyork: "America/New_York",
   prague: "Europe/Prague",
+  lasvegas: "America/Los_Angeles",
 }
 
 const cities = {
@@ -55,6 +56,7 @@ const cities = {
   newjersey: "New Jersey",
   newyork: "New York",
   prague: "Prague",
+  lasvegas: "Las Vegas",
 }
 
 const formal = {
@@ -66,6 +68,7 @@ const formal = {
   newjersey: "Seaside Heights, New Jersey, USA",
   newyork: "New York City, New York, USA",
   prague: "Prague, Czech Republic",
+  lasvegas: "Las Vegas, Nevada, USA",
 }
 
 const styles = theme => ({
