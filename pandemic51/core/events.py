@@ -61,7 +61,7 @@ def load_events_for_city(city):
         event_time = int(tm.mktime(dateutil.parser.parse(date).timetuple()))
         events[event_time] = {
             "time": event_time,
-            "event": event.strip('"'),
+            "event": event,
             "reference": reference,
         }
 
