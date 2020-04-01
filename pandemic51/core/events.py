@@ -95,7 +95,7 @@ def _find_event_index(time, event_times):
         # Time is before all events
         return None
 
-    if time - event_times[idx] > timedelta(days=MAX_EVENT_AGE_DAYS):
+    if abs(time - event_times[idx]) > timedelta(days=MAX_EVENT_AGE_DAYS):
         # Last event is too old
         return None
 
