@@ -37,7 +37,7 @@ export default function SimpleModal() {
             average daily number of people on the street (Voxel51’s PDI metric)
             and social behaviors over time. An image of our detections from the
             time will overlay the video stream. Click the on the graph to lock
-            image being overlayed.
+            the image being overlayed.
           </Hidden>
           <Hidden mdUp>
             Click on live video streams from some of the world’s most visited
