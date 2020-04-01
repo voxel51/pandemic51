@@ -251,7 +251,7 @@ class Chart extends Component {
               />
               <Tooltip
                 content={contentFormatter}
-                allowEscapeViewBox={{ x: true, y: true }}
+                allowEscapeViewBox={{ x: false, y: false }}
               />
               {Object.keys(events)
                 .sort()
