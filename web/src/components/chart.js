@@ -106,6 +106,12 @@ class Chart extends Component {
           list: json["data"],
           events: json["events"],
           labels: json["labels"],
+        }, () => {
+          const match = window.location.search.match(/t=(\d+)/)
+          if (match) {
+            const selectedTime = Number(match[1])
+            this.handleClick({activeLabel: selectedTime})
+          }
         })
       })
   }
@@ -120,6 +126,9 @@ class Chart extends Component {
   handleClick(event) {
     if (event && event.activeLabel) {
       const data = this.state.labels[event.activeLabel];
+      if (!data) {
+        return
+      }
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -133,6 +142,9 @@ class Chart extends Component {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
       const data = this.state.labels[event.activeLabel];
+      if (!data) {
+        return
+      }
       this.props.onClick({
         src: data.url,
         time: data.time,

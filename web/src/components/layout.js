@@ -77,10 +77,13 @@ class Layout extends React.Component {
   }
 
   openOverlay(overlayData) {
+    const selectedTime = overlayData.clicked ? overlayData.time : null;
     this.setState({
       overlayData,
-      selectedTime: overlayData.clicked ? overlayData.time : null,
+      selectedTime,
     })
+    window.history.pushState(null, '',
+      selectedTime ? `?t=${selectedTime}` : window.location.href.split('?')[0])
   }
 
   closeOverlay(e) {
@@ -89,6 +92,7 @@ class Layout extends React.Component {
       overlayData: {},
       selectedTime: null,
     })
+    window.history.pushState(null, '', window.location.href.split('?')[0])
   }
 
   render() {
