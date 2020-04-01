@@ -38,5 +38,10 @@
         "webpage": "https://www.earthcam.com/usa/florida/lauderdalebythesea/?cam=windjammer",
         "chunk_path": "https://videos-3.earthcam.com/fecnetwork/windjammerHD2.flv/chunklist_w1112899540.m3u8",
         "GMT": "-4"
+    },
+    "las_vegas": {
+        "webpage": "https://www.earthcam.com/usa/nevada/lasvegas/index.php?cam=catsmeow_lv_fremont",
+        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/16812.flv/chunklist_w375325413.m3u8",
+        "GMT": "-7"
     }
 }
