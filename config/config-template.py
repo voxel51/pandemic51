@@ -52,8 +52,7 @@ ANNO_DIR = os.path.join(DATA_DIR, "anno")
 # Streams
 ###############################################################################
 
-STREAMS_PATH = os.path.join(CONFIG_DIR, "streams.json")
-STREAMS = etas.load_json(STREAMS_PATH)
+STREAMS_DIR = os.path.join(CONFIG_DIR, "streams")
 STREAMS_MAP = {  # maps city names to stream names
     "london": "abbey_road",
     "chicago": "chicago",

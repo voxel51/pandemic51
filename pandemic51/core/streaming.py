@@ -239,8 +239,8 @@ class M3U8Stream(Stream):
         return uris
 
     def update_stream_chunk_path(self):
-        '''Updates the given stream in the stream dictionary and serializes it to
-        disk at `pandemic51.config.STREAMS_PATH`.
+        '''Updates the given stream in the stream dictionary and serializes it
+        to disk in `pandemic51.config.STREAMS_DIR`.
 
         Args:
             stream_name: the stream name

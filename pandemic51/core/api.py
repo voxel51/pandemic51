@@ -140,11 +140,16 @@ def get_stream_url(city):
         the stream URL
     '''
     stream_name = panc.STREAMS_MAP[city]
-    url = etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
+
+    stream = pans.Stream.from_stream_name(stream_name)
+    url = stream.chunk_path
+
     try:
         urllib.request.urlopen(url)
     except urllib.error.HTTPError:
-        url = pans.update_stream_chunk_path(stream_name)
+        # @todo(Tyler) is this a guaranteed interface for non M3U8 Streams?
+        stream.update_stream_chunk_path(stream_name)
+        url = stream.chunk_path
 
     if "videos2archives" in url:
         url = (
