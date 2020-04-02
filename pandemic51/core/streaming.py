@@ -35,24 +35,6 @@ CHUNK_URL_SLEEP_SECONDS = 1
 
 
 # @todo(Tyler)
-def update_stream_chunk_path(stream_name):
-    '''Updates the given stream in the stream dictionary and serializes it to
-    disk at `pandemic51.config.STREAMS_PATH`.
-
-    Args:
-        stream_name: the stream name
-
-    Returns:
-        the chunk path
-    '''
-    streams = etas.load_json(panc.STREAMS_PATH)
-    chunk_path = _get_chunk_url(streams[stream_name]["webpage"])
-    streams[stream_name]["chunk_path"] = chunk_path
-    etas.write_json(streams, panc.STREAMS_PATH, pretty_print=True)
-    return chunk_path
-
-
-# @todo(Tyler)
 def _configure_webdriver():
     # Reference: https://stackoverflow.com/q/52633697
     caps = DesiredCapabilities.CHROME
@@ -88,41 +70,6 @@ def get_img_urls(webpage):
     img_tags = soup.find_all('img')
     urls = [img['src'] for img in img_tags]
     return urls
-
-
-# @todo(Tyler)
-def _get_chunk_url(webpage):
-    driver = _configure_webdriver()
-    driver.get(webpage)
-
-    chunk_url = None
-    num_attempts = 0
-    while chunk_url is None and num_attempts < CHUNK_URL_MAX_NUM_ATTEMPTS:
-        try:
-            browser_log = driver.get_log("performance")
-            events = [
-                _process_browser_log_entry(entry) for entry in browser_log]
-            events = [
-                e for e in events if "Network.response" in e["method"]]
-
-            for event in events:
-                try:
-                    url = event["params"]["response"]["url"]
-                    if "chunk" in url:
-                        chunk_url = url
-                except:
-                    pass
-        except:
-            num_attempts += 1
-            logger.info("Failed to get chunk URL from '%s'", webpage)
-            time.sleep(CHUNK_URL_SLEEP_SECONDS)
-
-    driver.service.stop()
-
-    if chunk_url:
-        return chunk_url
-
-    raise TimeoutError("Failed to get the chunklist from the network traffic")
 
 
 # @todo(Tyler)
@@ -201,6 +148,14 @@ class Stream(etas.Serializable):
         self.stream_name = stream_name
         self.GMT = GMT
 
+    @staticmethod
+    def stream_path(stream_name):
+        return os.path.join(panc.STREAMS_DIR, stream_name + ".json")
+
+    @property
+    def path(self):
+        return self.stream_path(self.stream_name)
+
     def download_image(self, outdir):
         raise NotImplementedError("Subclass must implement")
 
@@ -227,8 +182,7 @@ class Stream(etas.Serializable):
 
     @classmethod
     def from_stream_name(cls, stream_name):
-        stream_path = os.path.join(panc.STREAMS_DIR, stream_name + ".json")
-        return cls.from_json(stream_path)
+        return cls.from_json(cls.stream_path(stream_name))
 
     @classmethod
     def _from_dict(cls, d):
@@ -274,14 +228,14 @@ class M3U8Stream(Stream):
         '''
         output_path = os.path.join(output_dir, self.stream_name)
 
-        chunk_path, uris = self._get_chunk_path_and_uris()
+        uris = self.get_uris()
         uri = uris[-1]
 
         logger.info("Processing URI '%s'", uri)
-        return save_video(chunk_path, uri, output_path), datetime.utcnow()
+        return save_video(self.chunk_path, uri, output_path), datetime.utcnow()
 
     @retry(stop_max_attempt_number=10, wait_fixed=100)
-    def _get_chunk_path_and_uris(self):
+    def get_uris(self):
         '''Attempts to load uris from a given chunk path. Will handle HTTPS
         Errors and update the chunk path.
 
@@ -292,20 +246,67 @@ class M3U8Stream(Stream):
         Returns:
             uris: the uris present in the chunk_path
         '''
-        streams = etas.load_json(panc.STREAMS_PATH)
-        chunk_path = streams[self.stream_name]["chunk_path"]
-
         try:
-            uris = m3u8.load(chunk_path).segments.uri
+            uris = self._attempt_get_uris()
             if not uris:
-                chunk_path = update_stream_chunk_path(self.stream_name)
-                uris = m3u8.load(chunk_path).segments.uri
+                self.update_stream_chunk_path()
+                uris = self._attempt_get_uris()
 
         except HTTPError:
-            chunk_path = update_stream_chunk_path(self.stream_name)
-            uris = m3u8.load(chunk_path).segments.uri
+            self.update_stream_chunk_path()
+            uris = self._attempt_get_uris()
 
-        return chunk_path, uris
+        return uris
+
+    def update_stream_chunk_path(self):
+        '''Updates the given stream in the stream dictionary and serializes it to
+        disk at `pandemic51.config.STREAMS_PATH`.
+
+        Args:
+            stream_name: the stream name
+
+        Returns:
+            the chunk path
+        '''
+        self.chunk_path = self._get_chunk_url()
+        self.write_json(self.path, pretty_print=True)
+
+    def _attempt_get_uris(self):
+        return m3u8.load(self.chunk_path).segments.uri
+
+    def _get_chunk_url(self):
+        driver = _configure_webdriver()
+        driver.get(self.webpage)
+
+        chunk_url = None
+        num_attempts = 0
+        while chunk_url is None and num_attempts < CHUNK_URL_MAX_NUM_ATTEMPTS:
+            try:
+                browser_log = driver.get_log("performance")
+                events = [
+                    _process_browser_log_entry(entry) for entry in browser_log]
+                events = [
+                    e for e in events if "Network.response" in e["method"]]
+
+                for event in events:
+                    try:
+                        url = event["params"]["response"]["url"]
+                        if "chunk" in url:
+                            chunk_url = url
+                    except:
+                        pass
+            except:
+                num_attempts += 1
+                logger.info("Failed to get chunk URL from '%s'", self.webpage)
+                time.sleep(CHUNK_URL_SLEEP_SECONDS)
+
+        driver.service.stop()
+
+        if chunk_url:
+            return chunk_url
+
+        raise TimeoutError(
+            "Failed to get the chunklist from the network traffic")
 
     @classmethod
     def _from_dict(cls, d):
