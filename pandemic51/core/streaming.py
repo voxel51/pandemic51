@@ -286,9 +286,8 @@ class M3U8Stream(Stream):
             timestamp = int(dt.timestamp())
 
             # Create path for image
-            vpath = pathlib.Path(video_path)
             image_path = os.path.join(
-                outdir, vpath.parent.stem, "%d.jpg" % timestamp)
+                outdir, self.stream_name, "%d.jpg" % timestamp)
 
             is_new_img = sample_first_frame(video_path, image_path)
 
@@ -359,8 +358,47 @@ class M3U8Stream(Stream):
 
 class MjpegStream(Stream):
     '''A Stream class that reads MJPEGs'''
-    # @todo(Tyler)
-    pass
+    def __init__(self, stream_name, GMT, url):
+        super(MjpegStream, self).__init__(stream_name, GMT)
+        self.url = url
+
+    def get_live_stream_url(self):
+        '''Get the URL for streaming'''
+        # @todo(Tyler)
+        raise NotImplementedError("TODO")
+
+    def download_image(self, outdir):
+        '''Downloads an image from the latest stream
+
+        Args:
+            outdir: the output directory
+
+        Returns:
+            is_new_img: `True` if the image was not already on disk
+            image_path: path the the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
+        dt = datetime.utcnow()
+
+        # UTC integer timestamp (epoch time)
+        timestamp = int(dt.timestamp())
+
+        # Create path for image
+        image_path = os.path.join(
+            outdir, self.stream_name, "%d.jpg" % timestamp)
+        etau.ensure_basedir(image_path)
+
+        # Capture the current frame of the stream
+        is_new_img = sample_first_frame(self.url, image_path)
+
+        return is_new_img, image_path, dt
+
+    @classmethod
+    def _from_dict(cls, d):
+        stream_name = d["stream_name"]
+        GMT = d["GMT"]
+        url = d["url"]
+        return cls(stream_name, GMT, url)
 
 
 class ImageStream(Stream):
