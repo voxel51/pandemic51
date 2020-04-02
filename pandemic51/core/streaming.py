@@ -1,5 +1,5 @@
 '''
-Methods for downloading and working with video streams.
+Methods and Classes for downloading and working with video streams.
 
 Copyright 2020, Voxel51, Inc.
 voxel51.com
