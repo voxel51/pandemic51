@@ -117,6 +117,11 @@ class Stream(etas.Serializable):
     def stream_path(stream_name):
         return os.path.join(panc.STREAMS_DIR, stream_name + ".json")
 
+    @staticmethod
+    def get_stream_names():
+        _, matches = etau.parse_glob_pattern(Stream.stream_path("*"))
+        return [x[0] for x in matches]
+
     @property
     def path(self):
         return self.stream_path(self.stream_name)
@@ -243,7 +248,7 @@ class M3U8Stream(Stream):
         Returns:
             the chunk path
         '''
-        self.chunk_path = _get_chunk_url()
+        self.chunk_path = _get_chunk_url(self.webpage)
         self.write_json(self.path, pretty_print=True)
 
     def _attempt_get_uris(self):
