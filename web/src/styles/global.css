@@ -73,13 +73,17 @@ img {
   color: var(--gray-dark1);
   background-color: #fff;
 }
-.image-overlay .close-button {
+.image-overlay .buttons {
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.image-overlay .close-button, .image-overlay .share-button {
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
   background-color: #fff;
+  margin-left: 1rem;
 }
 
 :root {
@@ -859,9 +863,6 @@ hr {
     position: absolute;
   }
 
-  .mobileContent {
-    margin: 3rem 3rem;
-  }
   .big-chart-body {
     margin: 3rem 3rem;
   }
