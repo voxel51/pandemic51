@@ -9,8 +9,6 @@ import urllib
 
 import numpy as np
 
-import eta.core.serial as etas
-
 import pandemic51.config as panc
 import pandemic51.core.database as pand
 import pandemic51.core.events as pane
