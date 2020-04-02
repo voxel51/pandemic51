@@ -119,7 +119,7 @@ class Chart extends Component {
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -132,7 +132,7 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -150,11 +150,11 @@ class Chart extends Component {
       timestamp: null,
       clicked: null,
     })
-  }, 200);
+  }, 200)
 
   render() {
-    const colorPrimary = 'rgb(255, 109, 4)';
-    const colorSecondary = 'rgb(109, 4, 255)';
+    const colorPrimary = 'rgb(255, 109, 4)'
+    const colorSecondary = 'rgb(109, 4, 255)'
     const { list, events } = this.state
     const { classes, title, city, selectedTime } = this.props
 
@@ -165,13 +165,11 @@ class Chart extends Component {
     })
 
     const contentFormatter = v => {
-      if (!v.payload) {
+      if (!v.payload || !v.payload.length) {
         return null
       }
-      const valid = v.payload.length ? v.payload[0].payload : false
-      const event =
-        valid && events[valid.event] ? events[valid.event].event : false
-      const time = valid && valid.event ? events[valid.event].time : false
+      const item = v.payload[0].payload
+      const event = events[item.event]
       const bull = <span className={classes.bullet}>•</span>
       return (
         <Card square style={{ overflow: "visible", opacity: 0.9 }}>
@@ -195,19 +193,16 @@ class Chart extends Component {
               Temp {bull}{" "}
               {v.payload.length ? v.payload[1].value.toFixed(2) : "-"}
             </Typography>
-            {(() => {
-              if (event && time) {
-                return (
-                  <Typography variant="body2" component="p">
-                    {moment
-                      .unix(time)
-                      .tz(timezones[city])
-                      .format("MMM Do")}{" "}
-                    {bull} {event}
-                  </Typography>
-                )
-              }
-            })()}
+            {event ?
+              <Typography variant="body2" component="p">
+                {moment
+                  .unix(event.time)
+                  .tz(timezones[city])
+                  .format("MMM Do")}{" "}
+                {bull} {event.event}
+              </Typography> :
+              null
+            }
           </CardContent>
         </Card>
       )
