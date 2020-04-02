@@ -360,7 +360,7 @@ class M3U8Stream(Stream):
 class MjpegStream(Stream):
     '''A Stream class that reads MJPEGs'''
     # @todo(Tyler)
-    raise NotImplementedError("TODO")
+    pass
 
 
 class ImageStream(Stream):
@@ -368,7 +368,7 @@ class ImageStream(Stream):
     rather than providing constant video feed.
     '''
     # @todo(Tyler)
-    raise NotImplementedError("TODO")
+    pass
 
 
 def _get_chunk_url(webpage):
