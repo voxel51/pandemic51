@@ -1,0 +1,6 @@
+{
+    "type": "pandemic51.core.streaming.M3U8Stream",
+    "webpage": "https://www.earthcam.com/usa/newjersey/seasideheights/?cam=seasideheights",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/5173.flv/chunklist_w388987438.m3u8",
+    "GMT": "-4"
+}

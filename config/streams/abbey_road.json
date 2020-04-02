@@ -1,0 +1,6 @@
+{
+    "type": "pandemic51.core.streaming.M3U8Stream",
+    "webpage": "https://www.earthcam.com/world/england/london/abbeyroad/?cam=abbeyroad_uk",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/AbbeyRoadHD1.flv/chunklist_w1572856775.m3u8",
+    "GMT": "0"
+}

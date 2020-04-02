@@ -1,0 +1,6 @@
+{
+    "type": "pandemic51.core.streaming.M3U8Stream",
+    "webpage": "https://www.earthcam.com/usa/illinois/chicago/wrigleyfield/?cam=wrigleyfield_hd",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/13661.flv/chunklist_w2061640580.m3u8",
+    "GMT": "-5"
+}
