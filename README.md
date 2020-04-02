@@ -43,7 +43,7 @@ export P51_SQL_PASSWORD="{{PASSWORD}}"
 export P51_SQL_DATABASE_NAME=p51db
 
 # Login shortcut
-alias p51mysql="mysql -u ${P51_SQL_USERNAME} -p ${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME}"
+alias p51mysql="mysql -u ${P51_SQL_USERNAME} -p${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME}"
 ```
 
 With the above in-place, `source` your config to apply the changes.
