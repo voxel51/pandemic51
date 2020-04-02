@@ -277,3 +277,36 @@ def download_and_store(stream_name, outdir, width=None, height=None):
         add_stream_history(stream_name, dt, image_path)
 
     return image_path, dt
+
+
+class StreamDownloader(etas.Serializable):
+    def download(self, outdir):
+        raise NotImplementedError("Subclass must implement")
+
+    @classmethod
+    def from_dict(cls, d, *args, **kwargs):
+        downloader_cls = etau.get_class(d["type"])
+        return downloader_cls._from_dict(d)
+
+
+    @classmethod
+    def from_stream_name(cls, stream_name):
+        raise NotImplementedError("TODO")
+
+
+    @classmethod
+    def _from_dict(cls, d):
+        raise NotImplementedError("Subclass must implement")
+
+
+
+class M3U8StreamDownloader(StreamDownloader):
+    pass
+
+
+class MjpegStreamDownloader(StreamDownloader):
+    pass
+
+
+class ImageStreamDownloader(StreamDownloader):
+    pass
