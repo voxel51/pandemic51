@@ -13,6 +13,7 @@ from retrying import retry
 import time
 from urllib.error import HTTPError
 
+from bs4 import BeautifulSoup
 import ffmpy
 import m3u8
 from selenium import webdriver
@@ -78,7 +79,7 @@ def _get_chunk_path_and_uris(stream_name):
     return chunk_path, uris
 
 
-def _get_chunk_url(webpage):
+def _configure_webdriver():
     # Reference: https://stackoverflow.com/q/52633697
     caps = DesiredCapabilities.CHROME
     caps["goog:loggingPrefs"] = {"performance": "ALL"}
@@ -87,6 +88,35 @@ def _get_chunk_url(webpage):
     driver = webdriver.Chrome(
         desired_capabilities=caps, options=chrome_options,
         executable_path="/usr/bin/chromedriver")
+    return driver 
+
+
+def get_img_urls(webpage):
+    '''Open the webpage and parse the source HTML for any image urls.
+
+    Args:
+        webpage: The webpage to scrape for image urls
+
+    Returns:
+        urls: List of url strings for all images in the webpage
+    '''
+    # Get the source from the page
+    driver = _configure_webdriver()
+    driver.get(webpage)
+
+    # Ensure that all images have had time to load
+    time.sleep(1)
+    
+    # Parse the source HTML for images with PSLNM in the title
+    soup = BeautifulSoup(driver.page_source, 'html.parser')
+    driver.service.stop()
+    img_tags = soup.find_all('img')
+    urls = [img['src'] for img in img_tags]
+    return urls
+
+
+def _get_chunk_url(webpage):
+    driver = _configure_webdriver()
     driver.get(webpage)
 
     chunk_url = None
