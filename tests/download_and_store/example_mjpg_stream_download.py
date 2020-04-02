@@ -1,6 +1,6 @@
 '''
 Example script for downloading mjpg streams in realtime as a sequence of
-frames. This will continue to download until a termination signal is recieved
+frames. This will continue to download until a termination signal is received
 (Ctrl+C). 
 
 Copyright 2020 Voxel51, Inc.
@@ -35,7 +35,8 @@ base_output_dir = "ann_arbor"
 
 
 # Capture the current frame of the stream
-output_frames_path = os.path.join("out", base_output_dir,
+output_frames_path = os.path.join(
+        "out", base_output_dir,
         str(datetime.now()).replace(" ", "_")+".jpg")
 etau.ensure_basedir(output_frames_path)
 
