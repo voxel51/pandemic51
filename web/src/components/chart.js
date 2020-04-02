@@ -153,8 +153,16 @@ class Chart extends Component {
   }, 200);
 
   render() {
+    const colorPrimary = 'rgb(255, 109, 4)';
+    const colorSecondary = 'rgb(109, 4, 255)';
     const { list, events } = this.state
     const { classes, title, city, selectedTime } = this.props
+
+    // todo: real data
+    let prevTemp = list[0] ? list[0].pdi / 2 : 20
+    list.forEach(i => {
+      prevTemp = i.temp = prevTemp + Math.random() - 0.48
+    })
 
     const contentFormatter = v => {
       if (!v.payload) {
@@ -174,10 +182,18 @@ class Chart extends Component {
             <Typography
               variant="h6"
               component="h3"
-              style={{ color: "rgb(255, 109, 4)" }}
+              style={{ color: colorPrimary }}
             >
               PDI {bull}{" "}
               {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
+            </Typography>
+            <Typography
+              variant="h6"
+              component="h3"
+              style={{ color: colorSecondary }}
+            >
+              Temp {bull}{" "}
+              {v.payload.length ? v.payload[1].value.toFixed(2) : "-"}
             </Typography>
             {(() => {
               if (event && time) {
@@ -220,9 +236,13 @@ class Chart extends Component {
               onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>
-                <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#ff6d04" stopOpacity={0} />
+                <linearGradient id="colorPdi" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={colorPrimary} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={colorPrimary} stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={colorSecondary} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={colorSecondary} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis
@@ -252,6 +272,21 @@ class Chart extends Component {
                   />
                 }
               />
+              <YAxis
+                dataKey="temp"
+                name="Temp"
+                orientation="right"
+                width={25}
+                label={
+                  <Label
+                    value="Temperature"
+                    position="insideLeft"
+                    angle={-90}
+                    offset={0}
+                    style={{ textAnchor: "middle" }}
+                  />
+                }
+              />
               <Tooltip
                 content={contentFormatter}
                 allowEscapeViewBox={{ x: false, y: false }}
@@ -262,14 +297,21 @@ class Chart extends Component {
                   <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
                 ))}
               {selectedTime ?
-                <ReferenceLine x={selectedTime} stroke="#ff6d04" /> :
+                <ReferenceLine x={selectedTime} stroke={colorPrimary} /> :
                 null}
               <Area
                 type="monotone"
-                dataKey="pdi"
-                stroke="#ff6d04"
+                dataKey="temp"
+                stroke={colorSecondary}
                 fillOpacity={1}
-                fill="url(#colorSdi)"
+                fill="url(#colorTemp)"
+              />
+              <Area
+                type="monotone"
+                dataKey="pdi"
+                stroke={colorPrimary}
+                fillOpacity={1}
+                fill="url(#colorPdi)"
               />
             </ComposedChart>
           </ResponsiveContainer>
