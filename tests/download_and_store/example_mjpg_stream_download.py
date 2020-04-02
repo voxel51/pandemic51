@@ -1,7 +1,7 @@
 '''
 Example script for downloading mjpg streams in realtime as a sequence of
-frames. This will continue to download until a termination signal is received
-(Ctrl+C). 
+frames. Either download only the most recent frame or download frames in real
+time until the process is terminated. 
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com

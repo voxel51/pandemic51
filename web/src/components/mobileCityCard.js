@@ -46,6 +46,7 @@ const timezones = {
   newjersey: "America/New_York",
   newyork: "America/New_York",
   prague: "Europe/Prague",
+  lasvegas: "America/Los_Angeles",
 }
 
 const locations = {
@@ -57,6 +58,7 @@ const locations = {
   newyork: "Times Square",
   prague: "Grand Hotel",
   fortlauderdale: "Wind Jammer",
+  lasvegas: "Fremont Street",
 }
 
 export default function MobileCityCard(props) {
