@@ -5,7 +5,6 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
-import urllib
 
 import numpy as np
 
@@ -138,29 +137,8 @@ def get_stream_url(city):
         the stream URL
     '''
     stream_name = panc.STREAMS_MAP[city]
-
     stream = pans.Stream.from_stream_name(stream_name)
-    url = stream.chunk_path
-
-    try:
-        urllib.request.urlopen(url)
-    except urllib.error.HTTPError:
-        # @todo(Tyler) is this a guaranteed interface for non M3U8 Streams?
-        stream.update_stream_chunk_path(stream_name)
-        url = stream.chunk_path
-
-    if "videos2archives" in url:
-        url = (
-            "https://pdi-service.voxel51.com/stream-archive/" +
-            url.split(".com/")[1]
-        )
-    elif "earthcam" in url:
-        url = (
-            "https://pdi-service.voxel51.com/stream/" +
-            url.split(".com/")[1]
-        )
-
-    return url
+    return stream.get_live_stream_url()
 
 
 def _make_snapshot_url(url):

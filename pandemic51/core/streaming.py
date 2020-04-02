@@ -11,7 +11,7 @@ import os
 import pathlib
 from retrying import retry
 import time
-from urllib.error import HTTPError
+import urllib
 
 from bs4 import BeautifulSoup
 import ffmpy
@@ -142,9 +142,9 @@ class Stream(etas.Serializable):
         '''
         raise NotImplementedError("Subclass must implement")
 
-    def get_m3u8_stream(self):
-        # @todo(Tyler)
-        raise NotImplementedError("TODO")
+    def get_live_stream_url(self):
+        '''Get the URL for streaming'''
+        raise NotImplementedError("Subclass must implement")
 
     @classmethod
     def from_dict(cls, d, *args, **kwargs):
@@ -174,6 +174,28 @@ class M3U8Stream(Stream):
         super(M3U8Stream, self).__init__(stream_name, GMT)
         self.webpage = webpage
         self.chunk_path = chunk_path
+
+    def get_live_stream_url(self):
+        url = self.chunk_path
+
+        try:
+            urllib.request.urlopen(url)
+        except urllib.error.HTTPError:
+            self.update_stream_chunk_path()
+            url = self.chunk_path
+
+        if "videos2archives" in url:
+            url = (
+                    "https://pdi-service.voxel51.com/stream-archive/" +
+                    url.split(".com/")[1]
+            )
+        elif "earthcam" in url:
+            url = (
+                    "https://pdi-service.voxel51.com/stream/" +
+                    url.split(".com/")[1]
+            )
+
+        return url
 
     def download_image(self, outdir):
         with etau.TempDir(basedir=panc.BASE_DIR) as tmpdir:
@@ -232,7 +254,7 @@ class M3U8Stream(Stream):
                 self.update_stream_chunk_path()
                 uris = self._attempt_get_uris()
 
-        except HTTPError:
+        except urllib.error.HTTPError:
             self.update_stream_chunk_path()
             uris = self._attempt_get_uris()
 
