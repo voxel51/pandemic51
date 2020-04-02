@@ -107,6 +107,12 @@ class Chart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
+        // todo: real data
+        let prevTemp = json.data[0] ? json.data[0].pdi / 2 : 20
+        json.data.forEach(i => {
+          prevTemp = i.temp = prevTemp + Math.random() - 0.48
+        })
+
         this.setState({
           list: json["data"],
           events: json["events"],
@@ -162,12 +168,6 @@ class Chart extends Component {
     const colorSecondary = 'rgb(109, 4, 255)'
     const { list, events } = this.state
     const { classes, title, city, selectedTime } = this.props
-
-    // todo: real data
-    let prevTemp = list[0] ? list[0].pdi / 2 : 20
-    list.forEach(i => {
-      prevTemp = i.temp = prevTemp + Math.random() - 0.48
-    })
 
     const contentFormatter = v => {
       if (!v.payload || !v.payload.length) {
