@@ -26,7 +26,7 @@ def run_on_startup(sender=None, conf=None, **kwargs):
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     '''Setup periodic Celery tasks.'''
-    for stream_name in panc.STREAMS:
+    for stream_name in pans.Stream.get_stream_names():
         sender.add_periodic_task(
             panc.DOWNLOAD_STREAM_INTERVAL, download_stream_task.s(stream_name))
 
