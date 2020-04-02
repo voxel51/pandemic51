@@ -34,20 +34,6 @@ CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
 
 
-# @todo(Tyler)
-def _configure_webdriver():
-    # Reference: https://stackoverflow.com/q/52633697
-    caps = DesiredCapabilities.CHROME
-    caps["goog:loggingPrefs"] = {"performance": "ALL"}
-    chrome_options = Options()
-    chrome_options.add_argument("--headless")
-    driver = webdriver.Chrome(
-        desired_capabilities=caps, options=chrome_options,
-        executable_path="/usr/bin/chromedriver")
-    return driver 
-
-
-# @todo(Tyler)
 def get_img_urls(webpage):
     '''Open the webpage and parse the source HTML for any image urls.
 
@@ -70,11 +56,6 @@ def get_img_urls(webpage):
     img_tags = soup.find_all('img')
     urls = [img['src'] for img in img_tags]
     return urls
-
-
-# @todo(Tyler)
-def _process_browser_log_entry(entry):
-    return json.loads(entry["message"])["message"]
 
 
 def save_video(chunk_path, uri, output_dir):
@@ -268,45 +249,11 @@ class M3U8Stream(Stream):
         Returns:
             the chunk path
         '''
-        self.chunk_path = self._get_chunk_url()
+        self.chunk_path = _get_chunk_url()
         self.write_json(self.path, pretty_print=True)
 
     def _attempt_get_uris(self):
         return m3u8.load(self.chunk_path).segments.uri
-
-    def _get_chunk_url(self):
-        driver = _configure_webdriver()
-        driver.get(self.webpage)
-
-        chunk_url = None
-        num_attempts = 0
-        while chunk_url is None and num_attempts < CHUNK_URL_MAX_NUM_ATTEMPTS:
-            try:
-                browser_log = driver.get_log("performance")
-                events = [
-                    _process_browser_log_entry(entry) for entry in browser_log]
-                events = [
-                    e for e in events if "Network.response" in e["method"]]
-
-                for event in events:
-                    try:
-                        url = event["params"]["response"]["url"]
-                        if "chunk" in url:
-                            chunk_url = url
-                    except:
-                        pass
-            except:
-                num_attempts += 1
-                logger.info("Failed to get chunk URL from '%s'", self.webpage)
-                time.sleep(CHUNK_URL_SLEEP_SECONDS)
-
-        driver.service.stop()
-
-        if chunk_url:
-            return chunk_url
-
-        raise TimeoutError(
-            "Failed to get the chunklist from the network traffic")
 
     @classmethod
     def _from_dict(cls, d):
@@ -323,3 +270,54 @@ class MjpegStream(Stream):
 
 class ImageStream(Stream):
     pass
+
+
+def _get_chunk_url(webpage):
+    driver = _configure_webdriver()
+    driver.get(webpage)
+
+    chunk_url = None
+    num_attempts = 0
+    while chunk_url is None and num_attempts < CHUNK_URL_MAX_NUM_ATTEMPTS:
+        try:
+            browser_log = driver.get_log("performance")
+            events = [
+                _process_browser_log_entry(entry) for entry in browser_log]
+            events = [
+                e for e in events if "Network.response" in e["method"]]
+
+            for event in events:
+                try:
+                    url = event["params"]["response"]["url"]
+                    if "chunk" in url:
+                        chunk_url = url
+                except:
+                    pass
+        except:
+            num_attempts += 1
+            logger.info("Failed to get chunk URL from '%s'", webpage)
+            time.sleep(CHUNK_URL_SLEEP_SECONDS)
+
+    driver.service.stop()
+
+    if chunk_url:
+        return chunk_url
+
+    raise TimeoutError(
+        "Failed to get the chunklist from the network traffic")
+
+
+def _process_browser_log_entry(entry):
+    return json.loads(entry["message"])["message"]
+
+
+def _configure_webdriver():
+    # Reference: https://stackoverflow.com/q/52633697
+    caps = DesiredCapabilities.CHROME
+    caps["goog:loggingPrefs"] = {"performance": "ALL"}
+    chrome_options = Options()
+    chrome_options.add_argument("--headless")
+    driver = webdriver.Chrome(
+        desired_capabilities=caps, options=chrome_options,
+        executable_path="/usr/bin/chromedriver")
+    return driver
