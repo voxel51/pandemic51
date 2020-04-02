@@ -68,6 +68,11 @@ const formal = {
   prague: "Prague, Czech Republic",
 }
 
+const shortLabels = {
+  pdi: 'PDI',
+  temp: 'Temp',
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -177,22 +182,15 @@ class Chart extends Component {
             <Typography variant="h5" component="h2">
               {this.formatFullTime(v.label)}
             </Typography>
-            <Typography
-              variant="h6"
-              component="h3"
-              style={{ color: colorPrimary }}
-            >
-              PDI {bull}{" "}
-              {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
-            </Typography>
-            <Typography
-              variant="h6"
-              component="h3"
-              style={{ color: colorSecondary }}
-            >
-              Temp {bull}{" "}
-              {v.payload.length ? v.payload[1].value.toFixed(2) : "-"}
-            </Typography>
+            {v.payload.map(point => (
+              <Typography
+                variant="h6"
+                component="h3"
+                style={{ color: point.color }}
+              >
+                {shortLabels[point.dataKey]} {bull} {point.value.toFixed(2)}
+              </Typography>
+            ))}
             {event ?
               <Typography variant="body2" component="p">
                 {moment
