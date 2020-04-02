@@ -107,22 +107,6 @@ def sample_first_frame(inpath, outpath):
     return True
 
 
-def download_and_store(stream_name, outdir):
-    '''Downloads an image from the latest stream, and add it to the database.
-
-    Args:
-        stream_name: the stream name
-        outdir: the output directory
-
-    Returns:
-        image_path: path the the downloaded image on disk
-        dt: datetime object of when the image was downloaded
-    '''
-    # @todo(Tyler) kill this function
-    stream = Stream.from_stream_name(stream_name)
-    stream.download_image_and_store(outdir)
-
-
 class Stream(etas.Serializable):
     def __init__(self, stream_name, GMT):
         self.type = etau.get_class_name(self)
@@ -141,6 +125,16 @@ class Stream(etas.Serializable):
         raise NotImplementedError("Subclass must implement")
 
     def download_image_and_store(self, outdir):
+        '''Downloads an image from the latest stream, and add it to the database.
+
+        Args:
+            stream_name: the stream name
+            outdir: the output directory
+
+        Returns:
+            image_path: path the the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
         raise NotImplementedError("Subclass must implement")
 
     def get_m3u8_stream(self):
@@ -265,10 +259,12 @@ class M3U8Stream(Stream):
 
 
 class MjpegStream(Stream):
+    # @todo(Tyler)
     pass
 
 
 class ImageStream(Stream):
+    # @todo(Tyler)
     pass
 
 

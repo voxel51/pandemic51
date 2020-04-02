@@ -1,5 +1,5 @@
 '''
-Test script for `pandemic51.core.streaming.download_and_store()`.
+Test script for `pandemic51.core.streaming.Stream.download_image_and_store()`.
 
 Copyright 2020 Voxel51, Inc.
 voxel51.com
@@ -15,4 +15,5 @@ OUT_BASEDIR = "out"
 
 
 for stream_name in STREAM_NAMES:
-    pans.download_and_store(stream_name, OUT_BASEDIR)
+    stream = pans.Stream.from_stream_name(stream_name)
+    stream.download_image_and_store(outdir=OUT_BASEDIR)
