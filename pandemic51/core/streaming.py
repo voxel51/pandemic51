@@ -108,29 +108,71 @@ def sample_first_frame(inpath, outpath):
 
 
 class Stream(etas.Serializable):
+    '''Abstract class for streams of various types providing functionality for
+    downloading clips and images from the stream, getting the latest stream URL,
+    etc.
+    '''
     def __init__(self, stream_name, GMT):
+        '''
+        Args:
+            stream_name: name of the stream (should match JSON file in
+                {{pandemic51}}/config/streams/
+            GMT: integer relative timezone of stream
+        '''
         self.type = etau.get_class_name(self)
         self.stream_name = stream_name
         self.GMT = GMT
 
     @staticmethod
     def stream_path(stream_name):
+        '''Get the path to the Stream JSON file.
+
+        Args:
+            stream_name: name of the stream
+
+        Returns:
+            path the the Stream object serialized on disk
+        '''
         return os.path.join(panc.STREAMS_DIR, stream_name + ".json")
 
     @staticmethod
     def get_stream_names():
+        '''Get names of all streams serialized on disk.
+
+        Returns:
+             a list of stream_name strings
+        '''
         _, matches = etau.parse_glob_pattern(Stream.stream_path("*"))
         return [x[0] for x in matches]
 
     @property
     def path(self):
+        '''Path to the Stream serialized on disk'''
         return self.stream_path(self.stream_name)
 
+    def get_live_stream_url(self):
+        '''Get the URL for streaming'''
+        raise NotImplementedError("Subclass must implement")
+
     def download_image(self, outdir):
+        '''Downloads an image from the latest stream
+
+        Args:
+            outdir: the output directory
+
+        Returns:
+            is_new_img: `True` if the image was not already on disk
+            image_path: path the the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
         raise NotImplementedError("Subclass must implement")
 
     def download_image_and_store(self, outdir):
-        '''Downloads an image from the latest stream, and add it to the database.
+        '''Downloads an image from the latest stream, and add it to the
+        database.
+
+        If an image with the same filename was already on disk, no new entry is
+        added to the database.
 
         Args:
             stream_name: the stream name
@@ -140,19 +182,38 @@ class Stream(etas.Serializable):
             image_path: path the the downloaded image on disk
             dt: datetime object of when the image was downloaded
         '''
-        raise NotImplementedError("Subclass must implement")
+        is_new_img, image_path, dt = self.download_image(outdir)
 
-    def get_live_stream_url(self):
-        '''Get the URL for streaming'''
-        raise NotImplementedError("Subclass must implement")
+        if is_new_img:
+            add_stream_history(self.stream_name, dt, image_path)
+
+        return image_path, dt
 
     @classmethod
     def from_dict(cls, d, *args, **kwargs):
+        '''Constructs a Stream object from a JSON dictionary.
+
+        Args:
+            d: a JSON dictionary representation of a Serializable object
+
+        Returns:
+            a Stream instance
+        '''
         downloader_cls = etau.get_class(d["type"])
         return downloader_cls._from_dict(d)
 
     @classmethod
     def from_json(cls, path, *args, **kwargs):
+        '''Constructs a Stream object from a JSON file.
+
+        If `stream_name` key is missing, it is automatically populated.
+
+        Args:
+            path: the path to the JSON file on disk
+
+        Returns:
+            a Stream instance
+        '''
         d = etas.read_json(path)
 
         if "stream_name" not in d:
@@ -162,6 +223,14 @@ class Stream(etas.Serializable):
 
     @classmethod
     def from_stream_name(cls, stream_name):
+        '''Constructs a Stream object.
+
+        Args:
+            stream_name: the name of the stream
+
+        Returns:
+            a Stream instance
+        '''
         return cls.from_json(cls.stream_path(stream_name))
 
     @classmethod
@@ -170,6 +239,7 @@ class Stream(etas.Serializable):
 
 
 class M3U8Stream(Stream):
+    '''A Stream class that reads URIs from an M3U8 chunk path'''
     def __init__(self, stream_name, GMT, webpage, chunk_path):
         super(M3U8Stream, self).__init__(stream_name, GMT)
         self.webpage = webpage
@@ -198,6 +268,16 @@ class M3U8Stream(Stream):
         return url
 
     def download_image(self, outdir):
+        '''Downloads an image from the latest stream
+
+        Args:
+            outdir: the output directory
+
+        Returns:
+            is_new_img: `True` if the image was not already on disk
+            image_path: path the the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
         with etau.TempDir(basedir=panc.BASE_DIR) as tmpdir:
             # Download video
             video_path, dt = self.download_chunk(tmpdir)
@@ -213,14 +293,6 @@ class M3U8Stream(Stream):
             is_new_img = sample_first_frame(video_path, image_path)
 
         return is_new_img, image_path, dt
-
-    def download_image_and_store(self, outdir):
-        is_new_img, image_path, dt = self.download_image(outdir)
-
-        if is_new_img:
-            add_stream_history(self.stream_name, dt, image_path)
-
-        return image_path, dt
 
     def download_chunk(self, output_dir):
         '''Downloads a chunk of the given stream to the given directory.
@@ -286,13 +358,17 @@ class M3U8Stream(Stream):
 
 
 class MjpegStream(Stream):
+    '''A Stream class that reads MJPEGs'''
     # @todo(Tyler)
-    pass
+    raise NotImplementedError("TODO")
 
 
 class ImageStream(Stream):
+    '''A Stream class for streams that intermittently take image snapshots,
+    rather than providing constant video feed.
+    '''
     # @todo(Tyler)
-    pass
+    raise NotImplementedError("TODO")
 
 
 def _get_chunk_url(webpage):
