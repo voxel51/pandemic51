@@ -34,6 +34,7 @@ CHUNK_URL_MAX_NUM_ATTEMPTS = 20
 CHUNK_URL_SLEEP_SECONDS = 1
 
 
+# @todo(Tyler)
 def update_stream_chunk_path(stream_name):
     '''Updates the given stream in the stream dictionary and serializes it to
     disk at `pandemic51.config.STREAMS_PATH`.
@@ -51,6 +52,7 @@ def update_stream_chunk_path(stream_name):
     return chunk_path
 
 
+# @todo(Tyler)
 def _configure_webdriver():
     # Reference: https://stackoverflow.com/q/52633697
     caps = DesiredCapabilities.CHROME
@@ -63,6 +65,7 @@ def _configure_webdriver():
     return driver 
 
 
+# @todo(Tyler)
 def get_img_urls(webpage):
     '''Open the webpage and parse the source HTML for any image urls.
 
@@ -87,6 +90,7 @@ def get_img_urls(webpage):
     return urls
 
 
+# @todo(Tyler)
 def _get_chunk_url(webpage):
     driver = _configure_webdriver()
     driver.get(webpage)
@@ -121,6 +125,7 @@ def _get_chunk_url(webpage):
     raise TimeoutError("Failed to get the chunklist from the network traffic")
 
 
+# @todo(Tyler)
 def _process_browser_log_entry(entry):
     return json.loads(entry["message"])["message"]
 
@@ -150,38 +155,12 @@ def save_video(chunk_path, uri, output_dir):
     return output_video_path
 
 
-def download_stream(stream_name, output_dir, timeout=None):
-    '''Downloads the given stream.
-
-    Args:
-        stream_name: the stream name
-        output_dir: the output directory
-        timeout: duration (in seconds) to continue streaming. If None, continue
-            forever
-    '''
-    output_path = os.path.join(output_dir, stream_name)
-
-    processed_uris = []
-
-    start = time.time()
-    while timeout is None or (time.time() - start < timeout):
-        time.sleep(1)
-        chunk_path, uris = _get_chunk_path_and_uris(stream_name)
-        for uri in uris:
-            if uri not in processed_uris:
-                logger.info("Processing URI '%s'", uri)
-                save_video(chunk_path, uri, output_path)
-                processed_uris.append(uri)
-
-
-def sample_first_frame(inpath, outpath, width=None, height=None):
+def sample_first_frame(inpath, outpath):
     '''Samples the first frame of the given video.
 
     Args:
         inpath: input video path
         outpath: the path to write the output image
-        width: an optional width to resize the image
-        height: an optional height to resize the image
 
     Returns:
         True if the image was created, or False if it already existed
@@ -189,8 +168,7 @@ def sample_first_frame(inpath, outpath, width=None, height=None):
     if os.path.exists(outpath):
         return False
 
-    resize_param = "-s %dx%d" % (width, height) if width and height else ""
-    outcmd = "-ss 00:00:00 -t 00:00:01 %s -r 1 -f image2" % resize_param
+    outcmd = "-ss 00:00:00 -t 00:00:01 -r 1 -f image2"
 
     etau.ensure_basedir(outpath)
     ffmpy.FFmpeg(
@@ -201,38 +179,20 @@ def sample_first_frame(inpath, outpath, width=None, height=None):
     return True
 
 
-def download_and_store(stream_name, outdir, width=None, height=None):
+def download_and_store(stream_name, outdir):
     '''Downloads an image from the latest stream, and add it to the database.
 
     Args:
         stream_name: the stream name
         outdir: the output directory
-        width: an optional width to resize the image
-        height: an optional height to resize the image
 
     Returns:
         image_path: path the the downloaded image on disk
         dt: datetime object of when the image was downloaded
     '''
-    with etau.TempDir(basedir=panc.BASE_DIR) as tmpdir:
-        # Download video
-        video_path, dt = download_chunk(stream_name, tmpdir)
-
-        # UTC integer timestamp (epoch time)
-        timestamp = int(dt.timestamp())
-
-        # Create path for image
-        vpath = pathlib.Path(video_path)
-        image_path = os.path.join(
-            outdir, vpath.parent.stem, "%d.png" % timestamp)
-
-        is_new_img = sample_first_frame(
-            video_path, image_path, width=width, height=height)
-
-    if is_new_img:
-        add_stream_history(stream_name, dt, image_path)
-
-    return image_path, dt
+    # @todo(Tyler) kill this function
+    stream = Stream.from_stream_name(stream_name)
+    stream.download_image_and_store(outdir)
 
 
 class Stream(etas.Serializable):
@@ -241,7 +201,10 @@ class Stream(etas.Serializable):
         self.stream_name = stream_name
         self.GMT = GMT
 
-    def download_image(self, outdir, overwrite=False):
+    def download_image(self, outdir):
+        raise NotImplementedError("Subclass must implement")
+
+    def download_image_and_store(self, outdir):
         raise NotImplementedError("Subclass must implement")
 
     def get_m3u8_stream(self):
@@ -262,12 +225,10 @@ class Stream(etas.Serializable):
 
         return cls.from_dict(d, *args, **kwargs)
 
-
     @classmethod
     def from_stream_name(cls, stream_name):
         stream_path = os.path.join(panc.STREAMS_DIR, stream_name + ".json")
         return cls.from_json(stream_path)
-
 
     @classmethod
     def _from_dict(cls, d):
@@ -280,8 +241,7 @@ class M3U8Stream(Stream):
         self.webpage = webpage
         self.chunk_path = chunk_path
 
-
-    def download_image(self, outdir, overwrite=False, width=None, height=None):
+    def download_image(self, outdir):
         with etau.TempDir(basedir=panc.BASE_DIR) as tmpdir:
             # Download video
             video_path, dt = self.download_chunk(tmpdir)
@@ -292,10 +252,19 @@ class M3U8Stream(Stream):
             # Create path for image
             vpath = pathlib.Path(video_path)
             image_path = os.path.join(
-                outdir, vpath.parent.stem, "%d.png" % timestamp)
+                outdir, vpath.parent.stem, "%d.jpg" % timestamp)
 
-            is_new_img = sample_first_frame(
-                video_path, image_path, width=width, height=height)
+            is_new_img = sample_first_frame(video_path, image_path)
+
+        return is_new_img, image_path, dt
+
+    def download_image_and_store(self, outdir):
+        is_new_img, image_path, dt = self.download_image(outdir)
+
+        if is_new_img:
+            add_stream_history(self.stream_name, dt, image_path)
+
+        return image_path, dt
 
     def download_chunk(self, output_dir):
         '''Downloads a chunk of the given stream to the given directory.
