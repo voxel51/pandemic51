@@ -5,10 +5,11 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from datetime import datetime
+import io
 import json
 import logging
 import os
-import pathlib
+import requests
 from retrying import retry
 import time
 import urllib
@@ -16,10 +17,13 @@ import urllib
 from bs4 import BeautifulSoup
 import ffmpy
 import m3u8
+import numpy as np
+from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
 
+import eta.core.image as etai
 import eta.core.serial as etas
 import eta.core.utils as etau
 
@@ -405,8 +409,79 @@ class ImageStream(Stream):
     '''A Stream class for streams that intermittently take image snapshots,
     rather than providing constant video feed.
     '''
-    # @todo(Tyler)
-    pass
+
+    def __init__(self, stream_name, GMT, webpage, url_filter):
+        super(ImageStream, self).__init__(stream_name, GMT)
+        self.webpage = webpage
+        self.url_filter = url_filter
+
+    def get_live_stream_url(self):
+        '''Get the URL for streaming'''
+        # @todo(Tyler)
+        raise NotImplementedError("TODO")
+
+    def download_image(self, outdir):
+        '''Downloads an image from the latest stream
+
+        Args:
+            outdir: the output directory
+
+        Returns:
+            is_new_img: `True` if the image was not already on disk
+            image_path: path the the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
+        url = self._get_url()
+        img = self._load_image_from_url(url)
+        dt = self._parse_datetime(url)
+
+        # UTC integer timestamp (epoch time)
+        timestamp = int(dt.timestamp())
+
+        # Create path for image
+        image_path = os.path.join(
+            outdir, self.stream_name, "%d.jpg" % timestamp)
+        etau.ensure_basedir(image_path)
+
+        if os.path.exists(image_path):
+            is_new_img = False
+        else:
+            is_new_img = True
+            etai.write(img, image_path)
+
+        return is_new_img, image_path, dt
+
+    def _get_url(self):
+        # Get the source from the page
+        urls = get_img_urls(self.webpage)
+        filtered_urls = [u for u in urls if self.url_filter in u]
+
+        if not filtered_urls:
+            raise Exception("No URLs found for webpage: %s" % self.webpage)
+
+        # we only need one!
+        url = filtered_urls[0]
+
+        # Get the large version of the image instead of the thumbnail
+        url = url[:-5] + "l" + url[-4:]
+
+        return url
+
+    def _load_image_from_url(self, url):
+        data = requests.get(url).content
+        return np.array(Image.open(io.BytesIO(data)))
+
+    def _parse_datetime(self, url):
+        time_str = url.split("/")[-1].split("_")[0]
+        return datetime.strptime(time_str, "%m%d%Y%H%M")
+
+    @classmethod
+    def _from_dict(cls, d):
+        stream_name = d["stream_name"]
+        GMT = d["GMT"]
+        webpage = d["webpage"]
+        url_filter = d["url_filter"]
+        return cls(stream_name, GMT, webpage, url_filter)
 
 
 def _get_chunk_url(webpage):
