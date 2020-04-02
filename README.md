@@ -43,7 +43,7 @@ export P51_SQL_PASSWORD="{{PASSWORD}}"
 export P51_SQL_DATABASE_NAME=p51db
 
 # Login shortcut
-alias p51mysql="mysql -u ${P51_SQL_USERNAME} -p${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME}"
+alias p51mysql="mysql -u ${P51_SQL_USERNAME} -p ${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME}"
 ```
 
 With the above in-place, `source` your config to apply the changes.
@@ -63,9 +63,8 @@ For Linux users, run the `scripts/linux_preinstall.bash` script.
 
 > todo: finish MacOS preinstall script
 
-[Download `chromedriver`](
-    https://sites.google.com/a/chromium.org/chromedriver/downloads) for your 
-    version of Google Chrome and move it to `/usr/bin/`.
+Then [download `chromedriver`](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+for your version of Google Chrome and move it to `/usr/bin/`.
 
 We strongly recommend creating a virtual environment for your development work:
 
