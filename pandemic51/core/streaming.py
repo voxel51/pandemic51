@@ -51,34 +51,6 @@ def update_stream_chunk_path(stream_name):
     return chunk_path
 
 
-@retry(stop_max_attempt_number=10, wait_fixed=100)
-def _get_chunk_path_and_uris(stream_name):
-    '''Attempts to load uris from a given chunk path. Will handle HTTPS 
-    Errors and update the chunk path.
-
-    Args:
-        chunk_path: URL of the chunklist to attempt to load
-        stream_name: name of the stream corresponding to chunk_path
-
-    Returns:
-        uris: the uris present in the chunk_path
-    '''
-    streams = etas.load_json(panc.STREAMS_PATH)
-    chunk_path = streams[stream_name]["chunk_path"]
-
-    try:
-        uris = m3u8.load(chunk_path).segments.uri
-        if not uris:
-            chunk_path = update_stream_chunk_path(stream_name)
-            uris = m3u8.load(chunk_path).segments.uri
-
-    except HTTPError:
-        chunk_path = update_stream_chunk_path(stream_name)
-        uris = m3u8.load(chunk_path).segments.uri
-
-    return chunk_path, uris
-
-
 def _configure_webdriver():
     # Reference: https://stackoverflow.com/q/52633697
     caps = DesiredCapabilities.CHROME
@@ -178,22 +150,6 @@ def save_video(chunk_path, uri, output_dir):
     return output_video_path
 
 
-def download_chunk(stream_name, output_dir):
-    '''Downloads a chunk of the given stream to the given directory.
-
-    Args:
-        stream_name: the stream name
-        output_dir: the output directory
-    '''
-    output_path = os.path.join(output_dir, stream_name)
-
-    chunk_path, uris = _get_chunk_path_and_uris(stream_name)
-    uri = uris[-1]
-
-    logger.info("Processing URI '%s'", uri)
-    return save_video(chunk_path, uri, output_path), datetime.utcnow()
-
-
 def download_stream(stream_name, output_dir, timeout=None):
     '''Downloads the given stream.
 
@@ -279,19 +235,38 @@ def download_and_store(stream_name, outdir, width=None, height=None):
     return image_path, dt
 
 
-class StreamDownloader(etas.Serializable):
-    def download(self, outdir):
+class Stream(etas.Serializable):
+    def __init__(self, stream_name, GMT):
+        self.type = etau.get_class_name(self)
+        self.stream_name = stream_name
+        self.GMT = GMT
+
+    def download_image(self, outdir, overwrite=False):
         raise NotImplementedError("Subclass must implement")
+
+    def get_m3u8_stream(self):
+        # @todo(Tyler)
+        raise NotImplementedError("TODO")
 
     @classmethod
     def from_dict(cls, d, *args, **kwargs):
         downloader_cls = etau.get_class(d["type"])
         return downloader_cls._from_dict(d)
 
+    @classmethod
+    def from_json(cls, path, *args, **kwargs):
+        d = etas.read_json(path)
+
+        if "stream_name" not in d:
+            d["stream_name"] = os.path.splitext(os.path.basename(path))[0]
+
+        return cls.from_dict(d, *args, **kwargs)
+
 
     @classmethod
     def from_stream_name(cls, stream_name):
-        raise NotImplementedError("TODO")
+        stream_path = os.path.join(panc.STREAMS_DIR, stream_name + ".json")
+        return cls.from_json(stream_path)
 
 
     @classmethod
@@ -299,14 +274,82 @@ class StreamDownloader(etas.Serializable):
         raise NotImplementedError("Subclass must implement")
 
 
+class M3U8Stream(Stream):
+    def __init__(self, stream_name, GMT, webpage, chunk_path):
+        super(M3U8Stream, self).__init__(stream_name, GMT)
+        self.webpage = webpage
+        self.chunk_path = chunk_path
 
-class M3U8StreamDownloader(StreamDownloader):
+
+    def download_image(self, outdir, overwrite=False, width=None, height=None):
+        with etau.TempDir(basedir=panc.BASE_DIR) as tmpdir:
+            # Download video
+            video_path, dt = self.download_chunk(tmpdir)
+
+            # UTC integer timestamp (epoch time)
+            timestamp = int(dt.timestamp())
+
+            # Create path for image
+            vpath = pathlib.Path(video_path)
+            image_path = os.path.join(
+                outdir, vpath.parent.stem, "%d.png" % timestamp)
+
+            is_new_img = sample_first_frame(
+                video_path, image_path, width=width, height=height)
+
+    def download_chunk(self, output_dir):
+        '''Downloads a chunk of the given stream to the given directory.
+
+        Args:
+            output_dir: the output directory
+        '''
+        output_path = os.path.join(output_dir, self.stream_name)
+
+        chunk_path, uris = self._get_chunk_path_and_uris()
+        uri = uris[-1]
+
+        logger.info("Processing URI '%s'", uri)
+        return save_video(chunk_path, uri, output_path), datetime.utcnow()
+
+    @retry(stop_max_attempt_number=10, wait_fixed=100)
+    def _get_chunk_path_and_uris(self):
+        '''Attempts to load uris from a given chunk path. Will handle HTTPS
+        Errors and update the chunk path.
+
+        Args:
+            chunk_path: URL of the chunklist to attempt to load
+            stream_name: name of the stream corresponding to chunk_path
+
+        Returns:
+            uris: the uris present in the chunk_path
+        '''
+        streams = etas.load_json(panc.STREAMS_PATH)
+        chunk_path = streams[self.stream_name]["chunk_path"]
+
+        try:
+            uris = m3u8.load(chunk_path).segments.uri
+            if not uris:
+                chunk_path = update_stream_chunk_path(self.stream_name)
+                uris = m3u8.load(chunk_path).segments.uri
+
+        except HTTPError:
+            chunk_path = update_stream_chunk_path(self.stream_name)
+            uris = m3u8.load(chunk_path).segments.uri
+
+        return chunk_path, uris
+
+    @classmethod
+    def _from_dict(cls, d):
+        stream_name = d["stream_name"]
+        GMT = d["GMT"]
+        webpage = d["webpage"]
+        chunk_path = d["chunk_path"]
+        return cls(stream_name, GMT, webpage, chunk_path)
+
+
+class MjpegStream(Stream):
     pass
 
 
-class MjpegStreamDownloader(StreamDownloader):
-    pass
-
-
-class ImageStreamDownloader(StreamDownloader):
+class ImageStream(Stream):
     pass
