@@ -262,7 +262,7 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 5, left: 30, bottom: 0 }}
+              margin={{ top: 0, right: 20, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
@@ -296,6 +296,7 @@ class Chart extends Component {
               />
               <YAxis
                 dataKey="pdi"
+                yAxisId="pdi"
                 name="PDI"
                 width={25}
                 label={
@@ -311,15 +312,16 @@ class Chart extends Component {
               {plotOptions[secondPlot] ? (
                 <YAxis
                   dataKey={secondPlot}
+                  yAxisId="secondary"
                   name={plotOptions[secondPlot].name}
                   orientation="right"
-                  width={25}
+                  mirror={true}
                   label={
                     <Label
                       value={plotOptions[secondPlot].name}
-                      position="insideLeft"
+                      position="right"
                       angle={-90}
-                      offset={0}
+                      offset={10}
                       style={{ textAnchor: "middle" }}
                     />
                   }
@@ -332,14 +334,15 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} yAxisId="pdi" />
                 ))}
               {selectedTime ? (
-                <ReferenceLine x={selectedTime} stroke={colorPrimary} />
+                <ReferenceLine x={selectedTime} stroke={colorPrimary} yAxisId="pdi" />
               ) : null}
               {plotOptions[secondPlot] ? (
                 <Area
                   key={secondPlot}
+                  yAxisId="secondary"
                   type="monotone"
                   dataKey={secondPlot}
                   stroke={colorSecondary}
@@ -348,6 +351,7 @@ class Chart extends Component {
                 />
               ) : null}
               <Area
+                yAxisId="pdi"
                 type="monotone"
                 dataKey="pdi"
                 stroke={colorPrimary}
