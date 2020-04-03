@@ -21,7 +21,6 @@ logger = logging.getLogger(__name__)
 
 historical_dir = os.path.join(panc.PANDEMIC51_DIR, "data", "historical")
 images_dir = os.path.join(historical_dir, "images")
-labels_dir = os.path.join(historical_dir, "labels")
 
 streams_map = {
     "timessquare": "time_square"
@@ -32,7 +31,6 @@ for cur_images_dir, _, files in os.walk(images_dir):
         continue
 
     stream_dirname = pathlib.Path(cur_images_dir).stem[:-len("_imgs")]
-    cur_labels_dir = os.path.join(labels_dir, stream_dirname + "_labels")
 
     stream_name = (
         streams_map[stream_dirname]
@@ -46,32 +44,18 @@ for cur_images_dir, _, files in os.walk(images_dir):
         json_filename = os.path.splitext(filename)[0] + ".json"
 
         img_path = os.path.join(cur_images_dir, filename)
-        labels_path = os.path.join(cur_labels_dir, json_filename)
 
         # UTC time
         timestamp = panu.parse_epoch_timestamp_from_path(img_path)
         utc_dt = datetime.utcfromtimestamp(timestamp)
 
         new_img_path = os.path.join(panc.IMAGES_DIR, stream_name, filename)
-        new_labels_path = os.path.join(
-            panc.LABELS_DIR, stream_name, json_filename)
 
         assert os.path.exists(img_path), "Missing image: %s" % img_path
-        assert os.path.exists(labels_path), "Missing labels: %s" % labels_path
 
-        logger.info(
-            "Moving file:\n\t%s\n\t-> %s", img_path, new_img_path)
+        logger.info("Moving file:\n\t%s\n\t-> %s", img_path, new_img_path)
         etau.move_file(img_path, new_img_path)
 
-        logger.info(
-            "Moving file:\n\t%s\n\t-> %s", labels_path, new_labels_path)
-        etau.move_file(labels_path, new_labels_path)
-
-        logger.info(
-            "Adding stream history:\n\t%s | %s | %s | %s",
-            stream_name, utc_dt, new_img_path, new_labels_path)
-        pand.add_stream_history(
-            stream_name, utc_dt,
-            image_path=new_img_path,
-            labels_path=new_labels_path,
-        )
+        logger.info("Adding stream history:\n\t%s | %s | %s",
+                    stream_name, utc_dt, new_img_path)
+        pand.add_stream_history(stream_name, utc_dt, image_path=new_img_path)

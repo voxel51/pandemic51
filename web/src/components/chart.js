@@ -50,6 +50,7 @@ const timezones = {
   newjersey: "America/New_York",
   newyork: "America/New_York",
   prague: "Europe/Prague",
+  lasvegas: "America/Los_Angeles",
 }
 
 const cities = {
@@ -61,6 +62,7 @@ const cities = {
   newjersey: "New Jersey",
   newyork: "New York",
   prague: "Prague",
+  lasvegas: "Las Vegas",
 }
 
 const formal = {
@@ -72,6 +74,7 @@ const formal = {
   newjersey: "Seaside Heights, New Jersey, USA",
   newyork: "New York City, New York, USA",
   prague: "Prague, Czech Republic",
+  lasvegas: "Las Vegas, Nevada, USA",
 }
 
 const shortLabels = {
@@ -123,7 +126,14 @@ class Chart extends Component {
           list: json["data"],
           events: json["events"],
           labels: json["labels"],
-        })
+        }, () => {
+            const match = window.location.search.match(/t=(\d+)/)
+            if (match) {
+              const selectedTime = Number(match[1])
+              this.handleClick({ activeLabel: selectedTime })
+            }
+          }
+        )
       })
   }
 
@@ -137,6 +147,9 @@ class Chart extends Component {
   handleClick(event) {
     if (event && event.activeLabel) {
       const data = this.state.labels[event.activeLabel]
+      if (!data) {
+        return
+      }
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -150,6 +163,9 @@ class Chart extends Component {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
       const data = this.state.labels[event.activeLabel]
+      if (!data) {
+        return
+      }
       this.props.onClick({
         src: data.url,
         time: data.time,
@@ -293,11 +309,11 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
                 ))}
-              {selectedTime ?
-                <ReferenceLine x={selectedTime} stroke={colorPrimary} /> :
-                null}
+              {selectedTime ? (
+                <ReferenceLine x={selectedTime} stroke={colorPrimary} />
+              ) : null}
               <Area
                 type="monotone"
                 dataKey="temp"

@@ -42,6 +42,7 @@ const timezones = {
   newyork: "America/New_York",
   prague: "Europe/Prague",
   average: "Etc/GMT",
+  lasvegas: "America/Los_Angeles",
 }
 
 const cities = {
@@ -54,6 +55,7 @@ const cities = {
   newyork: "New York",
   prague: "Prague",
   average: "Average",
+  lasvegas: "Las Vegas",
 }
 
 const styles = theme => ({
@@ -88,6 +90,7 @@ const colors = [
   "#d93be0",
   "#7da043",
   "#14ae32",
+  "#ef62c4",
 ]
 
 class BigChart extends Component {
@@ -174,7 +177,7 @@ class BigChart extends Component {
                 tickFormatter={unixTime =>
                   moment
                     .unix(unixTime)
-                    .tz(timezones.london)
+                    .tz("Etc/GMT")
                     .format("M/D")
                 }
                 type="number"
