@@ -87,6 +87,10 @@ const plotOptions = {
     name: 'Temperature',
     abbr: 'Temp',
   },
+  cases: {
+    name: 'Number of cases',
+    abbr: 'Cases',
+  },
 }
 
 const styles = theme => ({
@@ -126,8 +130,11 @@ class Chart extends Component {
       .then(json => {
         // todo: real data
         let prevTemp = json.data[0] ? json.data[0].pdi / 2 : 20
-        json.data.forEach(i => {
-          prevTemp = i.temp = prevTemp + Math.random() - 0.48
+        json.data.forEach(item => {
+          prevTemp = item.temp = prevTemp + Math.random() - 0.48
+        })
+        json.data.forEach((item, index) => {
+          item.cases = Math.pow(1.005, index)
         })
 
         this.setState({
