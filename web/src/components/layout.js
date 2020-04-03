@@ -197,7 +197,7 @@ class Layout extends React.Component {
           </Hidden>
         </div>
         <Middle />
-        <div className={"body_part body_part--centerfull bg-light-primary"}>
+        <div className={"body_part body_part--centerfull bg-light-secondary"}>
           <div class="body_block__title--left">
             <h2>Comparing the Response</h2>
           </div>
