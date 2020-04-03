@@ -68,8 +68,42 @@ export default function CityCard(props) {
               image={props.url}
               title={LOCATIONS[props.cityId]}
             />
-
             <CardContent className={classes.content}>
+              <Typography variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              <Typography
+                variant="h6"
+                component="h3"
+                className={classes.pos}
+                color="textSecondary"
+              >
+                <Clock
+                  format={"hh:mm:ss A"}
+                  ticking={true}
+                  timezone={TIMEZONES[props.cityId]}
+                />
+              </Typography>
+              <Typography variant="body1" component="p">
+                {LOCATIONS[props.cityId]}
+              </Typography>
+              {NEW[props.cityId] || BETA[props.cityId] ? (
+                <Card square className={classes.chip}>
+                  <CardContent style={{ padding: 0 }}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{ color: "rgb(255, 109, 4)" }}
+                    >
+                      {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ) : null}
+            </CardContent>
+          </Hidden>
+          <Hidden lgUp>
+            <CardContent>
               <Typography variant="h5" component="h2">
                 {props.name}
               </Typography>

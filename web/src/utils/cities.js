@@ -22,11 +22,11 @@ export const CITIES = {
 export const BETA = {
   detroit: "Detroit",
   annarbor: "Ann Arbor",
+  brighton: "Brighton",
   //ypsilanti: "Ypsilanti",
 }
 
 export const NEW = {
-  brighton: "Brighton",
 }
 
 export const HISCITIES = {
