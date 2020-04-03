@@ -13,6 +13,7 @@ import eta.core.utils as etau
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
+import pandemic51.core.streaming as pans
 import pandemic51.core.utils as panu
 
 
@@ -37,7 +38,7 @@ for cur_images_dir, _, files in os.walk(images_dir):
         if stream_dirname in streams_map else stream_dirname
     )
 
-    assert stream_name in panc.STREAMS, \
+    assert stream_name in pans.Stream.get_stream_names(), \
         "Unknown stream_name: '{}'".format(stream_name)
 
     for filename in files:
