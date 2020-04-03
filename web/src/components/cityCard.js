@@ -14,7 +14,7 @@ import { Link } from "gatsby"
 import React from "react"
 import Clock from "react-live-clock"
 import Hidden from "@material-ui/core/Hidden"
-import { LOCATIONS, TIMEZONES } from "../utils/cities"
+import { NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
 
 const useStyles = makeStyles({
   root: {
@@ -45,7 +45,7 @@ const useStyles = makeStyles({
     right: 0,
     bottom: 0,
     margin: "0 .5rem .5rem 0",
-    padding: ",0.5rem",
+    padding: "0.5rem",
   },
   bullet: {
     display: "inline-block",
@@ -88,28 +88,19 @@ export default function CityCard(props) {
               <Typography variant="body1" component="p">
                 {LOCATIONS[props.cityId]}
               </Typography>
-            </CardContent>
-          </Hidden>
-          <Hidden lgUp>
-            <CardContent>
-              <Typography variant="h5" component="h2">
-                {props.name}
-              </Typography>
-              <Typography
-                variant="h6"
-                component="h3"
-                className={classes.pos}
-                color="textSecondary"
-              >
-                <Clock
-                  format={"hh:mm:ss A"}
-                  ticking={true}
-                  timezone={TIMEZONES[props.cityId]}
-                />
-              </Typography>
-              <Typography variant="body1" component="p">
-                {LOCATIONS[props.cityId]}
-              </Typography>
+              {NEW[props.cityId] ? (
+                <Card square className={classes.chip}>
+                  <CardContent style={{ padding: 0 }}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{ color: "rgb(255, 109, 4)" }}
+                    >
+                      BETA FEED
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ) : null}
             </CardContent>
           </Hidden>
         </Link>

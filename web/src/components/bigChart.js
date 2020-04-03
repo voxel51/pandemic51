@@ -31,7 +31,7 @@ import {
   Label,
 } from "recharts"
 import Async from "react-async"
-import { CITIES, COLORS, TIMEZONES } from "../utils/cities"
+import { HISCITIES, COLORS, TIMEZONES } from "../utils/cities"
 
 const styles = theme => ({
   root: {
@@ -106,7 +106,7 @@ class BigChart extends Component {
                     component="h3"
                     style={{ color: v.color }}
                   >
-                    {{ ...CITIES, average: "Average" }[v.dataKey]} {bull}{" "}
+                    {{ ...HISCITIES, average: "Average" }[v.dataKey]} {bull}{" "}
                     {v.value.toLocaleString("en", { style: "percent" })}
                   </Typography>
                 )
@@ -169,7 +169,7 @@ class BigChart extends Component {
                 formatter={(v, n, p) => {
                   return [
                     v.toLocaleString("en", { style: "percent" }),
-                    { ...CITIES, average: "Average" }[n],
+                    { ...HISCITIES, average: "Average" }[n],
                   ]
                 }}
                 labelFormatter={v =>
@@ -179,7 +179,7 @@ class BigChart extends Component {
                     .format("dddd,  MMM Do, hh:mm A z")
                 }
               />
-              {Object.keys({ ...CITIES, average: "average" })
+              {Object.keys({ ...HISCITIES, average: "average" })
                 .sort()
                 .map((val, i) => (
                   <Line

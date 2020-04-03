@@ -6,6 +6,25 @@
  */
 
 export const CITIES = {
+  newyork: "New York",
+  newjersey: "New Jersey",
+  fortlauderdale: "Fort Lauderdale",
+  lasvegas: "Las Vegas",
+  dublin: "Dublin",
+  london: "London",
+  prague: "Prague",
+  detroit: "Detroit",
+  annarbor: "Ann Arbor",
+  ypsilanti: "Ypsilanti",
+}
+
+export const NEW = {
+  detroit: "Detroit",
+  annarbor: "Ann Arbor",
+  ypsilanti: "Ypsilanti",
+}
+
+export const HISCITIES = {
   dublin: "Dublin",
   london: "London",
   newjersey: "New Jersey",
@@ -13,9 +32,6 @@ export const CITIES = {
   prague: "Prague",
   fortlauderdale: "Fort Lauderdale",
   lasvegas: "Las Vegas",
-  detroit: "Detroit",
-  annarbor: "Ann Arbor",
-  ypsilanti: "Ypsilanti",
 }
 
 export const TIMEZONES = {
@@ -44,7 +60,7 @@ export const LOCATIONS = {
   prague: "Grand Hotel",
   fortlauderdale: "Wind Jammer",
   lasvegas: "Fremont Street",
-  detroit: "Windsor Tunnel",
+  detroit: "Tunnel",
   annarbor: "Ruthven",
   ypsilanti: "EMU"
 }

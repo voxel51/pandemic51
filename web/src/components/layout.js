@@ -120,19 +120,15 @@ class Layout extends React.Component {
                   marginTop: 16,
                 }}
               >
-                {Object.keys(CITIES)
-                  .sort()
-                  .map(cityId => (
-                    <CityCard
-                      key={cityId}
-                      cityId={cityId}
-                      name={CITIES[cityId]}
-                      active={city == cityId}
-                      url={
-                        data && data[cityId] ? data[cityId]["url"] : undefined
-                      }
-                    />
-                  ))}
+                {Object.keys(CITIES).map(cityId => (
+                  <CityCard
+                    key={cityId}
+                    cityId={cityId}
+                    name={CITIES[cityId]}
+                    active={city == cityId}
+                    url={data && data[cityId] ? data[cityId]["url"] : undefined}
+                  />
+                ))}
               </Grid>
               <Grid item xs={12} md={8}>
                 <Grid container spacing={4}>
@@ -177,21 +173,19 @@ class Layout extends React.Component {
                 />
               </Player>
               <Grid container spacing={4}>
-                {Object.keys(CITIES)
-                  .sort()
-                  .map(cityId => (
-                    <Grid item xs={6}>
-                      <MobileCityCard
-                        key={cityId}
-                        cityId={cityId}
-                        name={CITIES[cityId]}
-                        active={city == cityId}
-                        url={
-                          data && data[cityId] ? data[cityId]["url"] : undefined
-                        }
-                      />
-                    </Grid>
-                  ))}
+                {Object.keys(CITIES).map(cityId => (
+                  <Grid item xs={6}>
+                    <MobileCityCard
+                      key={cityId}
+                      cityId={cityId}
+                      name={CITIES[cityId]}
+                      active={city == cityId}
+                      url={
+                        data && data[cityId] ? data[cityId]["url"] : undefined
+                      }
+                    />
+                  </Grid>
+                ))}
               </Grid>
             </div>
           </Hidden>
