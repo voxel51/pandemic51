@@ -1,0 +1,7 @@
+{
+    "type": "pandemic51.core.streaming.M3U8Stream",
+    "stream_name": "fort_lauderdale",
+    "GMT": "-4",
+    "webpage": "https://www.earthcam.com/usa/florida/lauderdalebythesea/?cam=windjammer",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/windjammerHD2.flv/chunklist_w48410317.m3u8"
+}
