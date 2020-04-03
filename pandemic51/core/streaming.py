@@ -368,8 +368,7 @@ class MjpegStream(Stream):
 
     def get_live_stream_url(self):
         '''Get the URL for streaming'''
-        # @todo(Tyler)
-        raise NotImplementedError("TODO")
+        return self.url
 
     def download_image(self, outdir):
         '''Downloads an image from the latest stream
@@ -417,8 +416,20 @@ class ImageStream(Stream):
 
     def get_live_stream_url(self):
         '''Get the URL for streaming'''
-        # @todo(Tyler)
-        raise NotImplementedError("TODO")
+        # Get the source from the page
+        urls = get_img_urls(self.webpage)
+        filtered_urls = [u for u in urls if self.url_filter in u]
+
+        if not filtered_urls:
+            raise Exception("No URLs found for webpage: %s" % self.webpage)
+
+        # we only need one!
+        url = filtered_urls[0]
+
+        # Get the large version of the image instead of the thumbnail
+        url = url[:-5] + "l" + url[-4:]
+
+        return url
 
     def download_image(self, outdir):
         '''Downloads an image from the latest stream
@@ -431,7 +442,7 @@ class ImageStream(Stream):
             image_path: path the the downloaded image on disk
             dt: datetime object of when the image was downloaded
         '''
-        url = self._get_url()
+        url = self.get_live_stream_url()
         img = self._load_image_from_url(url)
         dt = self._parse_datetime(url)
 
@@ -450,22 +461,6 @@ class ImageStream(Stream):
             etai.write(img, image_path)
 
         return is_new_img, image_path, dt
-
-    def _get_url(self):
-        # Get the source from the page
-        urls = get_img_urls(self.webpage)
-        filtered_urls = [u for u in urls if self.url_filter in u]
-
-        if not filtered_urls:
-            raise Exception("No URLs found for webpage: %s" % self.webpage)
-
-        # we only need one!
-        url = filtered_urls[0]
-
-        # Get the large version of the image instead of the thumbnail
-        url = url[:-5] + "l" + url[-4:]
-
-        return url
 
     def _load_image_from_url(self, url):
         data = requests.get(url).content
