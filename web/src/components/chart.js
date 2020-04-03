@@ -7,11 +7,17 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
-import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
-import CardContent from "@material-ui/core/CardContent"
-import Typography from "@material-ui/core/Typography"
-import Divider from "@material-ui/core/Divider"
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@material-ui/core";
 import moment from "moment"
 import HelpTooltip from "./help"
 import {
@@ -309,6 +315,13 @@ class Chart extends Component {
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
+          <FormControl>
+            <InputLabel shrink={true}>Second axis</InputLabel>
+            <Select defaultValue='none'>
+              <MenuItem value='none'>None</MenuItem>
+              <MenuItem value='temp'>Temperature</MenuItem>
+            </Select>
+          </FormControl>
         </CardContent>
       </Card>
     )
