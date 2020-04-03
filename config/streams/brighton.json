@@ -1,0 +1,7 @@
+{
+    "type": "pandemic51.core.streaming.M3U8Stream",
+    "stream_name": "brighton",
+    "GMT": "-4",
+    "webpage": "https://www.earthcam.com/usa/michigan/brighton/?cam=brighton",
+    "chunk_path": "https://videos-3.earthcam.com/fecnetwork/8584.flv/chunklist_w1584477530.m3u8"
+}
