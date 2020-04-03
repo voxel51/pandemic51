@@ -1,0 +1,7 @@
+{
+    "type": "pandemic51.core.streaming.ImageStream",
+    "GMT": "-4",
+    "stream_name": "ypsilanti",
+    "webpage": "https://www.weatherbug.com/weather-camera/?cam=PSLNM",
+    "url_filter": "PSLNM"
+}

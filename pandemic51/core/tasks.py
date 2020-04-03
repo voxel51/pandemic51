@@ -26,7 +26,7 @@ def run_on_startup(sender=None, conf=None, **kwargs):
 @app.on_after_configure.connect
 def setup_periodic_tasks(sender, **kwargs):
     '''Setup periodic Celery tasks.'''
-    for stream_name in panc.STREAMS:
+    for stream_name in pans.Stream.get_stream_names():
         sender.add_periodic_task(
             panc.DOWNLOAD_STREAM_INTERVAL, download_stream_task.s(stream_name))
 
@@ -41,7 +41,8 @@ def download_stream_task(stream_name):
     Args:
         stream_name: the stream name
     '''
-    pans.download_and_store(stream_name, outdir=panc.IMAGES_DIR)
+    stream = pans.Stream.from_stream_name(stream_name)
+    stream.download_image_and_store(outdir=panc.IMAGES_DIR)
 
 
 @app.task()

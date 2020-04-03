@@ -1,0 +1,6 @@
+{
+    "type": "pandemic51.core.streaming.MjpegStream",
+    "stream_name": "detroit",
+    "GMT": "-4",
+    "url": "http://216.8.159.21/axis-cgi/mjpg/video.cgi"
+}
