@@ -129,7 +129,7 @@ class Chart extends Component {
       .then(response => response.json())
       .then(json => {
         // todo: real data
-        let prevTemp = json.data[0] ? json.data[0].pdi / 2 : 20
+        let prevTemp = 20
         json.data.forEach(item => {
           prevTemp = item.temp = prevTemp + Math.random() - 0.48
         })
@@ -251,7 +251,7 @@ class Chart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent style={{ position: "relative", width: "100%" }}>
+        <CardContent style={{ position: "relative", width: "100%", paddingBottom: 12 }}>
           <Typography
             variant="h4"
             component="h2"
@@ -362,9 +362,9 @@ class Chart extends Component {
           </ResponsiveContainer>
           <HelpTooltip />
           <div className='chart-dropdown'>
-            <InputLabel>Second plot:</InputLabel>
+            <InputLabel>Show:</InputLabel>
             <Select value={this.state.secondPlot} onChange={this.handlePlotChange.bind(this)}>
-              <MenuItem className='chart-dropdown-item' value='none'>None</MenuItem>
+              <MenuItem className='chart-dropdown-item' value='none'>PDI only</MenuItem>
               {Object.entries(plotOptions).map(([key, option]) => (
                 option.primary ? null : (
                   <MenuItem className='chart-dropdown-item' value={key}>{option.name}</MenuItem>
