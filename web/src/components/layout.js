@@ -103,6 +103,9 @@ class Layout extends React.Component {
     const { classes, children, city } = this.props
     const { data, height } = this.state
     const setHeight = height => this.setState({ height })
+    const cardListHeight = this.refs.chartContainer ?
+      this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length * 6.5 :
+      800;
     return (
       <div className={classes.wrapper}>
         <Helmet>
@@ -112,7 +115,7 @@ class Layout extends React.Component {
         <div className={"body_part body_part--centerfull bg-light-primary"}>
           <Hidden smDown>
             <Grid container spacing={4}>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} md={4} ref="chartContainer" style={{ maxHeight: cardListHeight, overflowY: 'auto' }}>
                 {Object.keys(CITIES)
                   .sort()
                   .map(cityId => (
