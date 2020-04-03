@@ -34,16 +34,7 @@ import Header from "./header"
 import Middle from "./middle"
 import Footer from "./footer"
 import Typography from "@material-ui/core/Typography"
-
-const CITIES = {
-  dublin: "Dublin",
-  london: "London",
-  newjersey: "New Jersey",
-  newyork: "New York",
-  prague: "Prague",
-  fortlauderdale: "Fort Lauderdale",
-  lasvegas: "Las Vegas",
-}
+import { CITIES } from "../utils/cities"
 
 const styles = {
   wrapper: {
@@ -103,9 +94,11 @@ class Layout extends React.Component {
     const { classes, children, city } = this.props
     const { data, height } = this.state
     const setHeight = height => this.setState({ height })
-    const cardListHeight = this.refs.chartContainer ?
-      this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length * 6.5 :
-      800;
+    const cardListHeight = this.refs.chartContainer
+      ? (this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length) *
+          6 +
+        12
+      : 727.5
     return (
       <div className={classes.wrapper}>
         <Helmet>
@@ -115,7 +108,18 @@ class Layout extends React.Component {
         <div className={"body_part body_part--centerfull bg-light-primary"}>
           <Hidden smDown>
             <Grid container spacing={4}>
-              <Grid item xs={12} md={4} ref="chartContainer" style={{ maxHeight: cardListHeight, overflowY: 'auto' }}>
+              <Grid
+                item
+                xs={12}
+                md={4}
+                ref="chartContainer"
+                style={{
+                  paddingTop: 0,
+                  maxHeight: cardListHeight,
+                  overflowY: "auto",
+                  marginTop: 16,
+                }}
+              >
                 {Object.keys(CITIES)
                   .sort()
                   .map(cityId => (
@@ -144,12 +148,13 @@ class Layout extends React.Component {
                 </Grid>
                 <Grid container spacing={4}>
                   <Grid item xs={12} className="media-container">
-                    <Player city={city} height={height} setHeight={setHeight} />
-                    <ImageOverlay
-                      {...this.state.overlayData}
-                      height={height}
-                      onClose={this.closeOverlay}
-                    />
+                    <Player city={city} height={height} setHeight={setHeight}>
+                      <ImageOverlay
+                        {...this.state.overlayData}
+                        height={height}
+                        onClose={this.closeOverlay}
+                      />
+                    </Player>
                   </Grid>
                 </Grid>
               </Grid>
@@ -171,7 +176,7 @@ class Layout extends React.Component {
                   onClose={this.closeOverlay}
                 />
               </Player>
-              <Grid container spacing={4} style={{ marginTop: "1rem" }}>
+              <Grid container spacing={4}>
                 {Object.keys(CITIES)
                   .sort()
                   .map(cityId => (
