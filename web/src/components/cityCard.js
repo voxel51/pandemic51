@@ -88,12 +88,14 @@ export default function CityCard(props) {
                 {LOCATIONS[props.cityId]}
               </Typography>
               {NEW[props.cityId] || BETA[props.cityId] ? (
-                <Card square className={classes.chip}>
+                <Card square className={classes.chip}
+                      style={{ background: "rgb(255, 109, 4)", color: "#fff" }}
+                >
                   <CardContent style={{ padding: 0 }}>
                     <Typography
                       variant="body1"
                       component="p"
-                      style={{ color: "rgb(255, 109, 4)" }}
+                      style={{fontWeight: "bold"}}
                     >
                       {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
                     </Typography>
