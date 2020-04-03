@@ -43,5 +43,10 @@
         "webpage": "https://www.earthcam.com/usa/nevada/lasvegas/index.php?cam=catsmeow_lv_fremont",
         "chunk_path": "https://videos-3.earthcam.com/fecnetwork/16812.flv/chunklist_w375325413.m3u8",
         "GMT": "-7"
+    },
+    "brighton": {
+        "webpage": "https://www.earthcam.com/usa/michigan/brighton/?cam=brighton",
+        "chunk_path": "https://videos-3.earthcam.com/fecnetwork/8584.flv/chunklist_w1584477530.m3u8",
+        "GMT": "-4"
     }
 }
