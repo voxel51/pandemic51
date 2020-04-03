@@ -19,6 +19,14 @@ footer {
 img {
   margin-bottom: 0 !important;
 }
+.chart-dropdown .MuiSelect-select, .chart-dropdown-item {
+  font-size: 1.5rem;
+}
+.chart-dropdown label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
 .media-container {
   position: relative;
 }
@@ -78,7 +86,6 @@ img {
   top: 5px;
   right: 5px;
 }
-
 .image-overlay .close-button, .image-overlay .share-button {
   color: var(--color-primary);
   border: 2px solid var(--color-primary);

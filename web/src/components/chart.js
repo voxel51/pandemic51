@@ -331,13 +331,13 @@ class Chart extends Component {
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
-          <FormControl>
-            <InputLabel shrink={true}>Second axis</InputLabel>
+          <div className='chart-dropdown'>
+            <InputLabel>Second plot:</InputLabel>
             <Select defaultValue='none'>
-              <MenuItem value='none'>None</MenuItem>
-              <MenuItem value='temp'>Temperature</MenuItem>
+              <MenuItem className='chart-dropdown-item' value='none'>None</MenuItem>
+              <MenuItem className='chart-dropdown-item' value='temp'>Temperature</MenuItem>
             </Select>
-          </FormControl>
+          </div>
         </CardContent>
       </Card>
     )
