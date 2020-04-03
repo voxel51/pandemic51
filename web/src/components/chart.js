@@ -77,9 +77,16 @@ const formal = {
   lasvegas: "Las Vegas, Nevada, USA",
 }
 
-const shortLabels = {
-  pdi: 'PDI',
-  temp: 'Temp',
+const plotOptions = {
+  pdi: {
+    name: 'PDI',
+    abbr: 'PDI',
+    primary: true,
+  },
+  temp: {
+    name: 'Temperature',
+    abbr: 'Temp',
+  },
 }
 
 const styles = theme => ({
@@ -217,7 +224,7 @@ class Chart extends Component {
                 component="h3"
                 style={{ color: point.color }}
               >
-                {shortLabels[point.dataKey]} {bull} {point.value.toFixed(2)}
+                {plotOptions[point.dataKey].abbr} {bull} {point.value.toFixed(2)}
               </Typography>
             ))}
             {event ?
@@ -262,7 +269,7 @@ class Chart extends Component {
                   <stop offset="5%" stopColor={colorPrimary} stopOpacity={0.8} />
                   <stop offset="95%" stopColor={colorPrimary} stopOpacity={0} />
                 </linearGradient>
-                <linearGradient id="colorTemp" x1="0" y1="0" x2="0" y2="1">
+                <linearGradient id="colorSecond" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor={colorSecondary} stopOpacity={0.8} />
                   <stop offset="95%" stopColor={colorSecondary} stopOpacity={0} />
                 </linearGradient>
@@ -294,21 +301,23 @@ class Chart extends Component {
                   />
                 }
               />
-              <YAxis
-                dataKey="temp"
-                name="Temp"
-                orientation="right"
-                width={25}
-                label={
-                  <Label
-                    value="Temperature"
-                    position="insideLeft"
-                    angle={-90}
-                    offset={0}
-                    style={{ textAnchor: "middle" }}
-                  />
-                }
-              />
+              {plotOptions[secondPlot] ? (
+                <YAxis
+                  dataKey={secondPlot}
+                  name={plotOptions[secondPlot].name}
+                  orientation="right"
+                  width={25}
+                  label={
+                    <Label
+                      value={plotOptions[secondPlot].name}
+                      position="insideLeft"
+                      angle={-90}
+                      offset={0}
+                      style={{ textAnchor: "middle" }}
+                    />
+                  }
+                />
+              ) : null}
               <Tooltip
                 content={contentFormatter}
                 allowEscapeViewBox={{ x: false, y: false }}
@@ -321,16 +330,16 @@ class Chart extends Component {
               {selectedTime ? (
                 <ReferenceLine x={selectedTime} stroke={colorPrimary} />
               ) : null}
-              {secondPlot === 'none' ? null : (
+              {plotOptions[secondPlot] ? (
                 <Area
                   key={secondPlot}
                   type="monotone"
-                  dataKey="temp"
+                  dataKey={secondPlot}
                   stroke={colorSecondary}
                   fillOpacity={1}
-                  fill="url(#colorTemp)"
+                  fill="url(#colorSecond)"
                 />
-              )}
+              ) : null}
               <Area
                 type="monotone"
                 dataKey="pdi"
@@ -345,7 +354,11 @@ class Chart extends Component {
             <InputLabel>Second plot:</InputLabel>
             <Select value={this.state.secondPlot} onChange={this.handlePlotChange.bind(this)}>
               <MenuItem className='chart-dropdown-item' value='none'>None</MenuItem>
-              <MenuItem className='chart-dropdown-item' value='temp'>Temperature</MenuItem>
+              {Object.entries(plotOptions).map(([key, option]) => (
+                option.primary ? null : (
+                  <MenuItem className='chart-dropdown-item' value={key}>{option.name}</MenuItem>
+                )
+              ))}
             </Select>
           </div>
         </CardContent>
