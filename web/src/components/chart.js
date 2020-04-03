@@ -110,6 +110,7 @@ class Chart extends Component {
     list: [],
     events: [],
     labels: [],
+    secondPlot: localStorage.secondPlot || 'none',
   }
 
   componentDidMount() {
@@ -185,10 +186,16 @@ class Chart extends Component {
     })
   }, 200)
 
+  handlePlotChange(event) {
+    const secondPlot = event.target.value;
+    this.setState({ secondPlot })
+    localStorage.secondPlot = secondPlot;
+  }
+
   render() {
     const colorPrimary = 'rgb(255, 109, 4)'
     const colorSecondary = 'rgb(109, 4, 255)'
-    const { list, events } = this.state
+    const { list, events, secondPlot } = this.state
     const { classes, title, city, selectedTime } = this.props
 
     const contentFormatter = v => {
@@ -314,13 +321,16 @@ class Chart extends Component {
               {selectedTime ? (
                 <ReferenceLine x={selectedTime} stroke={colorPrimary} />
               ) : null}
-              <Area
-                type="monotone"
-                dataKey="temp"
-                stroke={colorSecondary}
-                fillOpacity={1}
-                fill="url(#colorTemp)"
-              />
+              {secondPlot === 'none' ? null : (
+                <Area
+                  key={secondPlot}
+                  type="monotone"
+                  dataKey="temp"
+                  stroke={colorSecondary}
+                  fillOpacity={1}
+                  fill="url(#colorTemp)"
+                />
+              )}
               <Area
                 type="monotone"
                 dataKey="pdi"
@@ -333,7 +343,7 @@ class Chart extends Component {
           <HelpTooltip />
           <div className='chart-dropdown'>
             <InputLabel>Second plot:</InputLabel>
-            <Select defaultValue='none'>
+            <Select value={this.state.secondPlot} onChange={this.handlePlotChange.bind(this)}>
               <MenuItem className='chart-dropdown-item' value='none'>None</MenuItem>
               <MenuItem className='chart-dropdown-item' value='temp'>Temperature</MenuItem>
             </Select>
