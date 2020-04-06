@@ -172,6 +172,13 @@ class Chart extends Component {
     const { list, events, secondPlot } = this.state
     const { classes, title, city, selectedTime } = this.props
 
+    const formatNumber = n => {
+      if (Math.round(n) == n) {
+        return n
+      }
+      return n.toFixed(2)
+    }
+
     const contentFormatter = v => {
       if (!v.payload || !v.payload.length) {
         return null
@@ -192,7 +199,7 @@ class Chart extends Component {
                 component="h3"
                 style={{ color: point.color }}
               >
-                {plotOptions[point.dataKey].abbr} {bull} {point.value.toFixed(2)}
+                {plotOptions[point.dataKey].abbr} {bull} {formatNumber(point.value)}
               </Typography>
             ))}
             {event ?
