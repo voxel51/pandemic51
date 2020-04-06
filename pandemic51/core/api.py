@@ -83,7 +83,11 @@ def get_pdi_graph_data(city):
     # Add events to points
     pane.add_events_to_points(points, events)
 
-    return points, events
+    start, stop = points[0]["time"], points[-1]["time"]
+    cases = get_covid19_timeseries(city, "cases", start, stop)
+    deaths = get_covid19_timeseries(city, "deaths", start, stop)
+
+    return points, events, cases, deaths
 
 
 def get_all_pdi_graph_data():
@@ -176,23 +180,26 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
         data = df.loc[
             np.logical_and(
                 df.Admin2 == county,
-                df.Country_Region == state
+                df.Province_State == state,
             )
         ]
     else:
-        data = df.loc[df["Country/Region"] == country]
+        data = df.loc[
+            np.logical_and(
+                df["Country/Region"] == country,
+                df["Province/State"].isnull()
+            )
+        ]
 
-    it = data.loc[:, "1/22/20"]
+    it = data.loc[:, "1/22/20":]
     covid_data = []
     for str_date in it:
         timestamp = _get_timestamp(str_date)
-
         if start and timestamp < start:
             continue
 
         if stop and timestamp > stop:
             break
-
         covid_data.append({
             "time": timestamp,
             metric: int(it[str_date])
@@ -202,8 +209,8 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
 
 
 def _get_timestamp(str_date):
-    return tm.mktime(
-        datetime.strptime(str_date, "%m/%d/%y").timetuple())
+    return int(tm.mktime(
+        datetime.strptime(str_date, "%m/%d/%y").timetuple()))
 
 
 def _make_snapshot_url(url):
