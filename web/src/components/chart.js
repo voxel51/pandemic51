@@ -17,10 +17,11 @@ import {
   MenuItem,
   Select,
   Typography,
-} from "@material-ui/core";
+} from "@material-ui/core"
 import moment from "moment"
 import HelpTooltip from "./help"
 import { FORMAL, TIMEZONES } from "../utils/cities"
+import { addDataToSeries } from "../utils/data"
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -48,13 +49,13 @@ const plotOptions = {
     abbr: 'PDI',
     primary: true,
   },
-  temp: {
-    name: 'Temperature',
-    abbr: 'Temp',
-  },
   cases: {
     name: 'Number of cases',
     abbr: 'Cases',
+  },
+  deaths: {
+    name: 'Number of deaths',
+    abbr: 'Deaths',
   },
 }
 
@@ -93,14 +94,8 @@ class Chart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
-        // todo: real data
-        let prevTemp = 20
-        json.data.forEach(item => {
-          prevTemp = item.temp = prevTemp + Math.random() - 0.48
-        })
-        json.data.forEach((item, index) => {
-          item.cases = Math.pow(1.005, index)
-        })
+        json.data = addDataToSeries(json.data, json.cases)
+        json.data = addDataToSeries(json.data, json.deaths)
 
         this.setState({
           list: json["data"],
