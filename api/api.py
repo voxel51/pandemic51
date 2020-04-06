@@ -95,7 +95,7 @@ def stream(city):
 
 
 @app.route("/covid19/<str:city>/<str:metric>/<int:start>/<int:stop>")
-def covid19(city, metric, start, stop):
+def covid19(city, metric, start=None, stop=None):
     '''serves the given city's covid19 <metric> timeseries data, where <metric>
     is one of "cases", "deaths", "recovered".
 

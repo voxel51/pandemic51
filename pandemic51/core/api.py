@@ -6,6 +6,7 @@ voxel51.com
 '''
 from collections import defaultdict
 from datetime import datetime
+import time as tm
 
 import numpy as np
 import pandas as pd
@@ -143,15 +144,15 @@ def get_stream_url(city):
     return stream.get_live_stream_url()
 
 
-def get_covid19_timeseries(city, metric, start, stop, pdi):
+def get_covid19_timeseries(city, metric, start=None, stop=None):
     '''Gets the given city's covid19 <metric> timeseries data, where <metric>
     is one of "cases" or "deaths".
 
     Args:
         city: the city
         metric: one of "cases" or "deaths"
-        start: unix time start timestamp
-        stop: unix time end timestamp
+        start: optional unix time start timestamp
+        stop: optional unix time stop timestamp
 
     Returns:
         {"data": data}
@@ -177,23 +178,27 @@ def get_covid19_timeseries(city, metric, start, stop, pdi):
         data = df.loc[df["Country/Region"] == country]
 
     it = data.loc[:, "1/22/20"]
-    val = _get_day(it)
-    new_val = True
-    for row in pdi:
-        pdi_time = datetime.utcfromtimestamp(row["time"])
-        if new_val is not None and pdi_time >= val:
-            new_val = _get_day(it)
-            if new_val:
-                val = new_val
+    covid_data = []
+    for str_date in it:
+        timestamp = _get_timestamp(str_date)
 
-        row[metric] = val
+        if start and timestamp < start:
+            continue
+
+        if stop and timestamp > stop:
+            break
+
+        covid_data.append({
+            "time": timestamp,
+            metric: int(it[str_date])
+        })
+
+    return covid_data
 
 
-def _get_day(it):
-    try:
-        return datetime.strptime(it.next(), "%m/%d/%y")
-    except StopIteration:
-        return None
+def _get_timestamp(str_date):
+    return tm.mktime(
+        datetime.strptime(str_date, "%m/%d/%y").timetuple())
 
 
 def _make_snapshot_url(url):
