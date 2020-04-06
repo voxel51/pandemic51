@@ -34,15 +34,7 @@ import Header from "./header"
 import Middle from "./middle"
 import Footer from "./footer"
 import Typography from "@material-ui/core/Typography"
-
-const CITIES = {
-  dublin: "Dublin",
-  london: "London",
-  newjersey: "New Jersey",
-  newyork: "New York",
-  prague: "Prague",
-  fortlauderdale: "Fort Lauderdale",
-}
+import { CITIES } from "../utils/cities"
 
 const styles = {
   wrapper: {
@@ -63,9 +55,10 @@ class Layout extends React.Component {
     this.state = {
       data: {},
       overlayData: {},
+      selectedTime: null,
     }
-    this.openOverlay = this.openOverlay.bind(this);
-    this.closeOverlay = this.closeOverlay.bind(this);
+    this.openOverlay = this.openOverlay.bind(this)
+    this.closeOverlay = this.closeOverlay.bind(this)
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
@@ -76,18 +69,36 @@ class Layout extends React.Component {
   }
 
   openOverlay(overlayData) {
-    this.setState({ overlayData })
+    const selectedTime = overlayData.clicked ? overlayData.time : null
+    this.setState({
+      overlayData,
+      selectedTime,
+    })
+    window.history.pushState(
+      null,
+      "",
+      selectedTime ? `?t=${selectedTime}` : window.location.href.split("?")[0]
+    )
   }
 
   closeOverlay(e) {
     e.stopPropagation()
-    this.setState({ overlayData: {} })
+    this.setState({
+      overlayData: {},
+      selectedTime: null,
+    })
+    window.history.pushState(null, "", window.location.href.split("?")[0])
   }
 
   render() {
     const { classes, children, city } = this.props
     const { data, height } = this.state
     const setHeight = height => this.setState({ height })
+    const cardListHeight = this.refs.chartContainer
+      ? (this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length) *
+          6 +
+        12
+      : 727.5
     return (
       <div className={classes.wrapper}>
         <Helmet>
@@ -97,20 +108,27 @@ class Layout extends React.Component {
         <div className={"body_part body_part--centerfull bg-light-primary"}>
           <Hidden smDown>
             <Grid container spacing={4}>
-              <Grid item xs={12} md={4}>
-                {Object.keys(CITIES)
-                  .sort()
-                  .map(cityId => (
-                    <CityCard
-                      key={cityId}
-                      cityId={cityId}
-                      name={CITIES[cityId]}
-                      active={city == cityId}
-                      url={
-                        data && data[cityId] ? data[cityId]["url"] : undefined
-                      }
-                    />
-                  ))}
+              <Grid
+                item
+                xs={12}
+                md={4}
+                ref="chartContainer"
+                style={{
+                  paddingTop: 0,
+                  maxHeight: cardListHeight,
+                  overflowY: "auto",
+                  marginTop: 16,
+                }}
+              >
+                {Object.keys(CITIES).map(cityId => (
+                  <CityCard
+                    key={cityId}
+                    cityId={cityId}
+                    name={CITIES[cityId]}
+                    active={city == cityId}
+                    url={data && data[cityId] ? data[cityId]["url"] : undefined}
+                  />
+                ))}
               </Grid>
               <Grid item xs={12} md={8}>
                 <Grid container spacing={4}>
@@ -120,21 +138,19 @@ class Layout extends React.Component {
                       city={city}
                       onClick={this.openOverlay}
                       clicked={this.state.overlayData.clicked}
+                      selectedTime={this.state.selectedTime}
                     />
                   </Grid>
                 </Grid>
                 <Grid container spacing={4}>
                   <Grid item xs={12} className="media-container">
-                    <Player
-                      city={city}
-                      height={height}
-                      setHeight={setHeight}
-                    />
-                    <ImageOverlay
-                      {...this.state.overlayData}
-                      height={height}
-                      onClose={this.closeOverlay}
-                    />
+                    <Player city={city} height={height} setHeight={setHeight}>
+                      <ImageOverlay
+                        {...this.state.overlayData}
+                        height={height}
+                        onClose={this.closeOverlay}
+                      />
+                    </Player>
                   </Grid>
                 </Grid>
               </Grid>
@@ -142,41 +158,40 @@ class Layout extends React.Component {
           </Hidden>
           <Hidden mdUp>
             <div className="mobileContent">
-                <Chart
-                  title="Physical Distancing Index (PDI)"
-                  city={city}
-                  clicked={this.state.overlayData.clicked}
-                  onClick={this.openOverlay}
+              <Chart
+                title="Physical Distancing Index (PDI)"
+                city={city}
+                clicked={this.state.overlayData.clicked}
+                onClick={this.openOverlay}
+                selectedTime={this.state.selectedTime}
+              />
+              <Player city={city} height={height} setHeight={setHeight}>
+                <ImageOverlay
+                  {...this.state.overlayData}
+                  height={height}
+                  onClose={this.closeOverlay}
                 />
-                <Player city={city} height={height} setHeight={setHeight}>
-                  <ImageOverlay
-                    {...this.state.overlayData}
-                    height={height}
-                    onClose={this.closeOverlay}
-                  />
-                </Player>
-              <Grid container spacing={4} style={{ marginTop: "1rem" }}>
-                {Object.keys(CITIES)
-                  .sort()
-                  .map(cityId => (
-                    <Grid item xs={6}>
-                      <MobileCityCard
-                        key={cityId}
-                        cityId={cityId}
-                        name={CITIES[cityId]}
-                        active={city == cityId}
-                        url={
-                          data && data[cityId] ? data[cityId]["url"] : undefined
-                        }
-                      />
-                    </Grid>
-                  ))}
+              </Player>
+              <Grid container spacing={4}>
+                {Object.keys(CITIES).map(cityId => (
+                  <Grid item xs={6}>
+                    <MobileCityCard
+                      key={cityId}
+                      cityId={cityId}
+                      name={CITIES[cityId]}
+                      active={city == cityId}
+                      url={
+                        data && data[cityId] ? data[cityId]["url"] : undefined
+                      }
+                    />
+                  </Grid>
+                ))}
               </Grid>
             </div>
           </Hidden>
         </div>
         <Middle />
-        <div className={"body_part body_part--centerfull bg-light-primary"}>
+        <div className={"body_part body_part--centerfull bg-light-secondary"}>
           <div class="body_block__title--left">
             <h2>Comparing the Response</h2>
           </div>

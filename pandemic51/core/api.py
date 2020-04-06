@@ -5,11 +5,8 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
-import urllib
 
 import numpy as np
-
-import eta.core.serial as etas
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
@@ -124,7 +121,12 @@ def get_all_pdi_graph_data():
 
     # Add average PDI series
     for d in data:
-        vals = [v for k, v in d.items() if k != "time" and v is not None]
+        vals = [
+            v for k, v in d.items()
+            if k != "time"
+               and k not in panc.BETA_STREAMS
+               and v is not None
+        ]
         d["average"] = np.mean(vals) if vals else None
 
     return data
@@ -140,24 +142,8 @@ def get_stream_url(city):
         the stream URL
     '''
     stream_name = panc.STREAMS_MAP[city]
-    url = etas.load_json(panc.STREAMS_PATH)[stream_name]["chunk_path"]
-    try:
-        urllib.request.urlopen(url)
-    except urllib.error.HTTPError:
-        url = pans.update_stream_chunk_path(stream_name)
-
-    if "videos2archives" in url:
-        url = (
-            "https://pdi-service.voxel51.com/stream-archive/" +
-            url.split(".com/")[1]
-        )
-    elif "earthcam" in url:
-        url = (
-            "https://pdi-service.voxel51.com/stream/" +
-            url.split(".com/")[1]
-        )
-
-    return url
+    stream = pans.Stream.from_stream_name(stream_name)
+    return stream.get_live_stream_url()
 
 
 def _make_snapshot_url(url):

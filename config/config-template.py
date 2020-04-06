@@ -52,8 +52,7 @@ ANNO_DIR = os.path.join(DATA_DIR, "anno")
 # Streams
 ###############################################################################
 
-STREAMS_PATH = os.path.join(CONFIG_DIR, "streams.json")
-STREAMS = etas.load_json(STREAMS_PATH)
+STREAMS_DIR = os.path.join(CONFIG_DIR, "streams")
 STREAMS_MAP = {  # maps city names to stream names
     "london": "abbey_road",
     "chicago": "chicago",
@@ -64,6 +63,8 @@ STREAMS_MAP = {  # maps city names to stream names
     "neworleans": "new_orleans",
 }
 US_CITIES = {"chicago", "newyork", "neworleans", "newjersey"} # names of US cities
+# streams to be omitted from average
+BETA_STREAMS = {"detroit", "annarbor", "ypsilanti"}
 
 ###############################################################################
 # Events

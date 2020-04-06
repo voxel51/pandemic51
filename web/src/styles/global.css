@@ -33,12 +33,8 @@ img {
   color: var(--color-primary);
 }
 .video-player-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  padding: 16px;
 }
 .video-player {
   position: relative;
@@ -52,12 +48,13 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1000;
   padding: 16px;
 }
 .image-overlay {
   position: relative;
   width: 100%;
-  height: 400px; /* overridden */
+  height: 100%;
   display: flex;
   background-color: rgba(100, 100, 100, 0.5);
 }
@@ -73,13 +70,17 @@ img {
   color: var(--gray-dark1);
   background-color: #fff;
 }
-.image-overlay .close-button {
+.image-overlay .buttons {
   position: absolute;
   top: 5px;
   right: 5px;
+}
+
+.image-overlay .close-button, .image-overlay .share-button {
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
   background-color: #fff;
+  margin-left: 1rem;
 }
 
 :root {
@@ -852,6 +853,15 @@ hr {
     padding: 2rem 0;
   }
 
+  .video-player-wrapper video {
+    margin-bottom: 20px;
+  }
+
+  .video-player-wrapper video, .video-player-wrapper img {
+    height: 200px;
+  }
+
+
   .image-overlay-wrapper {
     margin: 0;
     padding: 2rem 0;
@@ -859,9 +869,6 @@ hr {
     position: absolute;
   }
 
-  .mobileContent {
-    margin: 3rem 3rem;
-  }
   .big-chart-body {
     margin: 3rem 3rem;
   }

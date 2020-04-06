@@ -1,0 +1,6 @@
+{
+    "type": "pandemic51.core.streaming.MjpegStream",
+    "stream_name": "ann_arbor",
+    "GMT": "-4",
+    "url": "http://141.213.137.162/mjpg/video.mjpg"
+}

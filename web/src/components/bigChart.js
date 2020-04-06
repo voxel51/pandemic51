@@ -31,30 +31,7 @@ import {
   Label,
 } from "recharts"
 import Async from "react-async"
-
-const timezones = {
-  chicago: "America/Chicago",
-  dublin: "Europe/Dublin",
-  fortlauderdale: "America/New_York",
-  london: "Europe/London",
-  neworleans: "America/Chicago",
-  newjersey: "America/New_York",
-  newyork: "America/New_York",
-  prague: "Europe/Prague",
-  average: "Etc/GMT",
-}
-
-const cities = {
-  chicago: "Chicago",
-  dublin: "Dublin",
-  fortlauderdale: "Fort Lauderdale",
-  london: "London",
-  neworleans: "New Orleans",
-  newjersey: "New Jersey",
-  newyork: "New York",
-  prague: "Prague",
-  average: "Average",
-}
+import { HISCITIES, COLORS, TIMEZONES } from "../utils/cities"
 
 const styles = theme => ({
   root: {
@@ -78,17 +55,6 @@ const styles = theme => ({
     transform: "scale(0.8)",
   },
 })
-
-const colors = [
-  "#7eacd9",
-  "#1f5972",
-  "#938516",
-  "#a170e0",
-  "#88807f",
-  "#d93be0",
-  "#7da043",
-  "#14ae32",
-]
 
 class BigChart extends Component {
   state = {
@@ -140,7 +106,7 @@ class BigChart extends Component {
                     component="h3"
                     style={{ color: v.color }}
                   >
-                    {cities[v.dataKey]} {bull}{" "}
+                    {{ ...HISCITIES, average: "Average" }[v.dataKey]} {bull}{" "}
                     {v.value.toLocaleString("en", { style: "percent" })}
                   </Typography>
                 )
@@ -174,7 +140,7 @@ class BigChart extends Component {
                 tickFormatter={unixTime =>
                   moment
                     .unix(unixTime)
-                    .tz(timezones.london)
+                    .tz("Etc/GMT")
                     .format("M/D")
                 }
                 type="number"
@@ -203,7 +169,7 @@ class BigChart extends Component {
                 formatter={(v, n, p) => {
                   return [
                     v.toLocaleString("en", { style: "percent" }),
-                    cities[n],
+                    { ...HISCITIES, average: "Average" }[n],
                   ]
                 }}
                 labelFormatter={v =>
@@ -213,16 +179,16 @@ class BigChart extends Component {
                     .format("dddd,  MMM Do, hh:mm A z")
                 }
               />
-              {Object.keys(timezones)
+              {Object.keys({ ...HISCITIES, average: "average" })
                 .sort()
                 .map((val, i) => (
                   <Line
                     type="monotone"
                     dataKey={val}
-                    stroke={val === "average" ? "#ff6d04" : colors[i]}
+                    stroke={val === "average" ? "#ff6d04" : COLORS[i]}
                     strokeWidth={val === "average" ? 8 : 3}
                     strokeOpacity={val === "average" ? 1 : 0.5}
-                    fill={`url(#color${String(colors[i])})`}
+                    fill={`url(#color${String(COLORS[i])})`}
                     dot={false}
                   />
                 ))}

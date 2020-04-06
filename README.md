@@ -63,9 +63,8 @@ For Linux users, run the `scripts/linux_preinstall.bash` script.
 
 > todo: finish MacOS preinstall script
 
-[Download `chromedriver`](
-    https://sites.google.com/a/chromium.org/chromedriver/downloads) for your 
-    version of Google Chrome and move it to `/usr/bin/`.
+Then [download `chromedriver`](https://sites.google.com/a/chromium.org/chromedriver/downloads)
+for your version of Google Chrome and move it to `/usr/bin/`.
 
 We strongly recommend creating a virtual environment for your development work:
 
@@ -149,6 +148,21 @@ Download the detector checkpoint by running the following script:
 
 ```bash
 bash scripts/download_model.bash
+```
+
+
+### Backups
+
+As a simple solution to creating backups manually, here are commands to backup
+both the database and the file storage: 
+
+```bash
+# backup database
+mysqldump -u ${P51_SQL_USERNAME} -p${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME} \
+    > ${P51_SQL_DATABASE_NAME}_`date +'%Y-%m-%d'`.sql
+
+# zip data
+zip -r data_`date +'%Y-%m-%d'`.zip ${P51_DATA_DIR}
 ```
 
 

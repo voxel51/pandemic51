@@ -14,6 +14,7 @@ import Typography from "@material-ui/core/Typography"
 import Divider from "@material-ui/core/Divider"
 import moment from "moment"
 import HelpTooltip from "./help"
+import { FORMAL, TIMEZONES } from "../utils/cities"
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -34,39 +35,6 @@ import {
 } from "recharts"
 import Async from "react-async"
 import debounce from "lodash/debounce"
-
-const timezones = {
-  chicago: "America/Chicago",
-  dublin: "Europe/Dublin",
-  fortlauderdale: "America/New_York",
-  london: "Europe/London",
-  neworleans: "America/Chicago",
-  newjersey: "America/New_York",
-  newyork: "America/New_York",
-  prague: "Europe/Prague",
-}
-
-const cities = {
-  chicago: "Chicago",
-  dublin: "Dublin",
-  fortlauderdale: "Fort Lauderdale",
-  london: "London",
-  neworleans: "New Orleans",
-  newjersey: "New Jersey",
-  newyork: "New York",
-  prague: "Prague",
-}
-
-const formal = {
-  chicago: "Chicago, Illinois, USA",
-  dublin: "Dublin, Ireland",
-  fortlauderdale: "Fort Lauderdale, Florida, USA",
-  london: "London, England",
-  neworleans: "New Orleans, Louisiana, USA",
-  newjersey: "Seaside Heights, New Jersey, USA",
-  newyork: "New York City, New York, USA",
-  prague: "Prague, Czech Republic",
-}
 
 const styles = theme => ({
   root: {
@@ -102,26 +70,39 @@ class Chart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
-        this.setState({
-          list: json["data"],
-          events: json["events"],
-          labels: json["labels"],
-        })
+        this.setState(
+          {
+            list: json["data"],
+            events: json["events"],
+            labels: json["labels"],
+          },
+          () => {
+            const match = window.location.search.match(/t=(\d+)/)
+            if (match) {
+              const selectedTime = Number(match[1])
+              this.handleClick({ activeLabel: selectedTime })
+            }
+          }
+        )
       })
   }
 
   formatFullTime(rawTime) {
     return moment
       .unix(rawTime)
-      .tz(timezones[this.props.city])
+      .tz(TIMEZONES[this.props.city])
       .format("dddd,  MMM Do, hh:mm A")
   }
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
+      if (!data) {
+        return
+      }
       this.props.onClick({
         src: data.url,
+        time: data.time,
         timestamp: this.formatFullTime(data.time),
         clicked: true,
       })
@@ -131,9 +112,13 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel];
+      const data = this.state.labels[event.activeLabel]
+      if (!data) {
+        return
+      }
       this.props.onClick({
         src: data.url,
+        time: data.time,
         timestamp: this.formatFullTime(data.time),
         clicked: false,
       })
@@ -144,14 +129,15 @@ class Chart extends Component {
     if (this.props.clicked) return
     this.props.onClick({
       src: null,
+      time: null,
       timestamp: null,
       clicked: null,
     })
-  }, 200);
+  }, 200)
 
   render() {
     const { list, events } = this.state
-    const { classes, title, city } = this.props
+    const { classes, title, city, selectedTime } = this.props
 
     const contentFormatter = v => {
       if (!v.payload) {
@@ -182,7 +168,7 @@ class Chart extends Component {
                   <Typography variant="body2" component="p">
                     {moment
                       .unix(time)
-                      .tz(timezones[city])
+                      .tz(TIMEZONES[city])
                       .format("MMM Do")}{" "}
                     {bull} {event}
                   </Typography>
@@ -202,7 +188,7 @@ class Chart extends Component {
             component="h2"
             style={{ marginBottom: "1rem", textAlign: "center" }}
           >
-            PDI: {formal[city]}
+            PDI: {FORMAL[city]}
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
@@ -230,7 +216,7 @@ class Chart extends Component {
                 tickFormatter={unixTime =>
                   moment
                     .unix(unixTime)
-                    .tz(timezones[city])
+                    .tz(TIMEZONES[city])
                     .format("M/D")
                 }
                 type="number"
@@ -256,8 +242,11 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3}/>
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
                 ))}
+              {selectedTime ? (
+                <ReferenceLine x={selectedTime} stroke="#ff6d04" />
+              ) : null}
               <Area
                 type="monotone"
                 dataKey="pdi"
