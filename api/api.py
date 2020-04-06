@@ -80,7 +80,7 @@ def pdi_all():
 
 @app.route("/streams/<city>")
 def stream(city):
-    '''Serves the given city's stream URL.
+    '''serves the given city's stream url.
 
     Args:
         city: the city
@@ -92,6 +92,29 @@ def stream(city):
         return 404, "Not Found"
 
     return {"url": pana.get_stream_url(city)}
+
+
+@app.route("/covid19/<str:city>/<str:metric>/<int:start>/<int:stop>")
+def covid19(city, metric, start, stop):
+    '''serves the given city's covid19 <metric> timeseries data, where <metric>
+    is one of "cases", "deaths", "recovered".
+
+    Args:
+        city: the city
+        metric: one of "cases", "deaths", or "recovered"
+        start: unix time start timestamp
+        stop: unix time end timestamp
+
+    Returns:
+        {"data": data}
+    '''
+    if city not in panc.STREAMS_MAP:
+        return 404, "Not Found"
+
+    if metric not in panc.COVID19_METRICS:
+        return 404, "Not Found"
+
+    return {"data": pana.get_covid19_timeseries(city, metric, start, stop)}
 
 
 if __name__ == "__main__":

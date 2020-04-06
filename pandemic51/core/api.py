@@ -5,8 +5,10 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
+from datetime import datetime
 
 import numpy as np
+import pandas as pd
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
@@ -139,6 +141,38 @@ def get_stream_url(city):
     stream_name = panc.STREAMS_MAP[city]
     stream = pans.Stream.from_stream_name(stream_name)
     return stream.get_live_stream_url()
+
+
+def get_covid19_timeseries(city, metric, start, stop):
+    '''Gets the given city's covid19 <metric> timeseries data, where <metric>
+    is one of "cases" or "deaths".
+
+    Args:
+        city: the city
+        metric: one of "cases" or "deaths"
+        start: unix time start timestamp
+        stop: unix time end timestamp
+
+    Returns:
+        {"data": data}
+    '''
+    us = False
+    if city in panc.COVID19_GLOBAL:
+        country = panc.COVID19_GLOBAL[city]
+        res = panc.COVID19_RES["global"][metric]
+    else:
+        us = True
+        county, state = panc.COVID19_US[city]
+        res = panc.COVID19_RES["us"][metric]
+
+    ts = pd.read_csv(res)
+    if us:
+    else:
+        d = ts["City
+
+
+def _nearest_day(timestamp):
+    return datetime.utcfromtimestamp(timestamp)
 
 
 def _make_snapshot_url(url):
