@@ -146,5 +146,15 @@ def get_stream_url(city):
     return stream.get_live_stream_url()
 
 
+def retrofit_thresholds(city):
+    '''Updates the confidence threshold for historical data
+
+    Args:
+        city: the city
+    '''
+    points = pand.query_stream_history(panc.STREAMS_MAP[city])
+    for p in points:
+
+
 def _make_snapshot_url(url):
     return panc.SNAPSHOTS_URL + url.replace(panc.DATA_DIR, "")

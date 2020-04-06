@@ -22,14 +22,6 @@ import pandemic51.core.database as pand
 logger = logging.getLogger(__name__)
 
 
-MODEL_NAME = "efficientdet-d4"
-LABELS_WHITELIST = {"person", "bicycle", "car", "motorcycle"}
-CONFIDENCE_THRESH = 0.15
-ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
-    "add_logo": False,
-})
-
-
 def detect_objects_in_images(inpaths, outpaths):
     '''Detects objects in the given images and writes the output labels to
     disk.
@@ -38,7 +30,7 @@ def detect_objects_in_images(inpaths, outpaths):
         inpaths: a list of input paths to process
         outpaths: a list of paths to write the output labels
     '''
-    detector = _load_efficientdet_model(MODEL_NAME)
+    detector = _load_efficientdet_model(panc.MODEL_NAME)
     with detector:
         for inpath, outpath in zip(inpaths, outpaths):
             _process_image(detector, inpath, outpath)
@@ -58,7 +50,7 @@ def detect_objects_in_unprocessed_images():
     # Process in a random order in case multiple tasks are running :)
     random.shuffle(unprocessed_images)
 
-    detector = _load_efficientdet_model(MODEL_NAME)
+    detector = _load_efficientdet_model(panc.MODEL_NAME)
 
     with detector:
         for id, image_path in unprocessed_images:
@@ -96,12 +88,13 @@ def _load_efficientdet_model(model_name):
     return config.build()
 
 
-def _filter_objects(objects):
+def filter_objects(objects):
     filters = []
-    if CONFIDENCE_THRESH:
-        filters.append(lambda obj: obj.confidence > CONFIDENCE_THRESH)
-    if LABELS_WHITELIST:
-        filters.append(lambda obj: obj.label in LABELS_WHITELIST)
+    if panc.DEFAULT_CONFIDENCE_THRESH:
+        filters.append(
+            lambda obj: obj.confidence > panc.DEFAULT_CONFIDENCE_THRESH)
+    if panc.LABELS_WHITELIST:
+        filters.append(lambda obj: obj.label in panc.LABELS_WHITELIST)
 
     return objects.get_matches(filters, match=all)
 
@@ -111,7 +104,7 @@ def _process_image(detector, img_path, labels_path, anno_path=None):
     img = etai.read(img_path)
 
     objects = detector.detect(img)
-    objects = _filter_objects(objects)
+    objects = filter_objects(objects)
 
     count = len(objects)
     logger.info("Found %d objects", count)
@@ -125,7 +118,7 @@ def _process_image(detector, img_path, labels_path, anno_path=None):
     if anno_path:
         logger.info("Writing annotated image to '%s'", anno_path)
         img_anno = etaa.annotate_image(
-            img, image_labels, annotation_config=ANNOTATION_CONFIG)
+            img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
         etai.write(img_anno, anno_path)
 
     return count
