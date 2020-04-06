@@ -143,7 +143,7 @@ def get_stream_url(city):
     return stream.get_live_stream_url()
 
 
-def get_covid19_timeseries(city, metric, start, stop):
+def get_covid19_timeseries(city, metric, start, stop, pdi):
     '''Gets the given city's covid19 <metric> timeseries data, where <metric>
     is one of "cases" or "deaths".
 
@@ -165,14 +165,35 @@ def get_covid19_timeseries(city, metric, start, stop):
         county, state = panc.COVID19_US[city]
         res = panc.COVID19_RES["us"][metric]
 
-    ts = pd.read_csv(res)
+    df = pd.read_csv(res)
     if us:
+        data = df.loc[
+            np.logical_and(
+                df.Admin2 == county,
+                df.Country_Region == state
+            )
+        ]
     else:
-        d = ts["City
+        data = df.loc[df["Country/Region"] == country]
+
+    it = data.loc[:, "1/22/20"]
+    val = _get_day(it)
+    new_val = True
+    for row in pdi:
+        pdi_time = datetime.utcfromtimestamp(row["time"])
+        if new_val is not None and pdi_time >= val:
+            new_val = _get_day(it)
+            if new_val:
+                val = new_val
+
+        row[metric] = val
 
 
-def _nearest_day(timestamp):
-    return datetime.utcfromtimestamp(timestamp)
+def _get_day(it):
+    try:
+        return datetime.strptime(it.next(), "%m/%d/%y")
+    except StopIteration:
+        return None
 
 
 def _make_snapshot_url(url):
