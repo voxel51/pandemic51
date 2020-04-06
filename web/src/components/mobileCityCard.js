@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography"
 import { Link } from "gatsby"
 import React from "react"
 import Clock from "react-live-clock"
-import { NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
+import { BETA, NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
 
 const useStyles = makeStyles({
   root: {
@@ -65,7 +65,11 @@ export default function MobileCityCard(props) {
             </Typography>
             <Typography variant="body1" component="p">
               {LOCATIONS[props.cityId]}{" "}
-              {NEW[props.cityId] !== undefined ? <>{bull} BETA FEED</> : null}
+              {NEW[props.cityId] || BETA[props.cityId] ? (
+                <>
+                  {bull} {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
+                </>
+              ) : null}
             </Typography>
           </CardContent>
         </Link>

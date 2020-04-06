@@ -14,7 +14,7 @@ import { Link } from "gatsby"
 import React from "react"
 import Clock from "react-live-clock"
 import Hidden from "@material-ui/core/Hidden"
-import { NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
+import { BETA, NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
 
 const useStyles = makeStyles({
   root: {
@@ -68,7 +68,6 @@ export default function CityCard(props) {
               image={props.url}
               title={LOCATIONS[props.cityId]}
             />
-
             <CardContent className={classes.content}>
               <Typography variant="h5" component="h2">
                 {props.name}
@@ -88,7 +87,44 @@ export default function CityCard(props) {
               <Typography variant="body1" component="p">
                 {LOCATIONS[props.cityId]}
               </Typography>
-              {NEW[props.cityId] ? (
+              {NEW[props.cityId] || BETA[props.cityId] ? (
+                <Card square className={classes.chip}
+                      style={{ background: "rgb(255, 109, 4)", color: "#fff" }}
+                >
+                  <CardContent style={{ padding: 0 }}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{fontWeight: "bold"}}
+                    >
+                      {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ) : null}
+            </CardContent>
+          </Hidden>
+          <Hidden lgUp>
+            <CardContent>
+              <Typography variant="h5" component="h2">
+                {props.name}
+              </Typography>
+              <Typography
+                variant="h6"
+                component="h3"
+                className={classes.pos}
+                color="textSecondary"
+              >
+                <Clock
+                  format={"hh:mm:ss A"}
+                  ticking={true}
+                  timezone={TIMEZONES[props.cityId]}
+                />
+              </Typography>
+              <Typography variant="body1" component="p">
+                {LOCATIONS[props.cityId]}
+              </Typography>
+              {NEW[props.cityId] || BETA[props.cityId] ? (
                 <Card square className={classes.chip}>
                   <CardContent style={{ padding: 0 }}>
                     <Typography
@@ -96,7 +132,7 @@ export default function CityCard(props) {
                       component="p"
                       style={{ color: "rgb(255, 109, 4)" }}
                     >
-                      BETA FEED
+                      {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
                     </Typography>
                   </CardContent>
                 </Card>
