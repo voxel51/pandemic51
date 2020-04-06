@@ -7,11 +7,17 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
-import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
-import CardContent from "@material-ui/core/CardContent"
-import Typography from "@material-ui/core/Typography"
-import Divider from "@material-ui/core/Divider"
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@material-ui/core";
 import moment from "moment"
 import HelpTooltip from "./help"
 import {
@@ -71,6 +77,22 @@ const formal = {
   lasvegas: "Las Vegas, Nevada, USA",
 }
 
+const plotOptions = {
+  pdi: {
+    name: 'PDI',
+    abbr: 'PDI',
+    primary: true,
+  },
+  temp: {
+    name: 'Temperature',
+    abbr: 'Temp',
+  },
+  cases: {
+    name: 'Number of cases',
+    abbr: 'Cases',
+  },
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -99,19 +121,27 @@ class Chart extends Component {
     list: [],
     events: [],
     labels: [],
+    secondPlot: localStorage.secondPlot || 'none',
   }
 
   componentDidMount() {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
-        this.setState(
-          {
-            list: json["data"],
-            events: json["events"],
-            labels: json["labels"],
-          },
-          () => {
+        // todo: real data
+        let prevTemp = 20
+        json.data.forEach(item => {
+          prevTemp = item.temp = prevTemp + Math.random() - 0.48
+        })
+        json.data.forEach((item, index) => {
+          item.cases = Math.pow(1.005, index)
+        })
+
+        this.setState({
+          list: json["data"],
+          events: json["events"],
+          labels: json["labels"],
+        }, () => {
             const match = window.location.search.match(/t=(\d+)/)
             if (match) {
               const selectedTime = Number(match[1])
@@ -170,18 +200,24 @@ class Chart extends Component {
     })
   }, 200)
 
+  handlePlotChange(event) {
+    const secondPlot = event.target.value;
+    this.setState({ secondPlot })
+    localStorage.secondPlot = secondPlot;
+  }
+
   render() {
-    const { list, events } = this.state
+    const colorPrimary = 'rgb(255, 109, 4)'
+    const colorSecondary = 'rgb(109, 4, 255)'
+    const { list, events, secondPlot } = this.state
     const { classes, title, city, selectedTime } = this.props
 
     const contentFormatter = v => {
-      if (!v.payload) {
+      if (!v.payload || !v.payload.length) {
         return null
       }
-      const valid = v.payload.length ? v.payload[0].payload : false
-      const event =
-        valid && events[valid.event] ? events[valid.event].event : false
-      const time = valid && valid.event ? events[valid.event].time : false
+      const item = v.payload[0].payload
+      const event = events[item.event]
       const bull = <span className={classes.bullet}>•</span>
       return (
         <Card square style={{ overflow: "visible", opacity: 0.9 }}>
@@ -189,27 +225,25 @@ class Chart extends Component {
             <Typography variant="h5" component="h2">
               {this.formatFullTime(v.label)}
             </Typography>
-            <Typography
-              variant="h6"
-              component="h3"
-              style={{ color: "rgb(255, 109, 4)" }}
-            >
-              PDI {bull}{" "}
-              {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
-            </Typography>
-            {(() => {
-              if (event && time) {
-                return (
-                  <Typography variant="body2" component="p">
-                    {moment
-                      .unix(time)
-                      .tz(timezones[city])
-                      .format("MMM Do")}{" "}
-                    {bull} {event}
-                  </Typography>
-                )
-              }
-            })()}
+            {v.payload.map(point => (
+              <Typography
+                variant="h6"
+                component="h3"
+                style={{ color: point.color }}
+              >
+                {plotOptions[point.dataKey].abbr} {bull} {point.value.toFixed(2)}
+              </Typography>
+            ))}
+            {event ?
+              <Typography variant="body2" component="p">
+                {moment
+                  .unix(event.time)
+                  .tz(timezones[city])
+                  .format("MMM Do")}{" "}
+                {bull} {event.event}
+              </Typography> :
+              null
+            }
           </CardContent>
         </Card>
       )
@@ -217,7 +251,7 @@ class Chart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent style={{ position: "relative", width: "100%" }}>
+        <CardContent style={{ position: "relative", width: "100%", paddingBottom: 12 }}>
           <Typography
             variant="h4"
             component="h2"
@@ -228,7 +262,7 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 5, left: 30, bottom: 0 }}
+              margin={{ top: 0, right: 20, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
@@ -238,9 +272,13 @@ class Chart extends Component {
               onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>
-                <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#ff6d04" stopOpacity={0} />
+                <linearGradient id="colorPdi" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={colorPrimary} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={colorPrimary} stopOpacity={0} />
+                </linearGradient>
+                <linearGradient id="colorSecond" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="5%" stopColor={colorSecondary} stopOpacity={0.8} />
+                  <stop offset="95%" stopColor={colorSecondary} stopOpacity={0} />
                 </linearGradient>
               </defs>
               <XAxis
@@ -258,6 +296,7 @@ class Chart extends Component {
               />
               <YAxis
                 dataKey="pdi"
+                yAxisId="pdi"
                 name="PDI"
                 width={25}
                 label={
@@ -270,6 +309,24 @@ class Chart extends Component {
                   />
                 }
               />
+              {plotOptions[secondPlot] ? (
+                <YAxis
+                  dataKey={secondPlot}
+                  yAxisId="secondary"
+                  name={plotOptions[secondPlot].name}
+                  orientation="right"
+                  mirror={true}
+                  label={
+                    <Label
+                      value={plotOptions[secondPlot].name}
+                      position="right"
+                      angle={-90}
+                      offset={10}
+                      style={{ textAnchor: "middle" }}
+                    />
+                  }
+                />
+              ) : null}
               <Tooltip
                 content={contentFormatter}
                 allowEscapeViewBox={{ x: false, y: false }}
@@ -277,21 +334,44 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
+                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} yAxisId="pdi" />
                 ))}
               {selectedTime ? (
-                <ReferenceLine x={selectedTime} stroke="#ff6d04" />
+                <ReferenceLine x={selectedTime} stroke={colorPrimary} yAxisId="pdi" />
+              ) : null}
+              {plotOptions[secondPlot] ? (
+                <Area
+                  key={secondPlot}
+                  yAxisId="secondary"
+                  type="monotone"
+                  dataKey={secondPlot}
+                  stroke={colorSecondary}
+                  fillOpacity={1}
+                  fill="url(#colorSecond)"
+                />
               ) : null}
               <Area
+                yAxisId="pdi"
                 type="monotone"
                 dataKey="pdi"
-                stroke="#ff6d04"
+                stroke={colorPrimary}
                 fillOpacity={1}
-                fill="url(#colorSdi)"
+                fill="url(#colorPdi)"
               />
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
+          <div className='chart-dropdown'>
+            <InputLabel>Show:</InputLabel>
+            <Select value={this.state.secondPlot} onChange={this.handlePlotChange.bind(this)}>
+              <MenuItem className='chart-dropdown-item' value='none'>PDI only</MenuItem>
+              {Object.entries(plotOptions).map(([key, option]) => (
+                option.primary ? null : (
+                  <MenuItem className='chart-dropdown-item' value={key}>{option.name}</MenuItem>
+                )
+              ))}
+            </Select>
+          </div>
         </CardContent>
       </Card>
     )
