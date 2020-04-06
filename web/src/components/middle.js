@@ -10,7 +10,7 @@ import SB from "./sb"
 const Middle = () => {
   return (
     <>
-      <div class="body_part bg-light-primary body_block--right">
+      <div class="body_part bg-light-secondary body_block--right">
         <div class="body_block__title">
           <h2>Unprecedented Impact on Social Behavior</h2>
         </div>
@@ -42,7 +42,7 @@ const Middle = () => {
         </div>
       </div>
 
-      <div class="body_part bg-light-secondary body_block--centerfull">
+      <div class="body_part bg-light-primary body_block--centerfull">
         <h2 class="body_block__title--left">
           What is the Physical Distancing Index?
         </h2>

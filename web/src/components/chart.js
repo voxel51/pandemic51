@@ -20,6 +20,7 @@ import {
 } from "@material-ui/core";
 import moment from "moment"
 import HelpTooltip from "./help"
+import { FORMAL, TIMEZONES } from "../utils/cities"
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -40,42 +41,6 @@ import {
 } from "recharts"
 import Async from "react-async"
 import debounce from "lodash/debounce"
-
-const timezones = {
-  chicago: "America/Chicago",
-  dublin: "Europe/Dublin",
-  fortlauderdale: "America/New_York",
-  london: "Europe/London",
-  neworleans: "America/Chicago",
-  newjersey: "America/New_York",
-  newyork: "America/New_York",
-  prague: "Europe/Prague",
-  lasvegas: "America/Los_Angeles",
-}
-
-const cities = {
-  chicago: "Chicago",
-  dublin: "Dublin",
-  fortlauderdale: "Fort Lauderdale",
-  london: "London",
-  neworleans: "New Orleans",
-  newjersey: "New Jersey",
-  newyork: "New York",
-  prague: "Prague",
-  lasvegas: "Las Vegas",
-}
-
-const formal = {
-  chicago: "Chicago, Illinois, USA",
-  dublin: "Dublin, Ireland",
-  fortlauderdale: "Fort Lauderdale, Florida, USA",
-  london: "London, England",
-  neworleans: "New Orleans, Louisiana, USA",
-  newjersey: "Seaside Heights, New Jersey, USA",
-  newyork: "New York City, New York, USA",
-  prague: "Prague, Czech Republic",
-  lasvegas: "Las Vegas, Nevada, USA",
-}
 
 const plotOptions = {
   pdi: {
@@ -155,7 +120,7 @@ class Chart extends Component {
   formatFullTime(rawTime) {
     return moment
       .unix(rawTime)
-      .tz(timezones[this.props.city])
+      .tz(TIMEZONES[this.props.city])
       .format("dddd,  MMM Do, hh:mm A")
   }
 
@@ -238,7 +203,7 @@ class Chart extends Component {
               <Typography variant="body2" component="p">
                 {moment
                   .unix(event.time)
-                  .tz(timezones[city])
+                  .tz(TIMEZONES[city])
                   .format("MMM Do")}{" "}
                 {bull} {event.event}
               </Typography> :
@@ -257,7 +222,7 @@ class Chart extends Component {
             component="h2"
             style={{ marginBottom: "1rem", textAlign: "center" }}
           >
-            PDI: {formal[city]}
+            PDI: {FORMAL[city]}
           </Typography>
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
@@ -289,7 +254,7 @@ class Chart extends Component {
                 tickFormatter={unixTime =>
                   moment
                     .unix(unixTime)
-                    .tz(timezones[city])
+                    .tz(TIMEZONES[city])
                     .format("M/D")
                 }
                 type="number"
