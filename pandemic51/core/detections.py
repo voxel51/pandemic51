@@ -22,7 +22,7 @@ import pandemic51.core.database as pand
 logger = logging.getLogger(__name__)
 
 
-def detect_objects_in_images(inpaths, outpaths):
+def detect_objects_in_images(city, inpaths, outpaths):
     '''Detects objects in the given images and writes the output labels to
     disk.
 
@@ -33,7 +33,7 @@ def detect_objects_in_images(inpaths, outpaths):
     detector = _load_efficientdet_model(panc.MODEL_NAME)
     with detector:
         for inpath, outpath in zip(inpaths, outpaths):
-            _process_image(detector, inpath, outpath)
+            process_image(city, detector, inpath, outpath)
 
 
 def detect_objects_in_unprocessed_images():
@@ -53,7 +53,7 @@ def detect_objects_in_unprocessed_images():
     detector = _load_efficientdet_model(panc.MODEL_NAME)
 
     with detector:
-        for id, image_path in unprocessed_images:
+        for id, image_path, stream_name in unprocessed_images:
             ipath = pathlib.Path(image_path)
 
             labels_path = str(os.path.join(
@@ -66,40 +66,49 @@ def detect_objects_in_unprocessed_images():
                 # Another worker processed this image, so skip
                 continue
 
-            count = _process_image(
-                detector, image_path, labels_path, anno_path=anno_path)
+            city = panc.STREAMS_MAP_INV[stream_name]
+            count = process_image(
+                city, detector, image_path, labels_path, anno_path=anno_path)
 
             pand.set_object_count(id, count)
             pand.add_stream_labels(id, labels_path)
             pand.add_stream_anno_img(id, anno_path)
 
 
-def _load_efficientdet_model(model_name):
-    tf.reset_default_graph()
-    config = etal.ModelConfig.from_dict(
-        {
-            "type": "pandemic51.detectors.EfficientDet",
-            "config": {
-                "model_path": os.path.join(panc.MODELS_DIR, model_name),
-                "architecture_name": model_name,
-                "labels_path": "{{eta-resources}}/ms-coco-labels.txt",
-            }
-        })
-    return config.build()
+def filter_objects(city, objects):
+    '''Filter objects by threshold and the labels whitelist
 
+    Args:
+        city:: the city
+        object: a DetectedObjectContainer
 
-def filter_objects(objects):
+    Returns:
+        a filtered DetectedObjectContainer
+    '''
     filters = []
-    if panc.DEFAULT_CONFIDENCE_THRESH:
+    threshold = panc.CONFIDENCE_THRESHOLDS.get(
+        city, panc.DEFAULT_CONFIDENCE_THRESH)
+
+    if threshold:
         filters.append(
             lambda obj: obj.confidence > panc.DEFAULT_CONFIDENCE_THRESH)
+
     if panc.LABELS_WHITELIST:
         filters.append(lambda obj: obj.label in panc.LABELS_WHITELIST)
 
     return objects.get_matches(filters, match=all)
 
 
-def _process_image(detector, img_path, labels_path, anno_path=None):
+def process_image(city, detector, img_path, labels_path, anno_path=None):
+    '''Process an image
+
+    Args:
+        city: the city name
+        detector: detector
+        img_path: path to the raw image
+        labels_path: the path to write the labels to
+        anno_path: the path to write an anntated image to
+    '''
     logger.info("Processing image '%s'", img_path)
     img = etai.read(img_path)
 
@@ -122,3 +131,17 @@ def _process_image(detector, img_path, labels_path, anno_path=None):
         etai.write(img_anno, anno_path)
 
     return count
+
+
+def _load_efficientdet_model(model_name):
+    tf.reset_default_graph()
+    config = etal.ModelConfig.from_dict(
+        {
+            "type": "pandemic51.detectors.EfficientDet",
+            "config": {
+                "model_path": os.path.join(panc.MODELS_DIR, model_name),
+                "architecture_name": model_name,
+                "labels_path": "{{eta-resources}}/ms-coco-labels.txt",
+            }
+        })
+    return config.build()
