@@ -111,7 +111,7 @@ def covid19(city, metric, start=None, stop=None):
     if city not in panc.STREAMS_MAP:
         return 404, "Not Found"
 
-    if metric not in panc.COVID19_METRICS:
+    if metric not in ("deaths", "cases"):
         return 404, "Not Found"
 
     return {"data": pana.get_covid19_timeseries(city, metric, start, stop)}
