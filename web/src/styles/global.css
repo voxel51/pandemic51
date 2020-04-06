@@ -44,12 +44,8 @@ img {
   color: var(--color-primary);
 }
 .video-player-wrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
-  padding: 16px;
 }
 .video-player {
   position: relative;
@@ -63,12 +59,13 @@ img {
   left: 0;
   width: 100%;
   height: 100%;
+  z-index: 1000;
   padding: 16px;
 }
 .image-overlay {
   position: relative;
   width: 100%;
-  height: 400px; /* overridden */
+  height: 100%;
   display: flex;
   background-color: rgba(100, 100, 100, 0.5);
 }
@@ -865,6 +862,15 @@ hr {
     position: relative;
     padding: 2rem 0;
   }
+
+  .video-player-wrapper video {
+    margin-bottom: 20px;
+  }
+
+  .video-player-wrapper video, .video-player-wrapper img {
+    height: 200px;
+  }
+
 
   .image-overlay-wrapper {
     margin: 0;

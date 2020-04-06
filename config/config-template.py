@@ -63,6 +63,8 @@ STREAMS_MAP = {  # maps city names to stream names
     "neworleans": "new_orleans",
 }
 US_CITIES = {"chicago", "newyork", "neworleans", "newjersey"} # names of US cities
+# streams to be omitted from average
+BETA_STREAMS = {"detroit", "annarbor", "ypsilanti"}
 
 ###############################################################################
 # Events

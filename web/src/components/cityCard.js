@@ -14,6 +14,7 @@ import { Link } from "gatsby"
 import React from "react"
 import Clock from "react-live-clock"
 import Hidden from "@material-ui/core/Hidden"
+import { BETA, NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
 
 const useStyles = makeStyles({
   root: {
@@ -31,7 +32,7 @@ const useStyles = makeStyles({
   pos: {
     marginBottom: 12,
   },
-  content: { paddingRight: (107 * 16) / 9 + 8 },
+  content: { paddingRight: (107 * 16) / 9, paddingLeft: 8 },
   still: {
     margin: 0,
     right: 0,
@@ -44,7 +45,7 @@ const useStyles = makeStyles({
     right: 0,
     bottom: 0,
     margin: "0 .5rem .5rem 0",
-    padding: ",0.5rem",
+    padding: "0.5rem",
   },
   bullet: {
     display: "inline-block",
@@ -52,30 +53,6 @@ const useStyles = makeStyles({
     transform: "scale(0.8)",
   },
 })
-
-const timezones = {
-  chicago: "America/Chicago",
-  dublin: "Europe/Dublin",
-  fortlauderdale: "America/New_York",
-  london: "Europe/London",
-  neworleans: "America/Chicago",
-  newjersey: "America/New_York",
-  newyork: "America/New_York",
-  prague: "Europe/Prague",
-  lasvegas: "America/Los_Angeles",
-}
-
-const locations = {
-  chicago: "Wrigley Field",
-  dublin: "Temple Bar",
-  london: "Abbey Road",
-  neworleans: "Bourbon Street",
-  newjersey: "Seaside Heights",
-  newyork: "Times Square",
-  prague: "Grand Hotel",
-  fortlauderdale: "Wind Jammer",
-  lasvegas: "Fremont Street",
-}
 
 export default function CityCard(props) {
   const classes = useStyles()
@@ -89,9 +66,8 @@ export default function CityCard(props) {
             <CardMedia
               className={classes.still}
               image={props.url}
-              title={locations[props.cityId]}
+              title={LOCATIONS[props.cityId]}
             />
-
             <CardContent className={classes.content}>
               <Typography variant="h5" component="h2">
                 {props.name}
@@ -105,12 +81,27 @@ export default function CityCard(props) {
                 <Clock
                   format={"hh:mm:ss A"}
                   ticking={true}
-                  timezone={timezones[props.cityId]}
+                  timezone={TIMEZONES[props.cityId]}
                 />
               </Typography>
               <Typography variant="body1" component="p">
-                {locations[props.cityId]}
+                {LOCATIONS[props.cityId]}
               </Typography>
+              {NEW[props.cityId] || BETA[props.cityId] ? (
+                <Card square className={classes.chip}
+                      style={{ background: "rgb(255, 109, 4)", color: "#fff" }}
+                >
+                  <CardContent style={{ padding: 0 }}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{fontWeight: "bold"}}
+                    >
+                      {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ) : null}
             </CardContent>
           </Hidden>
           <Hidden lgUp>
@@ -127,12 +118,25 @@ export default function CityCard(props) {
                 <Clock
                   format={"hh:mm:ss A"}
                   ticking={true}
-                  timezone={timezones[props.cityId]}
+                  timezone={TIMEZONES[props.cityId]}
                 />
               </Typography>
               <Typography variant="body1" component="p">
-                {locations[props.cityId]}
+                {LOCATIONS[props.cityId]}
               </Typography>
+              {NEW[props.cityId] || BETA[props.cityId] ? (
+                <Card square className={classes.chip}>
+                  <CardContent style={{ padding: 0 }}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{ color: "rgb(255, 109, 4)" }}
+                    >
+                      {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
+                    </Typography>
+                  </CardContent>
+                </Card>
+              ) : null}
             </CardContent>
           </Hidden>
         </Link>

@@ -10,11 +10,15 @@ import "@tensorflow/tfjs"
 import ReactHLS from "react-hls"
 import CircularProgress from "@material-ui/core/CircularProgress"
 
+const IPCAMS = ["detroit", "annarbor", "ypsilanti"]
+
 export default function Player({ city, height, setHeight, children }) {
   const [url, setUrl] = useState(null)
   const [player, setPlayer] = useState(null)
   const [isLoaded, setLoaded] = useState(false)
   const wrapperRef = useRef(null)
+
+  const isIP = c => IPCAMS.indexOf(c) >= 0
 
   useEffect(() => {
     let cancelled = false
@@ -25,6 +29,7 @@ export default function Player({ city, height, setHeight, children }) {
       res = await res.json()
       if (!cancelled) {
         setUrl(res.url)
+        if (city === "ypsilanti") setTimeout(updateUrl, 60000)
       }
     }
     setUrl(null)
@@ -36,13 +41,20 @@ export default function Player({ city, height, setHeight, children }) {
   }, [city])
 
   const onLoad = () => {
+    const callback = () => {
+      const tag = isIP(city) ? "img" : "video"
+      handleResize(wrapperRef.current.querySelector(tag))
+    }
     setLoaded(true)
   }
 
-  const handleResize = video => {
+  const handleResize = v => {
     if (setHeight) {
-      const container = video.parentNode.parentNode
-      setHeight((video.videoHeight * container.clientWidth) / video.videoWidth)
+      const container = v.parentNode.parentNode
+      const [h, w] = isIP(city)
+        ? [v.naturalHeight, v.naturalWidth]
+        : [v.videoHeight, v.videoWidth]
+      setHeight((h * container.clientWidth) / w)
     }
   }
 
@@ -56,7 +68,8 @@ export default function Player({ city, height, setHeight, children }) {
 
   useEffect(() => {
     const callback = () => {
-      handleResize(wrapperRef.current.querySelector("video"))
+      const tag = isIP(city) ? "img" : "video"
+      handleResize(wrapperRef.current.querySelector(tag))
     }
     window.addEventListener("resize", callback)
     return () => {
@@ -74,8 +87,13 @@ export default function Player({ city, height, setHeight, children }) {
       onLoadedMetadata: handleMetadata,
       onClick: handleClick,
     }
-
-    if (window.MediaSource) {
+    if (isIP(city)) {
+      setPlayer(
+        <div class="player-area">
+          <img onLoad={onLoad} src={url} width="100%" height="100%" />
+        </div>
+      )
+    } else if (window.MediaSource) {
       setPlayer(
         <ReactHLS
           url={url}
@@ -88,7 +106,13 @@ export default function Player({ city, height, setHeight, children }) {
       // likely iOS: https://github.com/video-dev/hls.js/issues/2262
       setPlayer(
         <div class="player-area">
-          <video src={url} width="100%" height="100%" {...videoProps} />
+          <video
+            onLoad={onLoad}
+            src={url}
+            width="100%"
+            height="100%"
+            {...videoProps}
+          />
         </div>
       )
     }

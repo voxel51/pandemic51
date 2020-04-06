@@ -41,7 +41,7 @@ const Footer = props => {
 
   return (
     <>
-      <div class="body_part bg-light-secondary body_block--left">
+      <div class="body_part bg-light-primary body_block--left">
         <div class="body_block__title">
           <h2>Physical Distancing versus Social Distancing</h2>
         </div>
