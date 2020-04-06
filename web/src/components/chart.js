@@ -203,7 +203,7 @@ class Chart extends Component {
               <Typography variant="body2" component="p">
                 {moment
                   .unix(event.time)
-                  .tz(timezones[city])
+                  .tz(TIMEZONES[city])
                   .format("MMM Do")}{" "}
                 {bull} {event.event}
               </Typography> :
