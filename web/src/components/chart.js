@@ -187,6 +187,7 @@ class Chart extends Component {
             </Typography>
             {v.payload.map(point => (
               <Typography
+                key={point.dataKey}
                 variant="h6"
                 component="h3"
                 style={{ color: point.color }}
@@ -294,7 +295,7 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} yAxisId="pdi" />
+                  <ReferenceLine x={v} key={v} stroke="#666" strokeOpacity={0.3} yAxisId="pdi" />
                 ))}
               {selectedTime ? (
                 <ReferenceLine x={selectedTime} stroke={colorPrimary} yAxisId="pdi" />
@@ -327,7 +328,7 @@ class Chart extends Component {
               <MenuItem className='chart-dropdown-item' value='none'>PDI only</MenuItem>
               {Object.entries(plotOptions).map(([key, option]) => (
                 option.primary ? null : (
-                  <MenuItem className='chart-dropdown-item' value={key}>{option.name}</MenuItem>
+                  <MenuItem className='chart-dropdown-item' key={key} value={key}>{option.name}</MenuItem>
                 )
               ))}
             </Select>
