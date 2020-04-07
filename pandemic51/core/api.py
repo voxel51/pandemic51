@@ -13,6 +13,7 @@ import pandas as pd
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
+import pandemic51.core.detections as pande
 import pandemic51.core.events as pane
 import pandemic51.core.pdi as panp
 import pandemic51.core.streaming as pans
@@ -206,6 +207,25 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
         })
 
     return covid_data
+
+
+def update_threshold(city, annotate=False):
+    '''Updates the confidence threshold for historical data
+
+    Args:
+        city: the city
+        annotate: whether to update the annotated images
+    '''
+    points = pand.query_stream_history(panc.STREAMS_MAP[city])
+    for id, _, _, img_path, labels_path, _, anno_img_path in points:
+        if labels_path is None:
+            continue
+
+        if not annotate:
+            anno_img_path = None
+
+        count = pande.update_threshold(city, img_path, labels_path, anno_img_path)
+        pand.set_object_count(id, count)
 
 
 def _get_timestamp(str_date):

@@ -6,7 +6,7 @@ voxel51.com
 '''
 import os
 
-import eta.core.serial as etas
+import eta.core.annotations as etaa
 
 
 ###############################################################################
@@ -37,7 +37,8 @@ SNAPSHOTS_URL = BASE_API_URL + "/snapshots"
 # Resource directories
 ###############################################################################
 
-PANDEMIC51_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))  # cloned repo
+# cloned repo
+PANDEMIC51_DIR = os.path.dirname(os.path.abspath(os.path.dirname(__file__)))
 BASE_DIR = os.path.dirname(PANDEMIC51_DIR)  # directory above repo clone
 CONFIG_DIR = os.path.join(PANDEMIC51_DIR, "config")
 MODELS_DIR = os.path.join(PANDEMIC51_DIR, "models")
@@ -62,9 +63,30 @@ STREAMS_MAP = {  # maps city names to stream names
     "newyork": "time_square",
     "neworleans": "new_orleans",
 }
-US_CITIES = {"chicago", "newyork", "neworleans", "newjersey"} # names of US cities
+STREAMS_MAP_INV = {v: k for k, v in STREAMS_MAP.items()}
+
+# names of US cities
+US_CITIES = {"chicago", "newyork", "neworleans", "newjersey"}
 # streams to be omitted from average
 BETA_STREAMS = {"detroit", "annarbor", "ypsilanti"}
+
+###############################################################################
+# DETECTOR
+###############################################################################
+
+MODEL_NAME = "efficientdet-d4"
+LABELS_WHITELIST = {"person", "bicycle", "car", "motorcycle"}
+
+
+DEFAULT_CONFIDENCE_THRESH = 0.15
+
+CONFIDENCE_THRESHOLDS = {
+    "<city>": 0.5,
+}
+
+ANNOTATION_CONFIG = etaa.AnnotationConfig.from_dict({
+    "add_logo": False,
+})
 
 ###############################################################################
 # Events
