@@ -174,7 +174,7 @@ class Layout extends React.Component {
               </Player>
               <Grid container spacing={4}>
                 {Object.keys(CITIES).map(cityId => (
-                  <Grid item xs={6}>
+                  <Grid key={cityId} item xs={6}>
                     <MobileCityCard
                       key={cityId}
                       cityId={cityId}

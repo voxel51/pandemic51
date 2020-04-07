@@ -17,10 +17,11 @@ import {
   MenuItem,
   Select,
   Typography,
-} from "@material-ui/core";
+} from "@material-ui/core"
 import moment from "moment"
 import HelpTooltip from "./help"
 import { FORMAL, TIMEZONES } from "../utils/cities"
+import { addDataToSeries } from "../utils/data"
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -48,13 +49,13 @@ const plotOptions = {
     abbr: 'PDI',
     primary: true,
   },
-  temp: {
-    name: 'Temperature',
-    abbr: 'Temp',
-  },
   cases: {
     name: 'Number of cases',
     abbr: 'Cases',
+  },
+  deaths: {
+    name: 'Number of deaths',
+    abbr: 'Deaths',
   },
 }
 
@@ -93,14 +94,8 @@ class Chart extends Component {
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
       .then(json => {
-        // todo: real data
-        let prevTemp = 20
-        json.data.forEach(item => {
-          prevTemp = item.temp = prevTemp + Math.random() - 0.48
-        })
-        json.data.forEach((item, index) => {
-          item.cases = Math.pow(1.005, index)
-        })
+        json.data = addDataToSeries(json.data, json.cases)
+        json.data = addDataToSeries(json.data, json.deaths)
 
         this.setState({
           list: json["data"],
@@ -177,6 +172,13 @@ class Chart extends Component {
     const { list, events, secondPlot } = this.state
     const { classes, title, city, selectedTime } = this.props
 
+    const formatNumber = n => {
+      if (Math.round(n) == n) {
+        return n
+      }
+      return n.toFixed(2)
+    }
+
     const contentFormatter = v => {
       if (!v.payload || !v.payload.length) {
         return null
@@ -192,11 +194,12 @@ class Chart extends Component {
             </Typography>
             {v.payload.map(point => (
               <Typography
+                key={point.dataKey}
                 variant="h6"
                 component="h3"
                 style={{ color: point.color }}
               >
-                {plotOptions[point.dataKey].abbr} {bull} {point.value.toFixed(2)}
+                {plotOptions[point.dataKey].abbr} {bull} {formatNumber(point.value)}
               </Typography>
             ))}
             {event ?
@@ -299,7 +302,7 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} yAxisId="pdi" />
+                  <ReferenceLine x={v} key={v} stroke="#666" strokeOpacity={0.3} yAxisId="pdi" />
                 ))}
               {selectedTime ? (
                 <ReferenceLine x={selectedTime} stroke={colorPrimary} yAxisId="pdi" />
@@ -332,7 +335,7 @@ class Chart extends Component {
               <MenuItem className='chart-dropdown-item' value='none'>PDI only</MenuItem>
               {Object.entries(plotOptions).map(([key, option]) => (
                 option.primary ? null : (
-                  <MenuItem className='chart-dropdown-item' value={key}>{option.name}</MenuItem>
+                  <MenuItem className='chart-dropdown-item' key={key} value={key}>{option.name}</MenuItem>
                 )
               ))}
             </Select>
