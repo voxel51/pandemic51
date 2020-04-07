@@ -37,7 +37,7 @@ outpaths = [
     for inpath in inpaths]
 
 # Detect objects in images
-pand.detect_objects_in_images(inpaths, outpaths)
+pand.detect_objects_in_images("newyork", inpaths, outpaths)
 
 # Render output annotations
 for inpath, outpath in zip(inpaths, outpaths):

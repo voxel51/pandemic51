@@ -10,6 +10,7 @@ import numpy as np
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
+import pandemic51.core.detections as pande
 import pandemic51.core.events as pane
 import pandemic51.core.pdi as panp
 import pandemic51.core.streaming as pans
@@ -146,14 +147,19 @@ def get_stream_url(city):
     return stream.get_live_stream_url()
 
 
-def retrofit_thresholds(city):
+def retrofit_threshold(city):
     '''Updates the confidence threshold for historical data
 
     Args:
         city: the city
     '''
     points = pand.query_stream_history(panc.STREAMS_MAP[city])
-    for p in points:
+    for id, _, _, _, labels_path, _, anno_img_path in points:
+        if labels_path is None:
+            continue
+
+        count = pande.retrofit_threshold(city, labels_path, anno_img_path)
+        pand.set_object_count(id, count)
 
 
 def _make_snapshot_url(url):

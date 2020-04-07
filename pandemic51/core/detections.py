@@ -105,32 +105,66 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     Args:
         city: the city name
         detector: detector
-        img_path: path to the raw image
+        img_path: the path to the raw image
         labels_path: the path to write the labels to
         anno_path: the path to write an anntated image to
     '''
     logger.info("Processing image '%s'", img_path)
     img = etai.read(img_path)
 
-    objects = detector.detect(img)
-    objects = filter_objects(objects)
+    raw_objects = detector.detect(img)
+    objects = filter_objects(city, raw_objects)
 
     count = len(objects)
     logger.info("Found %d objects", count)
 
-    image_labels = etai.ImageLabels()
-    image_labels.add_objects(objects)
+    raw_image_labels = etai.ImageLabels()
+    raw_image_labels.add_objects(raw_objects)
 
     logger.info("Writing labels to '%s'", labels_path)
-    image_labels.write_json(labels_path)
+    raw_image_labels.write_json(labels_path)
 
     if anno_path:
+        image_labels = etai.ImageLabels()
+        image_labels.add_objects(objects)
+
         logger.info("Writing annotated image to '%s'", anno_path)
         img_anno = etaa.annotate_image(
             img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
         etai.write(img_anno, anno_path)
 
     return count
+
+
+def retrofit_threshold(city, img_path, labels_path, anno_path=None):
+    '''Loads existing labels and filters down the objects based on the (new)
+    threshold. Only supports increasing an increace in the confidence
+    threshold.
+
+    Args:
+        city: the city name
+        detector: detector
+        img_path: the path to the raw image
+        labels_path: the path to write the labels to
+        anno_path: the path to write an anntated image to
+    '''
+    raw_image_labels = etai.ImageLabels.from_json(labels_path)
+    logger.info("Loaded %d raw objects", len(raw_image_labels.objects))
+
+    objects = filter_objects(city, raw_image_labels.objectS)
+    new_count = len(objects)
+    logger.info("Filtered down to %d objects", new_count)
+
+    if anno_path:
+        image_labels = etai.ImageLabels()
+        image_labels.add_objects(objects)
+        img = etai.read(img_path)
+        logger.info("Writing annotated image to '%s'", anno_path)
+        img_anno = etaa.annotate_image(
+            img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
+        etai.write(img_anno, anno_path)
+
+    return new_count
 
 
 def _load_efficientdet_model(model_name):

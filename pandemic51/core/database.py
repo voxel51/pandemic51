@@ -107,7 +107,7 @@ def query_unprocessed_images(*args, cnx):
     '''
     with cnx.cursor() as cursor:
         sql = '''
-            select `id`, `data_path` from `stream_history`
+            select `id`, `data_path`, `stream_name` from `stream_history`
             where `labels_path` is null;
             '''
         cursor.execute(sql)
@@ -203,8 +203,8 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
             args = None
 
         sql = '''
-            select `id`, `stream_name`, `datetime`, `data_path`, `labels_path`, 
-            `count`
+            select `id`, `stream_name`, `datetime`, `data_path`, `labels_path`,
+            `count`, `anno_img_path`
             from `stream_history`%s order by `datetime`;
             ''' % stream_search
         cursor.execute(sql, args)
@@ -221,6 +221,7 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
         result_dict[stream_name]["data_path"].append(data_path)
         result_dict[stream_name]["labels_path"].append(labels_path)
         result_dict[stream_name]["count"].append(count)
+        result_dict[stream_name]["anno_img_path"].append(count)
 
     return result_dict
 
@@ -281,7 +282,8 @@ def query_all_pdi(*args, cnx):
     with cnx.cursor() as cursor:
         sql = '''
             select `stream_name`, unix_timestamp(`datetime`), `count`
-            from `stream_history` where `count` is not null order by `datetime`;
+            from `stream_history` where `count` is not null
+            order by `datetime`;
             '''
         cursor.execute(sql)
         result = cursor.fetchall()
