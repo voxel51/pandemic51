@@ -1,5 +1,5 @@
 /**
- * New York live stream.
+ * Detroit live stream.
  *
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
