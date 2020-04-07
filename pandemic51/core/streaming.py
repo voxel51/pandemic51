@@ -487,10 +487,20 @@ class YouTubeStream(Stream):
     def __init__(self, stream_name, GMT, youtube_id):
         super(YouTubeStream, self).__init__(stream_name, GMT)
         self.youtube_id = youtube_id
+        self._m3u8 = None
 
     def get_live_stream_url(self):
         '''Returns the livestream URL.'''
         return "https://www.youtube.com/embed/%s?autoplay=1" % self.youtube_id
+
+    def get_m3u8_url(self, force=False):
+        '''Returns the current best m3u8 stream.'''
+        if force or self._m3u8 is None:
+            ydl_opts = {}
+            with YoutubeDL(ydl_opts) as ydl:
+                yyy = ydl.extract_info(self.youtube_id, download=False)
+            self._m3u8 = yyy['url']
+        return self._m3u8
 
     def download_image(self, outdir):
         '''Downloads an image from the stream
@@ -503,9 +513,7 @@ class YouTubeStream(Stream):
             image_path: path to the downloaded image on disk
             dt: datetime object of when the image was downloaded
         '''
-        ydl_opts = {}
-        with YoutubeDL(ydl_opts) as ydl:
-            yyy = ydl.extract_info(self.youtube_id, download=False)
+        m3u8_url = self.get_m3u8_url()
 
         dt = datetime.utcnow()
 
@@ -516,7 +524,7 @@ class YouTubeStream(Stream):
         image_path = os.path.join(outdir, self.stream_name, "%d.jpg" % ts)
 
         # Capture the current frame of the stream
-        is_new_img = sample_first_frame(yyy['url'], image_path)
+        is_new_img = sample_first_frame(m3u8_url, image_path)
 
         return is_new_img, image_path, dt
 

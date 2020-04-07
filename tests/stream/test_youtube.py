@@ -18,10 +18,14 @@ print(stream)
 
 print("The livestream URL for embedding is: %s" % stream.get_live_stream_url())
 
+print("The m3u8 stream URL is: %s" % stream.get_m3u8_url())
+
 print("Getting an image")
 
 path, dt = stream.download_image_and_store(outdir=OUT_BASEDIR)
 
 print("Stored it at %s" % path)
+
+print("The m3u8 stream URL is: %s" % stream.get_m3u8_url(force=True))
 
 print("Done")
