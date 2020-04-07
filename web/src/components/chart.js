@@ -224,6 +224,7 @@ class Chart extends Component {
               <YAxis
                 dataKey="pdi"
                 name="PDI"
+                domain={[0, d => Math.max(d.toFixed(0), 10)]}
                 width={25}
                 label={
                   <Label
