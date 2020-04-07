@@ -178,7 +178,10 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
     Returns:
         if `reformat_as_dict == False`:
             (
-                (id, stream_name, datetime, data_path, labels_path, count),
+                (
+                    id, stream_name, datetime, data_path,
+                    labels_path, count, anno_img_path
+                ),
                 ...
             )
 
@@ -190,6 +193,7 @@ def query_stream_history(stream_name=None, reformat_as_dict=False, cnx=None):
                     "data_path": [...],
                     "labels_path": [...],
                     "count": [...],
+                    "anno_img_path": [...],
                 },
                 ...
             }

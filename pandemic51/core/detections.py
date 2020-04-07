@@ -27,6 +27,7 @@ def detect_objects_in_images(city, inpaths, outpaths):
     disk.
 
     Args:
+        city: the city
         inpaths: a list of input paths to process
         outpaths: a list of paths to write the output labels
     '''
@@ -103,7 +104,7 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     '''Process an image
 
     Args:
-        city: the city name
+        city: the city
         detector: detector
         img_path: the path to the raw image
         labels_path: the path to write the labels to
@@ -130,10 +131,9 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     return count
 
 
-def retrofit_threshold(city, img_path, labels_path, anno_path=None):
-    '''Loads existing labels and filters down the objects based on the (new)
-    threshold. Only supports increasing an increace in the confidence
-    threshold.
+def update_threshold(city, img_path, labels_path, anno_path=None):
+    '''Loads the raw labels, filters down the objects based on the (new)
+    threshold, and optionally updates the annotated image.
 
     Args:
         city: the city name

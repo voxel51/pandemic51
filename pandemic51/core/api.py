@@ -147,18 +147,22 @@ def get_stream_url(city):
     return stream.get_live_stream_url()
 
 
-def retrofit_threshold(city):
+def update_threshold(city, annotate=False):
     '''Updates the confidence threshold for historical data
 
     Args:
         city: the city
+        annotate: whether to update the annotated images
     '''
     points = pand.query_stream_history(panc.STREAMS_MAP[city])
-    for id, _, _, _, labels_path, _, anno_img_path in points:
+    for id, _, _, img_path, labels_path, _, anno_img_path in points:
         if labels_path is None:
             continue
 
-        count = pande.retrofit_threshold(city, labels_path, anno_img_path)
+        if not annotate:
+            anno_img_path = None
+
+        count = pande.update_threshold(city, labels_path, anno_img_path)
         pand.set_object_count(id, count)
 
 
