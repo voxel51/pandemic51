@@ -125,13 +125,7 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     raw_image_labels.write_json(labels_path)
 
     if anno_path:
-        image_labels = etai.ImageLabels()
-        image_labels.add_objects(objects)
-
-        logger.info("Writing annotated image to '%s'", anno_path)
-        img_anno = etaa.annotate_image(
-            img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
-        etai.write(img_anno, anno_path)
+        _annotate_img(img, objects, anno_path)
 
     return count
 
@@ -156,15 +150,18 @@ def retrofit_threshold(city, img_path, labels_path, anno_path=None):
     logger.info("Filtered down to %d objects", new_count)
 
     if anno_path:
-        image_labels = etai.ImageLabels()
-        image_labels.add_objects(objects)
-        img = etai.read(img_path)
-        logger.info("Writing annotated image to '%s'", anno_path)
-        img_anno = etaa.annotate_image(
-            img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
-        etai.write(img_anno, anno_path)
+        _annotate_img(etai.read(img_path), objects, anno_path)
 
     return new_count
+
+
+def _annotate_img(img, objects, anno_path):
+    image_labels = etai.ImageLabels()
+    image_labels.add_objects(objects)
+    logger.info("Writing annotated image to '%s'", anno_path)
+    img_anno = etaa.annotate_image(
+        img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
+    etai.write(img_anno, anno_path)
 
 
 def _load_efficientdet_model(model_name):
