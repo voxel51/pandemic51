@@ -4,6 +4,7 @@ Methods and Classes for downloading and working with video streams.
 Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
+from __future__ import unicode_literals
 from datetime import datetime
 import io
 import json
@@ -22,6 +23,7 @@ from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
+from youtube_dl import YoutubeDL
 
 import eta.core.image as etai
 import eta.core.serial as etas
@@ -53,7 +55,7 @@ def get_img_urls(webpage):
 
     # Ensure that all images have had time to load
     time.sleep(1)
-    
+
     # Parse the source HTML for images with PSLNM in the title
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     driver.service.stop()
@@ -166,7 +168,7 @@ class Stream(etas.Serializable):
 
         Returns:
             is_new_img: `True` if the image was not already on disk
-            image_path: path the the downloaded image on disk
+            image_path: path to the downloaded image on disk
             dt: datetime object of when the image was downloaded
         '''
         raise NotImplementedError("Subclass must implement")
@@ -477,6 +479,53 @@ class ImageStream(Stream):
         webpage = d["webpage"]
         url_filter = d["url_filter"]
         return cls(stream_name, GMT, webpage, url_filter)
+
+
+class YouTubeStream(Stream):
+    '''A Stream class for YouTube live-streams.'''
+
+    def __init__(self, stream_name, GMT, youtube_id):
+        super(YouTubeStream, self).__init__(stream_name, GMT)
+        self.youtube_id = youtube_id
+
+    def get_live_stream_url(self):
+        '''Returns the livestream URL.'''
+        return "https://www.youtube.com/embed/%s?autoplay=1" % self.youtube_id
+
+    def download_image(self, outdir):
+        '''Downloads an image from the stream
+
+        Args:
+            outdir: the output directory
+
+        Returns:
+            is_new_img: `True` if the image was not already on disk
+            image_path: path to the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
+        ydl_opts = {}
+        with YoutubeDL(ydl_opts) as ydl:
+            yyy = ydl.extract_info(self.youtube_id, download=False)
+
+        dt = datetime.utcnow()
+
+        # UTC integer timestamp (epoch time)
+        ts = int(dt.timestamp())
+
+        # Create path for image
+        image_path = os.path.join(outdir, self.stream_name, "%d.jpg" % ts)
+
+        # Capture the current frame of the stream
+        is_new_img = sample_first_frame(yyy['url'], image_path)
+
+        return is_new_img, image_path, dt
+
+    @classmethod
+    def _from_dict(cls, d):
+        stream_name = d["stream_name"]
+        GMT = d["GMT"]
+        youtube_id = d["youtube_id"]
+        return cls(stream_name, GMT, youtube_id)
 
 
 def _get_chunk_url(webpage):
