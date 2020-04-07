@@ -268,6 +268,7 @@ class Chart extends Component {
                 dataKey="pdi"
                 yAxisId="pdi"
                 name="PDI"
+                domain={[0, d => Math.max(Math.min(100, (d + 2)).toFixed(0), 10)]}
                 width={25}
                 label={
                   <Label
