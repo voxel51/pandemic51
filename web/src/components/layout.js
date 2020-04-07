@@ -96,9 +96,8 @@ class Layout extends React.Component {
     const setHeight = height => this.setState({ height })
     const cardListHeight = this.refs.chartContainer
       ? (this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length) *
-          6 +
-        12
-      : 727.5
+          7 - 10
+      : 820
     return (
       <div className={classes.wrapper}>
         <Helmet>

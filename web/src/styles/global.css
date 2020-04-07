@@ -20,11 +20,27 @@ img {
   margin-bottom: 0 !important;
 }
 
-.chart-footer, .chart-dropdown {
+.chart-switcher {
   display: flex;
+  justify-content: center;
+  padding: 1rem;
 }
-.chart-dropdown .MuiSelect-select, .chart-dropdown-item {
-  font-size: 1.5rem;
+.chart-dropdown .MuiSelect-select, .chart-switcher-item {
+  font-size: 1.2rem;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  border-width: 2px;
+  background: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 6px;
+  margin: 3px;
+}
+.chart-switcher-item.active {
+  border-width: 0;
+  background: rgba(0, 0, 0, 0.1);
+  cursor: default;
+  margin: 5px;
 }
 .chart-dropdown label {
   display: inline-block;
@@ -855,6 +871,10 @@ hr {
   }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 850px) {
+.chart-switcher, .chart-switcher-item, .chart-switcher-item.active {
+  display: block;
+  margin: 6px auto;
+}
   .body_part {
     padding: 6rem 3rem;
   }
