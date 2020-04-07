@@ -19,8 +19,9 @@ footer {
 img {
   margin-bottom: 0 !important;
 }
-.chart-dropdown {
-  margin-left: 50px;
+
+.chart-footer, .chart-dropdown {
+  display: flex;
 }
 .chart-dropdown .MuiSelect-select, .chart-dropdown-item {
   font-size: 1.5rem;

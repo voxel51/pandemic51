@@ -88,6 +88,7 @@ class Chart extends Component {
     events: [],
     labels: [],
     secondPlot: localStorage.secondPlot || 'none',
+    metadata: {}
   }
 
   componentDidMount() {
@@ -101,6 +102,7 @@ class Chart extends Component {
           list: json["data"],
           events: json["events"],
           labels: json["labels"],
+          metadata: json["metadata"]
         }, () => {
             const match = window.location.search.match(/t=(\d+)/)
             if (match) {
@@ -169,7 +171,7 @@ class Chart extends Component {
   render() {
     const colorPrimary = 'rgb(255, 109, 4)'
     const colorSecondary = 'rgb(109, 4, 255)'
-    const { list, events, secondPlot } = this.state
+    const { list, events, secondPlot, metadata } = this.state
     const { classes, title, city, selectedTime } = this.props
 
     const formatNumber = n => {
@@ -329,8 +331,9 @@ class Chart extends Component {
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
-          <div className='chart-dropdown'>
-            <InputLabel>Show:</InputLabel>
+          <div className='chart-footer'>
+            <div className='chart-dropdown'>
+            <InputLabel style={{lineHeight: "100%", display: "table-cell", verticalAlign: "middle", height: 40}}>Show:</InputLabel>
             <Select value={this.state.secondPlot} onChange={this.handlePlotChange.bind(this)}>
               <MenuItem className='chart-dropdown-item' value='none'>PDI only</MenuItem>
               {Object.entries(plotOptions).map(([key, option]) => (
@@ -339,6 +342,12 @@ class Chart extends Component {
                 )
               ))}
             </Select>
+          </div>
+            <Typography variant="h6" component="p" color="textSecondary">
+              {metadata[secondPlot]}<br/>
+              <span>
+                <i>Source: <a href="https://coronavirus.jhu.edu/map.html" target="_blank">https://coronavirus.jhu.edu/map.html</a></i></span>
+            </Typography>
           </div>
         </CardContent>
       </Card>
