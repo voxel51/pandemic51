@@ -19,6 +19,34 @@ footer {
 img {
   margin-bottom: 0 !important;
 }
+
+.chart-switcher {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+.chart-dropdown .MuiSelect-select, .chart-switcher-item {
+  font-size: 1.2rem;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  border-width: 2px;
+  background: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 6px;
+  margin: 3px;
+}
+.chart-switcher-item.active {
+  border-width: 0;
+  background: rgba(0, 0, 0, 0.1);
+  cursor: default;
+  margin: 5px;
+}
+.chart-dropdown label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
 .media-container {
   position: relative;
 }
@@ -75,7 +103,6 @@ img {
   top: 5px;
   right: 5px;
 }
-
 .image-overlay .close-button, .image-overlay .share-button {
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
@@ -846,6 +873,9 @@ hr {
 @media only screen and (min-device-width: 320px) and (max-device-width: 850px) {
   .body_part {
     padding: 6rem 3rem;
+  }
+  .share-box {
+    display: block !important;
   }
 
   .video-player-wrapper {

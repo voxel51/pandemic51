@@ -52,7 +52,7 @@ export default function ImageOverlay({
   }
 
   const body = (
-    <Card square style={{ width: 450, maxWidth: "100%", boxShadow: "none" }}>
+    <Card square style={{ maxWidth: "100%", boxShadow: "none" }}>
       <CardContent>
         <Typography
           variant="h3"
@@ -62,16 +62,22 @@ export default function ImageOverlay({
           Share this snapshot!
         </Typography>
         <Box
+          className="share-box"
           display="flex"
           justifyContent="space-between"
-          style={{ width: "100%" }}
+          style={{ maxWidth: "100%" }}
         >
           <Typography
             ref={text}
             variant="h5"
             component="p"
             color="textSecondary"
-            style={{ border: "2px", lineHeight: "32px" }}
+            style={{
+              border: "2px",
+              lineHeight: "32px",
+              marginRight: 8,
+              whiteSpace: "nowrap",
+            }}
           >
             {isCopied ? "Copied to clipboard!" : window.location.href}
           </Typography>

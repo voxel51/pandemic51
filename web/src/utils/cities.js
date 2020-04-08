@@ -9,6 +9,7 @@ export const CITIES = {
   newyork: "New York",
   newjersey: "New Jersey",
   fortlauderdale: "Fort Lauderdale",
+  miami: "Miami",
   lasvegas: "Las Vegas",
   dublin: "Dublin",
   london: "London",
@@ -16,7 +17,6 @@ export const CITIES = {
   brighton: "Brighton",
   detroit: "Detroit",
   annarbor: "Ann Arbor",
-  //ypsilanti: "Ypsilanti",
 }
 
 export const BETA = {
@@ -27,6 +27,7 @@ export const BETA = {
 }
 
 export const NEW = {
+  miami: "Miami"
 }
 
 export const HISCITIES = {
@@ -37,12 +38,14 @@ export const HISCITIES = {
   prague: "Prague",
   fortlauderdale: "Fort Lauderdale",
   lasvegas: "Las Vegas",
+  miami: "Miami",
 }
 
 export const TIMEZONES = {
   chicago: "America/Chicago",
   dublin: "Europe/Dublin",
   fortlauderdale: "America/New_York",
+  miami: "America/New_York",
   london: "Europe/London",
   neworleans: "America/Chicago",
   newjersey: "America/New_York",
@@ -50,7 +53,6 @@ export const TIMEZONES = {
   prague: "Europe/Prague",
   lasvegas: "America/Los_Angeles",
   detroit: "America/New_York",
-  //ypsilanti: "America/New_York",
   annarbor: "America/New_York",
   brighton: "America/New_York",
 }
@@ -59,6 +61,7 @@ export const LOCATIONS = {
   chicago: "Wrigley Field",
   dublin: "Temple Bar",
   london: "Abbey Road",
+  miami: "Miami Beach",
   neworleans: "Bourbon Street",
   newjersey: "Seaside Heights",
   newyork: "Times Square",
@@ -68,12 +71,12 @@ export const LOCATIONS = {
   brighton: "Mill Pond",
   detroit: "Tunnel",
   annarbor: "Ruthven",
-  //ypsilanti: "EMU"
 }
 
 export const FORMAL = {
   chicago: "Chicago, Illinois, USA",
   dublin: "Dublin, Ireland",
+  miami: "Miami, Florida, USA",
   fortlauderdale: "Fort Lauderdale, Florida, USA",
   london: "London, England",
   neworleans: "New Orleans, Louisiana, USA",
@@ -84,7 +87,6 @@ export const FORMAL = {
   detroit: "Detroit, Michigan, USA",
   annarbor: "Ann Arbor, Michigan, USA",
   brighton: "Brighton, Michigan, USA",
-  //ypsilanti: "Ypsilanti, Michigan, USA",
 }
 
 export const COLORS = [

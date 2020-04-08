@@ -96,9 +96,9 @@ class Layout extends React.Component {
     const setHeight = height => this.setState({ height })
     const cardListHeight = this.refs.chartContainer
       ? (this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length) *
-          6 +
-        12
-      : 727.5
+          7 -
+        10
+      : 820
     return (
       <div className={classes.wrapper}>
         <Helmet>
@@ -174,7 +174,7 @@ class Layout extends React.Component {
               </Player>
               <Grid container spacing={4}>
                 {Object.keys(CITIES).map(cityId => (
-                  <Grid item xs={6}>
+                  <Grid key={cityId} item xs={6}>
                     <MobileCityCard
                       key={cityId}
                       cityId={cityId}
