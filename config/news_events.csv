@@ -1,49 +1,104 @@
 date,city,event,reference
 1/21/2020,U.S.,First U.S. case of coronavirus confirmed,https://www.nytimes.com/2020/01/21/health/cdc-coronavirus.html
 2/25/2020,neworleans,Mardi Gras,
-2/29/2020,U.S.,First U.S. coronavirus death confirmed,https://www.cnn.com/2020/02/29/health/us-coronavirus-saturday/index.html
+2/29/2020,U.S.,First confirmed coronavirus death in U.S.,https://www.cnn.com/2020/02/29/health/us-coronavirus-saturday/index.html
+3/1/2020,florida,Florida Governor declares public health emergency,https://www.broward.org/CoronaVirus/Documents/BC-EmergencyOrder20-03.pdf
 3/1/2020,prague,First Czech Republic case of coronavirus confirmed,https://www.reuters.com/article/us-china-health-czech/czech-republic-reports-first-cases-of-coronavirus-idUSKBN20O1XK
+3/2/2020,prague,Czech Republic suspends flights to Prague from affected areas,https://www.cnn.com/asia/live-news/coronavirus-outbreak-03-02-20-intl-hnk/h_32efe76a722d7c9c531ce785b7f9e991
+3/5/2020,lasvegas,First Nevada case of coronavirus confirmed,https://www.nytimes.com/interactive/2020/us/nevada-coronavirus-cases.html
 3/5/2020,london,First confirmed coronavirus death in UK,https://www.theguardian.com/world/2020/mar/05/more-than-a-hundred-people-in-uk-infected-with-coronavirus
 3/9/2020,dublin,Ireland cancels St. Patrick's Day festivities,https://www.nbcnews.com/news/world/ireland-cancels-st-patrick-s-day-festivities-over-coronavirus-concerns-n1153591
 3/11/2020,chicago,Chicago Mayor cancels St. Patrick's Day festivities,https://www.chicagotribune.com/coronavirus/ct-chicago-st-patricks-day-parade-cancelled-coronavirus-20200311-d5gtbxofc5hxpdfocdepwfsxca-story.html
 3/11/2020,prague,Czech Republic school closings go into effect,https://www.radio.cz/en/section/curraffrs/schools-closing-as-czech-authorities-report-first-coronavirus-case-with-unknown-source
+3/12/2020,lasvegas,Nevada Governor declares a state of emergency,https://www.ktnv.com/news/coronavirus/gov-sisolak-issues-stay-at-home-order-and-extends-closure
+3/12/2020,michigan,Michigan Governor announces school closings,"https://www.michigan.gov/coronavirus/0,9753,7-406-98158-521763--,00.html"
+3/12/2020,michigan,First Michigan cases of coronavirus confirmed,"https://www.michigan.gov/coronavirus/0,9753,7-406-98158-521365--,00.html"
 3/12/2020,newyork,New York St. Patrick's Day festivities postponed,https://www.nycstpatricksparade.org/2020/03/12/press-release-parade-postponed
 3/13/2020,chicago,Illinois Governor announces school closings,https://abc7chicago.com/health/chicago-area-school-closings-event-cancellations-amid-covid-19-outbreak-/5999972/
+3/13/2020,fortlauderdale,Broward County announces school closings,https://wsvn.com/news/local/miami-dade/miami-dade-broward-counties-closing-schools-due-to-coronavirus-pandemic/
+3/13/2020,miami,Miami-Dade County announces school closings,https://wsvn.com/news/local/miami-dade/miami-dade-broward-counties-closing-schools-due-to-coronavirus-pandemic/
 3/13/2020,neworleans,Louisiana Governor announces school closings,https://www.klfy.com/louisiana/breaking-governor-edwards-orders-louisiana-schools-closed
 3/13/2020,U.S.,President Trump declares national emergency,https://www.whitehouse.gov/presidential-actions/proclamation-declaring-national-emergency-concerning-novel-coronavirus-disease-covid-19-outbreak/
 3/14/2020,chicago,Archidiocese of Chicago cancels all future masses,https://www.chicagotribune.com/coronavirus/ct-coronavirus-chicago-catholic-schools-closed-20200313-lmjvxzrowve6tlxjbksaofvle4-story.html
 3/15/2020,chicago,Chicago bars & restaurants close inside dining,https://abc7chicago.com/health/illinois-bars-dine-in-restaurants-closing-monday-night-to-limit-covid-19-spread/6017541/
+3/15/2020,fortlauderdale,"Mayor implements strick ""Sping Break"" restrictionsm closes beaches",https://www.businessinsider.com/coronavirus-ends-spring-break-florida-miami-fort-lauderdale-2020-3
+3/15/2020,lasvegas,Nevada Governor announces school closings,https://www.ktnv.com/news/gov-sisolak-to-make-announcement-regarding-nevada-schools
+3/15/2020,newjersey,New Jersey Governor announces school closings,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
 3/15/2020,newyork,NYC announces school closings,https://www.nbcnews.com/news/us-news/new-york-city-close-schools-bars-restaurants-around-u-s-n1159651
 3/15/2020,U.S.,CDC advises no gatherings of 50 or more,https://www.nytimes.com/2020/03/15/world/coronavirus-live.html
-3/15/2020,newjersey,New Jersey Governor announces school closings,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
 3/16/2020,chicago,Illinois Governor announces school closings,https://abc7chicago.com/health/chicago-area-school-closings-event-cancellations-amid-covid-19-outbreak-/5999972/
+3/16/2020,chicago,Illinois Governor bans gatherings of 50 or more,https://abc7chicago.com/health/pritzker-bans-gatherings-of-50-or-more-as-state-preps-for-election/6019036/
+3/16/2020,fortlauderdale,TSA officer tests positive for coronavirus at Ft. Lauderdale-Hollywood Internation Airport,https://www.wctv.tv/content/news/TSA-agent-at-Fort-Lauderdale-airport-tests-positive-for-coronavirus-568834141.html
+3/16/2020,fortlauderdale,Broward County school closings go into effect,https://wsvn.com/news/local/miami-dade/miami-dade-broward-counties-closing-schools-due-to-coronavirus-pandemic/
+3/16/2020,lasvegas,Nevada school closings go into effect,https://www.ktnv.com/news/gov-sisolak-to-make-announcement-regarding-nevada-schools
+3/16/2020,lasvegas,First confirmed coronavirus death in Nevada,https://news3lv.com/news/local/first-death-tied-to-coronavirus-reported-in-clark-county-case-number-up-to-35
+3/16/2020,miami,Miami-Dade County school closings go into effect,https://wsvn.com/news/local/miami-dade/miami-dade-broward-counties-closing-schools-due-to-coronavirus-pandemic/
+3/16/2020,michigan,Michigan school closings go into effect,"https://www.michigan.gov/coronavirus/0,9753,7-406-98158-521763--,00.html"
+3/16/2020,michigan,"Michigan Governor shutdown of bars, casinos, theaters, and other public spaces ","https://www.michigan.gov/coronavirus/0,9753,7-406-98158-521763--,00.html"
+3/16/2020,neworleans,New Orleans Mayor implements Stay-at-Home order,https://ready.nola.gov/incident/coronavirus/proclamation-guidance
+3/16/2020,neworleans,Louisiana school closings go into effect,https://www.klfy.com/louisiana/breaking-governor-edwards-orders-louisiana-schools-closed
 3/16/2020,newyork,NYC school closings go into effect,https://www.nbcnews.com/news/us-news/new-york-city-close-schools-bars-restaurants-around-u-s-n1159651
 3/16/2020,prague,Czech Republic travel ban and quarantine go into effect,https://cz.usembassy.gov/covid-19-information
-3/16/2020,neworleans,New Orleans Mayor implements Stay-at-Home order,https://ready.nola.gov/incident/coronavirus/proclamation-guidance
-3/16/2020,chicago,Illinois Governor bans gatherings of 50 or more,https://abc7chicago.com/health/pritzker-bans-gatherings-of-50-or-more-as-state-preps-for-election/6019036/
-3/16/2020,neworleans,Louisiana school closings go into effect,https://www.klfy.com/louisiana/breaking-governor-edwards-orders-louisiana-schools-closed
-3/17/2020,Worldwide,St. Patrick's Day,
 3/17/2020,chicago,Illinois school closings go into effect,https://abc7chicago.com/health/chicago-area-school-closings-event-cancellations-amid-covid-19-outbreak-/5999972/
-3/17/2020,newyork,NYC Mayor tell city to prepare for Shelter-in-Place,https://www.nbcnewyork.com/news/coronavirus/nypd-to-enforce-closures-as-nyc-celebrates-st-patricks-day-with-no-parade-no-bars/2330440
+3/17/2020,florida,Florida Governor orders shutdown of all bars and nightclubs,https://www.abcactionnews.com/news/state/all-florida-bars-nightclubs-to-close-for-at-least-30-days-amid-coronavirus-pandemic
+3/17/2020,fortlauderdale,Mayor closes restaurants inside dining and businesses where over 10 people gather,https://miami.cbslocal.com/2020/03/17/fort-lauderdale-dean-trantalis-closures/
+3/17/2020,lasvegas,"Nevada Governor announces shutdown of hotels, casinos, and nonessential businesses",https://www.usatoday.com/story/travel/2020/03/17/coronavirus-nevada-closes-hotels-casinos-nonessential-businesses/5075789002/
 3/17/2020,newjersey,"New Jersey closes indoor malls, amusement centers, and parks",https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/17/2020,newyork,NYC Mayor tell city to prepare for Shelter-in-Place,https://www.nbcnewyork.com/news/coronavirus/nypd-to-enforce-closures-as-nyc-celebrates-st-patricks-day-with-no-parade-no-bars/2330440
+3/17/2020,Worldwide,St. Patrick's Day,
+3/18/2020,lasvegas,"Nevada shutdown of hotels, casinos, and nonessential businesses goes into effect",https://www.usatoday.com/story/travel/2020/03/17/coronavirus-nevada-closes-hotels-casinos-nonessential-businesses/5075789002/
 3/18/2020,london,UK Prime Minister announces school closings,https://www.theguardian.com/world/2020/mar/18/coronavirus-why-are-uk-schools-closing-and-what-does-it-mean-for-parents
+3/18/2020,miami,Miami-Dade County announces beaches and parks closing,https://www.miamiherald.com/news/coronavirus/article241329121.html
+3/18/2020,michigan,First confirmed coronavirus death in Michigan,https://www.wxyz.com/news/coronavirus/death-of-patient-with-covid-19-reported-at-beaumont-hospital-in-wayne-county
 3/18/2020,newjersey,New Jersey school closings go into effect,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/19/2020,miami,Miami-Dade County beaches and parks closings go into effect,https://www.miamiherald.com/news/coronavirus/article241329121.html
+3/19/2020,newyork,NYC already empty awaiting Stay-at-Home orders,https://www.cnn.com/2020/03/19/us/coronavirus-new-york-images/index.html
 3/20/2020,chicago,Illinois Governor announces Stay-at-Home order,https://abc7chicago.com/society/watch-live-pritzker-announces-stay-at-home-order-amid-covid-19-outbreak-/6032318/
-3/20/2020,newyork,New York Governor announces Stay-at-Home order,https://www.nytimes.com/article/what-is-shelter-in-place-coronavirus.html
 3/20/2020,newjersey,New Jersey to adjust rail service,https://abc7ny.com/traffic/nj-transit-shifts-to-weekend-schedule-during-week-amid-covid-19-crisis/6029934
+3/20/2020,newyork,New York Governor announces Stay-at-Home order,https://www.nytimes.com/article/what-is-shelter-in-place-coronavirus.html
 3/21/2020,chicago,Illinois Stay-at-Home order goes into effect,https://www.nbcchicago.com/news/local/illinois-stay-at-home-order-now-in-effect/2241919/
-3/21/2020,newjersey,New Jersey Governor announces and implements Stay-at-Home order,https://covid19.nj.gov/faqs/nj-information/general-public/governor-murphy-announces-statewide-stay-at-home-order-closure-of-all-non-essential-retail-businesses
 3/21/2020,chicago,Chicago to close libraries and parks ,https://www.nbcchicago.com/news/local/chicago-to-close-libraries-and-parks-starting-saturday/2241444/
+3/21/2020,newjersey,New Jersey Governor announces and implements Stay-at-Home order,https://covid19.nj.gov/faqs/nj-information/general-public/governor-murphy-announces-statewide-stay-at-home-order-closure-of-all-non-essential-retail-businesses
 3/22/2020,neworleans,New Orleans Governor announces Stay-at-Home order,https://www.wwltv.com/article/news/health/coronavirus/la-governor-issues-stay-at-home-order-what-that-means-for-you/289-5533d965-18e4-48f4-86ae-e00e653b2613
 3/23/2020,london,UK school closings go into effect,https://www.theguardian.com/world/2020/mar/18/coronavirus-why-are-uk-schools-closing-and-what-does-it-mean-for-parents
-3/23/2020,neworleans,Louisiana Stay-at-Home order goes into effect,https://www.wwltv.com/article/news/health/coronavirus/la-governor-issues-stay-at-home-order-what-that-means-for-you/289-5533d965-18e4-48f4-86ae-e00e653b2613
 3/23/2020,london,UK Prime Minister announces Stay-at-Home order,https://www.cnn.com/2020/03/23/uk/uk-coronavirus-lockdown-gbr-intl/index.html
+3/23/2020,michigan,Michigan Governor announces Stay-at-Home order,"https://www.michigan.gov/whitmer/0,9309,7-387-90499_90705-522626--,00.html"
+3/23/2020,neworleans,Louisiana Stay-at-Home order goes into effect,https://www.wwltv.com/article/news/health/coronavirus/la-governor-issues-stay-at-home-order-what-that-means-for-you/289-5533d965-18e4-48f4-86ae-e00e653b2613
+3/24/2020,florida,Florida Governor orders residents 65 and older to self-quarantine,https://weartv.com/news/local/gov-desantis-florida-residents-age-65-and-older-should-self-quarantine-for-2-weeks
 3/24/2020,london,UK Stay-at-Home order goes into effect,https://www.cnn.com/2020/03/23/uk/uk-coronavirus-lockdown-gbr-intl/index.html
-3/24/2020,newjersey,Seaside Heights closes all beaches,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
+3/24/2020,miami,Miami Mayor implemnts Shelter-in-Place order,https://www.miamigov.com/Notices/News-Media/City-of-Miami-Orders-Residents-to-Shelter-in-Place
+3/24/2020,michigan,Michigan Stay-at-Home order goes into effect,"https://www.michigan.gov/whitmer/0,9309,7-387-90499_90705-522626--,00.html"
+3/24/2020,neworleans,Seaside Heights closes all beaches,https://abc7ny.com/coronavirus-nj-new-jersey-news-update-cases-map/5987040
 3/24/2020,Worldwide,Tokyo 2020 Olympics officially postponed,https://www.espn.com/olympics/story/_/id/28946033/tokyo-olympics-officially-postponed-2021
-3/25/2020,london,Prince Charles tests positive for COVID-19,https://www.bbc.com/news/uk-52033845
-3/25/2020,newjersey,New Jersey Governor announces childcare closings,https://www.nbcphiladelphia.com/news/coronavirus/new-jersey-expands-testing-centers-as-coronavirus-cases-continue-to-rise/2340043
-3/25/2020,london,Air raid siren goes off in London,https://www.mirror.co.uk/news/uk-news/coronavirus-mystery-air-raid-siren-21751920
 3/25/2020,chicago,Chicago Mayor threatens to shut down parks and entire lakefront,https://www.chicagotribune.com/coronavirus/ct-coronavirus-chicago-lakefront-arwady-lightfoot-20200325-feqjcndbmzebrctivt7r4trp3u-story.html
+3/25/2020,london,Prince Charles tests positive for COVID-19,https://www.bbc.com/news/uk-52033845
+3/25/2020,london,Air raid siren goes off in London,https://www.mirror.co.uk/news/uk-news/coronavirus-mystery-air-raid-siren-21751920
+3/25/2020,miami,Miami Mayor announces city curfew,https://www.nbcmiami.com/news/local/city-of-miami-orders-residents-to-shelter-in-place/2210453/
+3/25/2020,newjersey,New Jersey Governor announces childcare closings,https://www.nbcphiladelphia.com/news/coronavirus/new-jersey-expands-testing-centers-as-coronavirus-cases-continue-to-rise/2340043
+3/26/2020,chicago,"Chicago Mayor closes lakefront, riverwalk, ""606"" trail",https://patch.com/illinois/chicago/mayor-order-chicago-lakefront-adjacent-parks-606-closed
+3/26/2020,london,UK Prime Minister tests positive for coronoavirus,https://time.com/5811257/boris-johnson-coronavirus-positive/
+3/26/2020,U.S.,U.S. leads in number of known coronavirus cases,https://www.cnn.com/2020/03/26/health/coronavirus-thousand-deaths-thursday/index.html
+3/27/2020,fortlauderdale,Broward County Stay-at-Home order goes into effect,https://www.broward.org/CoronaVirus/Documents/BC-EmergencyOrder20-03.pdf
+3/27/2020,miami,Miami city curfew goes into effect,https://www.nbcmiami.com/news/local/city-of-miami-orders-residents-to-shelter-in-place/2210453/
+3/29/2020,newyork ,New York Governor extends Stay-at-Home order in light of growing death toll,https://www.cnn.com/2020/03/29/us/new-york-coronavirus-cases/index.html
+3/29/2020,U.S.,President Trump extends restrictions through end of April,https://www.nytimes.com/2020/03/29/us/politics/trump-coronavirus-guidelines.html?campaign_id=9&emc=edit_NN_p_20200330&instance_id=17179&nl=morning-briefing&regi_id=113478315&section=topNews&segment_id=23277&te=1&user_id=56c07435f669fbc38e3fe4aa0e83bcc4
+3/31/2020,michigan,Michigan is 3rd in country for coronavirus deaths,https://www.npr.org/sections/coronavirus-live-updates/2020/03/31/824738996/after-surge-in-cases-michigan-now-3rd-in-country-for-coronavirus-deaths
+4/1/2020,florida,Florida Governor announces Stay-at-Home order ,https://www.clickorlando.com/news/local/2020/04/01/coronavirus-florida-governor-issues-statewide-30-day-stay-at-home-order/
+4/1/2020,lasvegas,Nevada Governor implements Stay-at-Home order,https://www.ktnv.com/news/coronavirus/gov-sisolak-issues-stay-at-home-order-and-extends-closure
+4/1/2020,lasvegas,Las Vegas resorts still taking reservations in May,https://www.usatoday.com/story/travel/news/2020/04/01/coronavirus-las-vegas-resorts-taking-reservations-may/5105764002/
+4/1/2020,michigan,Michigan Governor declares state of disaster ,https://www.fox2detroit.com/news/michigan-gov-gretchen-whitmer-extends-state-of-emergency-declares-state-of-disaster-due-to-coronavirus-outbreak
+4/1/2020,michigan,"Michigan coronavirus cases reach a total of nearly 10,000",https://www.mlive.com/public-interest/2020/04/michigan-closes-in-on-10000-confirmed-coronavirus-cases-with-largest-single-day-jump.html
 4/1/2020,newjersey,New Jersey childcare closings go into effect,https://www.nbcphiladelphia.com/news/coronavirus/new-jersey-expands-testing-centers-as-coronavirus-cases-continue-to-rise/2340043
+4/1/2020,newyork,"NYC coronavirus death toll nears 1,400",https://www.nytimes.com/2020/04/01/nyregion/coronavirus-new-york-update.html
+4/1/2020,newyork,New York Governor closes playgrounds,http://www.news12.com/story/41896838/gov-cuomo-closes-all-nyc-playgrounds-parks-to-remain-open
+4/1/2020,U.S.,President Trump leaves stay-at-home policies to governors,https://www.mlive.com/coronavirus/2020/04/president-trump-resists-national-stay-at-home-order-leaving-decision-to-states.html
+4/1/2020,florida,Florida Governor considers religious services as essential services,https://www.abcactionnews.com/news/region-hillsborough/governor-desantis-includes-attending-religious-services-conducted-in-churches-as-essential-services
+4/2/2020,michigan,Michigan Governor closes schools for the remainder of the school year,https://www.detroitnews.com/story/news/education/2020/04/02/whitmer-unveil-plan-k-12-school-year-coronavirus/5086179002/
+4/3/2020,florida,Florida Stay-at-Home order goes into effect,https://www.clickorlando.com/news/local/2020/04/01/coronavirus-florida-governor-issues-statewide-30-day-stay-at-home-order/
+4/5/2020,london,UK Prime Minister admitted to hospital for coronavirus,https://www.politico.com/news/2020/04/05/boris-johnson-admitted-to-hospital-with-covid-19-166708
+4/6/2020,newyork,New York Governor extends closure of schools and non-essential businesses through April 29,https://www.wgrz.com/article/news/health/coronavirus/cuomo-nys-will-keep-schools-and-non-essential-businesses-closed-through-april-29-coronavirus-covid-19/71-5700de79-e10b-407c-8e60-1631b3b1ff1d
+4/6/2020,newyork,Coronavirus deaths in New York stay flat for 2 days,https://www.nbcnews.com/news/us-news/new-york-coronavirus-deaths-effectively-flat-u-s-braces-peak-n1177626
+4/7/2020,newyork,20% of NYPD uniformed workers are out sick,https://www.cnn.com/2020/04/07/us/nypd-coronavirus-out-sick/index.html
+4/7/2020,london,UK Prime Minister moved to ICU for coronavirus ,https://www.bbc.com/news/uk-52192604
+4/3/2020,U.S.,CDC recommends using cloth face coverings in public,https://www.cdc.gov/coronavirus/2019-ncov/prevent-getting-sick/cloth-face-cover.html
 4/12/2020,Worldwide,Easter Sunday,
