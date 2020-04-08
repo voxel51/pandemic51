@@ -871,12 +871,11 @@ hr {
   }
 }
 @media only screen and (min-device-width: 320px) and (max-device-width: 850px) {
-.chart-switcher, .chart-switcher-item, .chart-switcher-item.active {
-  display: block;
-  margin: 6px auto;
-}
   .body_part {
     padding: 6rem 3rem;
+  }
+  .share-box {
+    display: block !important;
   }
 
   .video-player-wrapper {

@@ -46,18 +46,18 @@ import debounce from "lodash/debounce"
 const plotOptions = {
   pdi: {
     name: "PDI",
-    abbr: "PDI",
+    abbr: "PDI only",
     primary: true,
-    color: "rgb(255, 109, 4)"
+    color: "rgb(255, 109, 4)",
   },
   cases: {
     name: "Number of cases",
-    abbr: "Cases",
+    abbr: "Add cases",
     color: "rgb(0, 102, 204)",
   },
   deaths: {
     name: "Number of deaths",
-    abbr: "Deaths",
+    abbr: "Add deaths",
     color: "rgb(109, 4, 255)",
   },
 }
@@ -89,7 +89,7 @@ const styles = theme => ({
     height: 8,
     borderRadius: 4,
     marginTop: -4,
-    marginRight: 3
+    marginRight: 3,
   },
 })
 
@@ -247,7 +247,7 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 20, left: 30, bottom: 0 }}
+              margin={{ top: 5, right: 20, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
@@ -265,20 +265,20 @@ class Chart extends Component {
                   />
                   <stop offset="95%" stopColor={colorPrimary} stopOpacity={0} />
                 </linearGradient>
-                { plotOptions[secondPlot] ?
-                <linearGradient id="colorSecond" x1="0" y1="0" x2="0" y2="1">
-                  <stop
-                    offset="5%"
-                    stopColor={plotOptions[secondPlot].color}
-                    stopOpacity={0.8}
-                  />
-                  <stop
-                    offset="95%"
-                    stopColor={plotOptions[secondPlot].color}
-                    stopOpacity={0}
-                  />
-                </linearGradient> : null
-                }
+                {plotOptions[secondPlot] ? (
+                  <linearGradient id="colorSecond" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor={plotOptions[secondPlot].color}
+                      stopOpacity={0.8}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor={plotOptions[secondPlot].color}
+                      stopOpacity={0}
+                    />
+                  </linearGradient>
+                ) : null}
               </defs>
               <XAxis
                 dataKey="time"
@@ -309,12 +309,13 @@ class Chart extends Component {
                   />
                 }
               />
-              {plotOptions[secondPlot] ? (
+              {plotOptions[secondPlot] && secondPlot !== "pdi" ? (
                 <YAxis
                   dataKey={secondPlot}
                   yAxisId="secondary"
                   name={plotOptions[secondPlot].name}
                   orientation="right"
+                  domain={["auto", "auto"]}
                   mirror={true}
                   label={
                     <Label
@@ -371,33 +372,43 @@ class Chart extends Component {
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
-            <div className="chart-switcher">
-                <button className={"chart-switcher-item" + (secondPlot === "pdi" ? " active": "")} value="pdi" onClick={this.handlePlotChange.bind(this)}>
-                   <div className={classes.dot} style={{background: plotOptions.pdi.color}}></div> PDI
-                </button>
-                {Object.entries(plotOptions).map(([key, option]) =>
-                  option.primary ? null : (
-                <button className={"chart-switcher-item" + (secondPlot === key ? " active": "")} value={key} onClick={this.handlePlotChange.bind(this)}>
-                   <div className={classes.dot} style={{background: plotOptions[key].color}}></div> {option.name}
-                </button>
-                  )
-                )}
-            </div>
-            <Typography variant="h6" component="p" color="textSecondary">
-              {metadata.deaths}
-              <br />
-              <span>
-                <i>
-                  Source:{" "}
-                  <a
-                    href="https://coronavirus.jhu.edu/map.html"
-                    target="_blank"
-                  >
-                    https://coronavirus.jhu.edu/map.html
-                  </a>
-                </i>
-              </span>
-            </Typography>
+          <div className="chart-switcher">
+            {Object.entries(plotOptions).map(([key, option]) => (
+              <button
+                className={
+                  "chart-switcher-item" + (secondPlot === key ? " active" : "")
+                }
+                value={key}
+                onClick={this.handlePlotChange.bind(this)}
+              >
+                <div
+                  className={classes.dot}
+                  style={{ background: plotOptions[key].color }}
+                ></div>{" "}
+                {option.abbr}
+              </button>
+            ))}
+          </div>
+          {console.log(secondPlot)}
+          <Typography variant="h6" component="p" color="textSecondary">
+            {(!secondPlot || secondPlot) === "pdi" ? (
+              <>
+                Click on <b>Add deaths</b> or <b>Add cases</b> to compare our
+                PDI against the latest COVID-19 data
+              </>
+            ) : (
+              metadata[secondPlot]
+            )}
+            <br />
+            <span>
+              <i>
+                Source:{" "}
+                <a href="https://coronavirus.jhu.edu/map.html" target="_blank">
+                  https://coronavirus.jhu.edu/map.html
+                </a>
+              </i>
+            </span>
+          </Typography>
         </CardContent>
       </Card>
     )
