@@ -85,10 +85,11 @@ def get_pdi_graph_data(city):
     pane.add_events_to_points(points, events)
 
     start, stop = points[0]["time"], points[-1]["time"]
-    cases = get_covid19_timeseries(city, "cases", start, stop)
-    deaths = get_covid19_timeseries(city, "deaths", start, stop)
+    cases, c_source = get_covid19_timeseries(city, "cases", start, stop)
+    deaths, d_source = get_covid19_timeseries(city, "deaths", start, stop)
+    metadata = {**c_source, **d_source}
 
-    return points, events, cases, deaths
+    return points, events, cases, deaths, metadata
 
 
 def get_all_pdi_graph_data():
@@ -184,6 +185,10 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
                 df.Province_State == state,
             )
         ]
+        source = (
+            "Number of %s are for all of %s County and are updated daily"
+            % (metric, county)
+        )  
     else:
         data = df.loc[
             np.logical_and(
@@ -191,6 +196,16 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
                 df["Province/State"].isnull()
             )
         ]
+        source = (
+            "Number of %s are for the entire country of %s and are updated daily"
+            % (metric, country)
+        )
+        if city == "london":
+            source = (
+		"Number of %s are for the United Kingdon, excluding territories, and are updated daily"
+                % metric
+	    )
+
 
     it = data.loc[:, "1/22/20":]
     covid_data = []
@@ -206,7 +221,7 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
             metric: int(it[str_date])
         })
 
-    return covid_data
+    return covid_data, {metric: source}
 
 
 def update_threshold(city, annotate=False):

@@ -49,7 +49,7 @@ def pdi(city):
     if city not in panc.STREAMS_MAP:
         return 404, "Not Found"
 
-    points, events, cases, deaths = pana.get_pdi_graph_data(city)
+    points, events, cases, deaths, metadata = pana.get_pdi_graph_data(city)
 
     labels = {p["time"]: p for p in points}
 
@@ -58,7 +58,8 @@ def pdi(city):
         "events": events,
         "labels": labels,
         "cases": cases,
-        "deaths": deaths
+        "deaths": deaths,
+        "metadata": metadata,
     }
 
 
