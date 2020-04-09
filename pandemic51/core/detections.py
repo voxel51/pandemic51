@@ -139,7 +139,7 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     return count
 
 
-def redact(image, objects, size=(0.6, 0.16), visualize=False):
+def redact(image, objects, visualize=False):
     '''Redact the faces of the detected people in the image.
 
     Only detections with label "person" are used, but the detections may have
@@ -148,8 +148,6 @@ def redact(image, objects, size=(0.6, 0.16), visualize=False):
     Args:
         image: numpy image
         objects: DetectedObjectContainer
-        size: tuple for width, height representation in [0, 1] to use as the
-            size of the face to redact
         visualize: boolean (False) to interactively plot the redaction data
 
     Returns:
@@ -165,7 +163,7 @@ def redact(image, objects, size=(0.6, 0.16), visualize=False):
             logger.debug("object without bounding box.")
             continue
 
-        headbox = _headbox(obj.bounding_box, size)
+        headbox = _headbox(obj.bounding_box, image)
         headtlx, headtly = headbox.top_left.coords_in(img=image)
         headbrx, headbry = headbox.bottom_right.coords_in(img=image)
 
@@ -187,11 +185,11 @@ def redact(image, objects, size=(0.6, 0.16), visualize=False):
             boxw = boxbrx-boxtlx
             boxh = boxbry-boxtly
 
-            headbox = _headbox(obj.bounding_box, size)
+            headbox = _headbox(obj.bounding_box, image)
             headtlx, headtly = headbox.top_left.coords_in(img=image)
             headbrx, headbry = headbox.bottom_right.coords_in(img=image)
-            headw = int(ceil(size[0]*boxw))
-            headh = int(ceil(size[1]*boxh))
+            headw = int(ceil(headbrx-headtlx))
+            headh = int(ceil(headbry-headtly))
 
             box = pat.Rectangle((boxtlx, boxtly), boxw, boxh,
                                 linewidth=0.25,
@@ -246,17 +244,38 @@ def _annotate_img(img, objects, anno_path):
     etai.write(img_anno, anno_path)
 
 
-def _headbox(box, size):
+def _headbox(box, image):
     '''Convert the person bounding box to a smaller one with relative size for
     identifying the head region of the person.
 
     Args:
-        image: ndarray containing the image, used for sizing
         box: etag.BoundingBox relative bounding box (to image)
-        size: tuple (x, y) where x and y are [0, 1] relative to the full box
+        image: ndarray containing the image, used for sizing
 
     All processing happens in relative coords.
+
+    The method establishes a rectangular region as a function of the object
+    bounding box.  Because the content of the box is expected to vary based on
+    the aspect ratio (if we only get head and shoulders, then we have a
+    square-shaped box), we vary the shape of this head region as a function of
+    the aspect ratio.  This is not a general method, do not use elsewhere.
     '''
+    # constants derived from data samples
+    tallbox = (0.7, 0.18)
+    tallar = 0.35
+    shortbox = (0.7, 0.56)
+    shortar = 1.1
+
+    # assumes the width is the same, and tallbox is less than shortbox
+    r_o = tallar
+    r_t = shortar-tallar
+    s_o = tallbox[1]
+    s_t = shortbox[1]-tallbox[1]
+
+    x = box.aspect_ratio_in(img=image)
+    xhat = (x - r_o) / r_t
+    size = (tallbox[0], s_o + xhat * s_t)
+
     boxtlx, boxtly = box.top_left.to_tuple()
     boxbrx, boxbry = box.bottom_right.to_tuple()
     boxw = boxbrx-boxtlx
