@@ -18,18 +18,9 @@ from builtins import *
 
 import argparse
 import logging
-from math import ceil
-
-import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.patches as pat
-import scipy.ndimage
 
 import pandemic51.core.detections as pand
-import eta.core.annotations as etaa
-import eta.core.geometry as etag
 import eta.core.image as etai
-import eta.core.objects as etao
 
 logger = logging.getLogger(__name__)
 
