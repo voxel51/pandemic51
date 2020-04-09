@@ -173,8 +173,7 @@ def redact(image_path, label_path, size=(0.6, 0.16), visualize=False):
             headbrx, headbry = headbox.bottom_right.coords_in(img=image)
 
             image[headtly:headbry, headtlx:headbrx, :] = \
-                    gauss[headtly:headbry, headtlx:headbrx, :]
-
+                gauss[headtly:headbry, headtlx:headbrx, :]
 
     if visualize:
         fig, ax = plt.subplots(1)
@@ -185,7 +184,8 @@ def redact(image_path, label_path, size=(0.6, 0.16), visualize=False):
                     continue
 
                 boxtlx, boxtly = obj.bounding_box.top_left.coords_in(img=image)
-                boxbrx, boxbry = obj.bounding_box.bottom_right.coords_in(img=image)
+                boxbrx, boxbry = \
+                    obj.bounding_box.bottom_right.coords_in(img=image)
                 boxw = boxbrx-boxtlx
                 boxh = boxbry-boxtly
 
@@ -273,7 +273,7 @@ def _headbox(image, box, size):
     # returning relative point because the final version will compute all of
     # this in relative coordinates  @todo remove when done
     return etag.BoundingBox.from_abs_coords(headtlx, headtly, headbrx, headbry,
-                                       img=image)
+                                            img=image)
 
 
 def _load_efficientdet_model(model_name):
@@ -294,7 +294,7 @@ def _lowpass(image, sigma=3.0):
     '''Perform a simple lowpass filter on the image to smooth and hide its
     detail content.
     '''
-    r = scipy.ndimage.gaussian_filter(image[...,0], sigma)
-    g = scipy.ndimage.gaussian_filter(image[...,1], sigma)
-    b = scipy.ndimage.gaussian_filter(image[...,2], sigma)
+    r = scipy.ndimage.gaussian_filter(image[..., 0], sigma)
+    g = scipy.ndimage.gaussian_filter(image[..., 1], sigma)
+    b = scipy.ndimage.gaussian_filter(image[..., 2], sigma)
     return np.dstack((r, g, b))
