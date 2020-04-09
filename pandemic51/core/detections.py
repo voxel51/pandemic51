@@ -20,7 +20,6 @@ import eta.core.annotations as etaa
 import eta.core.geometry as etag
 import eta.core.image as etai
 import eta.core.learning as etal
-import eta.core.objects as etao
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
@@ -164,7 +163,7 @@ def redact(image, objects, size=(0.6, 0.16), visualize=False):
             logger.debug("object without bounding box.")
             continue
 
-        headbox = _headbox(image, obj.bounding_box, size)
+        headbox = _headbox(obj.bounding_box, size)
         headtlx, headtly = headbox.top_left.coords_in(img=image)
         headbrx, headbry = headbox.bottom_right.coords_in(img=image)
 
@@ -172,10 +171,9 @@ def redact(image, objects, size=(0.6, 0.16), visualize=False):
             gauss[headtly:headbry, headtlx:headbrx, :]
 
     if visualize:
-        fig, ax = plt.subplots(1)
-
+        _, ax = plt.subplots(1)
         for obj in objects:
-            if obj.label == "person":
+            if obj.label != "person":
                 continue
 
             if not obj.has_bounding_box:
@@ -187,7 +185,7 @@ def redact(image, objects, size=(0.6, 0.16), visualize=False):
             boxw = boxbrx-boxtlx
             boxh = boxbry-boxtly
 
-            headbox = _headbox(image, obj.bounding_box, size)
+            headbox = _headbox(obj.bounding_box, size)
             headtlx, headtly = headbox.top_left.coords_in(img=image)
             headbrx, headbry = headbox.bottom_right.coords_in(img=image)
             headw = int(ceil(size[0]*boxw))
@@ -246,7 +244,7 @@ def _annotate_img(img, objects, anno_path):
     etai.write(img_anno, anno_path)
 
 
-def _headbox(image, box, size):
+def _headbox(box, size):
     '''Convert the person bounding box to a smaller one with relative size for
     identifying the head region of the person.
 
@@ -255,24 +253,21 @@ def _headbox(image, box, size):
         box: etag.BoundingBox relative bounding box (to image)
         size: tuple (x, y) where x and y are [0, 1] relative to the full box
 
-    @todo update to use relative coords
+    All processing happens in relative coords.
     '''
-    boxtlx, boxtly = box.top_left.coords_in(img=image)
-    boxbrx, boxbry = box.bottom_right.coords_in(img=image)
+    boxtlx, boxtly = box.top_left.to_tuple()
+    boxbrx, boxbry = box.bottom_right.to_tuple()
     boxw = boxbrx-boxtlx
     boxh = boxbry-boxtly
 
-    headw = int(ceil(size[0]*boxw))
-    headh = int(ceil(size[1]*boxh))
-    headtlx = int(ceil(boxtlx+((1.0-size[0])/2)*boxw))
-    headtly = int(boxtly)
+    headw = size[0]*boxw
+    headh = size[1]*boxh
+    headtlx = boxtlx+((1.0-size[0])/2)*boxw
+    headtly = boxtly
     headbrx = headtlx+headw
     headbry = headtly+headh
 
-    # returning relative point because the final version will compute all of
-    # this in relative coordinates  @todo remove when done
-    return etag.BoundingBox.from_abs_coords(headtlx, headtly, headbrx, headbry,
-                                            img=image)
+    return etag.BoundingBox.from_coords(headtlx, headtly, headbrx, headbry)
 
 
 def _load_efficientdet_model(model_name):
