@@ -20,7 +20,6 @@ import eta.core.annotations as etaa
 import eta.core.geometry as etag
 import eta.core.image as etai
 import eta.core.learning as etal
-import eta.core.objects as etao
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
@@ -132,21 +131,21 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     raw_image_labels.write_json(labels_path)
 
     if anno_path:
+        img = redact(img, objects)
         _annotate_img(img, objects, anno_path)
 
     return count
 
 
-def redact(image_path, label_path, size=(0.6, 0.16), visualize=False):
+def redact(image, objects, size=(0.6, 0.16), visualize=False):
     '''Redact the faces of the detected people in the image.
 
     Only detections with label "person" are used, but the detections may have
     other objects as well.
 
     Args:
-        image_path: string describing the location of the image
-        label_path: string description the location of the serialized
-            ImageLabels json containing the detections
+        image: numpy image
+        objects: DetectedObjectContainer
         size: tuple for width, height representation in [0, 1] to use as the
             size of the face to redact
         visualize: boolean (False) to interactively plot the redaction data
@@ -154,59 +153,56 @@ def redact(image_path, label_path, size=(0.6, 0.16), visualize=False):
     Returns:
         the redacted image with no boxes overlayed on it
     '''
-    image = etai.read(image_path)
     gauss = _lowpass(image)
-    labels = etai.ImageLabels.from_json(label_path)
 
-    schema_filter = etao.ObjectContainerSchema()
-    schema_filter.add_object_label("person")
+    for obj in objects:
+        if obj.label != "person":
+            continue
 
-    if labels.has_objects:
-        labels.objects.filter_by_schema(schema_filter)
-        for obj in labels.objects:
-            if not obj.has_bounding_box:
-                logger.debug("object without bounding box.")
+        if not obj.has_bounding_box:
+            logger.debug("object without bounding box.")
+            continue
+
+        headbox = _headbox(obj.bounding_box, size)
+        headtlx, headtly = headbox.top_left.coords_in(img=image)
+        headbrx, headbry = headbox.bottom_right.coords_in(img=image)
+
+        image[headtly:headbry, headtlx:headbrx, :] = \
+            gauss[headtly:headbry, headtlx:headbrx, :]
+
+    if visualize:
+        _, ax = plt.subplots(1)
+        for obj in objects:
+            if obj.label != "person":
                 continue
+
+            if not obj.has_bounding_box:
+                continue
+
+            boxtlx, boxtly = obj.bounding_box.top_left.coords_in(img=image)
+            boxbrx, boxbry = \
+                obj.bounding_box.bottom_right.coords_in(img=image)
+            boxw = boxbrx-boxtlx
+            boxh = boxbry-boxtly
 
             headbox = _headbox(obj.bounding_box, size)
             headtlx, headtly = headbox.top_left.coords_in(img=image)
             headbrx, headbry = headbox.bottom_right.coords_in(img=image)
+            headw = int(ceil(size[0]*boxw))
+            headh = int(ceil(size[1]*boxh))
 
-            image[headtly:headbry, headtlx:headbrx, :] = \
-                gauss[headtly:headbry, headtlx:headbrx, :]
+            box = pat.Rectangle((boxtlx, boxtly), boxw, boxh,
+                                linewidth=0.25,
+                                edgecolor='r',
+                                facecolor='none')
+            ax.add_patch(box)
 
-    if visualize:
-        fig, ax = plt.subplots(1)
-        if labels.has_objects:
-            labels.objects.filter_by_schema(schema_filter)
-            for obj in labels.objects:
-                if not obj.has_bounding_box:
-                    continue
+            head = pat.Rectangle((headtlx, headtly), headw, headh,
+                                 linewidth=0.5,
+                                 edgecolor='b',
+                                 facecolor='none')
 
-                boxtlx, boxtly = obj.bounding_box.top_left.coords_in(img=image)
-                boxbrx, boxbry = \
-                    obj.bounding_box.bottom_right.coords_in(img=image)
-                boxw = boxbrx-boxtlx
-                boxh = boxbry-boxtly
-
-                headbox = _headbox(obj.bounding_box, size)
-                headtlx, headtly = headbox.top_left.coords_in(img=image)
-                headbrx, headbry = headbox.bottom_right.coords_in(img=image)
-                headw = int(ceil(size[0]*boxw))
-                headh = int(ceil(size[1]*boxh))
-
-                box = pat.Rectangle((boxtlx, boxtly), boxw, boxh,
-                                    linewidth=0.25,
-                                    edgecolor='r',
-                                    facecolor='none')
-                ax.add_patch(box)
-
-                head = pat.Rectangle((headtlx, headtly), headw, headh,
-                                     linewidth=0.5,
-                                     edgecolor='b',
-                                     facecolor='none')
-
-                ax.add_patch(head)
+            ax.add_patch(head)
 
         ax.imshow(image)
         plt.show()
@@ -214,7 +210,7 @@ def redact(image_path, label_path, size=(0.6, 0.16), visualize=False):
     return image
 
 
-def update_threshold(city, img_path, labels_path, anno_path=None):
+def update(city, img_path, labels_path, anno_path=None):
     '''Loads the raw labels, filters down the objects based on the (new)
     threshold, and optionally updates the annotated image.
 
@@ -233,7 +229,8 @@ def update_threshold(city, img_path, labels_path, anno_path=None):
     logger.info("Filtered down to %d objects", new_count)
 
     if anno_path:
-        _annotate_img(etai.read(img_path), objects, anno_path)
+        img = redact(etai.read(img_path), objects)
+        _annotate_img(img, objects, anno_path)
 
     return new_count
 

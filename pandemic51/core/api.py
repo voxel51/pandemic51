@@ -133,8 +133,8 @@ def get_all_pdi_graph_data():
         vals = [
             v for k, v in d.items()
             if k != "time"
-               and k not in panc.BETA_STREAMS
-               and v is not None
+            and k not in panc.BETA_STREAMS
+            and v is not None
         ]
         d["average"] = np.mean(vals) if vals else None
 
@@ -188,7 +188,7 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
         source = (
             "Number of %s are for all of %s County and are updated daily"
             % (metric, county)
-        )  
+        )
     else:
         data = df.loc[
             np.logical_and(
@@ -197,15 +197,14 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
             )
         ]
         source = (
-            "Number of %s are for the entire country of %s and are updated daily"
-            % (metric, country)
+            "Number of %s are for the entire country of %s and are updated "
+            "daily" % (metric, country)
         )
         if city == "london":
             source = (
-		"Number of %s are for the United Kingdon, excluding territories, and are updated daily"
-                % metric
-	    )
-
+                "Number of %s are for the United Kingdon, excluding"
+                "territories, and are updated daily" % metric
+            )
 
     it = data.loc[:, "1/22/20":]
     covid_data = []
@@ -224,8 +223,9 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
     return covid_data, {metric: source}
 
 
-def update_threshold(city, annotate=False):
-    '''Updates the confidence threshold for historical data
+def update_city(city, annotate=False):
+    '''Updates the counts and (optionally) the annotated image for historical
+    data
 
     Args:
         city: the city
@@ -239,7 +239,8 @@ def update_threshold(city, annotate=False):
         if not annotate:
             anno_img_path = None
 
-        count = pande.update_threshold(city, img_path, labels_path, anno_img_path)
+        count = pande.update(
+            city, img_path, labels_path, anno_img_path)
         pand.set_object_count(id, count)
 
 
