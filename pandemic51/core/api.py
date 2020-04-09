@@ -188,7 +188,7 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
         source = (
             "Number of %s are for all of %s County and are updated daily"
             % (metric, county)
-        )  
+        )
     else:
         data = df.loc[
             np.logical_and(
@@ -224,7 +224,7 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
     return covid_data, {metric: source}
 
 
-def update_threshold(city, annotate=False):
+def update_city(city, annotate=False):
     '''Updates the confidence threshold for historical data
 
     Args:
@@ -239,7 +239,8 @@ def update_threshold(city, annotate=False):
         if not annotate:
             anno_img_path = None
 
-        count = pande.update_threshold(city, img_path, labels_path, anno_img_path)
+        count = pande.update(
+            city, img_path, labels_path, anno_img_path)
         pand.set_object_count(id, count)
 
 
