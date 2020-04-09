@@ -281,6 +281,10 @@ class M3U8Stream(Stream):
             # Download video
             video_path, dt = self.download_chunk(tmpdir)
 
+            if not video_path:
+                # this is archival data, so don't return an image
+                return False, None, dt
+
             # UTC integer timestamp (epoch time)
             timestamp = int(dt.timestamp())
 
@@ -297,10 +301,20 @@ class M3U8Stream(Stream):
 
         Args:
             output_dir: the output directory
+
+        Returns:
+            tuple of:
+                - path to the downloaded video chunk
+                    OR None if the stream is an archive stream
+                - the datetime when the video chunk was downloaded
         '''
         output_path = os.path.join(output_dir, self.stream_name)
 
         uris, chunk_path = self.get_uris_and_chunk_path()
+
+        if "archive" in chunk_path:
+            return None, datetime.utcnow()
+
         uri = uris[-1]
 
         logger.info("Processing URI '%s'", uri)
