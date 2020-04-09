@@ -38,7 +38,7 @@ label_path = \
 "/scratch/jason-data/pandemic51/dublin_labels/2020-03-16_1584359102236_1_11:45:02.json"
 
 
-def lowpass(image, sigma=4.0):
+def lowpass(image, sigma=3.0):
     r = scipy.ndimage.gaussian_filter(image[...,0], sigma)
     g = scipy.ndimage.gaussian_filter(image[...,1], sigma)
     b = scipy.ndimage.gaussian_filter(image[...,2], sigma)
@@ -69,9 +69,9 @@ if labels.has_objects:
         boxw = boxbrx-boxtlx
         boxh = boxbry-boxtly
 
-        headw = int(ceil(0.8*boxw))
+        headw = int(ceil(0.6*boxw))
         headh = int(ceil(0.16*boxh))
-        headtlx = int(ceil(boxtlx+0.1*boxw))
+        headtlx = int(ceil(boxtlx+0.2*boxw))
         headtly = int(boxtly)
         headbrx = headtlx+headw
         headbry = headtly+headh
@@ -96,6 +96,8 @@ if labels.has_objects:
 
         image[headtly:headbry, headtlx:headbrx, :] = \
                 gauss[headtly:headbry, headtlx:headbrx, :]
+
+etai.write(image*255, "/tmp/redacted.jpg")
 
 ax.imshow(image)
 plt.show()
