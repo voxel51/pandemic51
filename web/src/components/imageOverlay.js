@@ -24,6 +24,7 @@ export default function ImageOverlay({
   timestamp,
   clicked,
   onClose,
+  onNavigate,
 }) {
   const [isLoaded, setLoaded] = useState(false)
   const [isCopied, setCopied] = useState(false)
@@ -110,37 +111,45 @@ export default function ImageOverlay({
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {timestamp ? <div className="image-timestamp">{timestamp}</div> : null}
         {clicked ? (
-          <div className="buttons">
-            <IconButton
-              aria-label="share"
-              className="share-button"
-              onClick={handleOpen}
-            >
-              <ShareIcon />
-            </IconButton>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="graph help"
-              aria-describedby="graph help"
-              style={{
-                border: "none",
-                margin: "auto",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {body}
-            </Modal>
-            <IconButton
-              aria-label="close"
-              className="close-button"
-              onClick={onClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+          <React.Fragment>
+            <div className="buttons">
+              <IconButton
+                aria-label="share"
+                className="share-button"
+                onClick={handleOpen}
+              >
+                <ShareIcon />
+              </IconButton>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="graph help"
+                aria-describedby="graph help"
+                style={{
+                  border: "none",
+                  margin: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {body}
+              </Modal>
+              <IconButton
+                aria-label="close"
+                className="close-button"
+                onClick={onClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+            {onNavigate ? (
+              <React.Fragment>
+                <a className="frame-nav frame-nav-prev" title="Previous image">&laquo;</a>
+                <a className="frame-nav frame-nav-next" title="Next image">&raquo;</a>
+              </React.Fragment>
+            ) : null}
+          </React.Fragment>
         ) : null}
       </div>
     </div>
@@ -153,4 +162,5 @@ ImageOverlay.propTypes = {
   timestamp: PropTypes.string,
   clicked: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
+  onNavigate: PropTypes.func,
 }

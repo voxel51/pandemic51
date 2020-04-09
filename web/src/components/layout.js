@@ -149,6 +149,7 @@ class Layout extends React.Component {
                         {...this.state.overlayData}
                         height={height}
                         onClose={this.closeOverlay}
+                        onNavigate={()=>{}}
                       />
                     </Player>
                   </Grid>
@@ -170,6 +171,7 @@ class Layout extends React.Component {
                   {...this.state.overlayData}
                   height={height}
                   onClose={this.closeOverlay}
+                  onNavigate={()=>{}}
                 />
               </Player>
               <Grid container spacing={4}>
