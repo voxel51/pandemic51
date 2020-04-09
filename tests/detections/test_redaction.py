@@ -46,4 +46,3 @@ if __name__ == "__main__":
 
     if args.output:
         etai.write(redacted, args.output)
-
