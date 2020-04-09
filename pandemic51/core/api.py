@@ -133,8 +133,8 @@ def get_all_pdi_graph_data():
         vals = [
             v for k, v in d.items()
             if k != "time"
-               and k not in panc.BETA_STREAMS
-               and v is not None
+            and k not in panc.BETA_STREAMS
+            and v is not None
         ]
         d["average"] = np.mean(vals) if vals else None
 
@@ -197,15 +197,14 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
             )
         ]
         source = (
-            "Number of %s are for the entire country of %s and are updated daily"
-            % (metric, country)
+            "Number of %s are for the entire country of %s and are updated "
+            "daily" % (metric, country)
         )
         if city == "london":
             source = (
-		"Number of %s are for the United Kingdon, excluding territories, and are updated daily"
-                % metric
-	    )
-
+                "Number of %s are for the United Kingdon, excluding"
+                "territories, and are updated daily" % metric
+            )
 
     it = data.loc[:, "1/22/20":]
     covid_data = []
@@ -225,7 +224,8 @@ def get_covid19_timeseries(city, metric, start=None, stop=None):
 
 
 def update_city(city, annotate=False):
-    '''Updates the confidence threshold for historical data
+    '''Updates the counts and (optionally) the annotated image for historical
+    data
 
     Args:
         city: the city
