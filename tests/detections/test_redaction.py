@@ -17,10 +17,12 @@ from builtins import *
 # pragma pylint: enable=wildcard-import
 
 import logging
+from math import ceil
 
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.patches as pat
+import scipy.ndimage
 
 import pandemic51.core.detections as pand
 import eta.core.annotations as etaa
@@ -35,14 +37,21 @@ image_path = \
 label_path = \
 "/scratch/jason-data/pandemic51/dublin_labels/2020-03-16_1584359102236_1_11:45:02.json"
 
-image = etai.read(image_path)
+
+def lowpass(image, sigma=4.0):
+    r = scipy.ndimage.gaussian_filter(image[...,0], sigma)
+    g = scipy.ndimage.gaussian_filter(image[...,1], sigma)
+    b = scipy.ndimage.gaussian_filter(image[...,2], sigma)
+    return np.dstack((r, g, b))
+
+image = etai.to_float(etai.read(image_path))
+gauss = lowpass(image)
 labels = etai.ImageLabels.from_json(label_path)
 
 schema_filter = etao.ObjectContainerSchema()
 schema_filter.add_object_label("person")
 
 fig, ax = plt.subplots(1)
-ax.imshow(image)
 
 if labels.has_objects:
     labels.objects.filter_by_schema(schema_filter)
@@ -60,10 +69,12 @@ if labels.has_objects:
         boxw = boxbrx-boxtlx
         boxh = boxbry-boxtly
 
-        headw = 0.8*boxw
-        headh = 0.16*boxh
-        headtlx = boxtlx+0.1*boxw
-        headtly = boxtly
+        headw = int(ceil(0.8*boxw))
+        headh = int(ceil(0.16*boxh))
+        headtlx = int(ceil(boxtlx+0.1*boxw))
+        headtly = int(boxtly)
+        headbrx = headtlx+headw
+        headbry = headtly+headh
 
         print(boxtlx, boxtly)
         print(boxw, boxh)
@@ -83,6 +94,10 @@ if labels.has_objects:
 
         ax.add_patch(head)
 
+        image[headtly:headbry, headtlx:headbrx, :] = \
+                gauss[headtly:headbry, headtlx:headbrx, :]
+
+ax.imshow(image)
 plt.show()
 
 
