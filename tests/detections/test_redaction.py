@@ -39,6 +39,11 @@ if __name__ == "__main__":
     parser.add_argument("--no-visualize", dest="visualize",
                         action="store_false")
     parser.set_defaults(visualize=False)
+
+    parser.add_argument("-d", "--dual", nargs="?", default=None,
+        help="generate a dual view for debugging, provide path for the output")
+
+
     args = parser.parse_args()
 
     redacted = pand.redact(args.image_path, args.label_path,
