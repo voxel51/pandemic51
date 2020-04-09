@@ -21,7 +21,6 @@ import {
 import moment from "moment"
 import HelpTooltip from "./help"
 import { FORMAL, TIMEZONES } from "../utils/cities"
-import { addDataToSeries } from "../utils/data"
 import {
   ResponsiveContainer,
   ReferenceLine,
@@ -95,36 +94,15 @@ const styles = theme => ({
 
 class Chart extends Component {
   state = {
-    list: [],
-    events: [],
-    labels: [],
     secondPlot: localStorage.secondPlot || "pdi",
-    metadata: {},
+    lastSelectedTime: null,
   }
 
-  componentDidMount() {
-    fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
-      .then(response => response.json())
-      .then(json => {
-        json.data = addDataToSeries(json.data, json.cases)
-        json.data = addDataToSeries(json.data, json.deaths)
-
-        this.setState(
-          {
-            list: json["data"],
-            events: json["events"],
-            labels: json["labels"],
-            metadata: json["metadata"],
-          },
-          () => {
-            const match = window.location.search.match(/t=(\d+)/)
-            if (match) {
-              const selectedTime = Number(match[1])
-              this.handleClick({ activeLabel: selectedTime })
-            }
-          }
-        )
-      })
+  componentDidUpdate() {
+    if (this.props.selectedTime != this.state.lastSelectedTime) {
+      this.handleClick({ activeLabel: this.props.selectedTime })
+      this.setState({ lastSelectedTime: this.props.selectedTime })
+    }
   }
 
   formatFullTime(rawTime) {
@@ -136,7 +114,7 @@ class Chart extends Component {
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel]
+      const data = this.props.data.labels[event.activeLabel]
       if (!data) {
         return
       }
@@ -152,7 +130,7 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel]
+      const data = this.props.data.labels[event.activeLabel]
       if (!data) {
         return
       }
@@ -184,8 +162,9 @@ class Chart extends Component {
   render() {
     const colorPrimary = "rgb(255, 109, 4)"
     const colorSecondary = "rgb(109, 4, 255)"
-    const { list, events, secondPlot, metadata } = this.state
+    const { secondPlot } = this.state
     const { classes, title, city, selectedTime } = this.props
+    const { list = [], events = [], metadata = [] } = this.props.data
 
     const formatNumber = n => {
       if (Math.round(n) == n) {

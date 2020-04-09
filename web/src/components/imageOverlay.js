@@ -26,6 +26,7 @@ export default function ImageOverlay({
   onClose,
   onNavigate,
 }) {
+  console.log({onNavigate})
   const [isLoaded, setLoaded] = useState(false)
   const [isCopied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
