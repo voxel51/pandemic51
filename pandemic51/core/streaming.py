@@ -77,6 +77,18 @@ def save_video(chunk_path, uri, output_dir):
     '''
     base_path = os.path.split(chunk_path)[0]
     input_video = os.path.join(base_path, uri)
+    if "earthcam" in chunk_path:
+        res = requests.get(
+            input_video,
+            headers={
+                "Host": "https://www.earthcam.com",
+                "Referrer": "https://www.earthcam.com/"
+            }
+        )
+        input_video = "./temp.ts"
+        with open(input_video, "wb") as ff:
+            ff.write(res.content)
+
     out_name = os.path.splitext(uri)[0] + ".mp4"
     output_video_path = os.path.join(output_dir, out_name)
 

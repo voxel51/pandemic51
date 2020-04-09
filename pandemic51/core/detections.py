@@ -71,8 +71,10 @@ def detect_objects_in_unprocessed_images():
             if os.path.exists(labels_path) and os.path.exists(anno_path):
                 # Another worker processed this image, so skip
                 continue
-
-            city = panc.STREAMS_MAP_INV[stream_name]
+            try:
+                city = panc.STREAMS_MAP_INV[stream_name]
+            except:
+                continue
             count = process_image(
                 city, detector, image_path, labels_path, anno_path=anno_path)
 
