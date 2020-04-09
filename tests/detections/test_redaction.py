@@ -19,6 +19,8 @@ from builtins import *
 import argparse
 import logging
 
+import numpy as np
+
 import pandemic51.core.detections as pand
 import eta.core.image as etai
 
@@ -46,8 +48,19 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    redacted = pand.redact(args.image_path, args.label_path,
-                           visualize=args.visualize)
+    image = etai.read(args.image_path)
+    labels = etai.ImageLabels.from_json(args.label_path)
+    redacted = pand.redact(image, labels.objects, visualize=args.visualize)
 
     if args.output:
         etai.write(redacted, args.output)
+
+    if args.dual:
+        source = etai.read(args.image_path)
+        h, w, b = image.shape
+        dual = np.zeros((h*2, w, b), dtype=np.uint8)
+        dual[0:h, ...] = source[0:h, ...]
+        dual[h:2*h, ...] = redacted[0:h, ...]
+
+        etai.write(dual, args.dual)
+
