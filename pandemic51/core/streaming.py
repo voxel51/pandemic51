@@ -246,19 +246,12 @@ class Stream(etas.Serializable):
 
 class M3U8Stream(Stream):
     '''A Stream class that reads URIs from an M3U8 chunk path'''
-    def __init__(self, stream_name, GMT, webpage, chunk_path):
+    def __init__(self, stream_name, GMT, webpage):
         super(M3U8Stream, self).__init__(stream_name, GMT)
         self.webpage = webpage
-        self.chunk_path = chunk_path
 
     def get_live_stream_url(self):
-        url = self.chunk_path
-
-        try:
-            urllib.request.urlopen(url)
-        except urllib.error.HTTPError:
-            self.update_stream_chunk_path()
-            url = self.chunk_path
+        url = _get_chunk_url(self.webpage)
 
         if "videos2archives" in url:
             url = (
@@ -307,14 +300,14 @@ class M3U8Stream(Stream):
         '''
         output_path = os.path.join(output_dir, self.stream_name)
 
-        uris = self.get_uris()
+        uris, chunk_path = self.get_uris_and_chunk_path()
         uri = uris[-1]
 
         logger.info("Processing URI '%s'", uri)
-        return save_video(self.chunk_path, uri, output_path), datetime.utcnow()
+        return save_video(chunk_path, uri, output_path), datetime.utcnow()
 
     @retry(stop_max_attempt_number=10, wait_fixed=100)
-    def get_uris(self):
+    def get_uris_and_chunk_path(self):
         '''Attempts to load uris from a given chunk path. Will handle HTTPS
         Errors and update the chunk path.
 
@@ -325,41 +318,25 @@ class M3U8Stream(Stream):
         Returns:
             uris: the uris present in the chunk_path
         '''
+        chunk_path = _get_chunk_url(self.webpage)
         try:
-            uris = self._attempt_get_uris()
+            uris = m3u8.load(chunk_path).segments.uri
             if not uris:
-                self.update_stream_chunk_path()
-                uris = self._attempt_get_uris()
+                chunk_path = _get_chunk_url(self.webpage)
+                uris = m3u8.load(chunk_path).segments.uri
 
         except urllib.error.HTTPError:
-            self.update_stream_chunk_path()
-            uris = self._attempt_get_uris()
+            chunk_path = _get_chunk_url(self.webpage)
+            uris = m3u8.load(chunk_path).segments.uri
 
-        return uris
-
-    def update_stream_chunk_path(self):
-        '''Updates the given stream in the stream dictionary and serializes it
-        to disk in `pandemic51.config.STREAMS_DIR`.
-
-        Args:
-            stream_name: the stream name
-
-        Returns:
-            the chunk path
-        '''
-        self.chunk_path = _get_chunk_url(self.webpage)
-        self.write_json(self.path, pretty_print=True)
-
-    def _attempt_get_uris(self):
-        return m3u8.load(self.chunk_path).segments.uri
+        return uris, chunk_path
 
     @classmethod
     def _from_dict(cls, d):
         stream_name = d["stream_name"]
         GMT = d["GMT"]
         webpage = d["webpage"]
-        chunk_path = d["chunk_path"]
-        return cls(stream_name, GMT, webpage, chunk_path)
+        return cls(stream_name, GMT, webpage)
 
 
 class MjpegStream(Stream):
