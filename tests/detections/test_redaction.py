@@ -130,6 +130,8 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(prog="test_redaction.py", add_help=True)
     parser.add_argument("image_path", help="path to the source image")
     parser.add_argument("label_path", help="path to the labels on the source")
+    parser.add_argument("--output", "-o", default=None,
+                        help="path to write the redacted image")
 
     parser.add_argument("-v", dest="visualize", action="store_true")
     parser.add_argument("--visualize", dest="visualize",
@@ -141,5 +143,6 @@ if __name__ == "__main__":
 
     redacted = redact(args.image_path, args.label_path, visualize=args.visualize)
 
-    etai.write(redacted, "/tmp/redacted.jpg")
+    if args.output:
+        etai.write(redacted, args.output)
 
