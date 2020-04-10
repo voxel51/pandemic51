@@ -45,18 +45,21 @@ import debounce from "lodash/debounce"
 const plotOptions = {
   pdi: {
     name: "PDI",
-    abbr: "PDI only",
+    abbr: "PDI",
+    button: "PDI only",
     primary: true,
     color: "rgb(255, 109, 4)",
   },
   cases: {
     name: "Number of cases",
-    abbr: "Add cases",
+    abbr: "Cases",
+    button: "Add cases",
     color: "rgb(0, 102, 204)",
   },
   deaths: {
     name: "Number of deaths",
-    abbr: "Add deaths",
+    abbr: "Deaths",
+    button: "Add deaths",
     color: "rgb(109, 4, 255)",
   },
 }
@@ -364,7 +367,7 @@ class Chart extends Component {
                   className={classes.dot}
                   style={{ background: plotOptions[key].color }}
                 ></div>{" "}
-                {option.abbr}
+                {option.button}
               </button>
             ))}
           </div>

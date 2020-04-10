@@ -8,16 +8,21 @@ import logging
 import os
 import pathlib
 import random
+from math import ceil
 
+import matplotlib.pyplot as plt
+import matplotlib.patches as pat
+import numpy as np
+import scipy.ndimage
 import tensorflow as tf
 
 import eta.core.annotations as etaa
+import eta.core.geometry as etag
 import eta.core.image as etai
 import eta.core.learning as etal
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
-
 
 logger = logging.getLogger(__name__)
 
@@ -66,8 +71,10 @@ def detect_objects_in_unprocessed_images():
             if os.path.exists(labels_path) and os.path.exists(anno_path):
                 # Another worker processed this image, so skip
                 continue
-
-            city = panc.STREAMS_MAP_INV[stream_name]
+            try:
+                city = panc.STREAMS_MAP_INV[stream_name]
+            except:
+                continue
             count = process_image(
                 city, detector, image_path, labels_path, anno_path=anno_path)
 
@@ -126,12 +133,84 @@ def process_image(city, detector, img_path, labels_path, anno_path=None):
     raw_image_labels.write_json(labels_path)
 
     if anno_path:
+        img = redact(img, objects)
         _annotate_img(img, objects, anno_path)
 
     return count
 
 
-def update_threshold(city, img_path, labels_path, anno_path=None):
+def redact(image, objects, visualize=False):
+    '''Redact the faces of the detected people in the image.
+
+    Only detections with label "person" are used, but the detections may have
+    other objects as well.
+
+    Args:
+        image: numpy image
+        objects: DetectedObjectContainer
+        visualize: boolean (False) to interactively plot the redaction data
+
+    Returns:
+        the redacted image with no boxes overlayed on it
+    '''
+    gauss = _lowpass(image)
+
+    for obj in objects:
+        if obj.label != "person":
+            continue
+
+        if not obj.has_bounding_box:
+            logger.debug("object without bounding box.")
+            continue
+
+        headbox = _headbox(obj.bounding_box, image)
+        headtlx, headtly = headbox.top_left.coords_in(img=image)
+        headbrx, headbry = headbox.bottom_right.coords_in(img=image)
+
+        image[headtly:headbry, headtlx:headbrx, :] = \
+            gauss[headtly:headbry, headtlx:headbrx, :]
+
+    if visualize:
+        _, ax = plt.subplots(1)
+        for obj in objects:
+            if obj.label != "person":
+                continue
+
+            if not obj.has_bounding_box:
+                continue
+
+            boxtlx, boxtly = obj.bounding_box.top_left.coords_in(img=image)
+            boxbrx, boxbry = \
+                obj.bounding_box.bottom_right.coords_in(img=image)
+            boxw = boxbrx-boxtlx
+            boxh = boxbry-boxtly
+
+            headbox = _headbox(obj.bounding_box, image)
+            headtlx, headtly = headbox.top_left.coords_in(img=image)
+            headbrx, headbry = headbox.bottom_right.coords_in(img=image)
+            headw = int(ceil(headbrx-headtlx))
+            headh = int(ceil(headbry-headtly))
+
+            box = pat.Rectangle((boxtlx, boxtly), boxw, boxh,
+                                linewidth=0.25,
+                                edgecolor='r',
+                                facecolor='none')
+            ax.add_patch(box)
+
+            head = pat.Rectangle((headtlx, headtly), headw, headh,
+                                 linewidth=0.5,
+                                 edgecolor='b',
+                                 facecolor='none')
+
+            ax.add_patch(head)
+
+        ax.imshow(image)
+        plt.show()
+
+    return image
+
+
+def update(city, img_path, labels_path, anno_path=None):
     '''Loads the raw labels, filters down the objects based on the (new)
     threshold, and optionally updates the annotated image.
 
@@ -150,7 +229,8 @@ def update_threshold(city, img_path, labels_path, anno_path=None):
     logger.info("Filtered down to %d objects", new_count)
 
     if anno_path:
-        _annotate_img(etai.read(img_path), objects, anno_path)
+        img = redact(etai.read(img_path), objects)
+        _annotate_img(img, objects, anno_path)
 
     return new_count
 
@@ -162,6 +242,53 @@ def _annotate_img(img, objects, anno_path):
     img_anno = etaa.annotate_image(
         img, image_labels, annotation_config=panc.ANNOTATION_CONFIG)
     etai.write(img_anno, anno_path)
+
+
+def _headbox(box, image):
+    '''Convert the person bounding box to a smaller one with relative size for
+    identifying the head region of the person.
+
+    Args:
+        box: etag.BoundingBox relative bounding box (to image)
+        image: ndarray containing the image, used for sizing
+
+    All processing happens in relative coords.
+
+    The method establishes a rectangular region as a function of the object
+    bounding box.  Because the content of the box is expected to vary based on
+    the aspect ratio (if we only get head and shoulders, then we have a
+    square-shaped box), we vary the shape of this head region as a function of
+    the aspect ratio.  This is not a general method, do not use elsewhere.
+    '''
+    # constants derived from data samples
+    tallbox = (0.7, 0.18)
+    tallar = 0.35
+    shortbox = (0.7, 0.56)
+    shortar = 1.1
+
+    # assumes the width is the same, and tallbox is less than shortbox
+    r_o = tallar
+    r_t = shortar-tallar
+    s_o = tallbox[1]
+    s_t = shortbox[1]-tallbox[1]
+
+    x = box.aspect_ratio_in(img=image)
+    xhat = (x - r_o) / r_t
+    size = (tallbox[0], s_o + xhat * s_t)
+
+    boxtlx, boxtly = box.top_left.to_tuple()
+    boxbrx, boxbry = box.bottom_right.to_tuple()
+    boxw = boxbrx-boxtlx
+    boxh = boxbry-boxtly
+
+    headw = size[0]*boxw
+    headh = size[1]*boxh
+    headtlx = boxtlx+((1.0-size[0])/2)*boxw
+    headtly = boxtly
+    headbrx = headtlx+headw
+    headbry = headtly+headh
+
+    return etag.BoundingBox.from_coords(headtlx, headtly, headbrx, headbry)
 
 
 def _load_efficientdet_model(model_name):
@@ -176,3 +303,13 @@ def _load_efficientdet_model(model_name):
             }
         })
     return config.build()
+
+
+def _lowpass(image, sigma=3.0):
+    '''Perform a simple lowpass filter on the image to smooth and hide its
+    detail content.
+    '''
+    r = scipy.ndimage.gaussian_filter(image[..., 0], sigma)
+    g = scipy.ndimage.gaussian_filter(image[..., 1], sigma)
+    b = scipy.ndimage.gaussian_filter(image[..., 2], sigma)
+    return np.dstack((r, g, b))
