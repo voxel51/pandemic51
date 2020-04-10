@@ -189,6 +189,7 @@ class Layout extends React.Component {
                       <ImageOverlay
                         {...this.state.overlayData}
                         height={height}
+                        setHeight={height === undefined ? setHeight : undefined}
                         onClose={this.closeOverlay}
                         onNavigate={this.navigateOverlay}
                       />
@@ -212,6 +213,7 @@ class Layout extends React.Component {
                 <ImageOverlay
                   {...this.state.overlayData}
                   height={height}
+                  setHeight={height === undefined ? setHeight : undefined}
                   onClose={this.closeOverlay}
                   onNavigate={this.navigateOverlay}
                 />

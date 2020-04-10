@@ -21,6 +21,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 export default function ImageOverlay({
   src,
   height,
+  setHeight,
   timestamp,
   clicked,
   onClose,
@@ -40,8 +41,13 @@ export default function ImageOverlay({
     setOpen(false)
   }
 
-  const handleLoad = () => {
+  const handleLoad = (e) => {
     setLoaded(true)
+    if (setHeight) {
+      const img = e.target
+      const container = img.parentNode.parentNode
+      setHeight(img.naturalHeight * container.clientWidth / img.naturalWidth)
+    }
   }
 
   if (!src) {
@@ -159,6 +165,7 @@ export default function ImageOverlay({
 ImageOverlay.propTypes = {
   src: PropTypes.string,
   height: PropTypes.number,
+  setHeight: PropTypes.func,
   timestamp: PropTypes.string,
   clicked: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
