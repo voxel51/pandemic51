@@ -87,13 +87,13 @@ export default function CityCard(props) {
               <Typography variant="body1" component="p">
                 {LOCATIONS[props.cityId]}
               </Typography>
-              {NEW[props.cityId] || BETA[props.cityId] ? (
                 <Card
                   square
                   className={classes.chip}
-                  style={{ background: "rgb(255, 109, 4)", color: "#fff" }}
+                  style={{ background: "#fff", color: "rgb(255, 109, 4)" }}
                 >
                   <CardContent style={{ padding: 0 }}>
+              {NEW[props.cityId] || BETA[props.cityId] ? (
                     <Typography
                       variant="body1"
                       component="p"
@@ -101,9 +101,28 @@ export default function CityCard(props) {
                     >
                       {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
                     </Typography>
+              ) : null}
+                    <Typography
+                      variant="body1"
+                      component="p"
+                    >
+Max: {bull}
+
+<span style={{color: props.week < 0 ? "#00cc44" : "#FF0000"}}>
+{props.max ? (props.max * 100).toFixed(0) + "%" : null}
+</span>
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                    >
+Last week: {bull}
+<span style={{color: props.week < 0 ? "#00cc44" : "#FF0000"}}>
+  {props.week ? (props.week * 100).toFixed(0) + "%" : null}
+</span>
+                    </Typography>
                   </CardContent>
                 </Card>
-              ) : null}
             </CardContent>
           </Hidden>
           <Hidden lgUp>

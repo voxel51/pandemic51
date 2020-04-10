@@ -127,6 +127,8 @@ class Layout extends React.Component {
                     name={CITIES[cityId]}
                     active={city == cityId}
                     url={data && data[cityId] ? data[cityId]["url"] : undefined}
+                    max={data && data[cityId] ? data[cityId]["max"] : undefined}
+                    week={data && data[cityId] ? data[cityId]["week"] : undefined}
                   />
                 ))}
               </Grid>
