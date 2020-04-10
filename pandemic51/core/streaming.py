@@ -4,6 +4,7 @@ Methods and Classes for downloading and working with video streams.
 Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
+from __future__ import unicode_literals
 from datetime import datetime
 import io
 import json
@@ -22,6 +23,7 @@ from PIL import Image
 from selenium import webdriver
 from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 from selenium.webdriver.chrome.options import Options
+from youtube_dl import YoutubeDL
 
 import eta.core.image as etai
 import eta.core.serial as etas
@@ -53,7 +55,7 @@ def get_img_urls(webpage):
 
     # Ensure that all images have had time to load
     time.sleep(1)
-    
+
     # Parse the source HTML for images with PSLNM in the title
     soup = BeautifulSoup(driver.page_source, 'html.parser')
     driver.service.stop()
@@ -166,7 +168,7 @@ class Stream(etas.Serializable):
 
         Returns:
             is_new_img: `True` if the image was not already on disk
-            image_path: path the the downloaded image on disk
+            image_path: path to the downloaded image on disk
             dt: datetime object of when the image was downloaded
         '''
         raise NotImplementedError("Subclass must implement")
@@ -244,19 +246,12 @@ class Stream(etas.Serializable):
 
 class M3U8Stream(Stream):
     '''A Stream class that reads URIs from an M3U8 chunk path'''
-    def __init__(self, stream_name, GMT, webpage, chunk_path):
+    def __init__(self, stream_name, GMT, webpage):
         super(M3U8Stream, self).__init__(stream_name, GMT)
         self.webpage = webpage
-        self.chunk_path = chunk_path
 
     def get_live_stream_url(self):
-        url = self.chunk_path
-
-        try:
-            urllib.request.urlopen(url)
-        except urllib.error.HTTPError:
-            self.update_stream_chunk_path()
-            url = self.chunk_path
+        url = _get_chunk_url(self.webpage)
 
         if "videos2archives" in url:
             url = (
@@ -286,6 +281,10 @@ class M3U8Stream(Stream):
             # Download video
             video_path, dt = self.download_chunk(tmpdir)
 
+            if not video_path:
+                # this is archival data, so don't return an image
+                return False, None, dt
+
             # UTC integer timestamp (epoch time)
             timestamp = int(dt.timestamp())
 
@@ -302,17 +301,27 @@ class M3U8Stream(Stream):
 
         Args:
             output_dir: the output directory
+
+        Returns:
+            tuple of:
+                - path to the downloaded video chunk
+                    OR None if the stream is an archive stream
+                - the datetime when the video chunk was downloaded
         '''
         output_path = os.path.join(output_dir, self.stream_name)
 
-        uris = self.get_uris()
+        uris, chunk_path = self.get_uris_and_chunk_path()
+
+        if "archive" in chunk_path:
+            return None, datetime.utcnow()
+
         uri = uris[-1]
 
         logger.info("Processing URI '%s'", uri)
-        return save_video(self.chunk_path, uri, output_path), datetime.utcnow()
+        return save_video(chunk_path, uri, output_path), datetime.utcnow()
 
     @retry(stop_max_attempt_number=10, wait_fixed=100)
-    def get_uris(self):
+    def get_uris_and_chunk_path(self):
         '''Attempts to load uris from a given chunk path. Will handle HTTPS
         Errors and update the chunk path.
 
@@ -323,41 +332,25 @@ class M3U8Stream(Stream):
         Returns:
             uris: the uris present in the chunk_path
         '''
+        chunk_path = _get_chunk_url(self.webpage)
         try:
-            uris = self._attempt_get_uris()
+            uris = m3u8.load(chunk_path).segments.uri
             if not uris:
-                self.update_stream_chunk_path()
-                uris = self._attempt_get_uris()
+                chunk_path = _get_chunk_url(self.webpage)
+                uris = m3u8.load(chunk_path).segments.uri
 
         except urllib.error.HTTPError:
-            self.update_stream_chunk_path()
-            uris = self._attempt_get_uris()
+            chunk_path = _get_chunk_url(self.webpage)
+            uris = m3u8.load(chunk_path).segments.uri
 
-        return uris
-
-    def update_stream_chunk_path(self):
-        '''Updates the given stream in the stream dictionary and serializes it
-        to disk in `pandemic51.config.STREAMS_DIR`.
-
-        Args:
-            stream_name: the stream name
-
-        Returns:
-            the chunk path
-        '''
-        self.chunk_path = _get_chunk_url(self.webpage)
-        self.write_json(self.path, pretty_print=True)
-
-    def _attempt_get_uris(self):
-        return m3u8.load(self.chunk_path).segments.uri
+        return uris, chunk_path
 
     @classmethod
     def _from_dict(cls, d):
         stream_name = d["stream_name"]
         GMT = d["GMT"]
         webpage = d["webpage"]
-        chunk_path = d["chunk_path"]
-        return cls(stream_name, GMT, webpage, chunk_path)
+        return cls(stream_name, GMT, webpage)
 
 
 class MjpegStream(Stream):
@@ -477,6 +470,61 @@ class ImageStream(Stream):
         webpage = d["webpage"]
         url_filter = d["url_filter"]
         return cls(stream_name, GMT, webpage, url_filter)
+
+
+class YouTubeStream(Stream):
+    '''A Stream class for YouTube live-streams.'''
+
+    def __init__(self, stream_name, GMT, youtube_id):
+        super(YouTubeStream, self).__init__(stream_name, GMT)
+        self.youtube_id = youtube_id
+        self._m3u8 = None
+
+    def get_live_stream_url(self):
+        '''Returns the livestream URL.'''
+        return "https://www.youtube.com/embed/%s?autoplay=1" % self.youtube_id
+
+    def get_m3u8_url(self, force=False):
+        '''Returns the current best m3u8 stream.'''
+        if force or self._m3u8 is None:
+            ydl_opts = {}
+            with YoutubeDL(ydl_opts) as ydl:
+                yyy = ydl.extract_info(self.youtube_id, download=False)
+            self._m3u8 = yyy['url']
+        return self._m3u8
+
+    def download_image(self, outdir):
+        '''Downloads an image from the stream
+
+        Args:
+            outdir: the output directory
+
+        Returns:
+            is_new_img: `True` if the image was not already on disk
+            image_path: path to the downloaded image on disk
+            dt: datetime object of when the image was downloaded
+        '''
+        m3u8_url = self.get_m3u8_url()
+
+        dt = datetime.utcnow()
+
+        # UTC integer timestamp (epoch time)
+        ts = int(dt.timestamp())
+
+        # Create path for image
+        image_path = os.path.join(outdir, self.stream_name, "%d.jpg" % ts)
+
+        # Capture the current frame of the stream
+        is_new_img = sample_first_frame(m3u8_url, image_path)
+
+        return is_new_img, image_path, dt
+
+    @classmethod
+    def _from_dict(cls, d):
+        stream_name = d["stream_name"]
+        GMT = d["GMT"]
+        youtube_id = d["youtube_id"]
+        return cls(stream_name, GMT, youtube_id)
 
 
 def _get_chunk_url(webpage):

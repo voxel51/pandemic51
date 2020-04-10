@@ -2,6 +2,7 @@ bs4==0.0.0
 celery==4.4.2
 ffmpy==0.2.2
 Flask==1.1.1
+jupyterlab==2.0.1
 matplotlib==3.1.1
 numpy==1.18.2
 pandas==1.0.3
@@ -11,3 +12,4 @@ redis==3.4.1
 scipy==0.19.1
 selenium==3.141.0
 tensorflow==1.15.2
+youtube-dl==2020.3.24
