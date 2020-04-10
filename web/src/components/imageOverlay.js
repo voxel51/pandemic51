@@ -26,7 +26,6 @@ export default function ImageOverlay({
   onClose,
   onNavigate,
 }) {
-  console.log({onNavigate})
   const [isLoaded, setLoaded] = useState(false)
   const [isCopied, setCopied] = useState(false)
   const [open, setOpen] = useState(false)
@@ -146,8 +145,8 @@ export default function ImageOverlay({
             </div>
             {onNavigate ? (
               <React.Fragment>
-                <a className="frame-nav frame-nav-prev" title="Previous image">&laquo;</a>
-                <a className="frame-nav frame-nav-next" title="Next image">&raquo;</a>
+                <a onClick={() => onNavigate(-1)} className="frame-nav frame-nav-prev" title="Previous image">&laquo;</a>
+                <a onClick={() => onNavigate(1)} className="frame-nav frame-nav-next" title="Next image">&raquo;</a>
               </React.Fragment>
             ) : null}
           </React.Fragment>

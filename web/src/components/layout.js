@@ -60,9 +60,11 @@ class Layout extends React.Component {
       chartData: {},
       overlayData: {},
       selectedTime: null,
+      timeToIndex: {},
     }
     this.openOverlay = this.openOverlay.bind(this)
     this.closeOverlay = this.closeOverlay.bind(this)
+    this.navigateOverlay = this.navigateOverlay.bind(this)
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
@@ -78,6 +80,10 @@ class Layout extends React.Component {
         json.data = addDataToSeries(json.data, json.deaths)
         const match = window.location.search.match(/t=(\d+)/)
         const selectedTime = match ? Number(match[1]) : null;
+        const timeToIndex = {}
+        json.data.forEach((point, index) => {
+          timeToIndex[point.time] = index
+        })
 
         this.setState({
           chartData: {
@@ -86,6 +92,7 @@ class Layout extends React.Component {
             labels: json["labels"],
             metadata: json["metadata"],
           },
+          timeToIndex,
           selectedTime,
         })
       })
@@ -111,6 +118,16 @@ class Layout extends React.Component {
       selectedTime: null,
     })
     window.history.pushState(null, "", window.location.href.split("?")[0])
+  }
+
+  navigateOverlay(delta) {
+    const newIndex = this.state.timeToIndex[this.state.selectedTime] + delta
+    const newPoint = this.state.chartData.list[newIndex]
+    if (newPoint) {
+      this.setState({
+        selectedTime: newPoint.time,
+      })
+    }
   }
 
   render() {
@@ -173,7 +190,7 @@ class Layout extends React.Component {
                         {...this.state.overlayData}
                         height={height}
                         onClose={this.closeOverlay}
-                        onNavigate={()=>{}}
+                        onNavigate={this.navigateOverlay}
                       />
                     </Player>
                   </Grid>
@@ -196,7 +213,7 @@ class Layout extends React.Component {
                   {...this.state.overlayData}
                   height={height}
                   onClose={this.closeOverlay}
-                  onNavigate={()=>{}}
+                  onNavigate={this.navigateOverlay}
                 />
               </Player>
               <Grid container spacing={4}>

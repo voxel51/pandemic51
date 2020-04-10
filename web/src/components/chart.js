@@ -368,7 +368,6 @@ class Chart extends Component {
               </button>
             ))}
           </div>
-          {console.log(secondPlot)}
           <Typography variant="h6" component="p" color="textSecondary">
             {(!secondPlot || secondPlot) === "pdi" ? (
               <>
