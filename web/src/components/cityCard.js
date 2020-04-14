@@ -17,6 +17,10 @@ import Hidden from "@material-ui/core/Hidden"
 import { BETA, NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import { HotKeys } from "react-hotkeys";
+
+
+
 const useStyles = makeStyles({
   root: {
     marginBottom: "1rem",
@@ -47,6 +51,7 @@ const useStyles = makeStyles({
     bottom: 0,
     margin: "0 .5rem .5rem 0",
     padding: "0.5rem",
+    background: "rgb(255, 109, 4)"
   },
   bullet: {
     display: "inline-block",

@@ -17,7 +17,8 @@ import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import Button from "@material-ui/core/Button"
 import { CopyToClipboard } from "react-copy-to-clipboard"
-
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 export default function ImageOverlay({
   src,
   height,
@@ -114,18 +115,45 @@ export default function ImageOverlay({
     <div className="image-overlay-wrapper">
       <div className="image-overlay" style={{ height }}>
         <img src={src} onLoad={handleLoad} style={imageStyle} />
-        {isLoaded ? null : <CircularProgress className="loading-icon" />}
-        {timestamp ? <div className="image-timestamp">{timestamp}</div> : null}
-        {clicked ? (
-          <React.Fragment>
-            <div className="buttons">
+        <div className="image-overlay-nav">
+          {onNavigate && clicked ?
+              <IconButton aria-label="previous"
+                className="image-overlay-back"
+                onClick={() => onNavigate(1)}
+              >
+                <ArrowBackIosIcon onClick={() => onNavigate(-1)}/>
+              </IconButton> : null
+            }
+            <div className="image-overlay-timestamp" style={!clicked ? {width: "100%", margin: "1rem auto", textAlign: "center"} : {}}>{timestamp ? timestamp.toUpperCase() : null}
+
+            {clicked ?
+              <CloseIcon
+                aria-label="close"
+                className="close-button"
+                onClick={onClose}
+                /> : null }
+          </div>
+          {onNavigate && clicked ?
+          <>
+              <IconButton aria-label="next"
+                className="image-overlay-forward"
+                onClick={() => onNavigate(1)}
+              >
+                <ArrowForwardIosIcon onClick={() => onNavigate(1)}/>
+              </IconButton>
               <IconButton
                 aria-label="share"
                 className="share-button"
                 onClick={handleOpen}
               >
                 <ShareIcon />
-              </IconButton>
+              </IconButton></> : null
+            }
+        </div>
+        {isLoaded ? null : <CircularProgress className="loading-icon" />}
+        {clicked ? (
+          <React.Fragment>
+            <div className="buttons">
               <Modal
                 open={open}
                 onClose={handleClose}
@@ -141,20 +169,7 @@ export default function ImageOverlay({
               >
                 {body}
               </Modal>
-              <IconButton
-                aria-label="close"
-                className="close-button"
-                onClick={onClose}
-              >
-                <CloseIcon />
-              </IconButton>
             </div>
-            {onNavigate ? (
-              <React.Fragment>
-                <a onClick={() => onNavigate(-1)} className="frame-nav frame-nav-prev" title="Previous image">&laquo;</a>
-                <a onClick={() => onNavigate(1)} className="frame-nav frame-nav-next" title="Next image">&raquo;</a>
-              </React.Fragment>
-            ) : null}
           </React.Fragment>
         ) : null}
       </div>
