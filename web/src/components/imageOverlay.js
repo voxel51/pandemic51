@@ -21,9 +21,11 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 export default function ImageOverlay({
   src,
   height,
+  setHeight,
   timestamp,
   clicked,
   onClose,
+  onNavigate,
 }) {
   const [isLoaded, setLoaded] = useState(false)
   const [isCopied, setCopied] = useState(false)
@@ -39,8 +41,13 @@ export default function ImageOverlay({
     setOpen(false)
   }
 
-  const handleLoad = () => {
+  const handleLoad = (e) => {
     setLoaded(true)
+    if (setHeight) {
+      const img = e.target
+      const container = img.parentNode.parentNode
+      setHeight(img.naturalHeight * container.clientWidth / img.naturalWidth)
+    }
   }
 
   if (!src) {
@@ -110,37 +117,45 @@ export default function ImageOverlay({
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {timestamp ? <div className="image-timestamp">{timestamp}</div> : null}
         {clicked ? (
-          <div className="buttons">
-            <IconButton
-              aria-label="share"
-              className="share-button"
-              onClick={handleOpen}
-            >
-              <ShareIcon />
-            </IconButton>
-            <Modal
-              open={open}
-              onClose={handleClose}
-              aria-labelledby="graph help"
-              aria-describedby="graph help"
-              style={{
-                border: "none",
-                margin: "auto",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              {body}
-            </Modal>
-            <IconButton
-              aria-label="close"
-              className="close-button"
-              onClick={onClose}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
+          <React.Fragment>
+            <div className="buttons">
+              <IconButton
+                aria-label="share"
+                className="share-button"
+                onClick={handleOpen}
+              >
+                <ShareIcon />
+              </IconButton>
+              <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="graph help"
+                aria-describedby="graph help"
+                style={{
+                  border: "none",
+                  margin: "auto",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                {body}
+              </Modal>
+              <IconButton
+                aria-label="close"
+                className="close-button"
+                onClick={onClose}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div>
+            {onNavigate ? (
+              <React.Fragment>
+                <a onClick={() => onNavigate(-1)} className="frame-nav frame-nav-prev" title="Previous image">&laquo;</a>
+                <a onClick={() => onNavigate(1)} className="frame-nav frame-nav-next" title="Next image">&raquo;</a>
+              </React.Fragment>
+            ) : null}
+          </React.Fragment>
         ) : null}
       </div>
     </div>
@@ -150,7 +165,9 @@ export default function ImageOverlay({
 ImageOverlay.propTypes = {
   src: PropTypes.string,
   height: PropTypes.number,
+  setHeight: PropTypes.func,
   timestamp: PropTypes.string,
   clicked: PropTypes.bool,
   onClose: PropTypes.func.isRequired,
+  onNavigate: PropTypes.func,
 }
