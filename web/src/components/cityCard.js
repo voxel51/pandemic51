@@ -15,7 +15,8 @@ import React from "react"
 import Clock from "react-live-clock"
 import Hidden from "@material-ui/core/Hidden"
 import { BETA, NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
-
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
 const useStyles = makeStyles({
   root: {
     marginBottom: "1rem",
@@ -52,6 +53,25 @@ const useStyles = makeStyles({
     margin: "0 2px",
     transform: "scale(0.8)",
   },
+  tickerWrapper: {
+    position: "absolute",
+    top: "0.5rem",
+    right: 0,
+    width: (107*16)/9,
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  ticker: {
+    padding: "0.5rem",
+    margin: "0 .5rem 0 .5rem",
+    fontSize: "0.7rem",
+    borderRadius: "2px"
+  },
+  tickerContent: {
+    margin: 0,
+    padding: 0,
+    paddingBottom: "0 !important"
+  }
 })
 
 export default function CityCard(props) {
@@ -87,13 +107,50 @@ export default function CityCard(props) {
               <Typography variant="body1" component="p">
                 {LOCATIONS[props.cityId]}
               </Typography>
+              <div className={classes.tickerWrapper}>
+              <Card square className={classes.ticker}>
+                <CardContent className={classes.tickerContent}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{fontSize: "1rem", lineHeight: "17px"}}
+                    >
+                      MAX {props.max < 0 ? <ArrowDropDownIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                        :
+                          <ArrowDropUpIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                        }
+
+<span style={{color: "rgb(255, 109, 4)"}}>
+  {" "}{props.max ? (Math.abs(props.max * 100)).toFixed(0) + "%" : null}
+</span>
+                    </Typography>
+                </CardContent>
+              </Card>
+              <Card square className={classes.ticker}>
+                <CardContent className={classes.tickerContent}>
+                    <Typography
+                      variant="body1"
+                      component="p"
+                      style={{fontSize: "1rem", lineHeight: "17px"}}
+                    >
+                      LAST WEEK {props.week < 0 ? <ArrowDropDownIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                        :
+                          <ArrowDropUpIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                        }
+<span style={{color: "rgb(255, 109, 4)"}}>
+  {" "}{props.week ? (Math.abs(props.week * 100)).toFixed(0) + "%" : null}
+</span>
+                    </Typography>
+                </CardContent>
+              </Card>
+            </div>
+              {NEW[props.cityId] || BETA[props.cityId] ? (
                 <Card
                   square
                   className={classes.chip}
-                  style={{ background: "#fff", color: "rgb(255, 109, 4)" }}
+                  style={{ color: "#fff", background: "rgb(255, 109, 4)", borderRadius: "3px" }}
                 >
                   <CardContent style={{ padding: 0 }}>
-              {NEW[props.cityId] || BETA[props.cityId] ? (
                     <Typography
                       variant="body1"
                       component="p"
@@ -101,28 +158,9 @@ export default function CityCard(props) {
                     >
                       {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
                     </Typography>
-              ) : null}
-                    <Typography
-                      variant="body1"
-                      component="p"
-                    >
-Max: {bull}
-
-<span style={{color: props.week < 0 ? "#00cc44" : "#FF0000"}}>
-{props.max ? (props.max * 100).toFixed(0) + "%" : null}
-</span>
-                    </Typography>
-                    <Typography
-                      variant="body1"
-                      component="p"
-                    >
-Last week: {bull}
-<span style={{color: props.week < 0 ? "#00cc44" : "#FF0000"}}>
-  {props.week ? (props.week * 100).toFixed(0) + "%" : null}
-</span>
-                    </Typography>
                   </CardContent>
                 </Card>
+              ) : null}
             </CardContent>
           </Hidden>
           <Hidden lgUp>
@@ -151,7 +189,7 @@ Last week: {bull}
                     <Typography
                       variant="body1"
                       component="p"
-                      style={{ color: "rgb(255, 109, 4)" }}
+                      style={{ color: "#fff", background: "rgb(255, 109, 4)", borderRadius: "3px" }}
                     >
                       {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
                     </Typography>
