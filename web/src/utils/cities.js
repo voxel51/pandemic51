@@ -74,7 +74,7 @@ export const LOCATIONS = {
   brighton: "Mill Pond",
   detroit: "Tunnel",
   annarbor: "Ruthven",
-  hollywood: "Hollywood Blvd"
+  hollywood: "Hollywood Blvd",
 }
 
 export const FORMAL = {
@@ -108,5 +108,5 @@ export const COLORS = [
   "#c999c9",
   "#0013af",
   "#33ea4a",
-  "4aa1ce9"
+  "4aa1ce9",
 ]

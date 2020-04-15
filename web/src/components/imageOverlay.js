@@ -17,12 +17,12 @@ import Typography from "@material-ui/core/Typography"
 import Box from "@material-ui/core/Box"
 import Button from "@material-ui/core/Button"
 import { CopyToClipboard } from "react-copy-to-clipboard"
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import { HotKeys } from "react-hotkeys";
+import ArrowBackIosIcon from "@material-ui/icons/ArrowBackIos"
+import ArrowForwardIosIcon from "@material-ui/icons/ArrowForwardIos"
+import { HotKeys } from "react-hotkeys"
 const keyMap = {
   NEXT: "right",
-  PREV: "left"
+  PREV: "left",
 }
 
 export default function ImageOverlay({
@@ -48,12 +48,12 @@ export default function ImageOverlay({
     setOpen(false)
   }
 
-  const handleLoad = (e) => {
+  const handleLoad = e => {
     setLoaded(true)
     if (setHeight) {
       const img = e.target
       const container = img.parentNode.parentNode
-      setHeight(img.naturalHeight * container.clientWidth / img.naturalWidth)
+      setHeight((img.naturalHeight * container.clientWidth) / img.naturalWidth)
     }
   }
 
@@ -118,7 +118,7 @@ export default function ImageOverlay({
   )
   const shortcutHandlers = {
     PREV: () => onNavigate(-1),
-    NEXT: () => onNavigate(1)
+    NEXT: () => onNavigate(1),
   }
 
   return (
@@ -126,30 +126,41 @@ export default function ImageOverlay({
       <div className="image-overlay" style={{ height }}>
         <img src={src} onLoad={handleLoad} style={imageStyle} />
         <div className="image-overlay-nav">
-          {onNavigate && clicked ?
-              <IconButton aria-label="previous"
-                className="image-overlay-back"
-                onClick={() => onNavigate(-1)}
-              >
-                <ArrowBackIosIcon/>
-              </IconButton> : null
+          {onNavigate && clicked ? (
+            <IconButton
+              aria-label="previous"
+              className="image-overlay-back"
+              onClick={() => onNavigate(-1)}
+            >
+              <ArrowBackIosIcon />
+            </IconButton>
+          ) : null}
+          <div
+            className="image-overlay-timestamp"
+            style={
+              !clicked
+                ? { width: "100%", margin: "1rem auto", textAlign: "center" }
+                : {}
             }
-            <div className="image-overlay-timestamp" style={!clicked ? {width: "100%", margin: "1rem auto", textAlign: "center"} : {}}>{timestamp ? timestamp.toUpperCase() : null}
+          >
+            {timestamp ? timestamp.toUpperCase() : null}
 
-            {clicked ?
+            {clicked ? (
               <CloseIcon
                 aria-label="close"
                 className="close-button"
                 onClick={onClose}
-                /> : null }
+              />
+            ) : null}
           </div>
-          {onNavigate && clicked ?
-          <>
-              <IconButton aria-label="next"
+          {onNavigate && clicked ? (
+            <>
+              <IconButton
+                aria-label="next"
                 className="image-overlay-forward"
                 onClick={() => onNavigate(1)}
               >
-                <ArrowForwardIosIcon/>
+                <ArrowForwardIosIcon />
               </IconButton>
               <IconButton
                 aria-label="share"
@@ -157,8 +168,9 @@ export default function ImageOverlay({
                 onClick={handleOpen}
               >
                 <ShareIcon />
-              </IconButton></> : null
-            }
+              </IconButton>
+            </>
+          ) : null}
         </div>
         {isLoaded ? null : <CircularProgress className="loading-icon" />}
         {clicked ? (

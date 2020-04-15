@@ -15,11 +15,9 @@ import React from "react"
 import Clock from "react-live-clock"
 import Hidden from "@material-ui/core/Hidden"
 import { BETA, NEW, LOCATIONS, TIMEZONES } from "../utils/cities"
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-import { HotKeys } from "react-hotkeys";
-
-
+import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown"
+import ArrowDropUpIcon from "@material-ui/icons/ArrowDropUp"
+import { HotKeys } from "react-hotkeys"
 
 const useStyles = makeStyles({
   root: {
@@ -51,7 +49,7 @@ const useStyles = makeStyles({
     bottom: 0,
     margin: "0 .5rem .5rem 0",
     padding: "0.5rem",
-    background: "rgb(255, 109, 4)"
+    background: "rgb(255, 109, 4)",
   },
   bullet: {
     display: "inline-block",
@@ -62,7 +60,7 @@ const useStyles = makeStyles({
     position: "absolute",
     top: "0.5rem",
     right: 0,
-    width: (107*16)/9,
+    width: (107 * 16) / 9,
     display: "flex",
     justifyContent: "space-between",
   },
@@ -70,13 +68,13 @@ const useStyles = makeStyles({
     padding: "0.5rem",
     margin: "0 .5rem 0 .5rem",
     fontSize: "0.7rem",
-    borderRadius: "2px"
+    borderRadius: "2px",
   },
   tickerContent: {
     margin: 0,
     padding: 0,
-    paddingBottom: "0 !important"
-  }
+    paddingBottom: "0 !important",
+  },
 })
 
 export default function CityCard(props) {
@@ -112,50 +110,72 @@ export default function CityCard(props) {
               <Typography variant="body1" component="p">
                 {LOCATIONS[props.cityId]}
               </Typography>
-              {props.max ?
-              <div className={classes.tickerWrapper}>
-                <Card square className={classes.ticker}>
-                <CardContent className={classes.tickerContent}>
-                    <Typography
-                      variant="body1"
-                      component="p"
-                      style={{fontSize: "1rem", lineHeight: "17px"}}
-                    >
-                      MAX {props.max < 0 ? <ArrowDropDownIcon style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
-                        :
-                          <ArrowDropUpIcon style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
-                        }
-
-<span style={{color: "rgb(255, 109, 4)"}}>
-  {" "}{props.max ? (Math.abs(props.max * 100)).toFixed(0) + "%" : null}
-</span>
-                    </Typography>
-                </CardContent>
-              </Card>
-              <Card square className={classes.ticker}>
-                <CardContent className={classes.tickerContent}>
-                    <Typography
-                      variant="body1"
-                      component="p"
-                      style={{fontSize: "1rem", lineHeight: "17px"}}
-                    >
-                      LAST WEEK {props.week < 0 ? <ArrowDropDownIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
-                        :
-                          <ArrowDropUpIcon style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
-                        }
-<span style={{color: "rgb(255, 109, 4)"}}>
-  {" "}{props.week ? (Math.abs(props.week * 100)).toFixed(0) + "%" : null}
-</span>
-                    </Typography>
-                </CardContent>
-              </Card>
-            </div>
-                 : null}
+              {props.max ? (
+                <div className={classes.tickerWrapper}>
+                  <Card square className={classes.ticker}>
+                    <CardContent className={classes.tickerContent}>
+                      <Typography
+                        variant="body1"
+                        component="p"
+                        style={{ fontSize: "1rem", lineHeight: "17px" }}
+                      >
+                        MAX{" "}
+                        {props.max < 0 ? (
+                          <ArrowDropDownIcon
+                            style={{ color: "rgb(255, 109, 4)", margin: "-3" }}
+                          />
+                        ) : (
+                          <ArrowDropUpIcon
+                            style={{ color: "rgb(255, 109, 4)", margin: "-3" }}
+                          />
+                        )}
+                        <span style={{ color: "rgb(255, 109, 4)" }}>
+                          {" "}
+                          {props.max
+                            ? Math.abs(props.max * 100).toFixed(0) + "%"
+                            : null}
+                        </span>
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                  <Card square className={classes.ticker}>
+                    <CardContent className={classes.tickerContent}>
+                      <Typography
+                        variant="body1"
+                        component="p"
+                        style={{ fontSize: "1rem", lineHeight: "17px" }}
+                      >
+                        LAST WEEK{" "}
+                        {props.week < 0 ? (
+                          <ArrowDropDownIcon
+                            fontSize="medium"
+                            style={{ color: "rgb(255, 109, 4)", margin: "-3" }}
+                          />
+                        ) : (
+                          <ArrowDropUpIcon
+                            style={{ color: "rgb(255, 109, 4)", margin: "-3" }}
+                          />
+                        )}
+                        <span style={{ color: "rgb(255, 109, 4)" }}>
+                          {" "}
+                          {props.week
+                            ? Math.abs(props.week * 100).toFixed(0) + "%"
+                            : null}
+                        </span>
+                      </Typography>
+                    </CardContent>
+                  </Card>
+                </div>
+              ) : null}
               {NEW[props.cityId] || BETA[props.cityId] ? (
                 <Card
                   square
                   className={classes.chip}
-                  style={{ color: "#fff", background: "rgb(255, 109, 4)", borderRadius: "3px" }}
+                  style={{
+                    color: "#fff",
+                    background: "rgb(255, 109, 4)",
+                    borderRadius: "3px",
+                  }}
                 >
                   <CardContent style={{ padding: 0 }}>
                     <Typography
@@ -196,7 +216,11 @@ export default function CityCard(props) {
                     <Typography
                       variant="body1"
                       component="p"
-                      style={{ color: "#fff", background: "rgb(255, 109, 4)", borderRadius: "3px" }}
+                      style={{
+                        color: "#fff",
+                        background: "rgb(255, 109, 4)",
+                        borderRadius: "3px",
+                      }}
                     >
                       {NEW[props.cityId] ? <>NEW</> : <>BETA</>} FEED
                     </Typography>

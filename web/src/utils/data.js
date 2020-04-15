@@ -22,13 +22,15 @@ export function addDataToSeries(series, newSeries) {
   let out = []
   let newIndex = 0
   for (let point of series) {
-    while (newSeries[newIndex + 1] &&
-           newSeries[newIndex + 1].time < point.time) {
+    while (
+      newSeries[newIndex + 1] &&
+      newSeries[newIndex + 1].time < point.time
+    ) {
       newIndex++
     }
     out.push({
       ...newSeries[newIndex],
-      ...point,  // will overwrite time with value from original series
+      ...point, // will overwrite time with value from original series
     })
   }
   return out

@@ -1,5 +1,5 @@
 /**
- * Dublin live stream.
+ * Hollywood live stream.
  *
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
@@ -12,8 +12,8 @@ import SEO from "../components/seo"
 
 const HollywoodPage = () => (
   <>
-    <SEO/>
-    <Layout city="hollywood"/>
+    <SEO />
+    <Layout city="hollywood" />
   </>
 )
 

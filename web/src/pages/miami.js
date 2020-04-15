@@ -12,8 +12,8 @@ import SEO from "../components/seo"
 
 const MiamiPage = () => (
   <>
-    <SEO/>
-    <Layout city="miami"/>
+    <SEO />
+    <Layout city="miami" />
   </>
 )
 
