@@ -7,6 +7,7 @@
 
 export const CITIES = {
   newyork: "New York",
+  hollywood: "Los Angeles",
   newjersey: "New Jersey",
   fortlauderdale: "Fort Lauderdale",
   miami: "Miami",
@@ -27,7 +28,8 @@ export const BETA = {
 }
 
 export const NEW = {
-  miami: "Miami"
+  miami: "Miami",
+  hollywood: "Los Angeles",
 }
 
 export const HISCITIES = {
@@ -55,6 +57,7 @@ export const TIMEZONES = {
   detroit: "America/New_York",
   annarbor: "America/New_York",
   brighton: "America/New_York",
+  hollywood: "America/Los_Angeles",
 }
 
 export const LOCATIONS = {
@@ -71,6 +74,7 @@ export const LOCATIONS = {
   brighton: "Mill Pond",
   detroit: "Tunnel",
   annarbor: "Ruthven",
+  hollywood: "Hollywood Blvd"
 }
 
 export const FORMAL = {
@@ -87,6 +91,7 @@ export const FORMAL = {
   detroit: "Detroit, Michigan, USA",
   annarbor: "Ann Arbor, Michigan, USA",
   brighton: "Brighton, Michigan, USA",
+  hollywood: "Los Angeles, California, USA",
 }
 
 export const COLORS = [
@@ -103,4 +108,5 @@ export const COLORS = [
   "#c999c9",
   "#0013af",
   "#33ea4a",
+  "4aa1ce9"
 ]
