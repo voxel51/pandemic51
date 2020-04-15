@@ -112,17 +112,18 @@ export default function CityCard(props) {
               <Typography variant="body1" component="p">
                 {LOCATIONS[props.cityId]}
               </Typography>
+              {props.max ?
               <div className={classes.tickerWrapper}>
-              <Card square className={classes.ticker}>
+                <Card square className={classes.ticker}>
                 <CardContent className={classes.tickerContent}>
                     <Typography
                       variant="body1"
                       component="p"
                       style={{fontSize: "1rem", lineHeight: "17px"}}
                     >
-                      MAX {props.max < 0 ? <ArrowDropDownIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                      MAX {props.max < 0 ? <ArrowDropDownIcon style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
                         :
-                          <ArrowDropUpIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                          <ArrowDropUpIcon style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
                         }
 
 <span style={{color: "rgb(255, 109, 4)"}}>
@@ -140,7 +141,7 @@ export default function CityCard(props) {
                     >
                       LAST WEEK {props.week < 0 ? <ArrowDropDownIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
                         :
-                          <ArrowDropUpIcon fontSize="medium" style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
+                          <ArrowDropUpIcon style={{color: "rgb(255, 109, 4)", margin: "-3"}}/>
                         }
 <span style={{color: "rgb(255, 109, 4)"}}>
   {" "}{props.week ? (Math.abs(props.week * 100)).toFixed(0) + "%" : null}
@@ -149,6 +150,7 @@ export default function CityCard(props) {
                 </CardContent>
               </Card>
             </div>
+                 : null}
               {NEW[props.cityId] || BETA[props.cityId] ? (
                 <Card
                   square

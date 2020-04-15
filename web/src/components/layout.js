@@ -67,11 +67,13 @@ class Layout extends React.Component {
     this.navigateOverlay = this.navigateOverlay.bind(this)
   }
   componentDidMount() {
+    if (Object.keys(this.state.data).length === 0) {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
         this.setState({ data: json["data"] })
       })
+    }
 
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())

@@ -19,6 +19,12 @@ import Button from "@material-ui/core/Button"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import { HotKeys } from "react-hotkeys";
+const keyMap = {
+  NEXT: "right",
+  PREV: "left"
+}
+
 export default function ImageOverlay({
   src,
   height,
@@ -110,6 +116,10 @@ export default function ImageOverlay({
       </CardContent>
     </Card>
   )
+  const shortcutHandlers = {
+    PREV: () => onNavigate(-1),
+    NEXT: () => onNavigate(1)
+  }
 
   return (
     <div className="image-overlay-wrapper">
@@ -119,9 +129,9 @@ export default function ImageOverlay({
           {onNavigate && clicked ?
               <IconButton aria-label="previous"
                 className="image-overlay-back"
-                onClick={() => onNavigate(1)}
+                onClick={() => onNavigate(-1)}
               >
-                <ArrowBackIosIcon onClick={() => onNavigate(-1)}/>
+                <ArrowBackIosIcon/>
               </IconButton> : null
             }
             <div className="image-overlay-timestamp" style={!clicked ? {width: "100%", margin: "1rem auto", textAlign: "center"} : {}}>{timestamp ? timestamp.toUpperCase() : null}
@@ -139,7 +149,7 @@ export default function ImageOverlay({
                 className="image-overlay-forward"
                 onClick={() => onNavigate(1)}
               >
-                <ArrowForwardIosIcon onClick={() => onNavigate(1)}/>
+                <ArrowForwardIosIcon/>
               </IconButton>
               <IconButton
                 aria-label="share"

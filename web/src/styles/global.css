@@ -924,6 +924,9 @@ hr {
   .body_part {
     padding: 6rem 3rem;
   }
+  .chart-switcher-item {
+    font-size: 1rem;
+  }
   .share-box {
     display: block !important;
   }
@@ -938,7 +941,6 @@ hr {
   }
 
   .video-player-wrapper video, .video-player-wrapper img {
-    height: 200px;
   }
 
 
