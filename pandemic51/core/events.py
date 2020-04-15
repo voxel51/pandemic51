@@ -16,6 +16,10 @@ import pandemic51.config as panc
 
 EVENT_TOOLTIP_RADIUS = 1.5
 
+GROUPS = {
+    "florida": {"miami", "fortlauderdale"},
+    "michigan": {"detroit", "annarbor", "brighton"}
+}
 
 def load_events_for_city(city):
     '''Loads the events for the given city.
@@ -41,6 +45,8 @@ def load_events_for_city(city):
         load_event = False
 
         if city_ == city:
+            load_event = True
+        if city_ in GROUPS and city in GROUPS[city_]:
             load_event = True
         elif city_.strip(" ") == "U.S." and city in panc.US_CITIES:
             load_event = True

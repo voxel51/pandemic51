@@ -39,7 +39,6 @@ const useStyles = makeStyles({
 })
 
 export default function MobileCityCard(props) {
-  console.log(NEW)
   const classes = useStyles()
   const active = props.active
   const bull = <span className={classes.bullet}>•</span>

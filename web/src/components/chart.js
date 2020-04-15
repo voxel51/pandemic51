@@ -7,11 +7,17 @@
 import React, { Component } from "react"
 import PropTypes from "prop-types"
 import { withStyles } from "@material-ui/core/styles"
-import Card from "@material-ui/core/Card"
-import CardActions from "@material-ui/core/CardActions"
-import CardContent from "@material-ui/core/CardContent"
-import Typography from "@material-ui/core/Typography"
-import Divider from "@material-ui/core/Divider"
+import {
+  Card,
+  CardActions,
+  CardContent,
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from "@material-ui/core"
 import moment from "moment"
 import HelpTooltip from "./help"
 import { FORMAL, TIMEZONES } from "../utils/cities"
@@ -36,6 +42,28 @@ import {
 import Async from "react-async"
 import debounce from "lodash/debounce"
 
+const plotOptions = {
+  pdi: {
+    name: "PDI",
+    abbr: "PDI",
+    button: "PDI only",
+    primary: true,
+    color: "rgb(255, 109, 4)",
+  },
+  cases: {
+    name: "Number of cases",
+    abbr: "Cases",
+    button: "Add cases",
+    color: "rgb(0, 102, 204)",
+  },
+  deaths: {
+    name: "Number of deaths",
+    abbr: "Deaths",
+    button: "Add deaths",
+    color: "rgb(109, 4, 255)",
+  },
+}
+
 const styles = theme => ({
   root: {
     width: "100%",
@@ -57,34 +85,27 @@ const styles = theme => ({
     margin: "0 2px",
     transform: "scale(0.8)",
   },
+  dot: {
+    display: "inline-block",
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginTop: -4,
+    marginRight: 3,
+  },
 })
 
 class Chart extends Component {
   state = {
-    list: [],
-    events: [],
-    labels: [],
+    secondPlot: localStorage.secondPlot || "pdi",
+    lastSelectedTime: null,
   }
 
-  componentDidMount() {
-    fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
-      .then(response => response.json())
-      .then(json => {
-        this.setState(
-          {
-            list: json["data"],
-            events: json["events"],
-            labels: json["labels"],
-          },
-          () => {
-            const match = window.location.search.match(/t=(\d+)/)
-            if (match) {
-              const selectedTime = Number(match[1])
-              this.handleClick({ activeLabel: selectedTime })
-            }
-          }
-        )
-      })
+  componentDidUpdate() {
+    if (this.props.selectedTime != this.state.lastSelectedTime) {
+      this.handleClick({ activeLabel: this.props.selectedTime })
+      this.setState({ lastSelectedTime: this.props.selectedTime })
+    }
   }
 
   formatFullTime(rawTime) {
@@ -96,7 +117,7 @@ class Chart extends Component {
 
   handleClick(event) {
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel]
+      const data = this.props.data.labels[event.activeLabel]
       if (!data) {
         return
       }
@@ -112,7 +133,7 @@ class Chart extends Component {
   handleHover = debounce(event => {
     if (this.props.clicked) return
     if (event && event.activeLabel) {
-      const data = this.state.labels[event.activeLabel]
+      const data = this.props.data.labels[event.activeLabel]
       if (!data) {
         return
       }
@@ -135,18 +156,32 @@ class Chart extends Component {
     })
   }, 200)
 
+  handlePlotChange(event) {
+    const secondPlot = event.target.value
+    this.setState({ secondPlot })
+    localStorage.secondPlot = secondPlot
+  }
+
   render() {
-    const { list, events } = this.state
+    const colorPrimary = "rgb(255, 109, 4)"
+    const colorSecondary = "rgb(109, 4, 255)"
+    const { secondPlot } = this.state
     const { classes, title, city, selectedTime } = this.props
+    const { list = [], events = [], metadata = [] } = this.props.data
+
+    const formatNumber = n => {
+      if (Math.round(n) == n) {
+        return n
+      }
+      return n.toFixed(2)
+    }
 
     const contentFormatter = v => {
-      if (!v.payload) {
+      if (!v.payload || !v.payload.length) {
         return null
       }
-      const valid = v.payload.length ? v.payload[0].payload : false
-      const event =
-        valid && events[valid.event] ? events[valid.event].event : false
-      const time = valid && valid.event ? events[valid.event].time : false
+      const item = v.payload[0].payload
+      const event = events[item.event]
       const bull = <span className={classes.bullet}>•</span>
       return (
         <Card square style={{ overflow: "visible", opacity: 0.9 }}>
@@ -154,27 +189,26 @@ class Chart extends Component {
             <Typography variant="h5" component="h2">
               {this.formatFullTime(v.label)}
             </Typography>
-            <Typography
-              variant="h6"
-              component="h3"
-              style={{ color: "rgb(255, 109, 4)" }}
-            >
-              PDI {bull}{" "}
-              {v.payload.length ? v.payload[0].value.toFixed(2) : "-"}
-            </Typography>
-            {(() => {
-              if (event && time) {
-                return (
-                  <Typography variant="body2" component="p">
-                    {moment
-                      .unix(time)
-                      .tz(TIMEZONES[city])
-                      .format("MMM Do")}{" "}
-                    {bull} {event}
-                  </Typography>
-                )
-              }
-            })()}
+            {v.payload.map(point => (
+              <Typography
+                key={point.dataKey}
+                variant="h6"
+                component="h3"
+                style={{ color: point.color }}
+              >
+                {plotOptions[point.dataKey].abbr} {bull}{" "}
+                {formatNumber(point.value)}
+              </Typography>
+            ))}
+            {event ? (
+              <Typography variant="body2" component="p">
+                {moment
+                  .unix(event.time)
+                  .tz(TIMEZONES[city])
+                  .format("MMM Do")}{" "}
+                {bull} {event.event}
+              </Typography>
+            ) : null}
           </CardContent>
         </Card>
       )
@@ -182,7 +216,9 @@ class Chart extends Component {
 
     return (
       <Card className={classes.root} square>
-        <CardContent style={{ position: "relative", width: "100%" }}>
+        <CardContent
+          style={{ position: "relative", width: "100%", paddingBottom: 12 }}
+        >
           <Typography
             variant="h4"
             component="h2"
@@ -193,7 +229,7 @@ class Chart extends Component {
           <ResponsiveContainer width="100%" height={250}>
             <ComposedChart
               data={list}
-              margin={{ top: 0, right: 5, left: 30, bottom: 0 }}
+              margin={{ top: 5, right: 20, left: 30, bottom: 0 }}
               cursor="pointer"
               onClick={this.handleClick.bind(this)}
               onMouseUp={this.handleClick.bind(this)}
@@ -203,10 +239,28 @@ class Chart extends Component {
               onMouseLeave={this.handleMouseLeave.bind(this)}
             >
               <defs>
-                <linearGradient id="colorSdi" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#ff6d04" stopOpacity={0.8} />
-                  <stop offset="95%" stopColor="#ff6d04" stopOpacity={0} />
+                <linearGradient id="colorPdi" x1="0" y1="0" x2="0" y2="1">
+                  <stop
+                    offset="5%"
+                    stopColor={colorPrimary}
+                    stopOpacity={0.8}
+                  />
+                  <stop offset="95%" stopColor={colorPrimary} stopOpacity={0} />
                 </linearGradient>
+                {plotOptions[secondPlot] ? (
+                  <linearGradient id="colorSecond" x1="0" y1="0" x2="0" y2="1">
+                    <stop
+                      offset="5%"
+                      stopColor={plotOptions[secondPlot].color}
+                      stopOpacity={0.8}
+                    />
+                    <stop
+                      offset="95%"
+                      stopColor={plotOptions[secondPlot].color}
+                      stopOpacity={0}
+                    />
+                  </linearGradient>
+                ) : null}
               </defs>
               <XAxis
                 dataKey="time"
@@ -223,7 +277,9 @@ class Chart extends Component {
               />
               <YAxis
                 dataKey="pdi"
+                yAxisId="pdi"
                 name="PDI"
+                domain={[0, d => Math.max(Math.min(100, d + 2).toFixed(0), 10)]}
                 width={25}
                 label={
                   <Label
@@ -235,6 +291,25 @@ class Chart extends Component {
                   />
                 }
               />
+              {plotOptions[secondPlot] && secondPlot !== "pdi" ? (
+                <YAxis
+                  dataKey={secondPlot}
+                  yAxisId="secondary"
+                  name={plotOptions[secondPlot].name}
+                  orientation="right"
+                  domain={["auto", "auto"]}
+                  mirror={true}
+                  label={
+                    <Label
+                      value={plotOptions[secondPlot].name}
+                      position="right"
+                      angle={-90}
+                      offset={10}
+                      style={{ textAnchor: "middle" }}
+                    />
+                  }
+                />
+              ) : null}
               <Tooltip
                 content={contentFormatter}
                 allowEscapeViewBox={{ x: false, y: false }}
@@ -242,21 +317,79 @@ class Chart extends Component {
               {Object.keys(events)
                 .sort()
                 .map(v => (
-                  <ReferenceLine x={v} stroke="#666" strokeOpacity={0.3} />
+                  <ReferenceLine
+                    x={v}
+                    key={v}
+                    stroke="#666"
+                    strokeOpacity={0.3}
+                    yAxisId="pdi"
+                  />
                 ))}
               {selectedTime ? (
-                <ReferenceLine x={selectedTime} stroke="#ff6d04" />
+                <ReferenceLine
+                  x={selectedTime}
+                  stroke={colorPrimary}
+                  yAxisId="pdi"
+                />
+              ) : null}
+              {secondPlot !== "pdi" && plotOptions[secondPlot] ? (
+                <Area
+                  key={secondPlot}
+                  yAxisId="secondary"
+                  type="monotone"
+                  dataKey={secondPlot}
+                  stroke={plotOptions[secondPlot].color}
+                  fillOpacity={1}
+                  fill="url(#colorSecond)"
+                />
               ) : null}
               <Area
+                yAxisId="pdi"
                 type="monotone"
                 dataKey="pdi"
-                stroke="#ff6d04"
+                stroke={colorPrimary}
                 fillOpacity={1}
-                fill="url(#colorSdi)"
+                fill="url(#colorPdi)"
               />
             </ComposedChart>
           </ResponsiveContainer>
           <HelpTooltip />
+          <div className="chart-switcher">
+            {Object.entries(plotOptions).map(([key, option]) => (
+              <button
+                className={
+                  "chart-switcher-item" + (secondPlot === key ? " active" : "")
+                }
+                value={key}
+                onClick={this.handlePlotChange.bind(this)}
+              >
+                <div
+                  className={classes.dot}
+                  style={{ background: plotOptions[key].color }}
+                ></div>{" "}
+                {option.button}
+              </button>
+            ))}
+          </div>
+          <Typography variant="h6" component="p" color="textSecondary">
+            {(!secondPlot || secondPlot) === "pdi" ? (
+              <>
+                Click on <b>Add deaths</b> or <b>Add cases</b> to compare our
+                PDI against the latest COVID-19 data
+              </>
+            ) : (
+              metadata[secondPlot]
+            )}
+            <br />
+            <span>
+              <i>
+                Source:{" "}
+                <a href="https://coronavirus.jhu.edu/map.html" target="_blank">
+                  https://coronavirus.jhu.edu/map.html
+                </a>
+              </i>
+            </span>
+          </Typography>
         </CardContent>
       </Card>
     )

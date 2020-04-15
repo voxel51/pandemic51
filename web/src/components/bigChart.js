@@ -102,6 +102,7 @@ class BigChart extends Component {
                 if (!v.value) return
                 return (
                   <Typography
+                    key={v.dataKey}
                     variant="h5"
                     component="h3"
                     style={{ color: v.color }}
@@ -183,6 +184,7 @@ class BigChart extends Component {
                 .sort()
                 .map((val, i) => (
                   <Line
+                    key={val}
                     type="monotone"
                     dataKey={val}
                     stroke={val === "average" ? "#ff6d04" : COLORS[i]}

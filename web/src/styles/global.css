@@ -19,6 +19,34 @@ footer {
 img {
   margin-bottom: 0 !important;
 }
+
+.chart-switcher {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+}
+.chart-dropdown .MuiSelect-select, .chart-switcher-item {
+  font-size: 1.2rem;
+  border-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  border-width: 2px;
+  background: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 0 6px;
+  margin: 3px;
+}
+.chart-switcher-item.active {
+  border-width: 0;
+  background: rgba(0, 0, 0, 0.1);
+  cursor: default;
+  margin: 5px;
+}
+.chart-dropdown label {
+  display: inline-block;
+  margin-right: 0.5rem;
+  font-size: 1.5rem;
+}
 .media-container {
   position: relative;
 }
@@ -75,12 +103,36 @@ img {
   top: 5px;
   right: 5px;
 }
-
 .image-overlay .close-button, .image-overlay .share-button {
   color: var(--color-primary);
   border: 2px solid var(--color-primary);
   background-color: #fff;
   margin-left: 1rem;
+}
+.image-overlay .frame-nav {
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  display: block;
+  position: absolute;
+  top: 50%;
+  height: 3em;
+  margin-top: -1.5em;
+  width: 1em;
+  text-align: center;
+  font-size: 200%;
+  line-height: 3em;
+  cursor: pointer;
+  text-decoration: none;
+}
+.image-overlay .frame-nav-prev {
+  left: 0;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+}
+.image-overlay .frame-nav-next {
+  right: 0;
+  border-top-left-radius: 0.5em;
+  border-bottom-left-radius: 0.5em;
 }
 
 :root {
@@ -846,6 +898,9 @@ hr {
 @media only screen and (min-device-width: 320px) and (max-device-width: 850px) {
   .body_part {
     padding: 6rem 3rem;
+  }
+  .share-box {
+    display: block !important;
   }
 
   .video-player-wrapper {

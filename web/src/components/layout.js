@@ -17,10 +17,14 @@ import {
   createStyles,
   Theme,
 } from "@material-ui/core/styles"
-import Paper from "@material-ui/core/Paper"
-import Grid from "@material-ui/core/Grid"
-import Card from "@material-ui/core/Card"
-import CardContent from "@material-ui/core/CardContent"
+import {
+  Card,
+  CardContent,
+  Grid,
+  Hidden,
+  Paper,
+  Typography,
+} from "@material-ui/core"
 import CityCard from "./cityCard"
 import MobileCityCard from "./mobileCityCard"
 import "./layout.css"
@@ -28,13 +32,12 @@ import "./../utils/typography"
 import Player from "./player"
 import Chart from "./chart"
 import BigChart from "./bigChart"
-import Hidden from "@material-ui/core/Hidden"
 import ImageOverlay from "./imageOverlay"
 import Header from "./header"
 import Middle from "./middle"
 import Footer from "./footer"
-import Typography from "@material-ui/core/Typography"
 import { CITIES } from "../utils/cities"
+import { addDataToSeries } from "../utils/data"
 
 const styles = {
   wrapper: {
@@ -54,17 +57,44 @@ class Layout extends React.Component {
     super(props)
     this.state = {
       data: {},
+      chartData: {},
       overlayData: {},
       selectedTime: null,
+      timeToIndex: {},
     }
     this.openOverlay = this.openOverlay.bind(this)
     this.closeOverlay = this.closeOverlay.bind(this)
+    this.navigateOverlay = this.navigateOverlay.bind(this)
   }
   componentDidMount() {
     fetch("https://pdi-service.voxel51.com/api/snapshots")
       .then(response => response.json())
       .then(json => {
         this.setState({ data: json["data"] })
+      })
+
+    fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
+      .then(response => response.json())
+      .then(json => {
+        json.data = addDataToSeries(json.data, json.cases)
+        json.data = addDataToSeries(json.data, json.deaths)
+        const match = window.location.search.match(/t=(\d+)/)
+        const selectedTime = match ? Number(match[1]) : null;
+        const timeToIndex = {}
+        json.data.forEach((point, index) => {
+          timeToIndex[point.time] = index
+        })
+
+        this.setState({
+          chartData: {
+            list: json["data"],
+            events: json["events"],
+            labels: json["labels"],
+            metadata: json["metadata"],
+          },
+          timeToIndex,
+          selectedTime,
+        })
       })
   }
 
@@ -90,15 +120,25 @@ class Layout extends React.Component {
     window.history.pushState(null, "", window.location.href.split("?")[0])
   }
 
+  navigateOverlay(delta) {
+    const newIndex = this.state.timeToIndex[this.state.selectedTime] + delta
+    const newPoint = this.state.chartData.list[newIndex]
+    if (newPoint) {
+      this.setState({
+        selectedTime: newPoint.time,
+      })
+    }
+  }
+
   render() {
     const { classes, children, city } = this.props
     const { data, height } = this.state
     const setHeight = height => this.setState({ height })
     const cardListHeight = this.refs.chartContainer
       ? (this.refs.chartContainer.scrollHeight / Object.keys(CITIES).length) *
-          6 +
-        12
-      : 727.5
+          7 -
+        10
+      : 820
     return (
       <div className={classes.wrapper}>
         <Helmet>
@@ -136,6 +176,7 @@ class Layout extends React.Component {
                     <Chart
                       title="Physical Distancing Index (PDI)"
                       city={city}
+                      data={this.state.chartData}
                       onClick={this.openOverlay}
                       clicked={this.state.overlayData.clicked}
                       selectedTime={this.state.selectedTime}
@@ -148,7 +189,9 @@ class Layout extends React.Component {
                       <ImageOverlay
                         {...this.state.overlayData}
                         height={height}
+                        setHeight={height === undefined ? setHeight : undefined}
                         onClose={this.closeOverlay}
+                        onNavigate={this.navigateOverlay}
                       />
                     </Player>
                   </Grid>
@@ -161,6 +204,7 @@ class Layout extends React.Component {
               <Chart
                 title="Physical Distancing Index (PDI)"
                 city={city}
+                data={this.state.chartData}
                 clicked={this.state.overlayData.clicked}
                 onClick={this.openOverlay}
                 selectedTime={this.state.selectedTime}
@@ -169,12 +213,14 @@ class Layout extends React.Component {
                 <ImageOverlay
                   {...this.state.overlayData}
                   height={height}
+                  setHeight={height === undefined ? setHeight : undefined}
                   onClose={this.closeOverlay}
+                  onNavigate={this.navigateOverlay}
                 />
               </Player>
               <Grid container spacing={4}>
                 {Object.keys(CITIES).map(cityId => (
-                  <Grid item xs={6}>
+                  <Grid key={cityId} item xs={6}>
                     <MobileCityCard
                       key={cityId}
                       cityId={cityId}

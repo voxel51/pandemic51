@@ -5,11 +5,15 @@ Copyright 2020, Voxel51, Inc.
 voxel51.com
 '''
 from collections import defaultdict
+from datetime import datetime
+import time as tm
 
 import numpy as np
+import pandas as pd
 
 import pandemic51.config as panc
 import pandemic51.core.database as pand
+import pandemic51.core.detections as pande
 import pandemic51.core.events as pane
 import pandemic51.core.pdi as panp
 import pandemic51.core.streaming as pans
@@ -80,7 +84,12 @@ def get_pdi_graph_data(city):
     # Add events to points
     pane.add_events_to_points(points, events)
 
-    return points, events
+    start, stop = points[0]["time"], points[-1]["time"]
+    cases, c_source = get_covid19_timeseries(city, "cases", start, stop)
+    deaths, d_source = get_covid19_timeseries(city, "deaths", start, stop)
+    metadata = {**c_source, **d_source}
+
+    return points, events, cases, deaths, metadata
 
 
 def get_all_pdi_graph_data():
@@ -124,8 +133,8 @@ def get_all_pdi_graph_data():
         vals = [
             v for k, v in d.items()
             if k != "time"
-               and k not in panc.BETA_STREAMS
-               and v is not None
+            and k not in panc.BETA_STREAMS
+            and v is not None
         ]
         d["average"] = np.mean(vals) if vals else None
 
@@ -144,6 +153,100 @@ def get_stream_url(city):
     stream_name = panc.STREAMS_MAP[city]
     stream = pans.Stream.from_stream_name(stream_name)
     return stream.get_live_stream_url()
+
+
+def get_covid19_timeseries(city, metric, start=None, stop=None):
+    '''Gets the given city's covid19 <metric> timeseries data, where <metric>
+    is one of "cases" or "deaths".
+
+    Args:
+        city: the city
+        metric: one of "cases" or "deaths"
+        start: optional unix time start timestamp
+        stop: optional unix time stop timestamp
+
+    Returns:
+        {"data": data}
+    '''
+    us = False
+    if city in panc.COVID19_GLOBAL:
+        country = panc.COVID19_GLOBAL[city]
+        res = panc.COVID19_RES["global"][metric]
+    else:
+        us = True
+        county, state = panc.COVID19_US[city]
+        res = panc.COVID19_RES["us"][metric]
+
+    df = pd.read_csv(res)
+    if us:
+        data = df.loc[
+            np.logical_and(
+                df.Admin2 == county,
+                df.Province_State == state,
+            )
+        ]
+        source = (
+            "Number of %s are for all of %s County and are updated daily"
+            % (metric, county)
+        )
+    else:
+        data = df.loc[
+            np.logical_and(
+                df["Country/Region"] == country,
+                df["Province/State"].isnull()
+            )
+        ]
+        source = (
+            "Number of %s are for the entire country of %s and are updated "
+            "daily" % (metric, country)
+        )
+        if city == "london":
+            source = (
+                "Number of %s are for the United Kingdon, excluding"
+                "territories, and are updated daily" % metric
+            )
+
+    it = data.loc[:, "1/22/20":]
+    covid_data = []
+    for str_date in it:
+        timestamp = _get_timestamp(str_date)
+        if start and timestamp < start:
+            continue
+
+        if stop and timestamp > stop:
+            break
+        covid_data.append({
+            "time": timestamp,
+            metric: int(it[str_date])
+        })
+
+    return covid_data, {metric: source}
+
+
+def update_city(city, annotate=False):
+    '''Updates the counts and (optionally) the annotated image for historical
+    data
+
+    Args:
+        city: the city
+        annotate: whether to update the annotated images
+    '''
+    points = pand.query_stream_history(panc.STREAMS_MAP[city])
+    for id, _, _, img_path, labels_path, _, anno_img_path in points:
+        if labels_path is None:
+            continue
+
+        if not annotate:
+            anno_img_path = None
+
+        count = pande.update(
+            city, img_path, labels_path, anno_img_path)
+        pand.set_object_count(id, count)
+
+
+def _get_timestamp(str_date):
+    return int(tm.mktime(
+        datetime.strptime(str_date, "%m/%d/%y").timetuple()))
 
 
 def _make_snapshot_url(url):
