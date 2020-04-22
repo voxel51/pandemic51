@@ -8,6 +8,7 @@
 export const CITIES = {
   newyork: "New York",
   hollywood: "Los Angeles",
+  atlanta: "Atlanta",
   newjersey: "New Jersey",
   fortlauderdale: "Fort Lauderdale",
   miami: "Miami",
@@ -29,6 +30,7 @@ export const BETA = {
 
 export const NEW = {
   miami: "Miami",
+  atlanta: "Atlanta",
   hollywood: "Los Angeles",
 }
 
@@ -46,6 +48,7 @@ export const HISCITIES = {
 export const TIMEZONES = {
   chicago: "America/Chicago",
   dublin: "Europe/Dublin",
+  atlanta: "America/New_York",
   fortlauderdale: "America/New_York",
   miami: "America/New_York",
   london: "Europe/London",
@@ -65,6 +68,7 @@ export const LOCATIONS = {
   dublin: "Temple Bar",
   london: "Abbey Road",
   miami: "Miami Beach",
+  atlanta: "Marietta Street",
   neworleans: "Bourbon Street",
   newjersey: "Seaside Heights",
   newyork: "Times Square",
@@ -79,6 +83,7 @@ export const LOCATIONS = {
 
 export const FORMAL = {
   chicago: "Chicago, Illinois, USA",
+  atlanta: "Atlanta, Georgia, USA",
   dublin: "Dublin, Ireland",
   miami: "Miami, Florida, USA",
   fortlauderdale: "Fort Lauderdale, Florida, USA",
