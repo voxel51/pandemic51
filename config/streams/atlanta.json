@@ -1,0 +1,6 @@
+{
+    "type": "pandemic51.core.streaming.M3U8Stream",
+    "stream_name": "atlanta",
+    "GMT": "-4",
+    "webpage": "https://www.earthcam.com/usa/georgia/atlanta/?cam=atlanta"
+}
