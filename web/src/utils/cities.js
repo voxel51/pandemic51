@@ -8,7 +8,7 @@
 export const CITIES = {
   newyork: "New York",
   hollywood: "Los Angeles",
-  atlanta: "Atlanta",
+  // atlanta: "Atlanta",
   newjersey: "New Jersey",
   fortlauderdale: "Fort Lauderdale",
   miami: "Miami",
@@ -16,12 +16,16 @@ export const CITIES = {
   dublin: "Dublin",
   london: "London",
   prague: "Prague",
+  // cadiz: "Kentucky",
+  // fortworth: "Fort Worth",
   brighton: "Brighton",
   detroit: "Detroit",
   annarbor: "Ann Arbor",
 }
 
 export const BETA = {
+  cadiz: "Kentucky",
+  fortworth: "Fort Worth",
   detroit: "Detroit",
   annarbor: "Ann Arbor",
   brighton: "Brighton",
@@ -46,6 +50,7 @@ export const HISCITIES = {
 }
 
 export const TIMEZONES = {
+  cadiz: "America/Chicago",
   chicago: "America/Chicago",
   dublin: "Europe/Dublin",
   atlanta: "America/New_York",
@@ -64,6 +69,8 @@ export const TIMEZONES = {
 }
 
 export const LOCATIONS = {
+  cadiz: "Downtown Cadiz",
+  fortworth: "Stockyards",
   chicago: "Wrigley Field",
   dublin: "Temple Bar",
   london: "Abbey Road",
@@ -82,6 +89,8 @@ export const LOCATIONS = {
 }
 
 export const FORMAL = {
+  cadiz: "Cadiz, Kentucky, USA",
+  fortworth: "Fort Worth, Texas, USA"
   chicago: "Chicago, Illinois, USA",
   atlanta: "Atlanta, Georgia, USA",
   dublin: "Dublin, Ireland",
