@@ -36,6 +36,9 @@ img {
   padding: 0 6px;
   margin: 3px;
 }
+.player-area {
+  width: 100%;
+}
 .chart-switcher-item.active {
   border-width: 0;
   background: rgba(0, 0, 0, 0.1);
@@ -924,7 +927,7 @@ hr {
   .body_part {
     padding: 6rem 3rem;
   }
-  .chart-switcher-item {
+  .chart-switcher-item, .image-overlay-timestamp {
     font-size: 1rem;
   }
   .share-box {

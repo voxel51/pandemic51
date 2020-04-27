@@ -16,8 +16,8 @@ export const CITIES = {
   dublin: "Dublin",
   london: "London",
   prague: "Prague",
-  // cadiz: "Kentucky",
-  // fortworth: "Fort Worth",
+  cadiz: "Kentucky",
+  fortworth: "Fort Worth",
   brighton: "Brighton",
   detroit: "Detroit",
   annarbor: "Ann Arbor",
@@ -51,6 +51,7 @@ export const HISCITIES = {
 
 export const TIMEZONES = {
   cadiz: "America/Chicago",
+  fortworth: "America/Chicago",
   chicago: "America/Chicago",
   dublin: "Europe/Dublin",
   atlanta: "America/New_York",
@@ -90,7 +91,7 @@ export const LOCATIONS = {
 
 export const FORMAL = {
   cadiz: "Cadiz, Kentucky, USA",
-  fortworth: "Fort Worth, Texas, USA"
+  fortworth: "Fort Worth, Texas, USA",
   chicago: "Chicago, Illinois, USA",
   atlanta: "Atlanta, Georgia, USA",
   dublin: "Dublin, Ireland",
