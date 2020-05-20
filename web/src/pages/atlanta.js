@@ -1,5 +1,5 @@
 /**
- * Dublin live stream.
+ * Atlanta live stream.
  *
  * Copyright 2020, Voxel51, Inc.
  * voxel51.com
@@ -10,11 +10,11 @@ import { Link } from "gatsby"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 
-const DublinPage = () => (
+const AtlantaPage = () => (
   <>
     <SEO />
-    <Layout city="dublin" />
+    <Layout city="atlanta" />
   </>
 )
 
-export default DublinPage
+export default AtlantaPage

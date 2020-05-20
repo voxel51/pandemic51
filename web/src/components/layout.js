@@ -67,11 +67,13 @@ class Layout extends React.Component {
     this.navigateOverlay = this.navigateOverlay.bind(this)
   }
   componentDidMount() {
-    fetch("https://pdi-service.voxel51.com/api/snapshots")
-      .then(response => response.json())
-      .then(json => {
-        this.setState({ data: json["data"] })
-      })
+    if (Object.keys(this.state.data).length === 0) {
+      fetch("https://pdi-service.voxel51.com/api/snapshots")
+        .then(response => response.json())
+        .then(json => {
+          this.setState({ data: json["data"] })
+        })
+    }
 
     fetch(`https://pdi-service.voxel51.com/api/pdi/${this.props.city}`)
       .then(response => response.json())
@@ -79,7 +81,7 @@ class Layout extends React.Component {
         json.data = addDataToSeries(json.data, json.cases)
         json.data = addDataToSeries(json.data, json.deaths)
         const match = window.location.search.match(/t=(\d+)/)
-        const selectedTime = match ? Number(match[1]) : null;
+        const selectedTime = match ? Number(match[1]) : null
         const timeToIndex = {}
         json.data.forEach((point, index) => {
           timeToIndex[point.time] = index
@@ -167,6 +169,10 @@ class Layout extends React.Component {
                     name={CITIES[cityId]}
                     active={city == cityId}
                     url={data && data[cityId] ? data[cityId]["url"] : undefined}
+                    max={data && data[cityId] ? data[cityId]["max"] : undefined}
+                    week={
+                      data && data[cityId] ? data[cityId]["week"] : undefined
+                    }
                   />
                 ))}
               </Grid>

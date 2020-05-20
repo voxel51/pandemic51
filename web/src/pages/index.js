@@ -12,8 +12,8 @@ import SEO from "../components/seo"
 
 const IndexPage = () => (
   <>
-    <SEO/>
-    <Layout city="newyork"/>
+    <SEO />
+    <Layout city="newyork" />
   </>
 )
 

@@ -12,8 +12,8 @@ import SEO from "../components/seo"
 
 const ChicagoPage = () => (
   <>
-    <SEO/>
-    <Layout city="chicago"/>
+    <SEO />
+    <Layout city="chicago" />
   </>
 )
 
