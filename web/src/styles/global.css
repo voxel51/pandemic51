@@ -36,9 +36,6 @@ img {
   padding: 0 6px;
   margin: 3px;
 }
-.player-area {
-  width: 100%;
-}
 .chart-switcher-item.active {
   border-width: 0;
   background: rgba(0, 0, 0, 0.1);
@@ -927,7 +924,7 @@ hr {
   .body_part {
     padding: 6rem 3rem;
   }
-  .chart-switcher-item, .image-overlay-timestamp {
+  .chart-switcher-item {
     font-size: 1rem;
   }
   .share-box {
@@ -2812,4 +2809,13 @@ hr {
 
 .hs-form-field input {
   width: 100%;
+}
+
+.nav__category {
+  color: var(--text-secondary-on-dark);
+}
+
+.nav__category--item {
+  color: var(--text-brand);
+  text-indent: 1rem;
 }

@@ -50,14 +50,15 @@ class Header extends React.Component {
       obj.display = on
       objM.display = menu
     }
+    const site = "https://voxel51.com";
     return (
       <>
-        <nav id="nav__main" class="nav__main stay_at_top">
-          <div class="nav__main__logo">
-            <a href="https://voxel51.com">
-              <img src="https://voxel51.com/images/logo/voxel51-logo-horz-color-600dpi.png" />
-            </a>
-          </div>
+    <nav id="nav__main" class="nav__main stay_at_top">
+      <div class="nav__main__logo">
+        <a href={site}>
+          <img src="https://voxel51.com/images/logo/voxel51-logo-horz-color-600dpi.png"/>
+        </a>
+      </div>
 
           <div id="nav__main__mobilebutton--on" style={obj} ref="mobile">
             <a href="#" onClick={this.onClick}>
@@ -71,61 +72,72 @@ class Header extends React.Component {
             </a>
           </div>
 
-          <div id="nav__main__items" style={objM}>
-            <div class="nav__item">
-              <a href="https://voxel51.com/platform">Platform</a>
-            </div>
-            <div class="nav__item">
-              <a href="https://voxel51.com/annotation">Annotation</a>
-            </div>
-            <div class="nav__item">
-              <a href="https://voxel51.com/usecases">Use Cases</a>
-            </div>
-            <div class="nav__item nav__dropdown">
-              <span class="nav__dropdown__trigger">About Us</span>
-              <div class="nav__item nav__dropdown__menu has-arrows">
-                <div class="arrow-up--light-primary arrow-left20"></div>
-                <ul>
-                  <li>
-                    <a href="https://voxel51.com/ourstory">Our Story</a>
-                  </li>
-                  <li>
-                    <a href="https://voxel51.com/press">Press &amp; News</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div class="nav__item">
-              <a href="https://voxel51.com/careers">Careers</a>
-            </div>
-            <div class="nav__item">
-              <a href="https://blog.voxel51.com/">Blog</a>
-            </div>
-            <div class="nav__spacer"></div>
-            <div class="nav__item nav__item--brand">
-              <a target="_blank" href="https://meetings.hubspot.com/michael908">
-                Schedule Demo
-              </a>
-            </div>
-            <div class="nav__divider">|</div>
-            <div class="nav__item nav__dropdown">
-              <span class="nav__dropdown__trigger">Login</span>
-              <div class="nav__item nav__dropdown__menu has-arrows">
-                <div class="arrow-up--light-primary arrow-left20"></div>
-                <ul>
-                  <li>
-                    <a href="https://console.voxel51.com/login">
-                      Platform Console
-                    </a>
-                  </li>
-                  <li>
-                    <a href="https://scoop.voxel51.com/login">Scoop</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
+
+<div id="nav__main__items" style={objM}>
+        <div class="nav__item nav__dropdown">
+          <span class="nav__dropdown__trigger">Products</span>
+          <div class="nav__item nav__dropdown__menu has-arrows">
+            <div class="arrow-up--light-primary arrow-left20"></div>
+            <ul>
+              <li><a href={`${site}/overview`}>Overview</a>
+              </li><li class="nav__category">Tools
+              </li><li class="nav__category--item"><a href={`${site}/fiftyone`}>FiftyOne</a>
+              </li><li class="nav__category--item"><a href={`${site}/platform`}>Deployment</a>
+              </li><li class="nav__category--item"><a href={`${site}/senses`}>Senses</a>
+              </li><li class="nav__category">Applications
+              </li><li class="nav__category--item"><a href="/">PDI</a>
+            </li></ul>
           </div>
-        </nav>
+        </div>
+        <div class="nav__item nav__dropdown">
+          <span class="nav__dropdown__trigger">Solutions</span>
+          <div class="nav__item nav__dropdown__menu has-arrows">
+            <div class="arrow-up--light-primary arrow-left20"></div>
+            <ul>
+              <li><a href={`${site}/lifecycle`}>ML Lifecycle</a>
+              </li><li class="nav__category">Use Cases
+              </li><li class="nav__category--item"><a href={`${site}/usecases/automotive`}>Automotive</a>
+              </li><li class="nav__category--item"><a href={`${site}/usecases/research`}>Research</a>
+              </li><li class="nav__category--item"><a href={`${site}/usecases/advertising`}>Advertising</a>
+              </li><li class="nav__category--item"><a href={`${site}/usecases/other`}>Other Industries</a>
+            </li></ul>
+          </div>
+        </div>
+        <div class="nav__item nav__dropdown">
+          <span class="nav__dropdown__trigger">About Us</span>
+          <div class="nav__item nav__dropdown__menu has-arrows">
+            <div class="arrow-up--light-primary arrow-left20"></div>
+            <ul>
+              <li><a href={`${site}/ourstory`}>Our Story</a>
+              </li><li><a href={`${site}/press`}>Press &amp; News</a>
+            </li></ul>
+          </div>
+        </div>
+        <div class="nav__item">
+          <a href="https://blog.voxel51.com/">Blog</a>
+        </div>
+        <div class="nav__spacer">
+        </div>
+        <div class="nav__item nav__item--brand">
+          <a target="_blank" href="https://meetings.hubspot.com/michael908">Schedule Demo</a>
+        </div>
+        <div class="nav__divider">
+          |
+        </div>
+        <div class="nav__item nav__dropdown">
+          <span class="nav__dropdown__trigger">Login</span>
+          <div class="nav__item nav__dropdown__menu has-arrows">
+            <div class="arrow-up--light-primary arrow-left20"></div>
+            <ul>
+              <li><a href="https://console.voxel51.com/login">Platform Console</a>
+              </li><li><a href="https://scoop.voxel51.com/">Scoop</a>
+            </li></ul>
+          </div>
+        </div>
+
+      </div>
+
+    </nav>
         <div class="bg-header-dark-fancy2 body_part bg-dark-primary body_block--centerfull force-pad-y3">
           <h2 class="body_block__title">
             Measuring the Social Impact of the <br />

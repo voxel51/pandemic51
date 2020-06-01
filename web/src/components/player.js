@@ -9,8 +9,10 @@ import PropTypes from "prop-types"
 import "@tensorflow/tfjs"
 import ReactHLS from "react-hls"
 import CircularProgress from "@material-ui/core/CircularProgress"
+import YouTube from "react-youtube"
 
 const IPCAMS = ["detroit", "annarbor", "ypsilanti"]
+const YTCAMS = ["cadiz", "fortworth"]
 
 export default function Player({ city, height, setHeight, children }) {
   const [url, setUrl] = useState(null)
@@ -19,6 +21,7 @@ export default function Player({ city, height, setHeight, children }) {
   const wrapperRef = useRef(null)
 
   const isIP = c => IPCAMS.indexOf(c) >= 0
+  const isYT = c => YTCAMS.indexOf(c) >= 0
 
   useEffect(() => {
     let cancelled = false
@@ -33,7 +36,7 @@ export default function Player({ city, height, setHeight, children }) {
       }
     }
     setUrl(null)
-    setLoaded(false)
+    setLoaded(isYT(city) ? true : false)
     updateUrl()
     return () => {
       cancelled = true
@@ -49,6 +52,7 @@ export default function Player({ city, height, setHeight, children }) {
   }
 
   const handleResize = v => {
+    if (isYT(city)) return;
     if (setHeight) {
       const container = v.parentNode.parentNode
       const [h, w] = isIP(city)
@@ -68,7 +72,8 @@ export default function Player({ city, height, setHeight, children }) {
 
   useEffect(() => {
     const callback = () => {
-      const tag = isIP(city) ? "img" : "video"
+      let tag = isIP(city) ? "img" : "video"
+      tag = isYT(city) ? "iframe" : tag;
       handleResize(wrapperRef.current.querySelector(tag))
     }
     window.addEventListener("resize", callback)
@@ -78,6 +83,16 @@ export default function Player({ city, height, setHeight, children }) {
   }, [wrapperRef.current])
 
   useEffect(() => {
+    if (url && url.includes("youtube")) {
+      setPlayer(
+        <div class="player-area">
+          <iframe id="ytplayer" type="text/html" width="100%" height="100%"
+  src={url}
+  frameborder="0"></iframe>
+        </div>
+      )
+      return;
+    }
     const videoProps = {
       muted: true,
       controls: false,
@@ -125,7 +140,7 @@ export default function Player({ city, height, setHeight, children }) {
     <div
       ref={wrapperRef}
       className="video-player-wrapper"
-      style={{ height: height + 40 }}
+      style={{ height: (city === "fortworth") ? "100%" : 0 }}
     >
       {children}
       <div className="video-player" style={{ height }}>

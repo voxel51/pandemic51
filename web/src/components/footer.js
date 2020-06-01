@@ -135,29 +135,29 @@ const Footer = props => {
           734-489-1134
         </div>
 
-        <div class="footer__links">
-          <div class="footer__links--col1">
-            <a href="https://voxel51.com/">Home</a>
-            <a href="https://voxel51.com/platform">Platform</a>
-            <a href="https://voxel51.com/platform/#pricing">Platform Pricing</a>
-            <a href="https://voxel51.com/platform/faq">Platform FAQ</a>
-            <a href="https://voxel51.com/annotation">Annotation</a>
-          </div>
-          <div class="footer__links--col2">
-            <a href="https://voxel51.com/usecases">Use Cases</a>
-            <a href="https://voxel51.com/ourstory">Our Story</a>
-            <a href="https://voxel51.com/careers">Careers</a>
-            <a href="https://voxel51.com/press">Press</a>
-            <a href="https://blog.voxel51.com/">Blog</a>
-          </div>
-          <div class="footer__links--col3">
-            <a href="https://console.voxel51.com/login">Platform Login</a>
-            <a href="https://scoop.voxel51.com/">Scoop Login</a>
-            <a href="https://demo.voxel51.com">Scoop Demo</a>
-            <a href="https://status.voxel51.com/">System Status</a>
-          </div>
-        </div>
-
+    <div class="footer__links">
+      <div class="footer__links--col1">
+        <a href="https://voxel51.com/">Home</a>
+        <a href="https://voxel51.com/annotation">Data Curation</a>
+        <a href="https://voxel51.com/platform/#pricing">Deployment</a>
+        <a href="https://voxel51.com/platform/faq">Platform FAQ</a>
+        <a href="/">PDI</a>
+      </div>
+      <div class="footer__links--col2">
+        <a href="https://voxel51.com/usecases">Solutions</a>
+        <a href="https://voxel51.com/ourstory">Our Story</a>
+        <a href="https://voxel51.com/careers">Careers</a>
+        <a href="https://voxel51.com/press">Press</a>
+        <a href="https://blog.voxel51.com/">Blog</a>
+      </div>
+      <div class="footer__links--col3">
+        <a href="https://voxel51.com/fiftyone/#beta">FiftyOne Beta</a>
+        <a href="https://console.voxel51.com/login">Platform Login</a>
+        <a href="https://scoop.voxel51.com/">Scoop Login</a>
+        <a href="https://demo.voxel51.com">Scoop Demo</a>
+        <a href="https://status.voxel51.com/">System Status</a>
+      </div>
+    </div>
         <div class="footer__icons">
           <ul class="list-inline">
             <li>
