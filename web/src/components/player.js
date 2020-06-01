@@ -52,7 +52,7 @@ export default function Player({ city, height, setHeight, children }) {
   }
 
   const handleResize = v => {
-    if (isYT(city)) return;
+    if (isYT(city)) return
     if (setHeight) {
       const container = v.parentNode.parentNode
       const [h, w] = isIP(city)
@@ -73,7 +73,7 @@ export default function Player({ city, height, setHeight, children }) {
   useEffect(() => {
     const callback = () => {
       let tag = isIP(city) ? "img" : "video"
-      tag = isYT(city) ? "iframe" : tag;
+      tag = isYT(city) ? "iframe" : tag
       handleResize(wrapperRef.current.querySelector(tag))
     }
     window.addEventListener("resize", callback)
@@ -86,12 +86,17 @@ export default function Player({ city, height, setHeight, children }) {
     if (url && url.includes("youtube")) {
       setPlayer(
         <div class="player-area">
-          <iframe id="ytplayer" type="text/html" width="100%" height="100%"
-  src={url}
-  frameborder="0"></iframe>
+          <iframe
+            id="ytplayer"
+            type="text/html"
+            width="100%"
+            height="100%"
+            src={url}
+            frameborder="0"
+          ></iframe>
         </div>
       )
-      return;
+      return
     }
     const videoProps = {
       muted: true,
@@ -140,7 +145,7 @@ export default function Player({ city, height, setHeight, children }) {
     <div
       ref={wrapperRef}
       className="video-player-wrapper"
-      style={{ height: (city === "fortworth") ? "100%" : 0 }}
+      style={{ height: city === "fortworth" ? "100%" : 0 }}
     >
       {children}
       <div className="video-player" style={{ height }}>
