@@ -32,7 +32,7 @@ Benjamin Kane, ben@voxel51.com
 import argparse
 import requests
 
-CITIES = {
+CITIES = sorted(list({
     "london",
     "dublin",
     "newjersey",
@@ -41,7 +41,7 @@ CITIES = {
     "fortlauderdale",
     "lasvegas",
     "miami",
-}
+}))
 
 ENDPOINT = "https://pdi-service.voxel51.com/api/pdi/%s"
 
@@ -63,11 +63,11 @@ def pdi_to_csv(writer):
         results[city] = city_results
 
     times = sorted(list(times))
-    header = "city, " + ", ".join([str(t) for t in times]) + "\n"
+    header = "time, " + ", ".join(CITIES) + "\n"
     writer.write(header)
-    for city in sorted(list(CITIES)):
-        row = city + ", "
-        for time in times:
+    for time in times:
+        row = str(time) + ", "
+        for city in CITIES:
             if time not in results[city]:
                 row += ", "
             else:
