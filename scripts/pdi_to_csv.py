@@ -6,7 +6,7 @@ Use --output-file to change the ouptut csv destination. The default is
 
 NOTES:
     - The CSV is sparsely populated
-    - A city is not guranteed to have a PDI value for particular timestamp
+    - A city is not guaranteed to have a PDI value for a particular timestamp
     - Timestamps are in unix time
     - PDI values fall between 0 and 100
 
