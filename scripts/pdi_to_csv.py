@@ -32,16 +32,20 @@ Benjamin Kane, ben@voxel51.com
 import argparse
 import requests
 
-CITIES = sorted(list({
-    "london",
-    "dublin",
-    "newjersey",
-    "prague",
-    "newyork",
-    "fortlauderdale",
-    "lasvegas",
-    "miami",
-}))
+CITIES = sorted(
+    list(
+        {
+            "london",
+            "dublin",
+            "newjersey",
+            "prague",
+            "newyork",
+            "fortlauderdale",
+            "lasvegas",
+            "miami",
+        }
+    )
+)
 
 ENDPOINT = "https://pdi-service.voxel51.com/api/pdi/%s"
 
