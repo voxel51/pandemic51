@@ -57,7 +57,7 @@ def pdi_to_csv(writer):
     header = "time, " + ", ".join(CITIES) + "\n"
     writer.write(header)
     for time in times:
-        row = str(time) + ", "
+        row = str(time)
         for city in CITIES:
             if time not in results[city]:
                 row += ", "
