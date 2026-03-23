@@ -1,10 +1,21 @@
 # pandemic51
 
-Voxel51's website for monitoring the impact of the Coronavirus pandemic.
-See it live at https://pdi.voxel51.com.
+<div align="center">
 
 <img src="https://user-images.githubusercontent.com/3719547/74191434-8fe4f500-4c21-11ea-8d73-555edfce0854.png" alt="voxel51-logo.png" width="40%"/>
 
+[![Discord](https://img.shields.io/badge/Discord-7289DA?logo=discord&logoColor=white)](https://discord.gg/fiftyone-community)
+[![Hugging Face](https://img.shields.io/badge/Hugging_Face-purple?style=flat&logo=huggingface)](https://huggingface.co/Voxel51)
+[![Voxel51 Blog](https://img.shields.io/badge/Voxel51_Blog-ff6d04?style=flat)](https://voxel51.com/blog)
+[![Newsletter](https://img.shields.io/badge/Newsletter-BE5B25?logo=mail.ru&logoColor=white)](https://share.hsforms.com/1zpJ60ggaQtOoVeBqIZdaaA2ykyk)
+[![LinkedIn](https://img.shields.io/badge/In-white?style=flat&label=Linked&labelColor=blue)](https://www.linkedin.com/company/voxel51)
+[![Twitter](https://img.shields.io/badge/Twitter-000000?logo=x&logoColor=white)](https://x.com/voxel51)
+[![Medium](https://img.shields.io/badge/Medium-12100E?logo=medium&logoColor=white)](https://medium.com/voxel51)
+
+</div>
+
+Voxel51's website for monitoring the impact of the Coronavirus pandemic.
+See it live at https://pdi.voxel51.com.
 
 ## Organization
 
@@ -17,7 +28,6 @@ See it live at https://pdi.voxel51.com.
 ├── scripts                  <-- handy scripts
 └── web                      <-- web client
 ```
-
 
 ## Installation
 
@@ -150,7 +160,6 @@ Download the detector checkpoint by running the following script:
 bash scripts/download_model.bash
 ```
 
-
 ### Backups
 
 As a simple solution to creating backups manually, here are commands to backup
@@ -165,14 +174,12 @@ mysqldump -u ${P51_SQL_USERNAME} -p${P51_SQL_PASSWORD} ${P51_SQL_DATABASE_NAME} 
 zip -r data_`date +'%Y-%m-%d'`.zip ${P51_DATA_DIR}
 ```
 
-
 ## Acknowledgements
 
 This project uses an EfficientDet model checkpoint that was graciously made
 available by the authors of the
 [automl/efficientdet](https://github.com/google/automl/tree/master/efficientdet)
 project.
-
 
 ## Copyright
 
