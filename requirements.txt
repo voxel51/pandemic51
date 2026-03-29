@@ -1,5 +1,5 @@
 bs4==0.0.0
-celery==4.4.2
+celery==5.2.2
 ffmpy==0.2.2
 Flask==1.1.1
 jupyterlab==2.0.1
